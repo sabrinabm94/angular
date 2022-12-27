@@ -1,0 +1,10 @@
+<section class="results">
+  <div class="row">
+    <div class="col-lg-4" *ngFor="let gif of receiveGifs">
+      <a href="gif.url" target="_blank" class="link">
+        <h3 class="title">{{gif.title}}</h3>
+        <app-picture [image]="gif.images.original.url"></app-picture>
+      </a>
+    </div>
+  </div>
+</section>
