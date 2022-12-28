@@ -2,4 +2,12 @@
   <label class="{{'label ' + class}}" id="{{'label-' + class}}" for={{this.name}}>{{this.text}}</label>
   <input class="{{'input form-control ' + class}}" id="{{'input-' + class}}" type="text" name={{this.name}}
     placeholder={{this.placeholder}} pattern={{this.pattern}} required={{this.required}} />
+  <!-- <span *ngIf="this.name.invalid && (this.name.dirty || this.name.touched)" class="validator alert">
+    <div *ngIf="this.name.errors?.['required']">
+      this.name is required.
+    </div>
+    <div *ngIf="this.name.errors?.['minlength']">
+      this.name must be at least 4 characters long.
+    </div>
+  </span> -->
 </div>
