@@ -1,0 +1,52 @@
+/* 12 14 */
+.small-text, small {
+  font-size: 0.75rem;
+  line-height: 1.25rem;
+}
+
+/* 14 16 */
+.medium-text, p {
+  font-size: 0.875rem;
+  line-height: 1rem;
+}
+
+/* 16 18 */
+.big-text {
+  font-size: 1rem;
+  line-height: 1.125rem;
+}
+
+/* 18 20 */
+.small-title, h5 {
+  font-size: 1.125rem;
+  line-height: 1.25rem;
+}
+
+/* 20 24 */
+.normal-title, h4 {
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+}
+
+/* 30 34 */
+.medium-title, h3 {
+  font-size: 1.875rem;
+  line-height: 2.125rem;
+}
+
+/* 40 44 */
+.big-title, h2 {
+  font-size: 2.5rem;
+  line-height: 2.75rem;
+}
+
+/* 60 64 */
+.main-title, h1 {
+  font-size: 3.75rem;
+  line-height: 4rem;
+}
+
+.text-center {
+  text-align: center;
+}
+

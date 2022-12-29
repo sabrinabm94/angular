@@ -1,0 +1,29 @@
+.gif-image {
+  margin-bottom: 1rem;
+}
+
+.gif-link {
+  margin-bottom: 3rem;
+}
+
+.gif-link, .gif-image {
+  display: block;
+}
+
+@media screen and (max-width: 576px) {
+  .gif-image {
+    height: 55vw;
+  }
+}
+
+@media screen and (min-width: 576px) {
+  .gif-image {
+    height: 22vw;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .gif-image {
+    height: 8rem;
+  }
+}

@@ -1,0 +1,17 @@
+<app-header></app-header>
+<main class="main">
+  <div class="container">
+    <h1 class="main-title text-center">Search for your gif</h1>
+    <div class="row">
+      <div class="col-12 col-sm-12">
+        <app-search-template #SearchTemplateComponent (dataEmitter)="setDataInChild($event)">
+        </app-search-template>
+      </div>
+      <div class="col-12 col-sm-12">
+        <app-results-template #ResultsTemplateComponent>
+        </app-results-template>
+      </div>
+    </div>
+  </div>
+</main>
+<app-footer></app-footer>
