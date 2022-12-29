@@ -36,6 +36,7 @@ export class FormComponent implements OnInit {
         new FormControl(field.name, [
           Validators.minLength(field.minLength),
           Validators.maxLength(field.maxLength),
+          Validators.pattern(field.pattern),
           //Validators.required,
         ])
       );
