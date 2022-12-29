@@ -46,3 +46,8 @@ Thumbs.db
 /cache/
 /cache/*
 cache/
+
+
+# envs
+.envs
+.envs*
