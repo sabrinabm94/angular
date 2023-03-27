@@ -88,6 +88,10 @@ section {
   display: block;
 }
 
+.comment-form-cookies-consent label {
+  display: inline;
+}
+
 body {
   line-height: 1;
 }
@@ -95,7 +99,8 @@ body {
 header ol,
 header ul,
 header ul,
-footer ul {
+footer ul,
+.pagination li {
   list-style: none;
   padding-left: 0;
 }
@@ -130,9 +135,22 @@ textarea:focus-visible {
   outline: none;
 }
 
+em, i {
+  font-style: italic;
+}
+
+strong, b {
+  font-weight: bold;
+}
+
+a[aria-disabled="true"] {
+  display: inline-block;
+  pointer-events: none;
+}
+
 @media screen and (max-width: 993px) {
   ul,
   ol {
-    padding-left: 0.6rem;
+    padding-left: 0.625rem;
   }
 }
