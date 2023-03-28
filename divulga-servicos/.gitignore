@@ -51,3 +51,4 @@ cache/
 # envs
 .envs
 .envs*
+enviroment*.ts
