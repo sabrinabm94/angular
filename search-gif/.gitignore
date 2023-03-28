@@ -46,7 +46,7 @@ Thumbs.db
 /cache/
 /cache/*
 cache/
-
+.angular/
 
 # envs
 .envs
