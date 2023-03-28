@@ -1,13 +1,14 @@
 import { Address } from './Address.model';
-import { Payment } from './Payment.model';
+import { Order } from './pagarme/Order.model';
+import { Phone } from './Phone.model';
 import { Service } from './Service.model';
 import { User } from './User.model';
 
 export class Buyer extends User {
-  phone?: string;
-  cellPhone: string;
-  cnpj: string;
-  service: Service;
-  address: Address;
-  payments?: Array<Payment>;
+  type: string = "individual";
+  service: Service = new Service;
+  home_phone?: Phone = new Phone;
+  mobile_phone: Phone = new Phone;
+  address: Address = new Address;
+  orders?: Array<Order>;
 }
