@@ -1,7 +1,0 @@
-const environment = {
-  PAGARME_PAYMENT_SUCCESS_URL: 'https://pagar.me',
-  PAGARME_SECRET_KEY_SANDBOX: '',
-  PAGARME_PUBLIC_KEY_SANDBOX: '',
-  PAGARME_SECRET_KEY_PROD: '',
-  PAGARME_PUBLIC_KEY_PROD: '',
-};

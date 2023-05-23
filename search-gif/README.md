@@ -45,5 +45,3 @@ ng e2e: e2e test
 
 ## Accesss
 localhost:4200
-
-
