@@ -1,7 +1,10 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatFormField } from '@angular/material/form-field';
+
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,6 +17,7 @@ import { UsersComponent } from './src/app/views/users/users.component';
 import { CategoryComponent } from './src/app/views/category/category.component';
 import { CategoriesComponent } from './src/app/views/categories/categories.component';
 import { CheckoutComponent } from './src/app/views/checkout/checkout.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -26,15 +30,19 @@ import { CheckoutComponent } from './src/app/views/checkout/checkout.component';
     UsersComponent,
     CategoryComponent,
     CategoriesComponent,
-    CheckoutComponent
+    CheckoutComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NoopAnimationsModule,
+    MatIconModule,
+    MatCardModule,
+    MatPaginatorModule,
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule { }
+export class AppModule {}
