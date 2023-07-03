@@ -33,11 +33,8 @@ import { CheckoutComponent } from './src/app/views/checkout/checkout.component';
     AppRoutingModule,
     NoopAnimationsModule,
   ],
-  exports: [NgModule, MatFormField],
   providers: [],
   bootstrap: [AppComponent],
-  schemas: [
-    CUSTOM_ELEMENTS_SCHEMA
-  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule { }
