@@ -3,13 +3,16 @@
     <h1 class="title">Encontre os melhores profissionais próximos de você</h1>
   </section>
   <section class="section search-profissional">
-    <mat-form-field>
-      <input type="text" matInput placeholder="Buscar">
-    </mat-form-field>
+    <form class="search-form">
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Quero buscar serviços de..." value="">
+      </mat-form-field>
+      <button mat-stroked-button class="inline">Buscar</button>
+    </form>
   </section>
   <section class="section search-profissional-results">
     <div class="col-sm-12">
-      <div class="col-sm-2 col-md-3 col-lg-4">
+      <div class="col-sm-2 col-md-3 col-lg-4 inline">
         <mat-card class="card">
           <mat-card-content>
             <picture class="picture background-image" style="background-image: url('');">
@@ -33,7 +36,7 @@
           </mat-card-content>
         </mat-card>
       </div>
-      <div class="col-sm-2 col-md-3 col-lg-4">
+      <div class="col-sm-2 col-md-3 col-lg-4 inline">
         <mat-card class="card">
           <mat-card-content>
             <picture class="picture background-image" style="background-image: url('');">

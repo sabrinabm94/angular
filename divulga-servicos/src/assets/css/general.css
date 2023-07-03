@@ -1,3 +1,14 @@
-.inline-list li {
+.inline-list li,
+.inline {
   display: inline-block;
+}
+
+.center,
+.container {
+  margin: 0 auto;
+}
+
+.center,
+.container {
+  display: block;
 }
