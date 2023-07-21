@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'divulga-servicos';
+  public componentTitle:string = "";
+
+  constructor() {}
+
+  ngOnInit() {
+    this.componentTitle = 'Buscar por prestadores de serviços';
+  }
 }

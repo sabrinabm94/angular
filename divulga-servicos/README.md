@@ -28,3 +28,9 @@ Run `ng update @angular/cli @angular/core`
 `ng version`
 
 Read more in [link](https://javascript.plainenglish.io/how-to-upgrade-from-angular-14-to-angular-15-24d2e326281e)
+
+## Windows
+
+### about_Execution_Policies error
+
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
