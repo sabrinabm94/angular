@@ -20,6 +20,8 @@ import { UsersComponent } from './views/users/users.component';
 import { CategoryComponent } from './views/category/category.component';
 import { CategoriesComponent } from './views/categories/categories.component';
 import { CheckoutComponent } from './views/checkout/checkout.component';
+import { HeaderComponent } from './views/templates/header/header.component';
+import { FooterComponent } from './views/templates/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,8 @@ import { CheckoutComponent } from './views/checkout/checkout.component';
     CategoryComponent,
     CategoriesComponent,
     CheckoutComponent,
+    HeaderComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
