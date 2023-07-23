@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -7,11 +6,13 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent {
-  public componentTitle:string = "";
+  public projectTitle:string = "";
+  public projectDescription:string = "";
 
   constructor() {}
 
   ngOnInit() {
-    this.componentTitle = 'Buscar por prestadores de serviços';
+    this.projectTitle = 'Buscar profissionais';
+    this.projectDescription = 'Buscar por prestadores de serviços';
   }
 }
