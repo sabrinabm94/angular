@@ -14,7 +14,10 @@ export class LinkComponent {
     text: '',
   };
 
+  public linkIndex = 0;
+
   public sendData(data: ILink): ILink {
+    this.linkIndex = this.linkIndex++;
     return (this.componentParams = data);
   }
 }
