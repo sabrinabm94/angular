@@ -1,0 +1,17 @@
+<footer class="footer row">
+  <div class="col-sm-6">
+    <img src="" alt="" class="logo">
+    <small class="whatsapp">{{this.footerParams.phoneNumber}}</small>
+    <small class="email">{{this.footerParams.email}}</small>
+  </div>
+  <div class="col-sm-6">
+    <h2 class="title">Institucional</h2>
+    <nav *ngFor="let menuItem of this.footerParams.menu; let linkIndex=index">
+      <app-link #linkComponent (dataEmitter)="sendDataToChildComponents($event)">
+      </app-link>
+    </nav>
+  </div>
+  <div class="col-sm-12">
+    <small class="copyright">{{this.footerParams.copyright}}</small>
+  </div>
+</footer>
