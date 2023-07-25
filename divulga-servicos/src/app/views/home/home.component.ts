@@ -81,11 +81,5 @@ export class HomeComponent {
     this.imageComponents.forEach((imageComponent, index) => {
       imageComponent.sendData(data.images[index]);
     });
-
-    this.backgroundImageComponents.forEach(
-      (backgroundImageComponent, index) => {
-        backgroundImageComponent.sendData(data.backgroundImages[index]);
-      }
-    );
   }
 }

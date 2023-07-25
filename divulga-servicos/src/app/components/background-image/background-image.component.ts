@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { IBackgroundImage } from 'src/app/utils/interfaces/IBackgroundImage.interface';
 
 @Component({
@@ -7,12 +7,11 @@ import { IBackgroundImage } from 'src/app/utils/interfaces/IBackgroundImage.inte
   styleUrls: ['./background-image.component.css'],
 })
 export class BackgroundImageComponent {
-  public componentParams: IBackgroundImage = {
-    link: '',
-    title: ''
-  };
+  @Input() public link: string = "";
+  @Input() public title: string = "";
 
-  public sendData(data: IBackgroundImage): IBackgroundImage {
-    return (this.componentParams = data);
-  }
+  public componentParams: IBackgroundImage = {
+    link: this.link,
+    title: this.title
+  };
 }

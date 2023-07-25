@@ -1,7 +1,6 @@
-import { Component, QueryList, ViewChildren } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BackgroundImageComponent } from 'src/app/components/background-image/background-image.component';
-import { ICategories } from 'src/app/utils/interfaces/Icategories.interface';
+import { ICategory } from 'src/app/utils/interfaces/Icategory.interface';
 
 @Component({
   selector: 'app-categories',
@@ -11,16 +10,26 @@ import { ICategories } from 'src/app/utils/interfaces/Icategories.interface';
 export class CategoriesComponent {
   public pageParams: object = {};
 
-  @ViewChildren(BackgroundImageComponent)
-  backgroundImageComponents!: QueryList<BackgroundImageComponent>;
+  public category: ICategory = {
+    name: '',
+    description: '',
+    link: '',
+    images: [
+      {
+        link: '',
+        title: '',
+      },
+    ],
+  };
 
-  public componentParams: Array<ICategories> = [
+  public componentParams: Array<ICategory> = [
     {
       name: 'Assistência técnica',
       description:
         'Conheça profissionais de' +
         name +
         'para atender para encontrar e solucionar problemas.',
+      link: '/assistencia-tecnica',
       images: [
         {
           link: '../../../assets/images/category/montagem-moveis.png',
@@ -34,6 +43,7 @@ export class CategoriesComponent {
             'Conheça profissionais de' +
             name +
             'para atender para encontrar e solucionar problemas.',
+          link: '/montagem-de-moveis',
           images: [
             {
               link: '../../../assets/images/category/montagem-moveis.png',
@@ -47,6 +57,7 @@ export class CategoriesComponent {
             'Conheça profissionais de' +
             name +
             'para atender para encontrar e solucionar problemas.',
+          link: '/reparos-residenciais',
           images: [
             {
               link: '../../../assets/images/category/reparos-residenciais.png',
@@ -57,19 +68,22 @@ export class CategoriesComponent {
       ],
     },
     {
-      name: "Serviços de limpeza",
-      description: "Conheça profissionais de" + name + "para atender o seu domicílio.",
-      images: [{
-        link: '../../../assets/images/category/servicos-limpeza.png',
-        title: 'Serviços de limpeza',
-      }],
+      name: 'Serviços de limpeza',
+      description:
+        'Conheça profissionais de' + name + 'para atender o seu domicílio.',
+      link: '/servicos-de-limpeza',
+      images: [
+        {
+          link: '../../../assets/images/category/servicos-limpeza.png',
+          title: 'Serviços de limpeza',
+        },
+      ],
       subcategories: [
         {
           name: 'Limpeza residencial',
           description:
-            'Conheça profissionais de' +
-            name +
-            'para atender o seu domicílio.',
+            'Conheça profissionais de' + name + 'para atender o seu domicílio.',
+          link: '/limpeza-residencial',
           images: [
             {
               link: '../../../assets/images/category/montagem-moveis.png',
@@ -77,28 +91,13 @@ export class CategoriesComponent {
             },
           ],
         },
-      ]
-    }
+      ],
+    },
   ];
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.pageParams = this.route.snapshot.params;
-  }
-
-  ngAfterViewInit() {
-    setTimeout(() => {
-      //avoid ExpressionChangedAfterItHasBeenCheckedError
-      this.sendDataToChildComponents(this.componentParams);
-    });
-  }
-
-  public sendDataToChildComponents(data: any) {
-    this.backgroundImageComponents.forEach(
-      (backgroundImageComponent, index) => {
-        backgroundImageComponent.sendData(data[index].images.link);
-      }
-    );
   }
 }
