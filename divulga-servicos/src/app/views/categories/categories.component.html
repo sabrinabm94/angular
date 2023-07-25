@@ -1,2 +1,48 @@
-<p>categories works!</p>
-{{this.pageParams}}
+<main class="page-categories">
+  <div class="container">
+    <section class="section intro">
+      <h1>Serviços</h1>
+      <h2 class="subtitle">Encontre os principais serviços para te atender!</h2>
+    </section>
+    <section class="section all-categories">
+      <div class="col-sm-12">
+        <div class="col-sm-2 col-md-3 col-lg-4 inline">
+          <a href="/categoria/montagem-imoveis" class="link">
+            <mat-card class="card">
+              <mat-card-content>
+                <app-background-image #backgroundImageComponent (dataEmitter)="sendDataToChildComponents($event)">
+                </app-background-image>
+                <h3 class="title">Montagem de imóveis</h3>
+                <button mat-stroked-button class="inline button">Ver mais</button>
+              </mat-card-content>
+            </mat-card>
+          </a>
+        </div>
+        <div class="col-sm-2 col-md-3 col-lg-4 inline">
+          <a href="/categoria/reparos-residenciais" class="link">
+            <mat-card class="card">
+              <mat-card-content>
+                <app-background-image #backgroundImageComponent (dataEmitter)="sendDataToChildComponents($event)">
+                </app-background-image>
+                <h3 class="title">Reparos residenciais</h3>
+                <button mat-stroked-button class="inline button">Ver mais</button>
+              </mat-card-content>
+            </mat-card>
+          </a>
+        </div>
+        <div class="col-sm-2 col-md-3 col-lg-4 inline">
+          <a href="/categoria/servicos-limpeza" class="link">
+            <mat-card class="card">
+              <mat-card-content>
+                <app-background-image #backgroundImageComponent (dataEmitter)="sendDataToChildComponents($event)">
+                </app-background-image>
+                <h3 class="title">Serviços de limpeza</h3>
+                <button mat-stroked-button class="inline button">Ver mais</button>
+              </mat-card-content>
+            </mat-card>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>

@@ -21,8 +21,13 @@ import { UsersComponent } from './views/users/users.component';
 import { CategoryComponent } from './views/category/category.component';
 import { CategoriesComponent } from './views/categories/categories.component';
 import { CheckoutComponent } from './views/checkout/checkout.component';
-import { HeaderComponent } from './views/templates/header/header.component';
-import { FooterComponent } from './views/templates/footer/footer.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { LinkComponent } from './components/link/link.component';
+import { RouteLinkComponent } from './components/route-link/route-link.component';
+import { HeadComponent } from './components/head/head.component';
+import { HeaderComponent } from './components/header/header.component';
+import { ImageComponent } from './components/image/image.component';
+import { BackgroundImageComponent } from './components/background-image/background-image.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +43,11 @@ import { FooterComponent } from './views/templates/footer/footer.component';
     CheckoutComponent,
     HeaderComponent,
     FooterComponent,
+    LinkComponent,
+    RouteLinkComponent,
+    HeadComponent,
+    ImageComponent,
+    BackgroundImageComponent,
   ],
   imports: [
     BrowserModule,

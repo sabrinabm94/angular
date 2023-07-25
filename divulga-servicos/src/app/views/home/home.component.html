@@ -18,8 +18,8 @@
           <a href="/profissional/hospital-do-iphone" class="link">
             <mat-card class="card">
               <mat-card-content>
-                <picture class="picture background-image" style="background-image: url('');">
-                </picture>
+                <app-background-image #backgroundImageComponent (dataEmitter)="sendDataToChildComponents($event)">
+                </app-background-image>
                 <h3 class="title">Hospital do Iphone</h3>
                 <small class="small address">Rua São Paulo, 132</small>
                 <span class="social-icons">
@@ -45,8 +45,8 @@
           <a href="/profissional/maria-de-cassia" class="link">
             <mat-card class="card">
               <mat-card-content>
-                <picture class="picture background-image" style="background-image: url('');">
-                </picture>
+                <app-background-image #backgroundImageComponent (dataEmitter)="sendDataToChildComponents($event)">
+                </app-background-image>
                 <h3 class="title">Hospital do Iphone</h3>
                 <small class="small address">Rua São Paulo, 132</small>
                 <span class="social-icons">
@@ -79,8 +79,8 @@
           <a href="/categoria/montagem-imoveis" class="link">
             <mat-card class="card">
               <mat-card-content>
-                <picture class="picture background-image" style="background-image: url('../../../assets/images/category/montagem-moveis.png');" alt="Montagem de imóveis">
-                </picture>
+                <app-background-image #backgroundImageComponent (dataEmitter)="sendDataToChildComponents($event)">
+                </app-background-image>
                 <h3 class="title">Montagem de imóveis</h3>
                 <button mat-stroked-button class="inline button">Ver mais</button>
               </mat-card-content>
@@ -91,8 +91,8 @@
           <a href="/categoria/reparos-residenciais" class="link">
             <mat-card class="card">
               <mat-card-content>
-                <picture class="picture background-image" style="background-image: url('../../../assets/images/category/reparos-residenciais.png');" alt="Reparos residenciais">
-                </picture>
+                <app-background-image #backgroundImageComponent (dataEmitter)="sendDataToChildComponents($event)">
+                </app-background-image>
                 <h3 class="title">Reparos residenciais</h3>
                 <button mat-stroked-button class="inline button">Ver mais</button>
               </mat-card-content>
@@ -103,8 +103,8 @@
           <a href="/categoria/servicos-limpeza" class="link">
             <mat-card class="card">
               <mat-card-content>
-                <picture class="picture background-image" style="background-image: url('../../../assets/images/category/servicos-limpeza.png');" alt="Serviços de limpeza">
-                </picture>
+                <app-background-image #backgroundImageComponent (dataEmitter)="sendDataToChildComponents($event)">
+                </app-background-image>
                 <h3 class="title">Serviços de limpeza</h3>
                 <button mat-stroked-button class="inline button">Ver mais</button>
               </mat-card-content>
@@ -118,17 +118,20 @@
         <h1 class="main-title">O que é o {{this.projectTitle}} ?</h1>
         <h2 class="title">Facilitamos a sua busca do melhor prestador de serviço mais próximo de sua região!</h2>
         <div class="col-sm-2 col-md-3 col-lg-4 inline">
-          <img src="../../../assets/images/home/professional-search.png" alt="Busque pelo profissional">
+          <app-image #imageComponent (dataEmitter)="sendDataToChildComponents($event)">
+          </app-image>
           <h2 class="title">Busque pelo professional</h2>
           <h2 class="sub-title">Tenha acesso rapidamente a vários prestadores de serviços para atender a sua necessidade.</h2>
         </div>
         <div class="col-sm-2 col-md-3 col-lg-4 inline">
-          <img src="../../../assets/images/home/professional-get-in-contact.png" alt="Entre em contato direto com o profissional">
+          <app-image #imageComponent (dataEmitter)="sendDataToChildComponents($event)">
+          </app-image>
           <h2 class="title">Entre em contato direto com o profissional</h2>
           <h2 class="sub-title">Obtenha todas as informações de contato do prestador de serviço rapidamente!</h2>
         </div>
         <div class="col-sm-2 col-md-3 col-lg-4 inline">
-          <img src="../../../assets/images/home/professional-talk.png" alt="Explique sua demanda">
+          <app-image #imageComponent (dataEmitter)="sendDataToChildComponents($event)">
+          </app-image>
           <h2 class="title">Explique sua demanda</h2>
           <h2 class="sub-title">Converse diretamente com o prestador de serviço e negocie facilmente.</h2>
         </div>
