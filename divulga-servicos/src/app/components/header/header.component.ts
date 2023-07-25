@@ -49,7 +49,9 @@ export class HeaderComponent {
   };
 
   ngAfterViewInit() {
-    this.sendDataToChildComponents(this.headerParams.menu);
+    setTimeout(() => { //avoid ExpressionChangedAfterItHasBeenCheckedError
+      this.sendDataToChildComponents(this.headerParams.menu);
+    });
   }
 
   public sendDataToChildComponents(data: any) {

@@ -1,6 +1,7 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { LinkComponent } from 'src/app/components/link/link.component';
 import { IFooter } from 'src/app/utils/interfaces/footer.interface';
+import { ImageComponent } from '../image/image.component';
 
 @Component({
   selector: 'app-footer',
@@ -11,7 +12,10 @@ export class FooterComponent {
   @ViewChildren(LinkComponent)
   linkComponents!: QueryList<LinkComponent>;
 
-  public footerParams: IFooter = {
+  @ViewChildren(ImageComponent)
+  imageComponents!: QueryList<ImageComponent>;
+
+  public componentParams: IFooter = {
     phoneNumber: '47-99957-1726',
     email: 'contato@busqueprofissionais.com.br',
     menu: [
@@ -30,15 +34,29 @@ export class FooterComponent {
     ],
     scripts: '',
     copyright: 'Copyright 2023 Busque Serviços - Todos os direitos reservados',
+    images: {
+      logo: {
+        link: '',
+        title: 'Logo do Busca Profissionais',
+        width: 80,
+        height: 80,
+      },
+    },
   };
 
   ngAfterViewInit() {
-    this.sendDataToChildComponents(this.footerParams.menu);
+    setTimeout(() => { //avoid ExpressionChangedAfterItHasBeenCheckedError
+      this.sendDataToChildComponents(this.componentParams);
+    });
   }
 
   public sendDataToChildComponents(data: any) {
-    this.linkComponents.forEach((child, index) => {
-      child.sendData(data[index]);
+    this.linkComponents.forEach((linkComponent, index) => {
+      linkComponent.sendData(data.menu[index]);
+    });
+
+    this.imageComponents.forEach((imageComponent, index) => {
+      imageComponent.sendData(data.images.logo);
     });
   }
 }
