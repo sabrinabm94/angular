@@ -1,0 +1,237 @@
+import { Component, QueryList, ViewChildren } from '@angular/core';
+import { ImageComponent } from 'src/app/components/image/image.component';
+import { IHome } from 'src/app/utils/interfaces/IHome.interface';
+import { IProfessional } from 'src/app/utils/interfaces/IProfessional.interface';
+
+@Component({
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css'],
+})
+export class HomeComponent {
+  public projectTitle: string = '';
+  public projectDescription: string = '';
+  private searchTerm: string = '';
+
+  @ViewChildren(ImageComponent)
+  imageComponents!: QueryList<ImageComponent>;
+
+  public componentParams: IHome = {
+    images: [
+      {
+        link: '../../../assets/images/home/professional-search.png',
+        title: 'Busque pelo profissional',
+        width: 150,
+        height: 150,
+      },
+      {
+        link: '../../../assets/images/home/professional-get-in-contact.png',
+        title: 'Entre em contato direto com o profissional',
+        width: 150,
+        height: 150,
+      },
+      {
+        link: '../../../assets/images/home/professional-talk.png',
+        title: 'Explique sua demanda',
+        width: 150,
+        height: 150,
+      },
+    ],
+    bestCategories: [
+      {
+        id: '1',
+        name: 'Assistência técnica',
+        description:
+          'Conheça profissionais de' +
+          name +
+          'para atender para encontrar e solucionar problemas.',
+        link: '/assist-tecnica',
+        slug: 'assist-tecnica',
+        images: [
+          {
+            link: '../../../assets/images/category/montagem-moveis.png',
+            title: 'Assistência técnica',
+          },
+        ],
+        subcategories: [
+          {
+            id: '3',
+            name: 'Montagem de imóveis',
+            description:
+              'Conheça profissionais de' +
+              name +
+              'para atender para encontrar e solucionar problemas.',
+            link: '/montagem-moveis',
+            slug: 'montagem-moveis',
+            images: [
+              {
+                link: '../../../assets/images/category/montagem-moveis.png',
+                title: 'Montagem de imóveis',
+              },
+            ],
+          },
+          {
+            id: '2',
+            name: 'Reparos residenciais',
+            description:
+              'Conheça profissionais de' +
+              name +
+              'para atender para encontrar e solucionar problemas.',
+            link: '/reparos-residenciais',
+            slug: 'reparos-residenciais',
+            images: [
+              {
+                link: '../../../assets/images/category/reparos-residenciais.png',
+                title: 'Reparos residenciais',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: '4',
+        name: 'Serviços de limpeza',
+        description:
+          'Conheça profissionais de' + name + 'para atender o seu domicílio.',
+        link: '/limpeza',
+        slug: 'limpeza',
+        images: [
+          {
+            link: '../../../assets/images/category/servicos-limpeza.png',
+            title: 'Serviços de limpeza',
+          },
+        ],
+        subcategories: [
+          {
+            id: '5',
+            name: 'Limpeza residencial',
+            description:
+              'Conheça profissionais de' +
+              name +
+              'para atender o seu domicílio.',
+            link: '/limpeza-residencial',
+            slug: 'limpeza-residencial',
+            images: [
+              {
+                link: '../../../assets/images/category/montagem-moveis.png',
+                title: 'Limpeza residencial',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  };
+
+  public professional: Array<IProfessional> = [];
+
+  public professionaisSearchResult: IProfessional[] = [
+    {
+      id: '1',
+      name: 'Joana Maria da Costa',
+      description: 'Atuo a mais de 10 anos como diarista.',
+      link: '/joana-m-costa',
+      slug: 'joana-m-costa',
+      localization: {
+        state: 'São Paulo',
+        city: 'São Paulo',
+        neighborhood: 'Jardins',
+        street: 'Rua São Paulo',
+        number: 200,
+        complement: 'residencial florida, apto 302',
+        cep: 88390000,
+      },
+      serviceArea: {
+        state: 'São Paulo',
+        city: 'São Paulo',
+        neighborhood: 'Jardins',
+      },
+      serviceType: 1,
+      socialNetworks: [
+        { name: 'phone', value: '47999501834' },
+        { name: 'email', value: 'joanamariacosta@gmail.com' },
+        {
+          name: 'whatsapp',
+          value:
+            'https://wa.me/5547999501834?text=Oi,%20vim%20pelo%20Busca%20Profissionais',
+        },
+        { name: 'instagram', value: '' },
+        { name: 'facebook', value: '' },
+        { name: 'twitter', value: '' },
+        { name: 'linkedin', value: '' },
+        { name: 'site', value: '' },
+      ],
+      images: [
+        {
+          link: '../../../assets/images/professional/montagem-moveis.png',
+          title: 'Imagem do professional',
+        },
+      ],
+      categories: [
+        {
+          id: '4',
+          name: 'Serviços de limpeza',
+          description:
+            'Conheça profissionais de' + name + 'para atender o seu domicílio.',
+          link: '/limpeza',
+          slug: 'limpeza',
+          images: [
+            {
+              link: '../../../assets/images/category/servicos-limpeza.png',
+              title: 'Serviços de limpeza',
+            },
+          ],
+          subcategories: [
+            {
+              id: '5',
+              name: 'Limpeza residencial',
+              description:
+                'Conheça profissionais de' +
+                name +
+                'para atender o seu domicílio.',
+              link: '/limpeza-residencial',
+              slug: 'limpeza-residencial',
+              images: [
+                {
+                  link: '../../../assets/images/category/montagem-moveis.png',
+                  title: 'Limpeza residencial',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ];
+
+  constructor() {}
+
+  ngOnInit() {
+    this.projectTitle = 'Buscar profissionais';
+    this.projectDescription = 'Buscar por prestadores de serviços';
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      //avoid ExpressionChangedAfterItHasBeenCheckedError
+      this.sendDataToChildComponents(this.componentParams);
+    });
+  }
+
+  public searchProfessional(event: any) {
+    event.preventDefault();
+    this.searchTerm = event.target[0].value;
+    this.searchProfessionalByTerm(this.searchTerm);
+    return console.log(this.searchTerm);
+  }
+
+  private searchProfessionalByTerm(term: string) {
+    return console.log(term);
+  }
+
+  public sendDataToChildComponents(data: any) {
+    this.imageComponents.forEach((imageComponent, index) => {
+      imageComponent.sendData(data.images[index]);
+    });
+  }
+}

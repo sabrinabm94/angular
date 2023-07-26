@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ILink } from 'src/app/utils/interfaces/link.interface';
+import { ILink } from 'src/app/utils/interfaces/ILink.interface';
 
 @Component({
   selector: 'app-route-link',

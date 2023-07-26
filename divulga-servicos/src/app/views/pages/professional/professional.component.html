@@ -1,0 +1,41 @@
+<main class="page-professional">
+  <div class="container">
+    <section class="section intro">
+      <div class="row">
+        <div class="col-sm-12 col-lg-6" id={{this.componentParams[0].id}}>
+          <h1 class="main-title">{{this.componentParams[0].name}}</h1>
+          <p class="description">{{this.componentParams[0].description}}</p>
+          <h2 class="title">Localização</h2>
+          <p class="localization">{{this.componentParams[0].localization.state}} -
+            {{this.componentParams[0].localization.city}}</p>
+          <h2 class="title">Formas de atendimento</h2>
+          <p class="service-type">{{this.componentParams[0].serviceType}}</p>
+          <h2 class="title">Área de atendimento</h2>
+          <div *ngIf="this.componentParams[0].serviceArea.neighborhood; else noNeighborhood">
+            <p class="service-area">{{this.componentParams[0].serviceArea.state}} -
+              {{this.componentParams[0].serviceArea.city}} - {{this.componentParams[0].serviceArea.neighborhood}}</p>
+          </div>
+          <div *ngIf="noNeighborhood">
+            <p class="service-area">{{this.componentParams[0].serviceArea.state}} -
+              {{this.componentParams[0].serviceArea.city}}</p>
+          </div>
+        </div>
+        <div class="col-sm-12 col-lg-6">
+          <app-background-image #backgroundImageComponent [link]="this.componentParams[0].images[0].link"
+            [title]="this.componentParams[0].images[0].title">
+          </app-background-image>
+          <ul class="social-icons">
+            <li class="social-icons-list"
+              *ngFor="let socialNetwork of this.componentParams[0].socialNetworks; let socialNetworksIndex=index">
+              <a class="social-icon" *ngIf="socialNetwork.value" href={{socialNetwork.value}}
+                title="{{socialNetwork.name}} de {{this.componentParams[0].name}}" target="_blank">
+                <mat-icon aria-hidden="false" aria-label="{{socialNetwork.name}} de {{this.componentParams[0].name}}"
+                  fontIcon={{socialNetwork.name}}></mat-icon>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>

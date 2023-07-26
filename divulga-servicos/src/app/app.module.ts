@@ -12,15 +12,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './views/home/home.component';
-import { ContactComponent } from './views/contact/contact.component';
-import { RegisterComponent } from './views/register/register.component';
-import { LoginComponent } from './views/login/login.component';
-import { UserComponent } from './views/user/user.component';
-import { UsersComponent } from './views/users/users.component';
-import { CategoryComponent } from './views/category/category.component';
-import { CategoriesComponent } from './views/categories/categories.component';
-import { CheckoutComponent } from './views/checkout/checkout.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { LinkComponent } from './components/link/link.component';
 import { RouteLinkComponent } from './components/route-link/route-link.component';
@@ -28,6 +19,21 @@ import { HeadComponent } from './components/head/head.component';
 import { HeaderComponent } from './components/header/header.component';
 import { ImageComponent } from './components/image/image.component';
 import { BackgroundImageComponent } from './components/background-image/background-image.component';
+
+import { CategoryTemplateComponent } from './views/templates/category-template/category-template.component';
+
+import { HomeComponent } from './views/pages/home/home.component';
+import { ContactComponent } from './views/pages/contact/contact.component';
+import { RegisterComponent } from './views/pages/register/register.component';
+import { LoginComponent } from './views/pages/login/login.component';
+import { UserComponent } from './views/pages/user/user.component';
+import { UsersComponent } from './views/pages/users/users.component';
+import { CategoryComponent } from './views/pages/category/category.component';
+import { CategoriesComponent } from './views/pages/categories/categories.component';
+import { CheckoutComponent } from './views/pages/checkout/checkout.component';
+import { ProfessionalTemplateComponent } from './views/templates/professional-template/professional-template.component';
+import { ProfessionalComponent } from './views/pages/professional/professional.component';
+
 
 @NgModule({
   declarations: [
@@ -48,6 +54,9 @@ import { BackgroundImageComponent } from './components/background-image/backgrou
     HeadComponent,
     ImageComponent,
     BackgroundImageComponent,
+    CategoryTemplateComponent,
+    ProfessionalTemplateComponent,
+    ProfessionalComponent,
   ],
   imports: [
     BrowserModule,

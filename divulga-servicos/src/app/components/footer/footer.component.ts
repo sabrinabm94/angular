@@ -1,7 +1,7 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { LinkComponent } from 'src/app/components/link/link.component';
-import { IFooter } from 'src/app/utils/interfaces/footer.interface';
 import { ImageComponent } from '../image/image.component';
+import { IFooter } from 'src/app/utils/interfaces/IFooter.interface';
 
 @Component({
   selector: 'app-footer',

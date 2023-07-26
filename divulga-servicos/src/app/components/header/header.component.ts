@@ -1,6 +1,6 @@
 import { ViewChildren, QueryList, Component } from '@angular/core';
 import { RouteLinkComponent } from 'src/app/components/route-link/route-link.component';
-import { IHeader } from 'src/app/utils/interfaces/header.interface';
+import { IHeader } from 'src/app/utils/interfaces/IHeader.interface';
 
 @Component({
   selector: 'app-header',

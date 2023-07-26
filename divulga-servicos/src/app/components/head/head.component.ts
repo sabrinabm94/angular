@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { IHead } from 'src/app/utils/interfaces/head.interface';
+import { IHead } from 'src/app/utils/interfaces/IHead.interface';
 
 @Component({
   selector: 'app-head',

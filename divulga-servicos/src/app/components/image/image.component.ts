@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IImage } from 'src/app/utils/interfaces/image.interface';
+import { IImage } from 'src/app/utils/interfaces/IImage.interface';
 
 @Component({
   selector: 'app-image',

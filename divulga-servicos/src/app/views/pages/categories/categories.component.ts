@@ -1,14 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ICategory } from 'src/app/utils/interfaces/Icategory.interface';
+import { Component } from '@angular/core';
+import { ICategory } from 'src/app/utils/interfaces/ICategory.interface';
 
 @Component({
-  selector: 'app-category',
-  templateUrl: './category.component.html',
-  styleUrls: ['./category.component.css'],
+  selector: 'app-categories',
+  templateUrl: './categories.component.html',
+  styleUrls: ['./categories.component.css'],
 })
-export class CategoryComponent implements OnInit {
-  public slug: string | null = '';
+export class CategoriesComponent {
+  public category: ICategory = {
+    id: '',
+    name: '',
+    description: '',
+    link: '',
+    slug: '',
+    images: [
+      {
+        link: '',
+        title: '',
+      },
+    ],
+  };
 
   public componentParams: Array<ICategory> = [
     {
@@ -18,8 +29,8 @@ export class CategoryComponent implements OnInit {
         'Conheça profissionais de' +
         name +
         'para atender para encontrar e solucionar problemas.',
-      link: '/assistencia-tecnica',
-      slug: 'assistencia-tecnica',
+      link: '/assist-tecnica',
+      slug: 'assist-tecnica',
       images: [
         {
           link: '../../../assets/images/category/montagem-moveis.png',
@@ -34,8 +45,8 @@ export class CategoryComponent implements OnInit {
             'Conheça profissionais de' +
             name +
             'para atender para encontrar e solucionar problemas.',
-          link: '/montagem-de-moveis',
-          slug: 'montagem-de-moveis',
+          link: '/montagem-moveis',
+          slug: 'montagem-moveis',
           images: [
             {
               link: '../../../assets/images/category/montagem-moveis.png',
@@ -60,18 +71,32 @@ export class CategoryComponent implements OnInit {
           ],
         },
       ],
-      relatedCategories: [
+    },
+    {
+      id: '4',
+      name: 'Serviços de limpeza',
+      description:
+        'Conheça profissionais de' + name + 'para atender o seu domicílio.',
+      link: '/limpeza',
+      slug: 'limpeza',
+      images: [
         {
-          id: '4',
-          name: 'Serviços de limpeza',
+          link: '../../../assets/images/category/servicos-limpeza.png',
+          title: 'Serviços de limpeza',
+        },
+      ],
+      subcategories: [
+        {
+          id: '5',
+          name: 'Limpeza residencial',
           description:
             'Conheça profissionais de' + name + 'para atender o seu domicílio.',
-          link: '/servicos-de-limpeza',
-          slug: 'servicos-de-limpeza',
+          link: '/limpeza-residencial',
+          slug: 'limpeza-residencial',
           images: [
             {
-              link: '../../../assets/images/category/servicos-limpeza.png',
-              title: 'Serviços de limpeza',
+              link: '../../../assets/images/category/montagem-moveis.png',
+              title: 'Limpeza residencial',
             },
           ],
         },
@@ -79,16 +104,5 @@ export class CategoryComponent implements OnInit {
     },
   ];
 
-  constructor(private route: ActivatedRoute) {}
-
-  ngOnInit(): void {
-    this.slug = this.route.snapshot.paramMap.get('slug');
-
-    this.getCategoryBySlug(this.slug);
-  }
-
-  getCategoryBySlug(slug: string | null) {
-    console.log(slug);
-    return null;
-  }
+  constructor() {}
 }

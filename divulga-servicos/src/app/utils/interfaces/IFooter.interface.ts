@@ -1,4 +1,4 @@
-import { ILink } from './link.interface';
+import { ILink } from './ILink.interface';
 
 export interface IFooter {
   phoneNumber: string;
