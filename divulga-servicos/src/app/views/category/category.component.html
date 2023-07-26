@@ -2,7 +2,7 @@
   <div class="container">
     <section class="section intro">
       <div class="row">
-        <div class="col-sm-12 col-lg-6">
+        <div class="col-sm-12 col-lg-6" id={{this.componentParams[0]}.id}>
           <h1 class="main-title">{{this.componentParams[0].name}}</h1>
           <p class="description">{{this.componentParams[0].description}}</p>
         </div>
@@ -14,10 +14,11 @@
       </div>
     </section>
     <section class="section related-categories">
+      <h2 class="title">Subcategorias</h2>
       <div class="row">
         <div class="col-sm-2 col-md-3 col-lg-4 inline"
           *ngFor="let relatedCategory of this.componentParams[0].relatedCategories; let relatedCategoryIndex=index">
-          <a href={{relatedCategory.link}} class="link">
+          <a [routerLink]="['/categoria/', relatedCategory.slug]" id={{relatedCategory.id}} class="link">
             <mat-card class="card">
               <mat-card-content>
                 <app-background-image #backgroundImageComponent [link]="relatedCategory.images[0].link"

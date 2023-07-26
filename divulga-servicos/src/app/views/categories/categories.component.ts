@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { ICategory } from 'src/app/utils/interfaces/Icategory.interface';
 
 @Component({
@@ -8,12 +7,12 @@ import { ICategory } from 'src/app/utils/interfaces/Icategory.interface';
   styleUrls: ['./categories.component.css'],
 })
 export class CategoriesComponent {
-  public pageParams: object = {};
-
   public category: ICategory = {
+    id: '',
     name: '',
     description: '',
     link: '',
+    slug: '',
     images: [
       {
         link: '',
@@ -24,12 +23,14 @@ export class CategoriesComponent {
 
   public componentParams: Array<ICategory> = [
     {
+      id: '1',
       name: 'Assistência técnica',
       description:
         'Conheça profissionais de' +
         name +
         'para atender para encontrar e solucionar problemas.',
-      link: 'assistencia-tecnica',
+      link: '/assist-tecnica',
+      slug: 'assist-tecnica',
       images: [
         {
           link: '../../../assets/images/category/montagem-moveis.png',
@@ -38,12 +39,14 @@ export class CategoriesComponent {
       ],
       subcategories: [
         {
+          id: '3',
           name: 'Montagem de imóveis',
           description:
             'Conheça profissionais de' +
             name +
             'para atender para encontrar e solucionar problemas.',
-          link: 'montagem-de-moveis',
+          link: '/montagem-moveis',
+          slug: 'montagem-moveis',
           images: [
             {
               link: '../../../assets/images/category/montagem-moveis.png',
@@ -52,12 +55,14 @@ export class CategoriesComponent {
           ],
         },
         {
+          id: '2',
           name: 'Reparos residenciais',
           description:
             'Conheça profissionais de' +
             name +
             'para atender para encontrar e solucionar problemas.',
-          link: 'reparos-residenciais',
+          link: '/reparos-residenciais',
+          slug: 'reparos-residenciais',
           images: [
             {
               link: '../../../assets/images/category/reparos-residenciais.png',
@@ -68,10 +73,12 @@ export class CategoriesComponent {
       ],
     },
     {
+      id: '4',
       name: 'Serviços de limpeza',
       description:
         'Conheça profissionais de' + name + 'para atender o seu domicílio.',
-      link: 'servicos-de-limpeza',
+      link: '/limpeza',
+      slug: 'limpeza',
       images: [
         {
           link: '../../../assets/images/category/servicos-limpeza.png',
@@ -80,10 +87,12 @@ export class CategoriesComponent {
       ],
       subcategories: [
         {
+          id: '5',
           name: 'Limpeza residencial',
           description:
             'Conheça profissionais de' + name + 'para atender o seu domicílio.',
-          link: 'limpeza-residencial',
+          link: '/limpeza-residencial',
+          slug: 'limpeza-residencial',
           images: [
             {
               link: '../../../assets/images/category/montagem-moveis.png',
@@ -95,9 +104,5 @@ export class CategoriesComponent {
     },
   ];
 
-  constructor(private route: ActivatedRoute) {}
-
-  ngOnInit() {
-    this.pageParams = this.route.snapshot.params;
-  }
+  constructor() {}
 }
