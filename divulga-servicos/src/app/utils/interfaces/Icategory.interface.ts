@@ -7,4 +7,5 @@ export interface ICategory {
   link: string;
   images: Array<IBackgroundImage>;
   subcategories?: Array<ISubcategories>;
+  relatedCategories?: Array<ICategory>;
 }

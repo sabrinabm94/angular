@@ -7,7 +7,7 @@
     <section class="section all-categories">
       <div class="row">
         <div class="col-sm-2 col-md-3 col-lg-4 inline" *ngFor="let category of this.componentParams; let categoryIndex=index">
-          <a href={{category.link}} class="link">
+          <a href="/categoria/{{category.link}}" class="link">
             <mat-card class="card">
               <mat-card-content>
                 <app-background-image #backgroundImageComponent [link]="category.images[0].link" [title]="category.images[0].title">

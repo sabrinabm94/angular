@@ -29,7 +29,7 @@ export class CategoriesComponent {
         'Conheça profissionais de' +
         name +
         'para atender para encontrar e solucionar problemas.',
-      link: '/assistencia-tecnica',
+      link: 'assistencia-tecnica',
       images: [
         {
           link: '../../../assets/images/category/montagem-moveis.png',
@@ -43,7 +43,7 @@ export class CategoriesComponent {
             'Conheça profissionais de' +
             name +
             'para atender para encontrar e solucionar problemas.',
-          link: '/montagem-de-moveis',
+          link: 'montagem-de-moveis',
           images: [
             {
               link: '../../../assets/images/category/montagem-moveis.png',
@@ -57,7 +57,7 @@ export class CategoriesComponent {
             'Conheça profissionais de' +
             name +
             'para atender para encontrar e solucionar problemas.',
-          link: '/reparos-residenciais',
+          link: 'reparos-residenciais',
           images: [
             {
               link: '../../../assets/images/category/reparos-residenciais.png',
@@ -71,7 +71,7 @@ export class CategoriesComponent {
       name: 'Serviços de limpeza',
       description:
         'Conheça profissionais de' + name + 'para atender o seu domicílio.',
-      link: '/servicos-de-limpeza',
+      link: 'servicos-de-limpeza',
       images: [
         {
           link: '../../../assets/images/category/servicos-limpeza.png',
@@ -83,7 +83,7 @@ export class CategoriesComponent {
           name: 'Limpeza residencial',
           description:
             'Conheça profissionais de' + name + 'para atender o seu domicílio.',
-          link: '/limpeza-residencial',
+          link: 'limpeza-residencial',
           images: [
             {
               link: '../../../assets/images/category/montagem-moveis.png',
