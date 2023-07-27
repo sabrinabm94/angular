@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ICategory } from 'src/app/utils/interfaces/ICategory.interface';
+import { IProfessional } from 'src/app/utils/interfaces/IProfessional.interface';
 
 @Component({
   selector: 'app-category',
@@ -9,6 +10,8 @@ import { ICategory } from 'src/app/utils/interfaces/ICategory.interface';
 })
 export class CategoryComponent implements OnInit {
   public slug: string | null = '';
+
+  public professional: Array<IProfessional> = [];
 
   public componentParams: Array<ICategory> = [
     {
@@ -72,6 +75,88 @@ export class CategoryComponent implements OnInit {
             {
               link: '../../../assets/images/category/servicos-limpeza.png',
               title: 'Serviços de limpeza',
+            },
+          ],
+          professionals: [],
+        },
+      ],
+      professionals: [
+        {
+          id: '1',
+          name: 'Joana Maria da Costa',
+          description: 'Atuo a mais de 10 anos como diarista.',
+          link: '/joana-m-costa',
+          slug: 'joana-m-costa',
+          localization: {
+            state: 'São Paulo',
+            city: 'São Paulo',
+            neighborhood: 'Jardins',
+            street: 'Rua São Paulo',
+            number: 200,
+            complement: 'residencial florida, apto 302',
+            cep: 88390000,
+          },
+          serviceArea: {
+            state: 'São Paulo',
+            city: 'São Paulo',
+            neighborhood: 'Jardins',
+          },
+          serviceType: 1,
+          socialNetworks: [
+            { name: 'phone', value: '47999501834' },
+            { name: 'email', value: 'joanamariacosta@gmail.com' },
+            {
+              name: 'whatsapp',
+              value:
+                'https://wa.me/5547999501834?text=Oi,%20vim%20pelo%20Busca%20Profissionais',
+            },
+            { name: 'instagram', value: '' },
+            { name: 'facebook', value: '' },
+            { name: 'twitter', value: '' },
+            { name: 'linkedin', value: '' },
+            { name: 'site', value: '' },
+          ],
+          images: [
+            {
+              link: '../../../assets/images/professional/montagem-moveis.png',
+              title: 'Imagem do professional',
+            },
+          ],
+          categories: [
+            {
+              id: '4',
+              name: 'Serviços de limpeza',
+              description:
+                'Conheça profissionais de' +
+                name +
+                'para atender o seu domicílio.',
+              link: '/limpeza',
+              slug: 'limpeza',
+              images: [
+                {
+                  link: '../../../assets/images/category/servicos-limpeza.png',
+                  title: 'Serviços de limpeza',
+                },
+              ],
+              subcategories: [
+                {
+                  id: '5',
+                  name: 'Limpeza residencial',
+                  description:
+                    'Conheça profissionais de' +
+                    name +
+                    'para atender o seu domicílio.',
+                  link: '/limpeza-residencial',
+                  slug: 'limpeza-residencial',
+                  images: [
+                    {
+                      link: '../../../assets/images/category/montagem-moveis.png',
+                      title: 'Limpeza residencial',
+                    },
+                  ],
+                },
+              ],
+              professionals: [],
             },
           ],
         },

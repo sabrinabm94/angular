@@ -2,7 +2,7 @@
   <div class="container">
     <section class="section intro">
       <div class="row">
-        <div class="col-sm-12 col-lg-6" id={{this.componentParams[0]}.id}>
+        <div class="col-sm-12 col-lg-6" id={{this.componentParams[0].id}}>
           <h1 class="main-title">{{this.componentParams[0].name}}</h1>
           <p class="description">{{this.componentParams[0].description}}</p>
         </div>
@@ -31,6 +31,25 @@
           </a>
         </div>
       </div>
+    </section>
+    <section class="all-professionals">
+      <div class="col-sm-2 col-md-3 col-lg-4 inline"
+          *ngFor="let professional of this.componentParams[0].professionals; let professionalIndex=index">
+          <a [routerLink]="['/profissional/', professional.slug]" id={{professional.id}} class="link">
+            <mat-card class="card">
+              <mat-card-content>
+                <app-background-image #backgroundImageComponent [link]="professional.images[0].link"
+                  [title]="professional.images[0].title">
+                </app-background-image>
+                <h1 class="main-title">{{professional.name}}</h1>
+                <p class="description">{{professional.description}}</p>
+                <h2 class="title">Localização</h2>
+                <p class="localization">{{professional.localization.state}} - {{professional.localization.city}}</p>
+                <button>Ver mais</button>
+              </mat-card-content>
+            </mat-card>
+          </a>
+        </div>
     </section>
   </div>
 </main>

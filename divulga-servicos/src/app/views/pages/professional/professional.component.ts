@@ -11,8 +11,6 @@ export class ProfessionalComponent {
   public slug: string | null = '';
   public noNeighborhood = null;
 
-  public professional: Array<IProfessional> = [];
-
   public componentParams: Array<IProfessional> = [
     {
       id: '1',
@@ -87,6 +85,7 @@ export class ProfessionalComponent {
               ],
             },
           ],
+          professionals: [],
         },
       ],
     },

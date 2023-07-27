@@ -87,6 +87,7 @@ export class HomeComponent {
             ],
           },
         ],
+        professionals: [],
       },
       {
         id: '4',
@@ -119,6 +120,7 @@ export class HomeComponent {
             ],
           },
         ],
+        professionals: [],
       },
     ],
   };
@@ -199,6 +201,7 @@ export class HomeComponent {
               ],
             },
           ],
+          professionals: [],
         },
       ],
     },

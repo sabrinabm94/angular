@@ -1,5 +1,6 @@
 import { IBackgroundImage } from "./IBackgroundImage.interface";
-import { ISubcategories } from "./Isubcategories.interface";
+import { IProfessional } from "./IProfessional.interface";
+import { ISubcategories } from "./ISubcategories.interface";
 
 export interface ICategory {
   id: string;
@@ -10,4 +11,5 @@ export interface ICategory {
   images: Array<IBackgroundImage>;
   subcategories?: Array<ISubcategories>;
   relatedCategories?: Array<ICategory>;
+  professionals?: Array<IProfessional>;
 }

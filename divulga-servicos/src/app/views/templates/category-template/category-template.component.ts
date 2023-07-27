@@ -19,5 +19,6 @@ export class CategoryTemplateComponent {
         title: '',
       },
     ],
+    professionals: [],
   };
 }

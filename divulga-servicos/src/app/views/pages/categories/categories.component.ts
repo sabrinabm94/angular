@@ -19,6 +19,7 @@ export class CategoriesComponent {
         title: '',
       },
     ],
+    professionals: [],
   };
 
   public componentParams: Array<ICategory> = [
@@ -71,6 +72,7 @@ export class CategoriesComponent {
           ],
         },
       ],
+      professionals: [],
     },
     {
       id: '4',
@@ -101,6 +103,7 @@ export class CategoriesComponent {
           ],
         },
       ],
+      professionals: [],
     },
   ];
 
