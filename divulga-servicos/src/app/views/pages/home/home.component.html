@@ -9,7 +9,7 @@
         <mat-form-field class="example-full-width">
           <input matInput placeholder="Quero buscar serviços de..." value="">
         </mat-form-field>
-        <button mat-stroked-button class="inline button">Buscar</button>
+        <app-button text="Buscar"></app-button>
       </form>
     </section>
     <section class="section search-profissional-results">
@@ -28,7 +28,7 @@
                 <p class="main-category">{{professional.categories[0].name}}</p>
                 <h2 class="title">Localização</h2>
                 <p class="localization">{{professional.localization.state}} - {{professional.localization.city}}</p>
-                <button>Ver mais</button>
+                <app-button text="Ver mais"></app-button>
               </mat-card-content>
             </mat-card>
           </a>
@@ -50,7 +50,7 @@
                 </app-background-image>
                 <h2 class="title">{{category.name}}</h2>
                 <p class="description">{{category.description}}</p>
-                <button>Ver mais</button>
+                <app-button text="Ver mais"></app-button>
               </mat-card-content>
             </mat-card>
           </a>

@@ -33,6 +33,7 @@ import { CategoriesComponent } from './views/pages/categories/categories.compone
 import { CheckoutComponent } from './views/pages/checkout/checkout.component';
 import { ProfessionalTemplateComponent } from './views/templates/professional-template/professional-template.component';
 import { ProfessionalComponent } from './views/pages/professional/professional.component';
+import { ButtonComponent } from './components/button/button.component';
 
 
 @NgModule({
@@ -57,6 +58,7 @@ import { ProfessionalComponent } from './views/pages/professional/professional.c
     CategoryTemplateComponent,
     ProfessionalTemplateComponent,
     ProfessionalComponent,
+    ButtonComponent,
   ],
   imports: [
     BrowserModule,
