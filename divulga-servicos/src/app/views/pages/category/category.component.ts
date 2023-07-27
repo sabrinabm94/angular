@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ICategory } from 'src/app/utils/interfaces/ICategory.interface';
 import { IProfessional } from 'src/app/utils/interfaces/IProfessional.interface';
+import ServiceTypeTransformation from '../../../utils/serviceTypeTransformation';
 
 @Component({
   selector: 'app-category',
@@ -10,6 +11,8 @@ import { IProfessional } from 'src/app/utils/interfaces/IProfessional.interface'
 })
 export class CategoryComponent implements OnInit {
   public slug: string | null = '';
+
+  public noNeighborhood = null;
 
   public professional: Array<IProfessional> = [];
 
@@ -101,7 +104,7 @@ export class CategoryComponent implements OnInit {
             city: 'São Paulo',
             neighborhood: 'Jardins',
           },
-          serviceType: 1,
+          serviceType: ServiceTypeTransformation.serviceTypeTransformation(1),
           socialNetworks: [
             { name: 'phone', value: '47999501834' },
             { name: 'email', value: 'joanamariacosta@gmail.com' },

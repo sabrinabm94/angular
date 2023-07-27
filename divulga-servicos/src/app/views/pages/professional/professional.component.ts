@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IProfessional } from 'src/app/utils/interfaces/IProfessional.interface';
+import ServiceTypeTransformation from '../../../utils/serviceTypeTransformation';
 
 @Component({
   selector: 'app-professional',
@@ -32,7 +33,7 @@ export class ProfessionalComponent {
         city: 'São Paulo',
         neighborhood: 'Jardins',
       },
-      serviceType: this.serviceTypeTransformation(1),
+      serviceType: ServiceTypeTransformation.serviceTypeTransformation(1),
       socialNetworks: [
         { name: 'phone', value: 'tel:+5547999501834' },
         { name: 'email', value: 'joanamariacosta@gmail.com' },
@@ -102,19 +103,5 @@ export class ProfessionalComponent {
   getProfessionalBySlug(slug: string | null) {
     console.log(slug);
     return null;
-  }
-
-  serviceTypeTransformation(serviceTypeNumber: number): string {
-    if(serviceTypeNumber === 1) {
-      return "Presencial";
-    }
-    if(serviceTypeNumber === 2) {
-      return "Online";
-    }
-    if(serviceTypeNumber === 3) {
-      return "Ambos";
-    }
-
-    return "";
   }
 }

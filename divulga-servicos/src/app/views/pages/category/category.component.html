@@ -43,8 +43,21 @@
                 </app-background-image>
                 <h1 class="main-title">{{professional.name}}</h1>
                 <p class="description">{{professional.description}}</p>
-                <h2 class="title">Localização</h2>
-                <p class="localization">{{professional.localization.state}} - {{professional.localization.city}}</p>
+                <div class="service-type">
+                  <h2 class="title">Formas de atendimento</h2>
+                  <p class="text">{{professional.serviceType}}</p>
+                </div>
+                <div class="service-area">
+                  <h2 class="title">Área de atendimento</h2>
+                  <div *ngIf="professional.serviceArea.neighborhood; else noNeighborhood">
+                    <p class="text">{{professional.serviceArea.state}} -
+                      {{professional.serviceArea.city}} - {{professional.serviceArea.neighborhood}}</p>
+                  </div>
+                  <div *ngIf="noNeighborhood">
+                    <p class="text">{{professional.serviceArea.state}} -
+                      {{professional.serviceArea.city}}</p>
+                  </div>
+                </div>
                 <app-button text="Ver mais"></app-button>
               </mat-card-content>
             </mat-card>
