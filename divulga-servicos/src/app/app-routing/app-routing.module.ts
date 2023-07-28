@@ -11,6 +11,7 @@ import { CategoryComponent } from '../views/pages/category/category.component';
 import { CategoriesComponent } from '../views/pages/categories/categories.component';
 import { CheckoutComponent } from '../views/pages/checkout/checkout.component';
 import { ProfessionalComponent } from '../views/pages/professional/professional.component';
+import { PasswordResetComponent } from '../views/pages/password-reset/password-reset.component';
 
 const appRoutes: Routes = [
   { path: '*', component: HomeComponent },
@@ -21,6 +22,8 @@ const appRoutes: Routes = [
   { path: 'registro', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'entrar', component: LoginComponent },
+  { path: 'password-reset', component: PasswordResetComponent },
+  { path: 'resetar-senha', component: PasswordResetComponent },
   { path: 'user/:slug', component: UserComponent }, //logged
   { path: 'usuario/:slug', component: UserComponent }, //logged
   { path: 'users', component: UsersComponent }, //admin

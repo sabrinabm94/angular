@@ -3,58 +3,56 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import PasswordPattern from '../../../utils/passwordPattern';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  selector: 'app-password-reset',
+  templateUrl: './password-reset.component.html',
+  styleUrls: ['./password-reset.component.css'],
 })
-export class LoginComponent {
+export class PasswordResetComponent {
   private passwordPattern: string = PasswordPattern.getPasswordPattern();
-  public email = new FormControl('', [Validators.required, Validators.email]);
-  public password = new FormControl('', [
-    Validators.required,
-    Validators.pattern(this.passwordPattern),
-  ]);
-  public hide: boolean = true;
+  public password: string | null = '';
+  public passwordConfirmation: string | null = '';
+  public hidePassword: boolean = true;
+  public hidePasswordConfirmation: boolean = true;
   public errorMessage: string = '';
   public form: any = FormGroup;
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      emailField: new FormControl(this.form.emailField, [
-        Validators.required,
-        Validators.email,
-      ]),
       passwordField: new FormControl(this.form.passwordField, [
         Validators.required,
         Validators.pattern(this.passwordPattern),
       ]),
+      passwordFieldConfirmation: new FormControl(
+        this.form.passwordFieldConfirmation,
+        [Validators.required, Validators.pattern(this.passwordPattern)]
+      ),
     });
   }
 
   public getErrorMessage() {
-    if (this.form.controls.emailField.hasError('required')) {
-      this.errorMessage = 'Campo obrigatório: e-mail';
-    }
-
     if (this.form.controls.passwordField.hasError('required')) {
       this.errorMessage = 'Campo obrigatório: senha';
     }
 
-    this.form.controls.emailField.hasError('email')
-      ? (this.errorMessage = 'E-mail inválido: e-mail')
-      : '';
+    if (this.form.controls.passwordFieldConfirmation.hasError('required')) {
+      this.errorMessage = 'Campo obrigatório: confirmação da senha';
+    }
 
     this.form.controls.passwordField.hasError('pattern')
       ? (this.errorMessage = 'Senha inválida: senha')
       : '';
 
+    this.form.controls.passwordFieldConfirmation.hasError('pattern')
+      ? (this.errorMessage = 'Senha inválida: confirmação da senha')
+      : '';
+
     return this.errorMessage;
   }
 
-  public loginUser(event: any) {
+  public passwordReset(event: any) {
     event.preventDefault();
-    this.email = this.form.value.emailField;
     this.password = this.form.value.passwordField;
+    this.passwordConfirmation = this.form.value.passwordFieldConfirmation;
     this.getErrorMessage();
   }
 }

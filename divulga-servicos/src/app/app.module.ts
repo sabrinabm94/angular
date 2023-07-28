@@ -34,6 +34,8 @@ import { CheckoutComponent } from './views/pages/checkout/checkout.component';
 import { ProfessionalTemplateComponent } from './views/templates/professional-template/professional-template.component';
 import { ProfessionalComponent } from './views/pages/professional/professional.component';
 import { ButtonComponent } from './components/button/button.component';
+import { PasswordResetComponent } from './views/pages/password-reset/password-reset.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -59,6 +61,7 @@ import { ButtonComponent } from './components/button/button.component';
     ProfessionalTemplateComponent,
     ProfessionalComponent,
     ButtonComponent,
+    PasswordResetComponent,
   ],
   imports: [
     BrowserModule,
@@ -68,6 +71,8 @@ import { ButtonComponent } from './components/button/button.component';
     MatCardModule,
     MatPaginatorModule,
     MatButtonModule,
+    FormsModule,
+    ReactiveFormsModule,
     NgbModule,
   ],
   providers: [],
