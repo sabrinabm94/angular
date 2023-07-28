@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
-
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
@@ -36,7 +36,6 @@ import { ProfessionalComponent } from './views/pages/professional/professional.c
 import { ButtonComponent } from './components/button/button.component';
 import { PasswordResetComponent } from './views/pages/password-reset/password-reset.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 
 @NgModule({
   declarations: [
@@ -74,6 +73,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+    MatAutocompleteModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
