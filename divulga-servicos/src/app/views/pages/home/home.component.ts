@@ -13,9 +13,6 @@ export class HomeComponent {
   public projectDescription: string = '';
   private searchTerm: string = '';
 
-  @ViewChildren(ImageComponent)
-  imageComponents!: QueryList<ImageComponent>;
-
   public componentParams: IHome = {
     images: [
       {
@@ -33,6 +30,12 @@ export class HomeComponent {
       {
         link: '../../../assets/images/home/professional-talk.png',
         title: 'Explique sua demanda',
+        width: 150,
+        height: 150,
+      },
+      {
+        link: '',
+        title: '',
         width: 150,
         height: 150,
       },
@@ -207,18 +210,9 @@ export class HomeComponent {
     },
   ];
 
-  constructor() {}
-
   ngOnInit() {
     this.projectTitle = 'Buscar profissionais';
     this.projectDescription = 'Buscar por prestadores de serviços';
-  }
-
-  ngAfterViewInit() {
-    setTimeout(() => {
-      //avoid ExpressionChangedAfterItHasBeenCheckedError
-      this.sendDataToChildComponents(this.componentParams);
-    });
   }
 
   public searchProfessional(event: any) {
@@ -230,11 +224,5 @@ export class HomeComponent {
 
   private searchProfessionalByTerm(term: string) {
     return console.log(term);
-  }
-
-  public sendDataToChildComponents(data: any) {
-    this.imageComponents.forEach((imageComponent, index) => {
-      imageComponent.sendData(data.images[index]);
-    });
   }
 }

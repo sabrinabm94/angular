@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ILogin } from 'src/app/utils/interfaces/Ilogin.interface';
 
 @Component({
   selector: 'app-login',
@@ -7,11 +7,20 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  public pageParams: object = {};
+  public email: string = '';
+  public password: string = '';
 
-  constructor(private route: ActivatedRoute) {}
+  public componentParams: ILogin = {
+    email: this.email,
+    password: this.password
+  };
 
-  ngOnInit() {
-    this.pageParams = this.route.snapshot.params;
+  public loginUser(event: any) {
+    event.preventDefault();
+    this.email = event.target[0].value;
+    this.password = event.target[0].value;
+    console.log(event);
+    console.log(this.email);
+    console.log(this.password);
   }
 }

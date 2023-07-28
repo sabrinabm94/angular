@@ -8,55 +8,33 @@ import { IHeader } from 'src/app/utils/interfaces/IHeader.interface';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
-  @ViewChildren(RouteLinkComponent)
-  routeLinkComponents!: QueryList<RouteLinkComponent>;
-
-  constructor() {}
-
-  public headerParams: IHeader = {
+  public componentParams: IHeader = {
     menu: [
       {
         link: '/home',
         target: '_self',
         title: 'Home',
-        text: 'Home',
       },
       {
         link: '/login',
         target: '_self',
         title: 'Login',
-        text: 'Login',
       },
       {
         link: '/registro',
         target: '_self',
         title: 'Registro',
-        text: 'Registro',
       },
       {
         link: '/categorias',
         target: '_self',
         title: 'Categorias',
-        text: 'Categorias',
       },
       {
         link: '/contato',
         target: '_self',
         title: 'Contato',
-        text: 'Contato',
       },
     ],
   };
-
-  ngAfterViewInit() {
-    setTimeout(() => { //avoid ExpressionChangedAfterItHasBeenCheckedError
-      this.sendDataToChildComponents(this.headerParams.menu);
-    });
-  }
-
-  public sendDataToChildComponents(data: any) {
-    this.routeLinkComponents.forEach((child, index) => {
-      child.sendData(data[index]);
-    });
-  }
 }

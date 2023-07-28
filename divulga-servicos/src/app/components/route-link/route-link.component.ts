@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ILink } from 'src/app/utils/interfaces/ILink.interface';
 
 @Component({
@@ -7,18 +7,15 @@ import { ILink } from 'src/app/utils/interfaces/ILink.interface';
   styleUrls: ['./route-link.component.css'],
 })
 export class RouteLinkComponent {
-
-  public componentParams: ILink = {
-    link: '',
-    target: '',
-    title: '',
-    text: '',
-  };
+  @Input() public link: string = '';
+  @Input() public target: string = '';
+  @Input() public title: string = '';
 
   public routelinkIndex = 0;
 
-  public sendData(data: ILink): ILink {
-    this.routelinkIndex = this.routelinkIndex++;
-    return (this.componentParams = data);
-  }
+  public componentParams: ILink = {
+    link: this.link,
+    target: this.target,
+    title: this.title,
+  };
 }

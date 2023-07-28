@@ -14,7 +14,7 @@ export class HeadComponent {
     return this.sanitized.bypassSecurityTrustUrl(link).toString();
   }
 
-  public headParams: IHead = {
+  public componentParams: IHead = {
     version: '1',
     canonical: this.safeTransformLink(
       'https://www.busqueprofissionais.com.br/'

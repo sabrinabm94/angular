@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { IImage } from 'src/app/utils/interfaces/IImage.interface';
 
 @Component({
@@ -7,14 +7,17 @@ import { IImage } from 'src/app/utils/interfaces/IImage.interface';
   styleUrls: ['./image.component.css'],
 })
 export class ImageComponent {
-  public componentParams: IImage = {
-    link: '',
-    title: '',
-    width: 100,
-    height: 100,
-  };
+  @Input() public link: string = '';
+  @Input() public title: string = '';
+  @Input() public width: number | string = 100;
+  @Input() public height: number | string = 100;
 
-  public sendData(data: IImage): IImage {
-    return (this.componentParams = data);
-  }
+  public routelinkIndex = 0;
+
+  public componentParams: IImage = {
+    link: this.link,
+    title: this.title,
+    width: this.width,
+    height: this.height,
+  };
 }
