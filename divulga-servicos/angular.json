@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "divulga-servicos": {
+    "busca-profissionais": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/divulga-servicos",
+            "outputPath": "dist/busca-profissionais",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -62,10 +62,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "divulga-servicos:build:production"
+              "browserTarget": "busca-profissionais:build:production"
             },
             "development": {
-              "browserTarget": "divulga-servicos:build:development"
+              "browserTarget": "busca-profissionais:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -73,7 +73,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "divulga-servicos:build"
+            "browserTarget": "busca-profissionais:build"
           }
         },
         "test": {
