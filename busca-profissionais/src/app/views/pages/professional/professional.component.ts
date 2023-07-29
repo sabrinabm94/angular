@@ -51,7 +51,7 @@ export class ProfessionalComponent {
       ],
       images: [
         {
-          link: '../../../assets/images/professional/montagem-moveis.png',
+          link: '../../../assets/images/category/montagem-moveis.png',
           title: 'Imagem do professional',
         },
       ],
