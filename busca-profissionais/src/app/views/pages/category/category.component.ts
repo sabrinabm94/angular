@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ICategory } from 'src/app/utils/interfaces/ICategory.interface';
 import { IProfessional } from 'src/app/utils/interfaces/IProfessional.interface';
 import ServiceTypeTransformation from '../../../utils/serviceTypeTransformation';
+import TrackByFn from '../../../utils/trackByFn';
 
 @Component({
   selector: 'app-category',
@@ -178,5 +179,9 @@ export class CategoryComponent implements OnInit {
   getCategoryBySlug(slug: string | null) {
     console.log(slug);
     return null;
+  }
+
+  trackByFn(item: any, index: any) {
+    return TrackByFn.getItemId(item);
   }
 }

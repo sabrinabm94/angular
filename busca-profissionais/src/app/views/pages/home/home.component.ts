@@ -1,7 +1,7 @@
-import { Component, QueryList, ViewChildren } from '@angular/core';
-import { ImageComponent } from 'src/app/components/image/image.component';
+import { Component } from '@angular/core';
 import { IHome } from 'src/app/utils/interfaces/IHome.interface';
 import { IProfessional } from 'src/app/utils/interfaces/IProfessional.interface';
+import TrackByFn from '../../../utils/trackByFn';
 
 @Component({
   selector: 'app-home',
@@ -224,5 +224,9 @@ export class HomeComponent {
 
   private searchProfessionalByTerm(term: string) {
     return console.log(term);
+  }
+
+  trackByFn(item: any, index: any) {
+    return TrackByFn.getItemId(item);
   }
 }

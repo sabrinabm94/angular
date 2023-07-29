@@ -6,7 +6,7 @@
     </section>
     <section class="section all-categories">
       <div class="row">
-        <div class="col-sm-2 col-md-3 col-lg-4 inline" *ngFor="let category of this.componentParams; let categoryIndex=index">
+        <div class="col-sm-2 col-md-3 col-lg-4 inline" *ngFor="let category of this.componentParams; let categoryIndex=index; trackBy: trackByFn;">
           <a [routerLink]="['/categoria/', category.slug]" id={{category.id}} class="link">
             <mat-card class="card">
               <mat-card-content>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ICategory } from 'src/app/utils/interfaces/ICategory.interface';
+import TrackByFn from '../../../utils/trackByFn';
 
 @Component({
   selector: 'app-categories',
@@ -107,5 +108,7 @@ export class CategoriesComponent {
     },
   ];
 
-  constructor() {}
+  trackByFn(item: any, index: any) {
+    return TrackByFn.getItemId(item);
+  }
 }

@@ -8,7 +8,7 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item" *ngFor="let menuItem of componentParams.menu;
+        <li class="nav-item" *ngFor="let menuItem of componentParams.menu; trackBy: trackByFn;
         let routelinkIndex=index">
           <app-route-link routerLink={{menuItem.link}} routerLinkActive="active" ariaCurrentWhenActive="page"
             target={{menuItem.target}} title={{menuItem.title}}>{{menuItem.title}}</app-route-link>

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IProfessional } from 'src/app/utils/interfaces/IProfessional.interface';
 import ServiceTypeTransformation from '../../../utils/serviceTypeTransformation';
+import TrackByFn from '../../../utils/trackByFn';
 
 @Component({
   selector: 'app-professional',
@@ -103,5 +104,9 @@ export class ProfessionalComponent {
   getProfessionalBySlug(slug: string | null) {
     console.log(slug);
     return null;
+  }
+
+  trackByFn(item: any, index: any) {
+    return TrackByFn.getItemId(item);
   }
 }

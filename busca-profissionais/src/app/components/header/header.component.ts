@@ -1,6 +1,6 @@
-import { ViewChildren, QueryList, Component } from '@angular/core';
-import { RouteLinkComponent } from 'src/app/components/route-link/route-link.component';
+import { Component } from '@angular/core';
 import { IHeader } from 'src/app/utils/interfaces/IHeader.interface';
+import TrackByFn from '../../utils/trackByFn';
 
 @Component({
   selector: 'app-header',
@@ -37,4 +37,8 @@ export class HeaderComponent {
       },
     ],
   };
+
+  trackByFn(item: any, index: any) {
+    return TrackByFn.getItemId(item);
+  }
 }

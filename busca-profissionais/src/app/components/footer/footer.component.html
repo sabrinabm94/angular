@@ -9,7 +9,7 @@
   </div>
   <div class="col-sm-6">
     <h2 class="title">Institucional</h2>
-    <nav *ngFor="let menuItem of componentParams.menu; let linkIndex=index">
+    <nav *ngFor="let menuItem of componentParams.menu; let linkIndex=index; trackBy: trackByFn;">
       <app-link #linkComponent target="{{menuItem.target}}" title="{{menuItem.title}}" href="{{menuItem.link}}">
       </app-link>
     </nav>

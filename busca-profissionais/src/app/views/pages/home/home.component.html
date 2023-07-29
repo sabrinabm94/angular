@@ -15,7 +15,7 @@
     <section class="section search-profissional-results">
       <div class="col-sm-12">
         <div class="col-sm-2 col-md-3 col-lg-4 inline"
-          *ngFor="let professional of this.professionaisSearchResult; let professionalIndex=index">
+          *ngFor="let professional of this.professionaisSearchResult; let professionalIndex=index; trackBy: trackByFn;">
           <a [routerLink]="['/profissional/', professional.slug]" id={{professional.id}} class="link">
             <mat-card class="card">
               <mat-card-content>
@@ -41,7 +41,7 @@
       <div class="col-sm-12">
         <h1 class="main-title">Principais serviços</h1>
         <div class="col-sm-2 col-md-3 col-lg-4 inline"
-          *ngFor="let category of this.componentParams.bestCategories; let categoryIndex=index">
+          *ngFor="let category of this.componentParams.bestCategories; let categoryIndex=index; trackBy: trackByFn;">
           <a [routerLink]="['/categoria/', category.slug]" id={{category.id}} class="link">
             <mat-card class="card">
               <mat-card-content>

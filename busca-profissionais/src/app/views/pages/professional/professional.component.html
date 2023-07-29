@@ -32,7 +32,7 @@
           </app-background-image>
           <ul class="social-icons">
             <li class="social-icons-list"
-              *ngFor="let socialNetwork of this.componentParams[0].socialNetworks; let socialNetworksIndex=index">
+              *ngFor="let socialNetwork of this.componentParams[0].socialNetworks; let socialNetworksIndex=index; trackBy: trackByFn;">
               <a class="social-icon" *ngIf="socialNetwork.value" href={{socialNetwork.value}}
                 title="{{socialNetwork.name}} de {{this.componentParams[0].name}}" target="_blank">
                 <mat-icon aria-hidden="false" aria-label="{{socialNetwork.name}} de {{this.componentParams[0].name}}"

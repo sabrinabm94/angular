@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IFooter } from 'src/app/utils/interfaces/IFooter.interface';
+import TrackByFn from '../../utils/trackByFn';
 
 @Component({
   selector: 'app-footer',
@@ -33,4 +34,8 @@ export class FooterComponent {
       },
     },
   };
+
+  trackByFn(item: any, index: any) {
+    return TrackByFn.getItemId(item);
+  }
 }
