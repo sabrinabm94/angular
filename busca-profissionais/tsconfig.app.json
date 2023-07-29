@@ -3,6 +3,16 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
+    "paths": {
+      "@app/*":["app/*"],
+      "@env/*":["app/environments/*"],
+      "@utils/*":["app/utils/*"],
+      "@models/*":["app/models/*"],
+      "@interfaces/*":["app/utils/interfaces*"],
+      "@components/*":["app/components/*"],
+      "@pages/*":["app/views/pages*"],
+      "@templates/*":["app/views/templates*"],
+    },
     "types": [
       "@angular/localize"
     ]

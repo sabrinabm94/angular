@@ -3,6 +3,16 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
+    "paths": {
+      "@app/*":["src/app/*"],
+      "@env/*":["src/app/environments/*"],
+      "@utils/*":["src/app/utils/*"],
+      "@models/*":["src/app/models/*"],
+      "@interfaces/*":["src/app/utils/interfaces*"],
+      "@components/*":["src/app/components/*"],
+      "@pages/*":["src/app/views/pages*"],
+      "@templates/*":["src/app/views/templates*"],
+    },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -22,7 +32,7 @@
     "lib": [
       "ES2022",
       "dom"
-    ]
+    ],
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
