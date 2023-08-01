@@ -4,26 +4,93 @@
     <form (ngSubmit)="registerUser($event)" [formGroup]="formUser">
       <mat-form-field>
         <mat-label>E-mail</mat-label>
-        <input matInput placeholder="pat@example.com" required class="form-control" formControlName="emailField">
+        <input matInput placeholder="pat@example.com" required class="form-control" formControlName="userEmailField">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Confirmação de E-mail</mat-label>
+        <input matInput placeholder="pat@example.com" required class="form-control"
+          formControlName="userEmailConfirmationField">
       </mat-form-field>
       <mat-form-field>
         <mat-label>Senha</mat-label>
         <input matInput [type]="hide ? 'password' : 'text'" required class="form-control"
-          formControlName="passwordField">
+          formControlName="userPasswordField">
         <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
           [attr.aria-pressed]="hide">
           <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
       </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <mat-label>Number</mat-label>
-        <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="myControl"
-          [matAutocomplete]="auto">
+      <mat-form-field>
+        <mat-label>Confirmação de senha</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" required class="form-control"
+          formControlName="userPasswordConfirmationField">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Nome</mat-label>
+        <input matInput [type]="'text'" required class="form-control" formControlName="userName">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Sobrenome</mat-label>
+        <input matInput [type]="'text'" required class="form-control" formControlName="userLastname">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>CPF</mat-label>
+        <input matInput [type]="'text'" required class="form-control" formControlName="userCpf">
+      </mat-form-field>
+      <mat-form-field>
+        <input type="text" placeholder="Estado" aria-label="Number" matInput [formControl]="userState"
+          [matAutocomplete]="auto" formControlName="userState">
         <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let option of filteredOptions | async; trackBy: trackByFn;" [value]="option">
-            {{option}}
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            {{ option }}
           </mat-option>
         </mat-autocomplete>
+      </mat-form-field>
+      <mat-form-field>
+        <input type="text" placeholder="Cidade" aria-label="Number" matInput [formControl]="userCity"
+          [matAutocomplete]="auto" formControlName="userCity">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Rua</mat-label>
+        <input matInput [type]="'text'" required class="form-control" formControlName="userAddressStreet">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Número</mat-label>
+        <input matInput [type]="'text'" required class="form-control" formControlName="userAddressNumber">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Complemento</mat-label>
+        <input matInput [type]="'text'" required class="form-control" formControlName="userAddressComplement">
+      </mat-form-field>
+      <mat-form-field>
+        <input type="text" placeholder="Categoria do seu serviço" aria-label="Number" matInput [formControl]="serviceCategory"
+          [matAutocomplete]="auto" formControlName="userServiceCompany">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Formas de atendimento</mat-label>
+        <mat-select required class="form-control" formControlName="userServiceType">
+          <mat-option value="1">Presencial</mat-option>
+          <mat-option value="2">Remoto</mat-option>
+          <mat-option value="3">Ambos</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Descrição do seu serviço</mat-label>
+        <textarea matInput required class="form-control" formControlName="userDescriptionService"></textarea>
       </mat-form-field>
       <mat-error *ngIf="formUser.invalid">{{getformUserErrorMessage()}}</mat-error>
       <app-button>Confirmar</app-button>
@@ -32,7 +99,93 @@
   <mat-tab label="Company">
     <h2 class="title">Cadastro de empresa</h2>
     <form (ngSubmit)="registerCompany($event)" [formGroup]="formCompany">
-      <mat-error *ngIf="formCompany.invalid">{{getformCompanyErrorMessage()}}</mat-error>
+      <mat-form-field>
+        <mat-label>E-mail</mat-label>
+        <input matInput placeholder="pat@example.com" required class="form-control" formControlName="emailField">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Confirmação de E-mail</mat-label>
+        <input matInput placeholder="pat@example.com" required class="form-control"
+          formControlName="companyEmailConfirmationField">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Senha</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" required class="form-control"
+          formControlName="companyPasswordField">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Confirmação de senha</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" required class="form-control"
+          formControlName="companyPasswordConfirmationField">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Nome</mat-label>
+        <input matInput [type]="'text'" required class="form-control" formControlName="companyName">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>CNPJ</mat-label>
+        <input matInput [type]="'text'" required class="form-control" formControlName="companyCnpj">
+      </mat-form-field>
+      <mat-form-field>
+        <input type="text" placeholder="Estado" aria-label="Number" matInput [formControl]="companyState"
+          [matAutocomplete]="auto" formControlName="companyState">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-form-field>
+        <input type="text" placeholder="Cidade" aria-label="Number" matInput [formControl]="companyCity"
+          [matAutocomplete]="auto" formControlName="companyCity">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Rua</mat-label>
+        <input matInput [type]="'text'" required class="form-control" formControlName="companyAddressStreet">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Número</mat-label>
+        <input matInput [type]="'text'" required class="form-control" formControlName="companyAddressNumber">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Complemento</mat-label>
+        <input matInput [type]="'text'" required class="form-control" formControlName="CompanyAddressComplement">
+      </mat-form-field>
+      <mat-form-field>
+        <input type="text" placeholder="Categoria do seu serviço" aria-label="Number" matInput [formControl]="companyServiceCategory"
+          [matAutocomplete]="auto" formControlName="companyServiceCategory">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Formas de atendimento</mat-label>
+        <mat-select required class="form-control" formControlName="companyServiceType">
+          <mat-option value="1">Presencial</mat-option>
+          <mat-option value="2">Remoto</mat-option>
+          <mat-option value="3">Ambos</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Descrição do seu serviço</mat-label>
+        <textarea matInput required class="form-control" formControlName="companyDescriptionService"></textarea>
+      </mat-form-field>
+      <mat-error *ngIf="formUser.invalid">{{getformUserErrorMessage()}}</mat-error>
       <app-button>Confirmar</app-button>
     </form>
   </mat-tab>
