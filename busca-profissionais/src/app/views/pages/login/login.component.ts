@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import PasswordPattern from '../../../utils/passwordPattern';
+import PasswordPattern from '../../../utils/patterns';
 
 @Component({
   selector: 'app-login',
