@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IProfessional } from 'src/app/utils/interfaces/IProfessional.interface';
 import ServiceTypeTransformation from '../../../utils/serviceTypeTransformation';
 import TrackByFn from '../../../utils/trackByFn';
+import { IProfessional } from '../../../utils/interfaces/IProfessional';
 
 @Component({
   selector: 'app-professional',
@@ -16,10 +16,13 @@ export class ProfessionalComponent {
   public componentParams: Array<IProfessional> = [
     {
       id: '1',
-      name: 'Joana Maria da Costa',
-      description: 'Atuo a mais de 10 anos como diarista.',
+      name: 'Joana Maria',
+      lastname: 'da Costa',
       link: '/joana-m-costa',
       slug: 'joana-m-costa',
+      cpf: '',
+      password: '',
+      passwordConfirmation: '',
       localization: {
         state: 'São Paulo',
         city: 'São Paulo',
@@ -34,9 +37,14 @@ export class ProfessionalComponent {
         city: 'São Paulo',
         neighborhood: 'Jardins',
       },
-      serviceType: ServiceTypeTransformation.serviceTypeTransformation(1),
+      images: [
+        {
+          link: '../../../assets/images/category/montagem-moveis.png',
+          title: 'Imagem do professional',
+        },
+      ],
       socialNetworks: [
-        { name: 'phone', value: 'tel:+5547999501834' },
+        { name: 'phone', value: '47999501834' },
         { name: 'email', value: 'joanamariacosta@gmail.com' },
         {
           name: 'whatsapp',
@@ -49,12 +57,6 @@ export class ProfessionalComponent {
         { name: 'linkedin', value: '' },
         { name: 'site', value: '' },
       ],
-      images: [
-        {
-          link: '../../../assets/images/category/montagem-moveis.png',
-          title: 'Imagem do professional',
-        },
-      ],
       categories: [
         {
           id: '4',
@@ -63,6 +65,7 @@ export class ProfessionalComponent {
             'Conheça profissionais de' + name + 'para atender o seu domicílio.',
           link: '/limpeza',
           slug: 'limpeza',
+
           images: [
             {
               link: '../../../assets/images/category/servicos-limpeza.png',
@@ -90,6 +93,10 @@ export class ProfessionalComponent {
           professionals: [],
         },
       ],
+      serviceDescription: 'Atuo a mais de 10 anos como diarista.',
+      serviceType: [ServiceTypeTransformation.serviceTypeTransformation(1)],
+      email: '',
+      emailConfirmation: '',
     },
   ];
 

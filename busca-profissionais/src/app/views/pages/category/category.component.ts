@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ICategory } from 'src/app/utils/interfaces/ICategory.interface';
-import { IProfessional } from 'src/app/utils/interfaces/IProfessional.interface';
 import ServiceTypeTransformation from '../../../utils/serviceTypeTransformation';
 import TrackByFn from '../../../utils/trackByFn';
+import { IProfessional } from '../../../utils/interfaces/IProfessional';
 
 @Component({
   selector: 'app-category',
@@ -87,10 +87,13 @@ export class CategoryComponent implements OnInit {
       professionals: [
         {
           id: '1',
-          name: 'Joana Maria da Costa',
-          description: 'Atuo a mais de 10 anos como diarista.',
+          name: 'Joana Maria',
+          lastname: 'da Costa',
           link: '/joana-m-costa',
           slug: 'joana-m-costa',
+          cpf: '',
+          password: '',
+          passwordConfirmation: '',
           localization: {
             state: 'São Paulo',
             city: 'São Paulo',
@@ -105,7 +108,12 @@ export class CategoryComponent implements OnInit {
             city: 'São Paulo',
             neighborhood: 'Jardins',
           },
-          serviceType: ServiceTypeTransformation.serviceTypeTransformation(1),
+          images: [
+            {
+              link: '../../../assets/images/category/montagem-moveis.png',
+              title: 'Imagem do professional',
+            },
+          ],
           socialNetworks: [
             { name: 'phone', value: '47999501834' },
             { name: 'email', value: 'joanamariacosta@gmail.com' },
@@ -120,12 +128,6 @@ export class CategoryComponent implements OnInit {
             { name: 'linkedin', value: '' },
             { name: 'site', value: '' },
           ],
-          images: [
-            {
-              link: '../../../assets/images/category/montagem-moveis.png',
-              title: 'Imagem do professional',
-            },
-          ],
           categories: [
             {
               id: '4',
@@ -136,6 +138,7 @@ export class CategoryComponent implements OnInit {
                 'para atender o seu domicílio.',
               link: '/limpeza',
               slug: 'limpeza',
+
               images: [
                 {
                   link: '../../../assets/images/category/servicos-limpeza.png',
@@ -163,6 +166,10 @@ export class CategoryComponent implements OnInit {
               professionals: [],
             },
           ],
+          serviceDescription: 'Atuo a mais de 10 anos como diarista.',
+          serviceType: [ServiceTypeTransformation.serviceTypeTransformation(1)],
+          email: '',
+          emailConfirmation: '',
         },
       ],
     },

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { IHome } from 'src/app/utils/interfaces/IHome.interface';
-import { IProfessional } from 'src/app/utils/interfaces/IProfessional.interface';
 import TrackByFn from '../../../utils/trackByFn';
+import { IProfessional } from '../../../utils/interfaces/IProfessional';
+import ServiceTypeTransformation from '../../../utils/serviceTypeTransformation';
 
 @Component({
   selector: 'app-home',
@@ -133,10 +134,13 @@ export class HomeComponent {
   public professionaisSearchResult: IProfessional[] = [
     {
       id: '1',
-      name: 'Joana Maria da Costa',
-      description: 'Atuo a mais de 10 anos como diarista.',
+      name: 'Joana Maria',
+      lastname: 'da Costa',
       link: '/joana-m-costa',
       slug: 'joana-m-costa',
+      cpf: '',
+      password: '',
+      passwordConfirmation: '',
       localization: {
         state: 'São Paulo',
         city: 'São Paulo',
@@ -151,7 +155,12 @@ export class HomeComponent {
         city: 'São Paulo',
         neighborhood: 'Jardins',
       },
-      serviceType: 1,
+      images: [
+        {
+          link: '../../../assets/images/category/montagem-moveis.png',
+          title: 'Imagem do professional',
+        },
+      ],
       socialNetworks: [
         { name: 'phone', value: '47999501834' },
         { name: 'email', value: 'joanamariacosta@gmail.com' },
@@ -166,12 +175,6 @@ export class HomeComponent {
         { name: 'linkedin', value: '' },
         { name: 'site', value: '' },
       ],
-      images: [
-        {
-          link: '../../../assets/images/category/montagem-moveis.png',
-          title: 'Imagem do professional',
-        },
-      ],
       categories: [
         {
           id: '4',
@@ -180,6 +183,7 @@ export class HomeComponent {
             'Conheça profissionais de' + name + 'para atender o seu domicílio.',
           link: '/limpeza',
           slug: 'limpeza',
+
           images: [
             {
               link: '../../../assets/images/category/servicos-limpeza.png',
@@ -207,6 +211,10 @@ export class HomeComponent {
           professionals: [],
         },
       ],
+      serviceDescription: 'Atuo a mais de 10 anos como diarista.',
+      serviceType: [ServiceTypeTransformation.serviceTypeTransformation(1)],
+      email: '',
+      emailConfirmation: '',
     },
   ];
 

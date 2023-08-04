@@ -1,7 +1,7 @@
 <mat-tab-group>
   <mat-tab label="User">
     <h2 class="title">Cadastro de profissional</h2>
-    <form (ngSubmit)="registerUser($event)" [formGroup]="formUser">
+    <form (ngSubmit)="registerUser(formProfessional)" [formGroup]="formProfessional">
       <mat-form-field>
         <mat-label>E-mail</mat-label>
         <input matInput placeholder="pat@example.com" required class="form-control" formControlName="email">
@@ -39,21 +39,30 @@
         <mat-label>CPF</mat-label>
         <input matInput [type]="'text'" required class="form-control" formControlName="cpf">
       </mat-form-field>
-      <mat-form-field>
-        <input type="text" placeholder="Estado" aria-label="Number" matInput [matAutocomplete]="auto"
-          formControlName="state">
+      <mat-form-field class="example-full-width">
+        <input type="text" placeholder="Cidade" aria-label="Number" matInput [formControl]="myControl"
+          [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-            {{ option }}
+          <mat-option *ngFor="let city of filteredCitiesOfState | async" [value]="city">
+            {{ city }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
-      <mat-form-field>
-        <input type="text" placeholder="Cidade" aria-label="Number" matInput [matAutocomplete]="auto"
-          formControlName="city">
+      <mat-form-field class="example-full-width">
+        <input type="text" placeholder="Estado" aria-label="Number" matInput [formControl]="myControl"
+          [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-            {{ option }}
+          <mat-option *ngFor="let state of filteredStates | async" [value]="state">
+            {{ state }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input type="text" placeholder="País" aria-label="Number" matInput [formControl]="myControl"
+          [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let country of filteredCountries | async" [value]="country">
+            {{ country }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
@@ -69,9 +78,9 @@
         <mat-label>Complemento</mat-label>
         <input matInput [type]="'text'" required class="form-control" formControlName="addressComplement">
       </mat-form-field>
-      <mat-form-field>
-        <input type="text" placeholder="Categoria do seu serviço" aria-label="Number" matInput [matAutocomplete]="auto"
-          formControlName="serviceCategory">
+      <mat-form-field class="example-full-width">
+        <input type="text" placeholder="Categoria do seu serviço" aria-label="Number" matInput [formControl]="myControl"
+          [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete">
           <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
             {{ option }}
@@ -94,15 +103,15 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>Descrição do seu serviço</mat-label>
-        <textarea matInput required class="form-control" formControlName="descriptionService"></textarea>
+        <textarea matInput required class="form-control" formControlName="serviceDescription"></textarea>
       </mat-form-field>
-      <mat-error *ngIf="formUser.invalid">{{userFieldsValidator()}}</mat-error>
+      <mat-error *ngIf="formProfessional.invalid">{{professionalFieldsValidator()}}</mat-error>
       <app-button>Confirmar</app-button>
     </form>
   </mat-tab>
   <mat-tab label="Company">
     <h2 class="title">Cadastro de empresa</h2>
-    <form (ngSubmit)="registerCompany($event)" [formGroup]="formCompany">
+    <form (ngSubmit)="registerCompany(formCompany)" [formGroup]="formCompany">
       <mat-form-field>
         <mat-label>E-mail</mat-label>
         <input matInput placeholder="pat@example.com" required class="form-control" formControlName="email">
@@ -136,21 +145,30 @@
         <mat-label>CNPJ</mat-label>
         <input matInput [type]="'text'" required class="form-control" formControlName="cnpj">
       </mat-form-field>
-      <mat-form-field>
-        <input type="text" placeholder="Estado" aria-label="Number" matInput [matAutocomplete]="auto"
-          formControlName="state">
+      <mat-form-field class="example-full-width">
+        <input type="text" placeholder="Cidade" aria-label="Number" matInput [formControl]="myControl"
+          [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-            {{ option }}
+          <mat-option *ngFor="let city of filteredCitiesOfState | async" [value]="city">
+            {{ city }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
-      <mat-form-field>
-        <input type="text" placeholder="Cidade" aria-label="Number" matInput [matAutocomplete]="auto"
-          formControlName="city">
+      <mat-form-field class="example-full-width">
+        <input type="text" placeholder="Estado" aria-label="Number" matInput [formControl]="myControl"
+          [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-            {{ option }}
+          <mat-option *ngFor="let state of filteredStates | async" [value]="state">
+            {{ state }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input type="text" placeholder="País" aria-label="Number" matInput [formControl]="myControl"
+          [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let country of filteredCountries | async" [value]="country">
+            {{ country }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
@@ -166,9 +184,9 @@
         <mat-label>Complemento</mat-label>
         <input matInput [type]="'text'" required class="form-control" formControlName="addressComplement">
       </mat-form-field>
-      <mat-form-field>
-        <input type="text" placeholder="Categoria do seu serviço" aria-label="Number" matInput [matAutocomplete]="auto"
-          formControlName="serviceCategory">
+      <mat-form-field class="example-full-width">
+        <input type="text" placeholder="Categoria do seu serviço" aria-label="Number" matInput [formControl]="myControl"
+          [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete">
           <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
             {{ option }}
@@ -191,9 +209,9 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>Descrição do seu serviço</mat-label>
-        <textarea matInput required class="form-control" formControlName="descriptionService"></textarea>
+        <textarea matInput required class="form-control" formControlName="serviceDescription"></textarea>
       </mat-form-field>
-      <mat-error *ngIf="formUser.invalid">{{companyFieldsValidator()}}</mat-error>
+      <mat-error *ngIf="formProfessional.invalid">{{companyFieldsValidator()}}</mat-error>
       <app-button>Confirmar</app-button>
     </form>
   </mat-tab>
