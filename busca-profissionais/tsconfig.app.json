@@ -15,7 +15,8 @@
     },
     "types": [
       "@angular/localize"
-    ]
+    ],
+    "noPropertyAccessFromIndexSignature": false,
   },
   "files": [
     "src/main.ts"

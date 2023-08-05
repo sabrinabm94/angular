@@ -9,6 +9,7 @@ import { IButton } from 'src/app/utils/interfaces/IButton.interface';
 export class ButtonComponent {
   @Input() public className: string = "";
   @Input() public text: string = "";
+  @Input() public disabled: string = "";
 
   public componentParams: IButton = {
     className: this.className,

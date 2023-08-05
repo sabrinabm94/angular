@@ -95,6 +95,7 @@ export class CategoryComponent implements OnInit {
           password: '',
           passwordConfirmation: '',
           localization: {
+            country: "Brasil",
             state: 'São Paulo',
             city: 'São Paulo',
             neighborhood: 'Jardins',
@@ -104,6 +105,7 @@ export class CategoryComponent implements OnInit {
             cep: 88390000,
           },
           serviceArea: {
+            country: "Brasil",
             state: 'São Paulo',
             city: 'São Paulo',
             neighborhood: 'Jardins',
