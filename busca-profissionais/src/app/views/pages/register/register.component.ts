@@ -37,9 +37,70 @@ export class RegisterComponent {
   public filteredCitiesOfState: Observable<string[]> | undefined;
 
   public myControl = new FormControl('');
-
+  public controlCountries = new FormControl('');
+  public controlStates = new FormControl('');
+  public controlCities = new FormControl('');
+  public controlCitiesOfState = new FormControl('');
 
   ngOnInit() {
+    this.formCompany = new FormGroup({
+      email: new FormControl(this.formCompany.email, [
+        Validators.required,
+        Validators.email,
+      ]),
+      emailConfirmation: new FormControl(this.formCompany.emailConfirmation, [
+        Validators.required,
+        Validators.pattern(this.passwordPattern),
+        Validators.email,
+      ]),
+      password: new FormControl(this.formCompany.password, [
+        Validators.required,
+        Validators.pattern(this.passwordPattern),
+      ]),
+      passwordConfirmation: new FormControl(
+        this.formCompany.passwordConfirmation,
+        [Validators.required, Validators.pattern(this.passwordPattern)]
+      ),
+      cnpj: new FormControl(this.formCompany.cnpj, [
+        Validators.required,
+        Validators.pattern(this.cnpjPattern),
+      ]),
+      name: new FormControl(this.formCompany.name, [Validators.required]),
+      lastname: new FormControl(this.formCompany.lastname, [
+        Validators.required,
+      ]),
+      state: new FormControl(this.formCompany.state, [Validators.required]),
+      city: new FormControl(this.formCompany.city, [Validators.required]),
+      addressStreet: new FormControl(this.formCompany.addressStreet, [
+        Validators.required,
+      ]),
+      addressNumber: new FormControl(this.formCompany.addressNumber, [
+        Validators.required,
+      ]),
+      addressComplement: new FormControl(this.formCompany.addressComplement, [
+        Validators.required,
+      ]),
+      addressNeighborhood: new FormControl(
+        this.formCompany.addressNeighborhood,
+        [Validators.required]
+      ),
+      addressState: new FormControl(this.formCompany.addressState, [
+        Validators.required,
+      ]),
+      addressCountry: new FormControl(this.formCompany.addressCountry, [
+        Validators.required,
+      ]),
+      serviceCategory: new FormControl(this.formCompany.serviceCategory, [
+        Validators.required,
+      ]),
+      serviceType: new FormControl(this.formCompany.serviceType, [
+        Validators.required,
+      ]),
+      serviceDescription: new FormControl(this.formCompany.serviceDescription, [
+        Validators.required,
+      ]),
+    });
+
     this.formProfessional = new FormGroup({
       email: new FormControl(this.formProfessional.email, [
         Validators.required,
@@ -105,85 +166,27 @@ export class RegisterComponent {
       ),
     });
 
-    this.formCompany = new FormGroup({
-      email: new FormControl(this.formCompany.email, [
-        Validators.required,
-        Validators.email,
-      ]),
-      emailConfirmation: new FormControl(this.formCompany.emailConfirmation, [
-        Validators.required,
-        Validators.pattern(this.passwordPattern),
-        Validators.email,
-      ]),
-      password: new FormControl(this.formCompany.password, [
-        Validators.required,
-        Validators.pattern(this.passwordPattern),
-      ]),
-      passwordConfirmation: new FormControl(
-        this.formCompany.passwordConfirmation,
-        [Validators.required, Validators.pattern(this.passwordPattern)]
-      ),
-      cnpj: new FormControl(this.formCompany.cnpj, [
-        Validators.required,
-        Validators.pattern(this.cnpjPattern),
-      ]),
-      name: new FormControl(this.formCompany.name, [Validators.required]),
-      lastname: new FormControl(this.formCompany.lastname, [
-        Validators.required,
-      ]),
-      state: new FormControl(this.formCompany.state, [Validators.required]),
-      city: new FormControl(this.formCompany.city, [Validators.required]),
-      addressStreet: new FormControl(this.formCompany.addressStreet, [
-        Validators.required,
-      ]),
-      addressNumber: new FormControl(this.formCompany.addressNumber, [
-        Validators.required,
-      ]),
-      addressComplement: new FormControl(this.formCompany.addressComplement, [
-        Validators.required,
-      ]),
-      addressNeighborhood: new FormControl(
-        this.formCompany.addressNeighborhood,
-        [Validators.required]
-      ),
-      addressState: new FormControl(this.formCompany.addressState, [
-        Validators.required,
-      ]),
-      addressCountry: new FormControl(this.formCompany.addressCountry, [
-        Validators.required,
-      ]),
-      serviceCategory: new FormControl(this.formCompany.serviceCategory, [
-        Validators.required,
-      ]),
-      serviceType: new FormControl(this.formCompany.serviceType, [
-        Validators.required,
-      ]),
-      serviceDescription: new FormControl(this.formCompany.serviceDescription, [
-        Validators.required,
-      ]),
-    });
-
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map((value) => this._filter(value || ''))
     );
 
-    this.filteredCountries = this.myControl.valueChanges.pipe(
+    this.filteredCountries = this.controlCountries.valueChanges.pipe(
       startWith(''),
       map((value) => this.filterCountries(value || ''))
     );
 
-    this.filteredStates = this.myControl.valueChanges.pipe(
+    this.filteredStates = this.controlStates.valueChanges.pipe(
       startWith(''),
       map((value) => this.filterStates(value || ''))
     );
 
-    this.filteredCities = this.myControl.valueChanges.pipe(
+    this.filteredCities = this.controlCities.valueChanges.pipe(
       startWith(''),
       map((value) => this.filterCities(value || ''))
     );
 
-    this.filteredCitiesOfState = this.myControl.valueChanges.pipe(
+    this.filteredCitiesOfState = this.controlCitiesOfState.valueChanges.pipe(
       startWith(''),
       map((value) => this.filterCitiesOfState(value || ''))
     );
@@ -198,11 +201,13 @@ export class RegisterComponent {
   }
 
   private filterCountries(value: string): string[] {
-    const filterValue = value.toLowerCase();
+    value = value.toLowerCase();
 
-    return this.countries.filter((contry) =>
-      contry.toLowerCase().includes(filterValue)
+    const filteredCountry = this.countries.filter(
+      (country: string) => country.toLowerCase().includes(country)
     );
+
+    return filteredCountry;
   }
 
   private filterStates(value: string): string[] {
@@ -214,14 +219,16 @@ export class RegisterComponent {
   }
 
   private filterCities(value: string): string[] {
-    const filterValue = value.toLowerCase();
+    value = value.toLowerCase();
 
-    return this.cities.filter((city: string) =>
-      city.toLowerCase().includes(filterValue)
+    const filteredCities = this.cities.filter(
+      (city: string) => city.toLowerCase().includes(city)
     );
+
+    return filteredCities;
   }
 
-  private filterCitiesOfState(value: string): string[] {
+  private filterCitiesOfState(value: string): string[] { //TODO novo padrão
     const filterValue = value.toLowerCase();
 
     return this.citiesOfState.filter((city: string) =>
