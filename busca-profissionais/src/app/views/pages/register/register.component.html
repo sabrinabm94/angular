@@ -39,28 +39,28 @@
         <mat-label>CPF</mat-label>
         <input matInput [type]="'text'" required class="form-control" formControlName="cpf">
       </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <input type="text" placeholder="Cidade" aria-label="Number" matInput [formControl]="myControl"
-          [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete">
+      <mat-form-field>
+        <input type="text" placeholder="Cidade" aria-label="Number" matInput formControlName="city" [formControl]="myControl"
+          [matAutocomplete]="city">
+        <mat-autocomplete #city="matAutocomplete">
           <mat-option *ngFor="let city of filteredCitiesOfState | async" [value]="city">
             {{ city }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <input type="text" placeholder="Estado" aria-label="Number" matInput [formControl]="myControl"
-          [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete">
+      <mat-form-field>
+        <input type="text" placeholder="Estado" aria-label="Number" matInput formControlName="state" [formControl]="myControl"
+          [matAutocomplete]="state">
+        <mat-autocomplete #state="matAutocomplete">
           <mat-option *ngFor="let state of filteredStates | async" [value]="state">
             {{ state }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <input type="text" placeholder="País" aria-label="Number" matInput [formControl]="myControl"
-          [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete">
+      <mat-form-field>
+        <input type="text" placeholder="País" aria-label="Number" matInput formControlName="addressCountry" [formControl]="myControl"
+          [matAutocomplete]="contry">
+        <mat-autocomplete #contry="matAutocomplete">
           <mat-option *ngFor="let country of filteredCountries | async" [value]="country">
             {{ country }}
           </mat-option>
@@ -78,12 +78,12 @@
         <mat-label>Complemento</mat-label>
         <input matInput [type]="'text'" required class="form-control" formControlName="addressComplement">
       </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <input type="text" placeholder="Categoria do seu serviço" aria-label="Number" matInput [formControl]="myControl"
-          [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-            {{ option }}
+      <mat-form-field>
+        <input type="text" placeholder="Categoria do seu serviço" aria-label="Number" matInput formControlName="serviceCategory" [formControl]="myControl"
+          [matAutocomplete]="category">
+        <mat-autocomplete #category="matAutocomplete">
+          <mat-option *ngFor="let category of filteredCategories | async" [value]="category">
+            {{ category }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
@@ -145,28 +145,28 @@
         <mat-label>CNPJ</mat-label>
         <input matInput [type]="'text'" required class="form-control" formControlName="cnpj">
       </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <input type="text" placeholder="Cidade" aria-label="Number" matInput [formControl]="myControl"
-          [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete">
+      <mat-form-field>
+        <input type="text" placeholder="Cidade" aria-label="Number" matInput formControlName="city" [formControl]="myControl"
+          [matAutocomplete]="city">
+        <mat-autocomplete #city="matAutocomplete">
           <mat-option *ngFor="let city of filteredCitiesOfState | async" [value]="city">
             {{ city }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <input type="text" placeholder="Estado" aria-label="Number" matInput [formControl]="myControl"
-          [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete">
+      <mat-form-field>
+        <input type="text" placeholder="Estado" aria-label="Number" matInput formControlName="state" [formControl]="myControl"
+          [matAutocomplete]="state">
+        <mat-autocomplete #state="matAutocomplete">
           <mat-option *ngFor="let state of filteredStates | async" [value]="state">
             {{ state }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <input type="text" placeholder="País" aria-label="Number" matInput [formControl]="myControl"
-          [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete">
+      <mat-form-field>
+        <input type="text" placeholder="País" aria-label="Number" matInput formControlName="addressCountry" [formControl]="myControl"
+          [matAutocomplete]="contry">
+        <mat-autocomplete #contry="matAutocomplete">
           <mat-option *ngFor="let country of filteredCountries | async" [value]="country">
             {{ country }}
           </mat-option>
@@ -184,12 +184,12 @@
         <mat-label>Complemento</mat-label>
         <input matInput [type]="'text'" required class="form-control" formControlName="addressComplement">
       </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <input type="text" placeholder="Categoria do seu serviço" aria-label="Number" matInput [formControl]="myControl"
-          [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-            {{ option }}
+      <mat-form-field>
+        <input type="text" placeholder="Categoria do seu serviço" aria-label="Number" matInput formControlName="serviceCategory" [formControl]="myControl"
+          [matAutocomplete]="category">
+        <mat-autocomplete #category="matAutocomplete">
+          <mat-option *ngFor="let category of filteredCategories | async" [value]="category">
+            {{ category }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>

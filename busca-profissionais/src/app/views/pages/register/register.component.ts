@@ -3,9 +3,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, map, startWith } from 'rxjs';
 import Patterns from 'src/app/utils/patterns';
 import TrackByFn from '../../../utils/trackByFn';
-import { ICompany } from '../../../utils/interfaces/ICompany';
-import { IProfessional } from '../../../utils/interfaces/IProfessional';
 import AddressData from '../../../utils/AddressData';
+import { IProfessional } from 'src/app/utils/interfaces/IProfessional';
+import { ICompany } from 'src/app/utils/interfaces/ICompany';
+import { IUser } from 'src/app/utils/interfaces/IUser.interface';
 
 @Component({
   selector: 'app-register',
@@ -22,7 +23,7 @@ export class RegisterComponent {
   private cpfPattern: string = Patterns.getCpfPattern();
   private cnpjPattern: string = Patterns.getCnpjPattern();
 
-  public options: string[] = ['One', 'Two', 'Three'];
+  public categories: string[] = ['One', 'Two', 'Three'];
   public countries: string[] = AddressData.countries.map((item) => item.name);
   public states: string[] = AddressData.states.map((item) => item.name);
   public cities: any = AddressData.states.filter(
@@ -30,17 +31,13 @@ export class RegisterComponent {
   );
   public citiesOfState: string[] = this.cities[0].cities;
 
-  public filteredOptions: Observable<string[]> | undefined;
+  public filteredCategories: Observable<string[]> | undefined;
   public filteredCountries: Observable<string[]> | undefined;
   public filteredStates: Observable<string[]> | undefined;
   public filteredCities: Observable<string[]> | undefined;
   public filteredCitiesOfState: Observable<string[]> | undefined;
 
   public myControl = new FormControl('');
-  public controlCountries = new FormControl('');
-  public controlStates = new FormControl('');
-  public controlCities = new FormControl('');
-  public controlCitiesOfState = new FormControl('');
 
   ngOnInit() {
     this.formCompany = new FormGroup({
@@ -166,48 +163,41 @@ export class RegisterComponent {
       ),
     });
 
-    this.filteredOptions = this.myControl.valueChanges.pipe(
+    this.filteredCategories = this.myControl.valueChanges.pipe(
       startWith(''),
-      map((value) => this._filter(value || ''))
+      map((value) => this.filterCategories(value || ''))
     );
 
-    this.filteredCountries = this.controlCountries.valueChanges.pipe(
+    this.filteredCountries = this.myControl.valueChanges.pipe(
       startWith(''),
       map((value) => this.filterCountries(value || ''))
     );
 
-    this.filteredStates = this.controlStates.valueChanges.pipe(
+    this.filteredStates = this.myControl.valueChanges.pipe(
       startWith(''),
       map((value) => this.filterStates(value || ''))
     );
 
-    this.filteredCities = this.controlCities.valueChanges.pipe(
-      startWith(''),
-      map((value) => this.filterCities(value || ''))
-    );
-
-    this.filteredCitiesOfState = this.controlCitiesOfState.valueChanges.pipe(
+    this.filteredCitiesOfState = this.myControl.valueChanges.pipe(
       startWith(''),
       map((value) => this.filterCitiesOfState(value || ''))
     );
   }
 
-  private _filter(value: string): string[] {
+  private filterCategories(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.options.filter((option) =>
-      option.toLowerCase().includes(filterValue)
+    return this.categories.filter((category: string) =>
+      category.toLowerCase().includes(filterValue)
     );
   }
 
   private filterCountries(value: string): string[] {
-    value = value.toLowerCase();
+    const filterValue = value.toLowerCase();
 
-    const filteredCountry = this.countries.filter(
-      (country: string) => country.toLowerCase().includes(country)
+    return this.countries.filter((country: string) =>
+      country.toLowerCase().includes(filterValue)
     );
-
-    return filteredCountry;
   }
 
   private filterStates(value: string): string[] {
@@ -218,17 +208,7 @@ export class RegisterComponent {
     );
   }
 
-  private filterCities(value: string): string[] {
-    value = value.toLowerCase();
-
-    const filteredCities = this.cities.filter(
-      (city: string) => city.toLowerCase().includes(city)
-    );
-
-    return filteredCities;
-  }
-
-  private filterCitiesOfState(value: string): string[] { //TODO novo padrão
+  private filterCitiesOfState(value: string): string[] {
     const filterValue = value.toLowerCase();
 
     return this.citiesOfState.filter((city: string) =>
@@ -237,27 +217,39 @@ export class RegisterComponent {
   }
 
   public genericFieldsValidator(form: any) {
-    if (form.hasError('required')) {
-      this.errorMessage = 'Campo obrigatórios não preenchidos';
+    this.errorMessage = "";
+
+    if (form.pristine === false) {
+      //valida erros somente para formulário preenchido
+      if (form.valid === false) {
+        if (form.hasError('Required')) {
+          //validação de erros para campos vazios
+          this.errorMessage = 'Campo obrigatórios não preenchidos';
+        } else {
+          //validação de erros para campos preenchidos incorretamente
+          form.controls.password.hasError('pattern')
+            ? (this.errorMessage = 'Valor inválido para senha')
+            : '';
+
+          form.controls.passwordConfirmation.hasError('pattern') ||
+          form.controls.passwordConfirmation !== form.controls.password
+            ? (this.errorMessage = 'Valor inválido para confirmação de senha')
+            : '';
+
+          form.controls.email.hasError('pattern')
+            ? (this.errorMessage = 'Valor inválido para e-mail')
+            : '';
+
+          form.controls.emailConfirmation.hasError('pattern') ||
+          form.controls.emailConfirmation !==
+          form.controls.email
+            ? (this.errorMessage = 'Valor inválido para confirmação de e-mail')
+            : '';
+        }
+      }
     }
 
-    form.controls.password.hasError('pattern')
-      ? (this.errorMessage = 'Valor inválido para senha')
-      : '';
-
-    form.controls.passwordConfirmation.hasError('pattern') ||
-    form.controls.passwordConfirmation !== form.controls.password
-      ? (this.errorMessage = 'Valor inválido para confirmação de senha')
-      : '';
-
-    form.controls.email.hasError('pattern')
-      ? (this.errorMessage = 'Valor inválido para e-mail')
-      : '';
-
-    form.controls.emailConfirmation.hasError('pattern') ||
-    form.controls.emailConfirmation !== this.formProfessional.controls.email
-      ? (this.errorMessage = 'Valor inválido para confirmação de e-mail')
-      : '';
+    console.log( form);
 
     return this.errorMessage;
   }
@@ -265,6 +257,7 @@ export class RegisterComponent {
   public professionalFieldsValidator() {
     let form = this.formProfessional;
     this.errorMessage = this.genericFieldsValidator(form);
+
     form.controls.cpf.hasError('pattern')
       ? (this.errorMessage = 'Valor inválido para cpf')
       : '';
@@ -275,8 +268,9 @@ export class RegisterComponent {
   public companyFieldsValidator() {
     let form = this.formCompany;
     this.errorMessage = this.genericFieldsValidator(form);
+
     form.controls.cnpj.hasError('pattern')
-      ? (this.errorMessage = 'Valor inválido para cpf')
+      ? (this.errorMessage = 'Valor inválido para cnpj')
       : '';
 
     return this.errorMessage;
@@ -296,88 +290,100 @@ export class RegisterComponent {
     return object;
   }
 
-  public registerUser(form: any) {
+  public registerUser(form: any): IUser | null {
     this.professionalFieldsValidator();
 
-    let professional: IProfessional = {
-      cpf: form.controls.cpf.value,
-      serviceDescription: form.controls.serviceDescription.value,
-      email: form.controls.email.value,
-      emailConfirmation: form.controls.emailConfirmation.value,
-      lastname: form.controls.lastname.value,
-      name: form.controls.name.value,
-      password: form.controls.password.value,
-      passwordConfirmation: form.controls.passwordConfirmation.value,
-      serviceType: form.controls.serviceType.value,
-      link: '',
-      slug: '',
-      localization: {
-        state: form.controls.addressState.value,
-        city: form.controls.addressCity.value,
-        neighborhood: form.controls.addressNeighborhood.value,
-        street: form.controls.addressStreet,
-        number: form.controls.addressNumber,
-        complement: form.controls.addressComplement.value,
-        cep: form.controls.addressCep,
-      },
-      serviceArea: {
-        state: form.controls.serviceAddressState.value,
-        city: form.controls.serviceAddressCity.value,
-        neighborhood: form.controls.serviceAddressNeighborhood.value,
-        street: form.controls.serviceAddressStreet,
-        number: form.controls.serviceAddressNumber,
-        complement: form.controls.serviceAddressComplement.value,
-        cep: form.controls.serviceAddressCep,
-      },
-      images: [],
-      socialNetworks: [],
-      categories: [form.controls.serviceCategory.value],
-    };
+    if (form.valid === true) {
+      let professional: IProfessional = {
+        cpf: form.controls.cpf.value,
+        serviceDescription: form.controls.serviceDescription.value,
+        email: form.controls.email.value,
+        emailConfirmation: form.controls.emailConfirmation.value,
+        lastname: form.controls.lastname.value,
+        name: form.controls.name.value,
+        password: form.controls.password.value,
+        passwordConfirmation: form.controls.passwordConfirmation.value,
+        serviceType: form.controls.serviceType.value,
+        link: '',
+        slug: '',
+        localization: {
+          state: form.controls.addressState.value,
+          city: form.controls.addressCity.value,
+          neighborhood: form.controls.addressNeighborhood.value,
+          street: form.controls.addressStreet,
+          number: form.controls.addressNumber,
+          complement: form.controls.addressComplement.value,
+          cep: form.controls.addressCep,
+        },
+        serviceArea: {
+          state: form.controls.serviceAddressState.value,
+          city: form.controls.serviceAddressCity.value,
+          neighborhood: form.controls.serviceAddressNeighborhood.value,
+          street: form.controls.serviceAddressStreet,
+          number: form.controls.serviceAddressNumber,
+          complement: form.controls.serviceAddressComplement.value,
+          cep: form.controls.serviceAddressCep,
+        },
+        images: [],
+        socialNetworks: [],
+        categories: [form.controls.serviceCategory.value],
+      };
 
-    this.generateSlug(professional);
-    this.generateLink(professional);
+      this.generateSlug(professional);
+      this.generateLink(professional);
+
+      return professional;
+    }
+
+    return null;
   }
 
-  public registerCompany(form: any) {
+  public registerCompany(form: any): IProfessional | null {
     this.companyFieldsValidator();
 
-    let company: ICompany = {
-      cnpj: form.controls.cnpj.value,
-      serviceDescription: form.controls.serviceDescription.value,
-      email: form.controls.email.value,
-      emailConfirmation: form.controls.emailConfirmation.value,
-      lastname: form.controls.lastname.value,
-      name: form.controls.name.value,
-      password: form.controls.password.value,
-      passwordConfirmation: form.controls.passwordConfirmation.value,
-      serviceType: form.controls.serviceType.value,
-      link: '',
-      slug: '',
-      localization: {
-        state: form.controls.addressState.value,
-        city: form.controls.addressCity.value,
-        neighborhood: form.controls.addressNeighborhood.value,
-        street: form.controls.addressStreet,
-        number: form.controls.addressNumber,
-        complement: form.controls.addressComplement.value,
-        cep: form.controls.addressCep,
-      },
-      serviceArea: {
-        state: form.controls.serviceAddressState.value,
-        city: form.controls.serviceAddressCity.value,
-        neighborhood: form.controls.serviceAddressNeighborhood.value,
-        street: form.controls.serviceAddressStreet,
-        number: form.controls.serviceAddressNumber,
-        complement: form.controls.serviceAddressComplement.value,
-        cep: form.controls.serviceAddressCep,
-      },
-      images: [],
-      socialNetworks: [],
-      categories: [form.controls.serviceCategory.value],
-    };
+    if (form.valid === true) {
+      let company: ICompany = {
+        cnpj: form.controls.cnpj.value,
+        serviceDescription: form.controls.serviceDescription.value,
+        email: form.controls.email.value,
+        emailConfirmation: form.controls.emailConfirmation.value,
+        lastname: form.controls.lastname.value,
+        name: form.controls.name.value,
+        password: form.controls.password.value,
+        passwordConfirmation: form.controls.passwordConfirmation.value,
+        serviceType: form.controls.serviceType.value,
+        link: '',
+        slug: '',
+        localization: {
+          state: form.controls.addressState.value,
+          city: form.controls.addressCity.value,
+          neighborhood: form.controls.addressNeighborhood.value,
+          street: form.controls.addressStreet,
+          number: form.controls.addressNumber,
+          complement: form.controls.addressComplement.value,
+          cep: form.controls.addressCep,
+        },
+        serviceArea: {
+          state: form.controls.serviceAddressState.value,
+          city: form.controls.serviceAddressCity.value,
+          neighborhood: form.controls.serviceAddressNeighborhood.value,
+          street: form.controls.serviceAddressStreet,
+          number: form.controls.serviceAddressNumber,
+          complement: form.controls.serviceAddressComplement.value,
+          cep: form.controls.serviceAddressCep,
+        },
+        images: [],
+        socialNetworks: [],
+        categories: [form.controls.serviceCategory.value],
+      };
 
-    this.generateSlug(company);
-    this.generateLink(company);
+      this.generateSlug(company);
+      this.generateLink(company);
+
+      return company;
+    }
+
+    return null;
   }
 
   trackByFn(item: any, index: any) {
