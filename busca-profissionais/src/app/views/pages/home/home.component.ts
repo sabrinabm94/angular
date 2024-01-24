@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { IHome } from 'src/app/utils/interfaces/IHome.interface';
-import TrackByFn from '../../../utils/trackByFn';
 import { IProfessional } from '../../../utils/interfaces/IProfessional';
-import ServiceTypeTransformation from '../../../utils/serviceTypeTransformation';
+import typeTransformationService from '../../../services/typeTransformation.service';
+import dataService from '../../../services/data.service';
+import TrackByFn from '@app/utils/trackByFn';
 
 @Component({
   selector: 'app-home',
@@ -13,6 +14,7 @@ export class HomeComponent {
   public projectTitle: string = '';
   public projectDescription: string = '';
   private searchTerm: string = '';
+  data: any;
 
   public componentParams: IHome = {
     images: [
@@ -214,7 +216,7 @@ export class HomeComponent {
         },
       ],
       serviceDescription: 'Atuo a mais de 10 anos como diarista.',
-      serviceType: [ServiceTypeTransformation.serviceTypeTransformation(1)],
+      serviceType: [typeTransformationService.serviceTypeTransformation(1)],
       email: '',
       emailConfirmation: '',
     },
@@ -234,6 +236,13 @@ export class HomeComponent {
 
   private searchProfessionalByTerm(term: string) {
     return console.log(term);
+  }
+
+  private getData() {
+    dataService.getData().subscribe((response: any) => {
+      this.data = response;
+      console.log(this.data);
+    });
   }
 
   trackByFn(item: any, index: any) {

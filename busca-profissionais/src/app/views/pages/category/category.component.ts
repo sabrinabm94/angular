@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ICategory } from 'src/app/utils/interfaces/ICategory.interface';
-import ServiceTypeTransformation from '../../../utils/serviceTypeTransformation';
+import ServiceTypeTransformation from '../../../services/typeTransformation.service';
 import TrackByFn from '../../../utils/trackByFn';
 import { IProfessional } from '../../../utils/interfaces/IProfessional';
 

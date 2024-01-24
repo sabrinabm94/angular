@@ -1,5 +1,5 @@
-export class ServiceTypeTransformation {
-  static serviceTypeTransformation(serviceTypeNumber: number): string | import("./enums/ServiceType").ServiceType {
+export class TypeTransformationService {
+  static serviceTypeTransformation(serviceTypeNumber: number): string | import("../utils/enums/ServiceType").ServiceType {
     if (serviceTypeNumber === 1) {
       return 'Presencial';
     }
@@ -14,4 +14,4 @@ export class ServiceTypeTransformation {
   }
 }
 
-export default ServiceTypeTransformation;
+export default TypeTransformationService;
