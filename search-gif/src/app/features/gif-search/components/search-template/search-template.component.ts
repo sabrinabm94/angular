@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { GifService } from 'src/app/api/gif.service';
-import { FormComponent } from 'src/app/components/form/form.component';
+import { FormComponent } from 'src/app/shared/components/form/form.component';
 
 @Component({
   selector: 'app-search-template',

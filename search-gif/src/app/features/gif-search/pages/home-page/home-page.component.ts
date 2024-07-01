@@ -1,5 +1,5 @@
 import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
-import { ResultsTemplateComponent } from '../../templates/results-template/results-template.component';
+import { ResultsTemplateComponent } from '../../../features/gif-search/components/results-template/results-template.component';
 
 @Component({
   selector: 'app-home-page',

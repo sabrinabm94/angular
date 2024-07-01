@@ -5,18 +5,18 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './ui/pages/home-page/home-page.component';
-import { ResultsTemplateComponent } from './ui/templates/results-template/results-template.component';
+import { ResultsTemplateComponent } from './features/gif-search/components/results-template/results-template.component';
 import { SearchTemplateComponent } from './ui/templates/search-template/search-template.component';
 import { NotFoundComponent } from './ui/pages/not-found-page/not-found.component';
-import { ButtonComponent } from './components/button/button.component';
-import { PictureComponent } from './components/picture/picture.component';
-import { InputComponent } from './components/input/input.component';
-import { FormComponent } from './components/form/form.component';
+import { ButtonComponent } from './shared/components/button/button.component';
+import { PictureComponent } from './shared/components/picture/picture.component';
+import { InputComponent } from './shared/components/input/input.component';
+import { FormComponent } from './shared/components/form/form.component';
 import { GifService } from './api/gif.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { HeaderComponent } from './ui/templates/header/header.component';
-import { FooterComponent } from './ui/templates/footer/footer.component';
+import { HeaderComponent } from './core/services/components/header/header.component';
+import { FooterComponent } from './core/services/components/footer/footer.component';
 
 @NgModule({
   declarations: [
