@@ -72,10 +72,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "search-gif:build:production"
+              "buildTarget": "search-gif:build:production"
             },
             "development": {
-              "browserTarget": "search-gif:build:development"
+              "buildTarget": "search-gif:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -105,6 +105,5 @@
         }
       }
     }
-  },
-  "defaultProject": "search-gif"
+  }
 }
