@@ -1,46 +1,35 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/internal/Observable';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable, throwError } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from "@angular/common/http";
+import { catchError } from 'rxjs/operators';
 import { Gif } from '../data/gif';
+import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'any',
+  providedIn: 'root',
 })
 export class GifService {
-  private apiKey: string = 'MeGG5sG2LWbeS2S6FhMHEBByZ51gsRie';
-  private shortUrl: string = '//api.giphy.com/v1/gifs/search?q=';
-  public limitPattern: string = '^-?[0-9]\\d*(\\.\\d{1,2})?$';
-  public termPattern: string = '^[a-zA-Z0-9]*$';
-  public headers = { headers: new HttpHeaders() };
-  public maxLimit = 50;
-  private english = "en";
-  private spanish = "es";
-  private portuguese = "pt";
-  private brazilianPortuguese = "pt-br";
+  private readonly API_KEY = environment.apiKey;
+  private readonly BASE_URL = environment.baseUrl;
+  private readonly MAX_LIMIT = 50;
+  private readonly LANG = 'en';
+  private readonly HEADERS = { headers: new HttpHeaders() };
 
   constructor(private http: HttpClient) {}
 
-  getUrl(term: string, limit: number): string {
-    return this.shortUrl + term + '&api_key=' + this.apiKey + '&limit=' + limit + '&lang=' + this.english;
+  private buildUrl(term: string, limit: number): string {
+    return `${this.BASE_URL}?q=${encodeURIComponent(term)}&api_key=${this.API_KEY}&limit=${limit}&lang=${this.LANG}`;
   }
 
-  getApiKey(): string {
-    return this.apiKey;
+  searchGifs(term: string, limit: number = this.MAX_LIMIT): Observable<Gif[]> {
+    const url = this.buildUrl(term, limit);
+    return this.http.get<Gif[]>(url, this.HEADERS).pipe(
+      catchError(this.handleError)
+    );
   }
 
-  searchGif(term: string, limit: number): any {
-    if(!limit) {
-      limit = this.maxLimit;
-    }
-    let url: string = this.getUrl(term, limit);
-    return this.http.get<Gif[]>(`${url}`, this.headers);
-  }
-
-  searchGifObservable(term: string, limit: number): Observable<any> {
-    if(!limit) {
-      limit = this.maxLimit;
-    }
-    let url: string = this.getUrl(term, limit);
-    return this.http.get<Gif[]>(`${url}`, this.headers);
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    console.error('An error occurred:', error.message);
+    return throwError(() => new Error('Something went wrong; please try again later.'));
   }
 }
