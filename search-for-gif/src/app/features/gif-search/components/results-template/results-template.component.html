@@ -1,0 +1,15 @@
+<section class="results" *ngIf="data.length > 0">
+  <hr>
+  <h2 class="big-title">Results</h2>
+  <ng-content></ng-content>
+  <div class="row">
+    <div class="col-12 col-sm-6 col-md-4" *ngFor="let item of data | paginate: { itemsPerPage: 5, currentPage: p }">
+      <!-- <a href={{item.url}} target="_blank" class="link gif-link"> -->
+      <a target="_blank" class="link gif-link">
+        <app-picture image={{item.images.original.url}} class="gif-image"></app-picture>
+        <h3 class="small-title text-center">{{item.title}}</h3>
+      </a>
+    </div>
+  </div>
+  <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+</section>
