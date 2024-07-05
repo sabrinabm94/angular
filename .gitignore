@@ -68,3 +68,5 @@ aio/out-tsc
 # Envs
 .Envs
 .envs
+.Env
+.env
