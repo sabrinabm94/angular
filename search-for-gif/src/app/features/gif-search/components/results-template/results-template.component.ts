@@ -13,11 +13,9 @@ export class ResultsTemplateComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
 
-  }
-
-  public setData(data: any) { //receive data from parent by function - from page home
+  public setData(data: any) { //recebe dados do pai através da função - da página inicial
     this.data = data;
   }
 }

@@ -10,7 +10,6 @@ export class PictureComponent implements OnInit {
 
   @Input() id: string = "";
   @Input() class: string = "";
-  //@Input() image: string = "";
   @Input() image!: string;
 
   constructor() {}
