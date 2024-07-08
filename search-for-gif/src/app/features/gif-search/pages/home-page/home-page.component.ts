@@ -1,12 +1,17 @@
-import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
-import { ResultsTemplateComponent } from '../../components/results-template/results-template.component';
+import { Component, HostBinding, ViewChild } from '@angular/core';
+import { HeaderComponent } from "../../../../shared/components/header/header.component";
+import { SearchTemplateComponent } from "../../components/search-template/search-template.component";
+import { ResultsTemplateComponent } from "../../components/results-template/results-template.component";
+import { FooterComponent } from "../../../../shared/components/footer/footer.component";
 
 @Component({
-  selector: 'app-home-page',
-  templateUrl: './home-page.component.html',
-  styleUrls: ['./home-page.component.css'],
+    selector: 'app-home-page',
+    standalone: true,
+    templateUrl: './home-page.component.html',
+    styleUrl: './home-page.component.css',
+    imports: [HeaderComponent, SearchTemplateComponent, ResultsTemplateComponent, FooterComponent]
 })
-export class HomePageComponent implements OnInit {
+export class HomePageComponent {
   @ViewChild(ResultsTemplateComponent)
   resultsTemplateComponent!: ResultsTemplateComponent;
 

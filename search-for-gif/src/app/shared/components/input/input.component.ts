@@ -1,11 +1,13 @@
-import { Component, HostBinding, Input, OnInit } from '@angular/core';
+import { Component, HostBinding, Input } from '@angular/core';
 
 @Component({
   selector: 'app-input',
+  standalone: true,
+  imports: [],
   templateUrl: './input.component.html',
-  styleUrls: ['./input.component.css'],
+  styleUrl: './input.component.css'
 })
-export class InputComponent implements OnInit {
+export class InputComponent {
   @HostBinding('class') hostClass: string = "app-input";
 
   @Input() id: string = '';

@@ -1,12 +1,14 @@
-import { Component, HostBinding, Input, OnInit } from '@angular/core';
+import { Component, HostBinding, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-form',
+  standalone: true,
+  imports: [],
   templateUrl: './form.component.html',
-  styleUrls: ['./form.component.css'],
+  styleUrl: './form.component.css'
 })
-export class FormComponent implements OnInit {
+export class FormComponent {
   @HostBinding('class') hostClass: string = 'app-form';
 
   @Input() id: string = '';

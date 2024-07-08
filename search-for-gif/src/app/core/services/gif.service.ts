@@ -1,14 +1,16 @@
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from "@angular/common/http";
-import { catchError } from 'rxjs/operators';
-import { Gif } from '../../data/models/gif';
-import { environment } from '../../../environments/environment';
+import { Observable } from 'rxjs/internal/Observable';
+import { throwError } from 'rxjs/internal/observable/throwError';
+import { catchError } from 'rxjs/internal/operators/catchError';
+import { Gif } from '../../data/models/gif.model';
+import { environment } from '../../../environments/environment.prod';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class GifService {
+
   private readonly API_KEY = environment.apiKey;
   private readonly BASE_URL = environment.baseUrl;
   private readonly MAX_LIMIT = 50;

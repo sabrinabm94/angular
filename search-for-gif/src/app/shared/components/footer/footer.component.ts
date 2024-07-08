@@ -1,16 +1,17 @@
-import { Component, HostBinding, OnInit } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 
 @Component({
   selector: 'app-footer',
+  standalone: true,
+  imports: [],
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.css'],
+  styleUrl: './footer.component.css'
 })
-export class FooterComponent implements OnInit {
+export class FooterComponent {
   @HostBinding('class') class: string = "app-footer";
 
   constructor() { }
 
   ngOnInit(): void {
   }
-
 }

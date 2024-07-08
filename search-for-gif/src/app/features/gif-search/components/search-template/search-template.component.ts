@@ -1,22 +1,18 @@
-import {
-  Component,
-  EventEmitter,
-  HostBinding,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Component, EventEmitter, HostBinding, Output, ViewChild } from '@angular/core';
+import { FormComponent } from "../../../../shared/components/form/form.component";
+import { InputComponent } from "../../../../shared/components/input/input.component";
+import { ButtonComponent } from "../../../../shared/components/button/button.component";
 import { GifService } from '../../../../core/services/gif.service';
-import { FormComponent } from '../../../../shared/components/form/form.component';
+import { FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-search-template',
-  templateUrl: './search-template.component.html',
-  styleUrls: ['./search-template.component.css'],
-  providers: [GifService],
+    selector: 'app-search-template',
+    standalone: true,
+    templateUrl: './search-template.component.html',
+    styleUrl: './search-template.component.css',
+    imports: [FormComponent, InputComponent, ButtonComponent]
 })
-export class SearchTemplateComponent implements OnInit {
+export class SearchTemplateComponent {
   @Output() dataEmitter = new EventEmitter<any>();
 
   @ViewChild('FormComponent', { static: true })

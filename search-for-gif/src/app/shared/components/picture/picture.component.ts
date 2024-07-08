@@ -1,11 +1,13 @@
-import { Component, HostBinding, Input, OnInit } from '@angular/core';
+import { Component, HostBinding, Input } from '@angular/core';
 
 @Component({
   selector: 'app-picture',
+  standalone: true,
+  imports: [],
   templateUrl: './picture.component.html',
-  styleUrls: ['./picture.component.css'],
+  styleUrl: './picture.component.css'
 })
-export class PictureComponent implements OnInit {
+export class PictureComponent {
   @HostBinding('class') hostClass: string = "app-picture";
 
   @Input() id: string = "";

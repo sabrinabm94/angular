@@ -1,24 +1,22 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
-import { AppComponent } from './app.component';
-import { NotFoundComponent } from './features/gif-search/pages/not-found-page/not-found.component';
-import { HomePageComponent } from './features/gif-search/pages/home-page/home-page.component';
+import { NotFoundPageComponent } from './features/gif-search/pages/not-found-page/not-found-page.component';
+import { GifSearchModule } from './features/gif-search/gif-search.module';
+import { HttpClientModule } from '@angular/common/http';
 
 const routes: Routes = [
-  { path: '', component: HomePageComponent },
-  { path: '**', component: NotFoundComponent }
+  { path: '', loadChildren: () => import('./features/gif-search/gif-search.module').then(m => m.GifSearchModule) },
+  { path: '**', component: NotFoundPageComponent }
 ];
 
 @NgModule({
-  declarations: [
-    HomePageComponent,
-    NotFoundComponent
-  ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(routes) // Configurar rotas
+    RouterModule.forRoot(routes),
+    GifSearchModule,
+    HttpClientModule
   ],
-  providers: []
+  providers: [],
 })
 export class AppModule { }

@@ -1,11 +1,13 @@
-import { Component, HostBinding, Input, OnInit } from '@angular/core';
+import { Component, HostBinding, Input } from '@angular/core';
 
 @Component({
   selector: 'app-button',
+  standalone: true,
+  imports: [],
   templateUrl: './button.component.html',
-  styleUrls: ['./button.component.css'],
+  styleUrl: './button.component.css'
 })
-export class ButtonComponent implements OnInit {
+export class ButtonComponent {
   @HostBinding('class') hostClass: string = "app-button";
 
   @Input() id: string = '';
@@ -13,8 +15,6 @@ export class ButtonComponent implements OnInit {
   @Input() text: string = '';
   @Input() form: any = null;
   @Input() disabled: boolean = false;
-
-  constructor() {}
 
   ngOnInit(): void {}
 }
