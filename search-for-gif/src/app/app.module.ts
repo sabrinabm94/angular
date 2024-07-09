@@ -16,7 +16,6 @@ import { GifSearchModule } from './features/gif-search/gif-search.module';
     RouterModule.forRoot(routes),
     GifSearchModule
   ],
-  providers: [RouterModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

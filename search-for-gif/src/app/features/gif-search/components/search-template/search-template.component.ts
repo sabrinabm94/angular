@@ -4,6 +4,7 @@ import { GifService } from '../../../../core/services/gif.service';
 import { FormGroup } from '@angular/forms';
 import { InputComponent } from 'src/app/shared/components/input/input.component';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
+import { Gif } from 'src/app/data/models/gif.model';
 
 @Component({
     selector: 'app-search-template',
@@ -20,7 +21,7 @@ export class SearchTemplateComponent {
 
   @HostBinding('class') class: string = 'app-search-template';
 
-  public gifs: any[] = [];
+  public gifs: Gif[] = [];
   public form: any = null;
   public limitPattern: String = '^-?[0-9]\\d*(\\.\\d{1,2})?$';
   public termPattern: String = '^[a-zA-Z0-9]*$';
@@ -39,13 +40,28 @@ export class SearchTemplateComponent {
       .searchGifs(form.value.term, form.value.limit)
       .toPromise()
       .catch((error: any) => (this.error = error));
-    this.verifyResponse(response.data);
+    this.verifyResponse(response.data, form.value.term);
   }
 
-  verifyResponse(response: any): any {
+  verifyResponse(gifsList: any, searchTerm: string): any {
+    let dataList = gifsList.data;
     this.gifs = [];
-    if (this.error == null) {
-      response.forEach((gif: never) => {
+
+    if (this.error === null) {
+      dataList.forEach((data: any) => {
+        console.log(data);
+        let gif = new Gif(
+          searchTerm,
+          data.id,
+          data.title,
+          data.alt_text,
+          data.type,
+          //data.bitly_gif_url,
+          data.images.preview_gif.url,
+          data.images.preview_webp.url,
+        );
+        console.log(gif);
+
         this.gifs.push(gif);
       });
       this.dataEmitter.emit(this.gifs); //send data to parent by output emmit - to page home
@@ -84,7 +100,7 @@ export class SearchTemplateComponent {
     this.service
       .searchGifs(this.form.value.term, this.form.value.limit)
       .subscribe(
-        (response) => this.verifyResponse(response),
+        (response) => this.verifyResponse(response, this.form.value.term),
         (error) => (this.error = error)
       );
   }

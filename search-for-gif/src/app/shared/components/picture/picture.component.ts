@@ -11,7 +11,10 @@ export class PictureComponent {
 
   @Input() id: string = "";
   @Input() class: string = "";
-  @Input() image!: string;
+  @Input() title: string = "";
+  @Input() url: string = "";
+  @Input() urlPreview: string = "";
+  @Input() alt: string = "";
 
   constructor() {}
 

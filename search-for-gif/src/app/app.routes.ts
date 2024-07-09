@@ -4,6 +4,8 @@ import { HomePageComponent } from './features/gif-search/pages/home-page/home-pa
 
 export const routes: Routes = [
   { path: '', loadChildren: () => import('./features/gif-search/gif-search.module').then(m => m.GifSearchModule) },
-  { path: '**', component: NotFoundPageComponent },
-  { path: 'home', component: HomePageComponent },
+  { path: 'home', component: NotFoundPageComponent },
+  { path: '404', component: HomePageComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '**', redirectTo: '/404' }
 ];

@@ -1,16 +1,12 @@
-<section class="results" *ngIf="data.length > 0">
+<section class="results" *ngIf="data?.length">
   <hr>
-  <h2 class="big-title">Results</h2>
-  <ng-content></ng-content>
+  <h2 class="big-title">Results for "<span class="small-title" *ngIf="data[0].searchTerm">{{data[0].searchTerm}}</span>"</h2>
   <div class="row">
-    <div class="col-12 col-sm-6 col-md-4" *ngFor="let item of data | paginate: { itemsPerPage: 5, currentPage: p }">
+    <div class="col-12 col-sm-6 col-md-4" *ngFor="let item of data">
       <a target="_blank" class="link gif-link">
-        <app-picture [image]="item.images.original.url" class="gif-image"></app-picture>
-        <h3 class="small-title text-center">{{item.title}}</h3>
+        <app-picture [url]="item.url" [urlPreview]="item.urlPreview" class="gif-image" [id]="item.id" [title]="item.title" [alt]="item.alt"></app-picture>
       </a>
     </div>
   </div>
   <pagination-controls (pageChange)="p = $event"></pagination-controls>
 </section>
-
-
