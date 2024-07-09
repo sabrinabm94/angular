@@ -11,8 +11,10 @@ Scripts for testing javascript features and sintax, and apps.
 npm outdated
 npm install -g npm-check-updates
 npx npm-check-updates -u
+ng update @angular/core @angular/cli
 //Remove node_modules folder and package-lock.json file
 npm install
+npm audit fix
 npm fund
 ```
 
@@ -25,7 +27,8 @@ npm cache clean
 
 ## Install deps
 ```js
-npm install -g dep
+npm install dep@latest
+
 ```
 
 ## Fix errors
@@ -45,6 +48,17 @@ Set-ExecutionPolicy RemoteSigned
 //A
 Get-ExecutionPolicy
 ```
+
+## Tests
+ng e2e
+
+## Run
+### Dev
+ng serve --open
+
+### Server
+ng build --configuration production
+ng run search-for-gif:server
 
 # Contact
 

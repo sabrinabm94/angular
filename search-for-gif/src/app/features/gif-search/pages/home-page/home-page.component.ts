@@ -6,10 +6,9 @@ import { FooterComponent } from "../../../../shared/components/footer/footer.com
 
 @Component({
     selector: 'app-home-page',
-    standalone: true,
+    standalone: false,
     templateUrl: './home-page.component.html',
     styleUrl: './home-page.component.css',
-    imports: [HeaderComponent, SearchTemplateComponent, ResultsTemplateComponent, FooterComponent]
 })
 export class HomePageComponent {
   @ViewChild(ResultsTemplateComponent)

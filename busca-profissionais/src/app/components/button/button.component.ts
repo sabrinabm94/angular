@@ -1,12 +1,15 @@
-import { Component, Input } from '@angular/core';
-import { IButton } from 'src/app/utils/interfaces/IButton.interface';
+import { Component, HostBinding, Input } from '@angular/core';
+import { IButton } from '@app/utils/interfaces/IButton.interface';
 
 @Component({
   selector: 'app-button',
+  standalone: false,
   templateUrl: './button.component.html',
-  styleUrls: ['./button.component.css']
+  styleUrl: './button.component.css'
 })
 export class ButtonComponent {
+  @HostBinding('class') hostClass: string = "app-button";
+
   @Input() public className: string = "";
   @Input() public text: string = "";
   @Input() public disabled: string = "";
@@ -16,3 +19,4 @@ export class ButtonComponent {
     text: this.text
   };
 }
+

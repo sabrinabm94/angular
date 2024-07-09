@@ -4,10 +4,9 @@ import { Gif } from '../../../../data/models/gif.model';
 
 @Component({
     selector: 'app-results-template',
-    standalone: true,
+    standalone: false,
     templateUrl: './results-template.component.html',
     styleUrl: './results-template.component.css',
-    imports: [PictureComponent]
 })
 export class ResultsTemplateComponent {
   @HostBinding('class') class: string = "app-results-template";
