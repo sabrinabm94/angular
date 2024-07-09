@@ -1,10 +1,12 @@
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, HostBinding, Input } from '@angular/core';
 import { PictureComponent } from "../../../../shared/components/picture/picture.component";
 import { Gif } from '../../../../data/models/gif.model';
 
 @Component({
     selector: 'app-results-template',
-    standalone: false,
+    standalone: true,
+    imports: [PictureComponent],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA], //para permitir o uso do component web de paginação (3 party)
     templateUrl: './results-template.component.html',
     styleUrl: './results-template.component.css',
 })
@@ -26,3 +28,4 @@ export class ResultsTemplateComponent {
   }
 
 }
+

@@ -6,15 +6,15 @@ import { SharedModule } from './shared/shared.module';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { routes } from './app.routes';
+import { GifSearchModule } from './features/gif-search/gif-search.module';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
-    CoreModule,
-    SharedModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    GifSearchModule
   ],
   providers: [RouterModule],
   bootstrap: [AppComponent]

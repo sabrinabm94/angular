@@ -2,7 +2,7 @@ import { Component, HostBinding, Input } from '@angular/core';
 
 @Component({
   selector: 'app-input',
-  standalone: false,
+  standalone: true,
   templateUrl: './input.component.html',
   styleUrl: './input.component.css'
 })

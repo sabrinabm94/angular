@@ -2,7 +2,7 @@ import { Component, HostBinding, Input } from '@angular/core';
 
 @Component({
   selector: 'app-picture',
-  standalone: false,
+  standalone: true,
   templateUrl: './picture.component.html',
   styleUrl: './picture.component.css'
 })

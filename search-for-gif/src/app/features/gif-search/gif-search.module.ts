@@ -9,6 +9,7 @@ import { GifService } from 'src/app/core/services/gif.service';
 import { ResultsTemplateComponent } from './components/results-template/results-template.component';
 import { SearchTemplateComponent } from './components/search-template/search-template.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
+import { GifSearchRoutingModule } from './gif-search-routing.module';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
@@ -19,15 +20,25 @@ const routes: Routes = [
     HomePageComponent,
     NotFoundPageComponent,
     ResultsTemplateComponent,
-    SearchTemplateComponent
+    SearchTemplateComponent,
   ],
-  providers: [GifService],
+  providers: [GifService, RouterModule],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     NgxPaginationModule,
     HttpClientModule,
     SharedModule,
+    HomePageComponent,
+    NotFoundPageComponent,
+    ResultsTemplateComponent,
+    SearchTemplateComponent,
+  ],
+  exports: [
+    HomePageComponent,
+    NotFoundPageComponent,
+    ResultsTemplateComponent,
+    SearchTemplateComponent,
   ]
 })
 export class GifSearchModule { }

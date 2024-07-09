@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-form',
-  standalone: false,
+  standalone: true,
   templateUrl: './form.component.html',
   styleUrl: './form.component.css'
 })

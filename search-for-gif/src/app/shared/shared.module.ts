@@ -6,7 +6,6 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { InputComponent } from './components/input/input.component';
 import { FormComponent } from './components/form/form.component';
-import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -19,7 +18,6 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     CommonModule,
-    RouterModule
   ],
   exports: [
     ButtonComponent,

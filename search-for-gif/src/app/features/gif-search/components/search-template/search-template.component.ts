@@ -2,10 +2,13 @@ import { Component, EventEmitter, HostBinding, Output, ViewChild } from '@angula
 import { FormComponent } from "../../../../shared/components/form/form.component";
 import { GifService } from '../../../../core/services/gif.service';
 import { FormGroup } from '@angular/forms';
+import { InputComponent } from 'src/app/shared/components/input/input.component';
+import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 
 @Component({
     selector: 'app-search-template',
-    standalone: false,
+    standalone: true,
+    imports: [FormComponent, InputComponent, ButtonComponent],
     templateUrl: './search-template.component.html',
     styleUrl: './search-template.component.css',
 })
@@ -31,12 +34,12 @@ export class SearchTemplateComponent {
   }
 
   async searchByAsync(form: FormGroup) {
-    // this.error = null;
-    // let response = await this.service
-    //   .searchGifs(form.value.term, form.value.limit)
-    //   .toPromise()
-    //   .catch((error: any) => (this.error = error));
-    // this.verifyResponse(response.data);
+    this.error = null;
+    let response = await this.service
+      .searchGifs(form.value.term, form.value.limit)
+      .toPromise()
+      .catch((error: any) => (this.error = error));
+    this.verifyResponse(response.data);
   }
 
   verifyResponse(response: any): any {
@@ -74,15 +77,15 @@ export class SearchTemplateComponent {
   }
 
   searchBySubscribe($event: any) {
-    // this.form.value.term = $event.srcElement.form[0].value;
-    // this.form.value.limit = $event.srcElement.form[1].value;
-    // $event.preventDefault();
-    // this.error = null;
-    // this.service
-    //   .searchGifs(this.form.value.term, this.form.value.limit)
-    //   .subscribe(
-    //     (response) => this.verifyResponse(response),
-    //     (error) => (this.error = error)
-    //   );
+    this.form.value.term = $event.srcElement.form[0].value;
+    this.form.value.limit = $event.srcElement.form[1].value;
+    $event.preventDefault();
+    this.error = null;
+    this.service
+      .searchGifs(this.form.value.term, this.form.value.limit)
+      .subscribe(
+        (response) => this.verifyResponse(response),
+        (error) => (this.error = error)
+      );
   }
 }
