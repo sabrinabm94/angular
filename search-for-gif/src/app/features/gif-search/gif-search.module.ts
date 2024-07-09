@@ -8,6 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { GifService } from 'src/app/core/services/gif.service';
 import { ResultsTemplateComponent } from './components/results-template/results-template.component';
 import { SearchTemplateComponent } from './components/search-template/search-template.component';
+import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
@@ -16,6 +17,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     HomePageComponent,
+    NotFoundPageComponent,
     ResultsTemplateComponent,
     SearchTemplateComponent
   ],
@@ -25,7 +27,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     NgxPaginationModule,
     HttpClientModule,
-    SharedModule
+    SharedModule,
   ]
 })
 export class GifSearchModule { }
