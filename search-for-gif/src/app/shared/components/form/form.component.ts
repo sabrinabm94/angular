@@ -29,12 +29,12 @@ export class FormComponent {
     return this.form;
   }
 
-  public createFields(form: FormGroup, fields: any[]) {
+  public createFields(form: FormGroup, fields: any[]): FormGroup  {
     form = new FormGroup({});
     fields.forEach((field: any) => {
       form.addControl(
         field.name,
-        new FormControl(field.name, [
+        new FormControl("", [
           Validators.minLength(field.minLength),
           Validators.maxLength(field.maxLength),
           Validators.pattern(field.pattern),
