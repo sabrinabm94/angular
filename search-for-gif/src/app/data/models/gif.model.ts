@@ -6,14 +6,8 @@ export interface Gif {
   title: string;
   alt_text: string;
   type: string;
-  images: {
-    preview_gif: {
-      url: string;
-    }
-    preview_webp: {
-      url: string;
-    }
-  }
+  previewGif: string;
+  previewWebp: string;
 }
 
 export class Gif {
@@ -22,14 +16,8 @@ export class Gif {
   title: string;
   alt_text: string;
   type: string;
-  images: {
-    preview_gif: {
-      url: string;
-    }
-    preview_webp: {
-      url: string;
-    }
-  }
+  previewGif: string;
+  previewWebp: string;
 
   constructor(searchTerm: string, id: string, title: string, altText: string, type: string, url: string, urlPreview:string) {
     this.searchTerm = searchTerm;
@@ -37,7 +25,7 @@ export class Gif {
     this.title = title;
     this.alt_text = altText;
     this.type = type;
-    this.images.preview_gif.url = url;
-    this.images.preview_webp.url = urlPreview;
+    this.previewGif = url;
+    this.previewWebp = urlPreview;
   }
 }

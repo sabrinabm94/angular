@@ -44,23 +44,20 @@ export class SearchTemplateComponent {
   }
 
   verifyResponse(gifsList: any, searchTerm: string): any {
-    let dataList = gifsList.data;
+    let dataList = gifsList;
     this.gifs = [];
 
-    if (this.error === null) {
+    if (dataList) {
       dataList.forEach((data: any) => {
-        console.log(data);
         let gif = new Gif(
           searchTerm,
           data.id,
           data.title,
           data.alt_text,
           data.type,
-          //data.bitly_gif_url,
           data.images.preview_gif.url,
           data.images.preview_webp.url,
         );
-        console.log(gif);
 
         this.gifs.push(gif);
       });

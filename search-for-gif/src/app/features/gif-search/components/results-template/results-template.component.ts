@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
 export class ResultsTemplateComponent {
   @HostBinding('class') class: string = "app-results-template";
 
-  @Input() data: Gif[] = [];
+  @Input() gifs: Gif[] = [];
 
   p: number = 1;
 
@@ -23,8 +23,7 @@ export class ResultsTemplateComponent {
   }
 
   public setData(gifs:  Gif[]) { //recebe dados do pai através da função - da página inicial
-    this.data = gifs;
+    this.gifs = gifs;
   }
-
 }
 
