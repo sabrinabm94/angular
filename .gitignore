@@ -73,3 +73,4 @@ aio/out-tsc
 environment.prod.ts
 environment.production.ts
 environment.ts
+/environment/
