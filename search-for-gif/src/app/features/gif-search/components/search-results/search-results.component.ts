@@ -2,14 +2,15 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, HostBinding, Input } from '@angular/
 import { PictureComponent } from "../../../../shared/components/picture/picture.component";
 import { Gif } from '../../../../data/models/gif.model';
 import { CommonModule } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
-    selector: 'app-results-template',
-    standalone: true,
-    imports: [PictureComponent, CommonModule],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA], //para permitir o uso do component web de paginação (3 party)
-    templateUrl: './search-results.component.html',
-    styleUrl: './search-results.component.css',
+  selector: 'app-results-template',
+  standalone: true,
+  imports: [PictureComponent, CommonModule, NgxPaginationModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA], // para permitir o uso do componente de paginação de terceiros
+  templateUrl: './search-results.component.html',
+  styleUrls: ['./search-results.component.css'],
 })
 export class SearchResultsComponent {
   @HostBinding('class') class: string = "app-results-template";
@@ -22,8 +23,7 @@ export class SearchResultsComponent {
     this.p = event;
   }
 
-  public setData(gifs:  Gif[]) { //recebe dados do pai através da função - da página inicial
+  public setData(gifs: Gif[]) { // recebe dados do pai através da função - da página inicial
     this.gifs = gifs;
   }
 }
-

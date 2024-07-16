@@ -8,6 +8,9 @@ describe('GifService', () => {
   let service: GifService;
   let httpMock: HttpTestingController;
 
+  const term = 'cat';
+  const limit = 3;
+
   const mockGifs: Gif[] = [
     new Gif(
       '',
@@ -48,15 +51,13 @@ describe('GifService', () => {
   });
 
   it('should create a URL to search term', () => {
-    const term = 'cat';
-    const limit = 3;
+
     const expectedUrl = `${environment.baseUrl}?q=${encodeURIComponent(term)}&api_key=${environment.apiKey}&limit=${limit}&lang=en`;
     expect(service['buildUrl'](term, limit)).toBe(expectedUrl);
   });
 
   it('should receive a GIFs list for a search term', () => {
-    const term = 'cat';
-    service.searchGifs(term).subscribe((gifs) => {
+    service.searchGifs(term, limit).subscribe((gifs) => {
       expect(gifs.length).toBe(2); // Adjust to match the length of mockGifs
       expect(gifs).toEqual(mockGifs);
     });
@@ -67,16 +68,15 @@ describe('GifService', () => {
   });
 
   it('should handle empty search term error', () => {
-    service.searchGifs('').subscribe(
+    service.searchGifs('', limit).subscribe(
       () => fail('expected an error, not GIFs'),
       (error) => expect(error.message).toContain('Search term cannot be empty.')
     );
   });
 
   it('should handle HTTP errors correctly', () => {
-    const term = 'cat';
     const errorMsg = 'mock 404 error occurred';
-    service.searchGifs(term).subscribe(
+    service.searchGifs(term, 1).subscribe(
       () => fail('expected an error, not GIFs'),
       (error) => expect(error.message).toContain('Something went wrong; please try again later.')
     );

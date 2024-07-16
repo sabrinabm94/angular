@@ -3,10 +3,10 @@
   <h2 class="big-title">Results for "<span class="small-title" *ngIf="gifs[0].searchTerm">{{gifs[0].searchTerm}}</span>"
   </h2>
   <div class="row">
-    <div class="col-12 col-sm-6 col-md-4" *ngFor="let gif of gifs">
-        <app-picture [url]="gif.previewWebp" [urlPreview]="gif.previewGif" class="gif-image" [id]="gif.id"
-          [title]="gif.title" [alt]="gif.alt"></app-picture>
+    <div class="col-12 col-sm-6 col-md-4" *ngFor="let gif of gifs | paginate: { itemsPerPage: 6, currentPage: p }">
+      <app-picture [url]="gif.previewWebp" [urlPreview]="gif.previewGif" class="gif-image" [id]="gif.id"
+        [title]="gif.title" [alt]="gif.alt"></app-picture>
     </div>
   </div>
-  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  <pagination-controls (pageChange)="p = $event" class="pagination"></pagination-controls>
 </section>

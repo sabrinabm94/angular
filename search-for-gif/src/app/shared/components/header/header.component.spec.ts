@@ -1,14 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HeaderComponent } from './header.component';
-import { By } from '@angular/platform-browser';
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'test-host-component',
+  template: `
+    <app-header>
+      <h1 class="test-content">Test Header Content</h1>
+    </app-header>
+  `
+})
+class TestHostComponent {}
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
+  let hostFixture: ComponentFixture<TestHostComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HeaderComponent], // Importa o HeaderComponent
+      declarations: [HeaderComponent, TestHostComponent]
     }).compileComponents();
   });
 
@@ -16,23 +27,22 @@ describe('HeaderComponent', () => {
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
+    hostFixture = TestBed.createComponent(TestHostComponent);
+    hostFixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render the header container correctly', () => {
-    const headerElement = fixture.debugElement.query(By.css('header'));
-    const containerElement = fixture.debugElement.query(By.css('.container'));
-
-    // Verifica se o elemento <header> está presente
-    expect(headerElement).toBeTruthy();
-
-    // Verifica se o elemento <div class="container"> está presente dentro do <header>
+  it('should render ng-content correctly', () => {
+    const hostElement: HTMLElement = hostFixture.nativeElement;
+    const containerElement = hostElement.querySelector('.container');
     expect(containerElement).toBeTruthy();
 
-    // Opcional: Verifica se o container está dentro do header
-    expect(headerElement.nativeElement.contains(containerElement.nativeElement)).toBeTrue();
+    const contentElement = containerElement?.querySelector('.test-content');
+    expect(contentElement).toBeTruthy();
+    expect(contentElement?.textContent?.trim()).toBe('Test Header Content');
   });
 });

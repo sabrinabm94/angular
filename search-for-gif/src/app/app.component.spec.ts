@@ -1,21 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { HomePageComponent } from './features/gif-search/pages/home-page/home-page.component';
+import { RouterTestingModule } from '@angular/router/testing';
 import { CommonModule } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { By } from '@angular/platform-browser';
-
-// Mock do GifService (se necessário)
-import { of } from 'rxjs';
-import { GifService } from './core/services/gif.service';
-
-class MockGifService {
-  searchGifs() {
-    // Mock do método que você espera chamar
-    return of([]);
-  }
-}
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -25,15 +14,13 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         CommonModule,
+        RouterTestingModule,
+        HomePageComponent,
         RouterLink,
         RouterLinkActive,
-        RouterOutlet,
-        HomePageComponent,
-        HttpClientTestingModule, // Adicionando o HttpClientTestingModule
+        RouterOutlet
       ],
-      providers: [
-        { provide: GifService, useClass: MockGifService }, // Fornecendo um mock do GifService se necessário
-      ],
+      declarations: [AppComponent]
     }).compileComponents();
   });
 
@@ -47,12 +34,12 @@ describe('AppComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have the correct title', () => {
-    expect(component.title).toBe('search-for-gif');
+  it('should have as title "search-for-gif"', () => {
+    expect(component.title).toEqual('search-for-gif');
   });
 
-  it('should render the HomePageComponent', () => {
-    const homePageElement = fixture.debugElement.query(By.directive(HomePageComponent));
-    expect(homePageElement).toBeTruthy();
+  it('should render HomePageComponent', () => {
+    const homePageComponent = fixture.debugElement.query(By.directive(HomePageComponent));
+    expect(homePageComponent).toBeTruthy();
   });
 });

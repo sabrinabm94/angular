@@ -1,5 +1,3 @@
-import { Images } from "./images.model";
-
 export interface Gif {
   searchTerm: string;
   id: string;

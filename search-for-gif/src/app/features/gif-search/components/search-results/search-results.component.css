@@ -3,6 +3,12 @@
 }
 
 .gif-link,
-.big-title {
+.big-title,
+.ngx-pagination {
   margin-bottom: 20px;
+}
+
+.pagination {
+  text-align: center;
+  margin-top: 20px;
 }

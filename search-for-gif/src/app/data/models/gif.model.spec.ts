@@ -17,10 +17,10 @@ describe('Gif', () => {
     expect(gif.searchTerm).toBe(searchTerm);
     expect(gif.id).toBe(id);
     expect(gif.title).toBe(title);
-    expect(gif.alt).toBe(alt);
+    expect(gif.alt_text).toBe(alt);
     expect(gif.type).toBe(type);
-    expect(gif.url).toBe(url);
-    expect(gif.urlPreview).toBe(urlPreview);
+    expect(gif.previewGif).toBe(url);
+    expect(gif.previewWebp).toBe(urlPreview);
   });
 
   // Testa a criação de uma instância com valores padrão
@@ -31,10 +31,10 @@ describe('Gif', () => {
     expect(gif.searchTerm).toBe('');
     expect(gif.id).toBe('');
     expect(gif.title).toBe('');
-    expect(gif.alt).toBe('');
+    expect(gif.alt_text).toBe('');
     expect(gif.type).toBe('');
-    expect(gif.url).toBe('');
-    expect(gif.urlPreview).toBe('');
+    expect(gif.previewGif).toBe('');
+    expect(gif.previewWebp).toBe('');
   });
 
   // Testa a criação de uma instância com alguns valores preenchidos
@@ -47,9 +47,9 @@ describe('Gif', () => {
     expect(gif.searchTerm).toBe(searchTerm);
     expect(gif.id).toBe(id);
     expect(gif.title).toBe('');
-    expect(gif.alt).toBe('');
+    expect(gif.alt_text).toBe('');
     expect(gif.type).toBe('');
-    expect(gif.url).toBe('');
-    expect(gif.urlPreview).toBe('');
+    expect(gif.previewGif).toBe('');
+    expect(gif.previewWebp).toBe('');
   });
 });

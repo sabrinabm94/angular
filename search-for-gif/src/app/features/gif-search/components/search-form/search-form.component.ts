@@ -2,12 +2,13 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Gif } from 'src/app/data/models/gif.model';
 import { GifService } from 'src/app/core/services/gif.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-search-template',
   templateUrl: './search-form.component.html',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   styleUrls: ['./search-form.component.css']
 })
 export class SearchFormComponent implements OnInit {

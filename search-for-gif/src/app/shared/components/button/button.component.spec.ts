@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ButtonComponent } from './button.component';
-import { By } from '@angular/platform-browser';
 
 describe('ButtonComponent', () => {
   let component: ButtonComponent;
@@ -8,7 +7,7 @@ describe('ButtonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ButtonComponent] // Importando o componente standalone
+      declarations: [ ButtonComponent ]
     })
     .compileComponents();
   });
@@ -23,38 +22,36 @@ describe('ButtonComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should apply the correct class to the button', () => {
-    component.class = 'extra-class';
-    fixture.detectChanges();
+  it('should correctly bind id, class, and text', () => {
+    component.id = 'test-id';
+    component.class = 'custom-class';
+    component.text = 'Click Me';
 
-    const buttonElement = fixture.debugElement.query(By.css('button'));
-    expect(buttonElement.nativeElement.classList).toContain('button');
-    expect(buttonElement.nativeElement.classList).toContain('btn');
-    expect(buttonElement.nativeElement.classList).toContain('btn-primary');
-    expect(buttonElement.nativeElement.classList).toContain('extra-class');
+    fixture.detectChanges();
+    const buttonElement: HTMLButtonElement = fixture.nativeElement.querySelector('button');
+
+    expect(buttonElement).toBeTruthy();
+    expect(buttonElement.id).toBe('button-custom-class');
+    expect(buttonElement.className).toContain('button');
+    expect(buttonElement.className).toContain('btn');
+    expect(buttonElement.className).toContain('btn-primary');
+    expect(buttonElement.innerText.trim()).toBe('Click Me');
   });
 
-  it('should set the correct ID for the button', () => {
-    component.class = 'test-class';
-    fixture.detectChanges();
+  it('should bind form and disabled attributes', () => {
+    component.form = 'form1';
+    component.disabled = true;
 
-    const buttonElement = fixture.debugElement.query(By.css('button'));
-    expect(buttonElement.nativeElement.id).toBe('button-test-class');
+    fixture.detectChanges();
+    const buttonElement: HTMLButtonElement = fixture.nativeElement.querySelector('button');
+
+    expect(buttonElement.getAttribute('form')).toBe('form1');
+    expect(buttonElement.disabled).toBe(true);
   });
 
-  it('should display the correct text', () => {
-    component.text = 'Click Me!';
-    fixture.detectChanges();
+  it('should have app-button class as host binding', () => {
+    const hostElement: HTMLElement = fixture.nativeElement;
 
-    const buttonElement = fixture.debugElement.query(By.css('button'));
-    expect(buttonElement.nativeElement.textContent.trim()).toBe('Click Me!');
+    expect(hostElement.classList.contains('app-button')).toBe(true);
   });
-
-    it('should not apply the disabled attribute when disabled is false', () => {
-      component.disabled = false;
-      fixture.detectChanges();
-
-      const buttonElement = fixture.debugElement.query(By.css('button'));
-      expect(buttonElement.nativeElement.disabled).toBe(false);
-    });
 });
