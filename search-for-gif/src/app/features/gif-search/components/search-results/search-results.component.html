@@ -4,10 +4,8 @@
   </h2>
   <div class="row">
     <div class="col-12 col-sm-6 col-md-4" *ngFor="let gif of gifs">
-      <a target="_blank" class="link gif-link">
         <app-picture [url]="gif.previewWebp" [urlPreview]="gif.previewGif" class="gif-image" [id]="gif.id"
           [title]="gif.title" [alt]="gif.alt"></app-picture>
-      </a>
     </div>
   </div>
   <pagination-controls (pageChange)="p = $event"></pagination-controls>
