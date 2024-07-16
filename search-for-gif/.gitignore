@@ -74,3 +74,4 @@ environment.prod.ts
 environment.production.ts
 environment.ts
 /environment/
+/src/environment/
