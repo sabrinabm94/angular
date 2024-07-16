@@ -70,3 +70,6 @@ aio/out-tsc
 .envs
 .Env
 .env
+environment.prod.ts
+environment.production.ts
+environment.ts
