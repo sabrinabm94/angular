@@ -2,8 +2,8 @@ import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, HostBinding, ViewChil
 import { HeaderComponent } from "../../../../shared/components/header/header.component";
 import { FooterComponent } from "../../../../shared/components/footer/footer.component";
 import { Gif } from 'src/app/data/models/gif.model';
-import { ResultsTemplateComponent } from '../../components/results-template/results-template.component';
-import { SearchTemplateComponent } from '../../components/search-template/search-template.component';
+import { SearchResultsComponent } from '../../components/search-results/search-results.component';
+import { SearchFormComponent } from '../../components/search-form/search-form.component';
 
 @Component({
   selector: 'app-home-page',
@@ -11,16 +11,16 @@ import { SearchTemplateComponent } from '../../components/search-template/search
   imports: [
     HeaderComponent,
     FooterComponent,
-    ResultsTemplateComponent,
-    SearchTemplateComponent
+    SearchResultsComponent,
+    SearchFormComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css',
 })
-export class HomePageComponent implements AfterViewInit {
-  @ViewChild(ResultsTemplateComponent)
-  resultsTemplateComponent!: ResultsTemplateComponent;
+export class HomePageComponent {
+  @ViewChild(SearchResultsComponent)
+  SearchResultsComponent!: SearchResultsComponent;
 
   @HostBinding('class') class: string = 'app-home-page';
 
@@ -28,15 +28,11 @@ export class HomePageComponent implements AfterViewInit {
 
   constructor() { }
 
-  ngAfterViewInit(): void {
-    console.log("ngAfterViewInit home page ", this.resultsTemplateComponent);
-  }
-
   public setDataInChild(data: any) {
-    if (this.resultsTemplateComponent && data) {
-      this.resultsTemplateComponent.setData(data); //send data to child by function - to results template
+    if (this.SearchResultsComponent && data) {
+      this.SearchResultsComponent.setData(data); //send data to child by function - to results template
     } else {
-      console.error('ResultsTemplateComponent is not defined');
+      console.error('SearchResultsComponent is not defined');
     }
   }
 }

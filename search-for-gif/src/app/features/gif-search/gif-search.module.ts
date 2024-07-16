@@ -6,9 +6,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { SharedModule } from '../../shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { GifService } from 'src/app/core/services/gif.service';
-import { ResultsTemplateComponent } from './components/results-template/results-template.component';
-import { SearchTemplateComponent } from './components/search-template/search-template.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
+import { SearchResultsComponent } from './components/search-results/search-results.component';
+import { SearchFormComponent } from './components/search-form/search-form.component';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
@@ -24,14 +24,14 @@ const routes: Routes = [
     SharedModule,
     HomePageComponent,
     NotFoundPageComponent,
-    ResultsTemplateComponent,
-    SearchTemplateComponent,
+    SearchResultsComponent,
+    SearchFormComponent,
   ],
   exports: [
     HomePageComponent,
     NotFoundPageComponent,
-    ResultsTemplateComponent,
-    SearchTemplateComponent,
+    SearchResultsComponent,
+    SearchFormComponent,
   ]
 })
 export class GifSearchModule { }

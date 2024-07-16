@@ -1,13 +1,6 @@
 <div class="form-group">
-  <label class="{{'label ' + class}}" id="{{'label-' + class}}" for={{name}}>{{text}}</label>
-  <input class="{{'input form-control ' + class}}" id="{{'input-' + class}}" type="text" name={{name}}
-    placeholder={{placeholder}} pattern={{pattern}} [attr.required]="required ? true : null" />
-  <!-- <span *ngIf="this.name.invalid && (this.name.dirty || this.name.touched)" class="validator alert">
-    <div *ngIf="this.name.errors?.['required']">
-      {{name}} is required.
-    </div>
-    <div *ngIf="this.name.errors?.['minlength']">
-      {{name}} must be at least {{minlength}} characters long.
-    </div>
-  </span> -->
+  <label class="{{'label ' + class}}" id="{{'label-' + class}}" for="{{name}}">{{text}}</label>
+  <input class="{{'input form-control ' + class}}" id="{{'input-' + class}}" type="text"
+    [attr.name]="name" [attr.placeholder]="placeholder" [attr.pattern]="pattern"
+    [attr.required]="required ? true : null" [formControl]="control" />
 </div>

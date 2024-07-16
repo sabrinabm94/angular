@@ -1,0 +1,22 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div>
+    <label for="term">Term:</label>
+    <input id="term" formControlName="term" type="text" placeholder="Enter term" />
+    <div *ngIf="form.get('term')?.invalid && (form.get('term')?.dirty || form.get('term')?.touched)">
+      <small *ngIf="form.get('term')?.errors?.['required']">Term is required.</small>
+      <small *ngIf="form.get('term')?.errors?.['minlength']">Term must be at least 1 character long.</small>
+      <small *ngIf="form.get('term')?.errors?.['maxlength']">Term must be at most 10 characters long.</small>
+    </div>
+  </div>
+
+  <div>
+    <label for="limit">Limit:</label>
+    <input id="limit" formControlName="limit" type="number" placeholder="Enter limit" />
+    <div *ngIf="form.get('limit')?.invalid && (form.get('limit')?.dirty || form.get('limit')?.touched)">
+      <small *ngIf="form.get('limit')?.errors?.['min']">Limit must be at least 1.</small>
+      <small *ngIf="form.get('limit')?.errors?.['max']">Limit must be at most 10.</small>
+    </div>
+  </div>
+
+  <button type="submit">Submit</button>
+</form>

@@ -8,10 +8,10 @@ import { CommonModule } from '@angular/common';
     standalone: true,
     imports: [PictureComponent, CommonModule],
     schemas: [CUSTOM_ELEMENTS_SCHEMA], //para permitir o uso do component web de paginação (3 party)
-    templateUrl: './results-template.component.html',
-    styleUrl: './results-template.component.css',
+    templateUrl: './search-results.component.html',
+    styleUrl: './search-results.component.css',
 })
-export class ResultsTemplateComponent {
+export class SearchResultsComponent {
   @HostBinding('class') class: string = "app-results-template";
 
   @Input() gifs: Gif[] = [];

@@ -34,7 +34,6 @@ export class GifService {
  * @returns An Observable of the GIF results.
  */
   searchGifs(term: string, limit: number): Observable<Gif[]> {
-    console.log(term);
     if (!term) {
       return throwError(() => new Error('Search term cannot be empty.'));
     }

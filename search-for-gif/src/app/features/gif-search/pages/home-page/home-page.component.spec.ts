@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HomePageComponent } from './home-page.component';
-import { ResultsTemplateComponent } from '../../components/results-template/results-template.component';
-import { SearchTemplateComponent } from '../../components/search-template/search-template.component';
+import { SearchResultsComponent } from '../../components/results-template/results-template.component';
+import { SearchFormComponent } from '../../components/search-template/search-template.component';
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
 import { FooterComponent } from '../../../../shared/components/footer/footer.component';
 import { Gif } from 'src/app/data/models/gif.model';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-class MockResultsTemplateComponent {
+class MockSearchResultsComponent {
   setData(data: any) {}
   // Mock necessary properties
   class = 'app-results-template';
@@ -20,7 +20,7 @@ class MockResultsTemplateComponent {
 describe('HomePageComponent', () => {
   let component: HomePageComponent;
   let fixture: ComponentFixture<HomePageComponent>;
-  let mockResultsTemplateComponent: MockResultsTemplateComponent;
+  let mockSearchResultsComponent: MockSearchResultsComponent;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -28,8 +28,8 @@ describe('HomePageComponent', () => {
         HttpClientTestingModule,
         HeaderComponent,
         FooterComponent,
-        ResultsTemplateComponent,
-        SearchTemplateComponent,
+        SearchResultsComponent,
+        SearchFormComponent,
         HomePageComponent // Import the standalone component here
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -39,8 +39,8 @@ describe('HomePageComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HomePageComponent);
     component = fixture.componentInstance;
-    mockResultsTemplateComponent = new MockResultsTemplateComponent() as any;
-    component.resultsTemplateComponent = mockResultsTemplateComponent;
+    mockSearchResultsComponent = new MockSearchResultsComponent() as any;
+    component.SearchResultsComponent = mockSearchResultsComponent;
     fixture.detectChanges();
   });
 
@@ -48,18 +48,18 @@ describe('HomePageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call ngAfterViewInit and log the ResultsTemplateComponent', () => {
+  it('should call ngAfterViewInit and log the SearchResultsComponent', () => {
     const spy = spyOn(console, 'log');
     component.ngAfterViewInit();
-    expect(spy).toHaveBeenCalledWith('ngAfterViewInit home page ', component.resultsTemplateComponent);
+    expect(spy).toHaveBeenCalledWith('ngAfterViewInit home page ', component.SearchResultsComponent);
   });
 
 
-  it('should log an error if ResultsTemplateComponent is not defined when calling setDataInChild', () => {
+  it('should log an error if SearchResultsComponent is not defined when calling setDataInChild', () => {
     const spy = spyOn(console, 'error');
-    component.resultsTemplateComponent = undefined as any;
+    component.SearchResultsComponent = undefined as any;
     component.setDataInChild({});
 
-    expect(spy).toHaveBeenCalledWith('ResultsTemplateComponent is not defined');
+    expect(spy).toHaveBeenCalledWith('SearchResultsComponent is not defined');
   });
 });
