@@ -75,3 +75,5 @@ environment.production.ts
 environment.ts
 /environments/
 /src/environments/
+*/environments/*
+/src/environments/*
