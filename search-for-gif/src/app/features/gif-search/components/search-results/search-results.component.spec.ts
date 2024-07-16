@@ -28,7 +28,7 @@ describe('SearchResultsComponent', () => {
 
   it('should display the search term if gifs are provided', () => {
     const gifs: Gif[] = [
-      { searchTerm: 'cat', id: '1', title: 'Cat GIF', alt: 'A cat', type: 'gif', previewGif: 'url1', previewWebp: 'url2' },
+      { searchTerm: 'cat', id: '1', title: 'Cat GIF', alt_text: 'A cat', type: 'gif', previewGif: 'url1', previewWebp: 'url2' },
     ];
     component.setData(gifs);
     fixture.detectChanges();

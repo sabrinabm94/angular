@@ -28,10 +28,6 @@ class MockFooterComponent {}
     SearchFormComponent,
     SearchResultsComponent,
   ],
-  entryComponents: [
-    SearchFormComponent,
-    SearchResultsComponent,
-  ],
   imports: [CommonModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
@@ -75,7 +71,7 @@ describe('HomePageComponent', () => {
 
   it('should call setDataInChild method to pass data to SearchResultsComponent', async () => {
     const testData = [
-      { searchTerm: 'cat', id: '1', title: 'Cat GIF', alt: 'A cat', type: 'gif', previewGif: 'url1', previewWebp: 'url2' },
+      { searchTerm: 'cat', id: '1', title: 'Cat GIF', alt_text: 'A cat', type: 'gif', previewGif: 'url1', previewWebp: 'url2' },
     ];
 
     // Espia o método setDataInChild para verificar se é chamado corretamente

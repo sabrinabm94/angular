@@ -2,9 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SearchFormComponent } from './search-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { GifService } from 'src/app/core/services/gif.service';
 import { of } from 'rxjs';
-import { Gif } from 'src/app/data/models/gif.model';
+import { GifService } from '../../../../core/services/gif.service';
+import { Gif } from '../../../../data/models/gif.model';
 
 describe('SearchFormComponent', () => {
   let component: SearchFormComponent;
@@ -61,7 +61,7 @@ describe('SearchFormComponent', () => {
 
   it('should emit gifs through dataEmitter when search results are received', () => {
     const gifs: Gif[] = [
-      { searchTerm: 'cat', id: '1', title: 'Cat GIF', alt: 'A cat', type: 'gif', previewGif: 'url1', previewWebp: 'url2' },
+      { searchTerm: 'cat', id: '1', title: 'Cat GIF', alt_text: 'A cat', type: 'gif', previewGif: 'url1', previewWebp: 'url2' },
     ];
     gifService.searchGifs.and.returnValue(of(gifs));
 
