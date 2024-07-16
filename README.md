@@ -50,6 +50,7 @@ Get-ExecutionPolicy
 ```
 
 ## Tests
+ng test --code-coverage
 ng e2e
 
 ## Run
