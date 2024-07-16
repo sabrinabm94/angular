@@ -38,3 +38,6 @@ src/
   data/
     models/
       gif.model.ts
+
+## Host
+https://search-gif-sabrinabm94.web.app

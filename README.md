@@ -57,6 +57,14 @@ ng e2e
 ### Dev
 ng serve --open
 
+## Build
+ng build --configuration=production
+firebase hosting:channel:deploy 1
+
+## Deploy
+ng build
+firebase deploy
+
 ### Server
 ng build --configuration production
 ng run search-for-gif:server
