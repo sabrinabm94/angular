@@ -66,14 +66,6 @@ aio/node_modules
 aio/out-tsc
 
 # Envs
-.Envs
 .envs
-.Env
 .env
-environment.prod.ts
-environment.production.ts
-environment.ts
-/environments/
-/src/environments/
-*/environments/*
-/src/environments/*
+/src/environments/**
