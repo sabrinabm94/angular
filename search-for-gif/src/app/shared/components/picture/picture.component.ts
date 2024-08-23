@@ -1,10 +1,11 @@
-import { Component, HostBinding, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
 
 @Component({
   selector: 'app-picture',
   standalone: true,
   templateUrl: './picture.component.html',
-  styleUrl: './picture.component.css'
+  styleUrl: './picture.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PictureComponent {
   @HostBinding('class') hostClass: string = "app-picture";

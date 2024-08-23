@@ -1,10 +1,11 @@
-import { Component, HostBinding, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
 
 @Component({
   selector: 'app-button',
   standalone: true,
   templateUrl: './button.component.html',
-  styleUrl: './button.component.css'
+  styleUrl: './button.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ButtonComponent {
   @HostBinding('class') hostClass: string = "app-button";
