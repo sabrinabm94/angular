@@ -5,7 +5,7 @@ import { IButton } from '@app/utils/interfaces/IButton.interface';
   selector: 'app-button',
   standalone: false,
   templateUrl: './button.component.html',
-  styleUrl: './button.component.css'
+  styleUrl: './button.component.css',
 })
 export class ButtonComponent {
   @HostBinding('class') hostClass: string = "app-button";

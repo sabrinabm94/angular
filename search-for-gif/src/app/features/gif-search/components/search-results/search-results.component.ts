@@ -17,13 +17,14 @@ export class SearchResultsComponent {
 
   @Input() gifs: Gif[] = [];
 
-  p: number = 1;
+  currentPageNumber: number = 1; // Página inicial
 
   handlePageChange(event: number) {
-    this.p = event;
+    this.currentPageNumber = event;
   }
 
   public setData(gifs: Gif[]) { // recebe dados do pai através da função - da página inicial
     this.gifs = gifs;
+    this.currentPageNumber = 1; // Resetar a página para 1 quando os dados são atualizados
   }
 }
