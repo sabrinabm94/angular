@@ -57,11 +57,14 @@ ng e2e
 ### Dev
 ng serve --open
 
+# Auth in Firebase
+firebase login
+
 ## Build
 ng build --configuration=production
 firebase hosting:channel:deploy 1
 
-## Deploy
+## Deploy on Firebase server
 ng build
 firebase deploy
 

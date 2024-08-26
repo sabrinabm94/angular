@@ -36,9 +36,9 @@ export class HomePageComponent implements AfterViewInit {
   // Método para carregar dinamicamente o componente de formulário de busca
   async loadSearchFormComponent() {
     // Usa a função import() para carregar o módulo do componente de formulário de busca
-    const { GifSearchComponent } = await import('../../components/search-form/search-form.component');
+    const { SearchFormComponent } = await import('../../components/search-form/search-form.component');
     // Cria dinamicamente o componente e o insere no container designado
-    const searchFormComponentRef = this.searchFormContainer.createComponent(GifSearchComponent, { injector: this.injector });
+    const searchFormComponentRef = this.searchFormContainer.createComponent(SearchFormComponent, { injector: this.injector });
     // Assina o evento de emissão de dados do componente de formulário de busca
     searchFormComponentRef.instance.dataEmitter.subscribe((data: Gif[]) => this.setDataInChild(data));
   }

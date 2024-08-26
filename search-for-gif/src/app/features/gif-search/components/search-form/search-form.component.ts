@@ -18,7 +18,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [ReactiveFormsModule, CommonModule],
   styleUrls: ['./search-form.component.css'],
 })
-export class GifSearchComponent implements OnInit, OnDestroy {
+export class SearchFormComponent implements OnInit, OnDestroy {
   private abortController?: AbortController;
   public form: FormGroup;
   public gifs: Gif[] = [];

@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomePageComponent } from './home-page.component';
 import { Component, ComponentFactoryResolver, CUSTOM_ELEMENTS_SCHEMA, Injector, NgModule, Type, ViewChild, ViewContainerRef } from '@angular/core';
-import { SearchFormComponent } from '../../components/search-form/search-form.component';
 import { SearchResultsComponent } from '../../components/search-results/search-results.component';
 import { CommonModule } from '@angular/common';
+import { SearchFormComponent } from '../../components/search-form/search-form.component';
 
 // Componente Mock para HeaderComponent
 @Component({

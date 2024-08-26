@@ -69,3 +69,10 @@ aio/out-tsc
 .envs
 .env
 /src/environments/**
+
+#tests
+coverage/**
+
+#firebase
+/src/.firebase/**
+.firebase/

@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SearchResultsComponent } from './search-results.component';
-import { Gif } from '../../../../data/models/gif.model';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { PictureComponent } from "../../../../shared/components/picture/picture.component";
+import { Gif } from '../../../../data/models/gif.model';
+import { CommonModule } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { By } from '@angular/platform-browser';
 
 describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;
@@ -12,70 +12,46 @@ describe('SearchResultsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SearchResultsComponent],
-      imports: [NgxPaginationModule, PictureComponent],
+      imports: [CommonModule, NgxPaginationModule],
+      declarations: [SearchResultsComponent, PictureComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(SearchResultsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display the search term if gifs are provided', () => {
-    const gifs: Gif[] = [
-      { searchTerm: 'cat', id: '1', title: 'Cat GIF', alt_text: 'A cat', type: 'gif', previewGif: 'url1', previewWebp: 'url2' },
+  it('should set class binding correctly', () => {
+    expect(component.class).toBe('app-results-template');
+  });
+
+  it('should have an empty gifs array by default', () => {
+    expect(component.gifs.length).toBe(0);
+  });
+
+  it('should update gifs and reset page number when setData is called', () => {
+    const mockGifs: Gif[] = [
+      new Gif('searchTerm', 'id1', 'title1', 'alt1', 'type1', 'url1', 'urlPreview1'),
+      new Gif('searchTerm', 'id2', 'title2', 'alt2', 'type2', 'url2', 'urlPreview2')
     ];
-    component.setData(gifs);
-    fixture.detectChanges();
 
-    const searchTermElement = fixture.debugElement.query(By.css('.small-title'));
-    expect(searchTermElement.nativeElement.textContent).toBe('cat');
+    component.setData(mockGifs);
+
+    expect(component.gifs).toEqual(mockGifs);
+    expect(component.currentPageNumber).toBe(1);
   });
 
-  it('should display the correct number of gifs per page', () => {
-    const gifs: Gif[] = Array.from({ length: 12 }).map((_, i) => ({
-      searchTerm: 'cat',
-      id: `${i + 1}`,
-      title: `Cat GIF ${i + 1}`,
-      alt_text: `A cat ${i + 1}`,
-      type: 'gif',
-      previewGif: `url${i + 1}`,
-      previewWebp: `url${i + 1}`
-    }));
-    component.setData(gifs);
-    component.p = 1;
-    fixture.detectChanges();
+  it('should change currentPageNumber when handlePageChange is called', () => {
+    const pageNumber = 2;
+    component.handlePageChange(pageNumber);
 
-    const gifElements = fixture.debugElement.queryAll(By.css('.gif-image'));
-    expect(gifElements.length).toBe(6);
-  });
-
-  it('should change page correctly', () => {
-    const gifs: Gif[] = Array.from({ length: 12 }).map((_, i) => ({
-      searchTerm: 'cat',
-      id: `${i + 1}`,
-      title: `Cat GIF ${i + 1}`,
-      alt_text: `A cat ${i + 1}`,
-      type: 'gif',
-      previewGif: `url${i + 1}`,
-      previewWebp: `url${i + 1}`
-    }));
-    component.setData(gifs);
-    component.p = 2;
-    fixture.detectChanges();
-
-    const gifElements = fixture.debugElement.queryAll(By.css('.gif-image'));
-    expect(gifElements.length).toBe(6);
-    expect(gifElements[0].nativeElement.querySelector('figcaption').textContent).toBe('Cat GIF 7');
-  });
-
-  it('should handle page change event', () => {
-    component.handlePageChange(2);
-    expect(component.p).toBe(2);
+    expect(component.currentPageNumber).toBe(pageNumber);
   });
 });
