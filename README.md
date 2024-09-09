@@ -2,80 +2,120 @@
 
 Scripts for testing javascript features and sintax, and apps.
 
-[Documentations](https://github.com/sabrinabm94/angular/wiki)
+[Angular Documentation](https://github.com/sabrinabm94/angular/wiki)
 
-# Deps
+# Dependencies
 
-## Update deps
-```js
+## Update
+
+```bash
 npm outdated
+
 npm install -g npm-check-updates
+
 npx npm-check-updates -u
+
 ng update @angular/core @angular/cli
+
 //Remove node_modules folder and package-lock.json file
+
 npm install
+
 npm audit fix
+
 npm fund
 ```
 
-## Unistall deps
-```js
+## Unistall
+
+```bash
 npm uninstall -g dep
+
 npm uninstall --save-dev dep
+
 npm cache clean
 ```
 
-## Install deps
-```js
-npm install dep@latest
+## Install
 
+```bash
+npm install dep@latest
 ```
 
 ## Fix errors
-### legacy deps
-```js
+
+### legacy dependecies errors
+
+```bash
 npm install --legacy-peer-deps
+
 npm config set legacy-peer-deps true
+
 //Remove node_modules folder and package-lock.json file
+
 npx npm-check-updates -u
+
 npm install
 ```
 
 ### Windows: alterar a política de execução para o escopo do padrão
-```js
+
+```bash
 Get-ExecutionPolicy
 Set-ExecutionPolicy RemoteSigned
 //A
 Get-ExecutionPolicy
 ```
 
-## Tests
+## Run tests
+
+```bash
 ng test --code-coverage
+
 ng e2e
+```
 
 ## Run
+
 ### Dev
+
+```bash
 ng serve --open
+```
 
 # Auth in Firebase
+
+```bash
 firebase login
+```
 
 ## Build
+
+```bash
 ng build --configuration=production
+
 firebase hosting:channel:deploy 1
+```
 
 ## Deploy on Firebase server
+
+```bash
 ng build
+
 firebase deploy
+```
 
 ### Server
-ng build --configuration production
-ng run search-for-gif:server
 
----
+```bash
+ng build --configuration production
+
+ng run search-for-gif:server
+```
 
 # Contact
 
 Sabrina B.
 See my profile [here](https://github.com/sabrinabm94/about/blob/main/README.md)
+
 <sabrinabm94@gmail.com>

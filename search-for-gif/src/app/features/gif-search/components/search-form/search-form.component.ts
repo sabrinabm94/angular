@@ -10,23 +10,43 @@ import { Gif } from 'src/app/data/models/gif.model';
 import { GifService } from 'src/app/core/services/gif.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TranslocoModule } from '@ngneat/transloco';
 
+/**
+ * O `SearchFormComponent` é responsável por exibir um formulário de busca de GIFs.
+ * Ele valida a entrada do usuário, envia a busca para o serviço `GifService` e emite os resultados para o componente pai.
+ */
 @Component({
-  selector: 'app-search-template',
+  selector: 'app-search-template', // Seletor utilizado para este componente
   templateUrl: './search-form.component.html',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
-  styleUrls: ['./search-form.component.css'],
+  imports: [ReactiveFormsModule, CommonModule, TranslocoModule], // Módulos importados pelo componente
+  styleUrls: ['./search-form.component.css'], // Arquivos de estilo CSS
 })
 export class SearchFormComponent implements OnInit, OnDestroy {
+  /** Controlador de requisições para permitir o cancelamento de buscas. */
   private abortController?: AbortController;
+
+  /** Formulário reativo utilizado para coletar os dados de busca. */
   public form: FormGroup;
+
+  /** Array para armazenar os resultados de GIFs da busca. */
   public gifs: Gif[] = [];
 
+  /** Evento emitido quando novos GIFs são obtidos da API, enviado para o componente pai. */
   @Output() dataEmitter = new EventEmitter<Gif[]>();
 
+  /**
+   * O construtor recebe `FormBuilder` para construir o formulário e `GifService` para fazer as requisições de busca de GIFs.
+   * @param fb {FormBuilder} - Serviço para criar o formulário reativo.
+   * @param gifService {GifService} - Serviço que busca GIFs na API.
+   */
   constructor(private fb: FormBuilder, private gifService: GifService) { }
 
+  /**
+   * Lifecycle hook do Angular chamado quando o componente é inicializado.
+   * Inicializa o formulário com validações nos campos.
+   */
   ngOnInit(): void {
     this.form = this.fb.group({
       term: [
@@ -42,12 +62,13 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Handles the form submission. Validates the form, aborts any ongoing request, and makes a new search request to the GifService.
+   * Realiza a submissão do formulário de busca.
+   * Valida o formulário, cancela qualquer requisição de busca anterior e realiza uma nova busca no `GifService`.
    * @returns {void}
    */
   submit(): void {
     if (this.form.invalid) {
-      console.error('Form is invalid');
+      console.error('Formulário inválido');
       return;
     }
 
@@ -65,12 +86,12 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Processes the GIFs received from the search response and emits them via the dataEmitter.
-   * @param {Gif[]} gifsList - The list of GIFs returned from the API.
-   * @param {string} searchTerm - The term used for the search.
-   * @returns {void}
+   * Processa os GIFs recebidos da API e os emite via o `dataEmitter`.
+   * @param {any} gifsList - Lista de GIFs retornada pela API.
+   * @param {string} searchTerm - O termo de busca utilizado.
+   * @returns {Gif[]} - Lista de GIFs processada e emitida para o componente pai.
    */
-  handleResponse(gifsList: any, searchTerm: string): any {
+  handleResponse(gifsList: any, searchTerm: string): Gif[] {
     let dataList = gifsList;
     this.gifs = [];
 
@@ -88,14 +109,15 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
         this.gifs.push(gif);
       });
-      this.dataEmitter.emit(this.gifs); //send data to parent by output emmit - to page home
+      this.dataEmitter.emit(this.gifs); // Envia os GIFs processados para o componente pai
       return this.gifs;
     }
+    return [];
   }
 
   /**
-   * Lifecycle hook that is called when the directive is destroyed.
-   * Aborts any ongoing search request to avoid memory leaks.
+   * Lifecycle hook do Angular chamado quando o componente é destruído.
+   * Aborta qualquer requisição de busca ativa para evitar vazamento de memória.
    * @returns {void}
    */
   ngOnDestroy(): void {
