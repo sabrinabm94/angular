@@ -1,10 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Gif } from 'src/app/data/models/gif.model';
 import { GifService } from 'src/app/core/services/gif.service';
@@ -17,36 +11,26 @@ import { TranslocoModule } from '@ngneat/transloco';
  * Ele valida a entrada do usuário, envia a busca para o serviço `GifService` e emite os resultados para o componente pai.
  */
 @Component({
-  selector: 'app-search-template', // Seletor utilizado para este componente
+  selector: 'app-search-template',
   templateUrl: './search-form.component.html',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, TranslocoModule], // Módulos importados pelo componente
-  styleUrls: ['./search-form.component.css'], // Arquivos de estilo CSS
+  imports: [ReactiveFormsModule, CommonModule, TranslocoModule],
+  styleUrls: ['./search-form.component.css'],
 })
 export class SearchFormComponent implements OnInit, OnDestroy {
-  /** Controlador de requisições para permitir o cancelamento de buscas. */
   private abortController?: AbortController;
 
   /** Formulário reativo utilizado para coletar os dados de busca. */
   public form: FormGroup;
 
   /** Array para armazenar os resultados de GIFs da busca. */
-  public gifs: Gif[] = [];
+  public gifs = signal<Gif[]>([]);
 
   /** Evento emitido quando novos GIFs são obtidos da API, enviado para o componente pai. */
   @Output() dataEmitter = new EventEmitter<Gif[]>();
 
-  /**
-   * O construtor recebe `FormBuilder` para construir o formulário e `GifService` para fazer as requisições de busca de GIFs.
-   * @param fb {FormBuilder} - Serviço para criar o formulário reativo.
-   * @param gifService {GifService} - Serviço que busca GIFs na API.
-   */
-  constructor(private fb: FormBuilder, private gifService: GifService) { }
+  constructor(private fb: FormBuilder, private gifService: GifService) {}
 
-  /**
-   * Lifecycle hook do Angular chamado quando o componente é inicializado.
-   * Inicializa o formulário com validações nos campos.
-   */
   ngOnInit(): void {
     this.form = this.fb.group({
       term: [
@@ -61,11 +45,6 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  /**
-   * Realiza a submissão do formulário de busca.
-   * Valida o formulário, cancela qualquer requisição de busca anterior e realiza uma nova busca no `GifService`.
-   * @returns {void}
-   */
   submit(): void {
     if (this.form.invalid) {
       console.error('Formulário inválido');
@@ -85,15 +64,9 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       .catch((error) => console.error(error.message));
   }
 
-  /**
-   * Processa os GIFs recebidos da API e os emite via o `dataEmitter`.
-   * @param {any} gifsList - Lista de GIFs retornada pela API.
-   * @param {string} searchTerm - O termo de busca utilizado.
-   * @returns {Gif[]} - Lista de GIFs processada e emitida para o componente pai.
-   */
   handleResponse(gifsList: any, searchTerm: string): Gif[] {
     let dataList = gifsList;
-    this.gifs = [];
+    const newGifs: Gif[] = [];
 
     if (dataList) {
       dataList.forEach((data: any) => {
@@ -107,19 +80,15 @@ export class SearchFormComponent implements OnInit, OnDestroy {
           data.images.preview_webp.url
         );
 
-        this.gifs.push(gif);
+        newGifs.push(gif);
       });
-      this.dataEmitter.emit(this.gifs); // Envia os GIFs processados para o componente pai
-      return this.gifs;
+      this.gifs.set(newGifs);
+      this.dataEmitter.emit(newGifs);
+      return newGifs;
     }
     return [];
   }
 
-  /**
-   * Lifecycle hook do Angular chamado quando o componente é destruído.
-   * Aborta qualquer requisição de busca ativa para evitar vazamento de memória.
-   * @returns {void}
-   */
   ngOnDestroy(): void {
     this.abortController?.abort();
   }
