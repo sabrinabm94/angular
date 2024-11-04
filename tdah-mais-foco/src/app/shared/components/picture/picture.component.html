@@ -1,0 +1,7 @@
+<a [href]="url" class="link" target="_blank">
+  <figure>
+    <!-- <img class="{{'picture ' + class + ' background-image'}}" [src]="urlPreview" [alt]="alt" /> -->
+    <picture class="{{'picture ' + class + ' background-image'}}" [style]="urlPreview" [style.background-image]="'url(' + urlPreview + ')'"></picture>
+    <figcaption class="caption">{{title}}</figcaption>
+  </figure>
+</a>

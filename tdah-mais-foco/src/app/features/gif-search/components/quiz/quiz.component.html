@@ -1,0 +1,25 @@
+<h2>{{ "page_title_quiz" | transloco }}</h2>
+<form (ngSubmit)="submitQuiz()" *ngIf="this.questions && this.questions.length > 0">
+  <fieldset *ngFor="let question of questions; let i = index">
+    <legend>{{ question.question }}</legend>
+    <p><em>{{ question.example }}</em></p>
+    <p><em>{{ question.frequency_and_context }}</em></p>
+
+    <div>
+      <label>
+        <input type="radio" [(ngModel)]="question.response" [value]="true" name="response{{ i }}" />
+        <span id="yes-option-{{ i }}">{{ "yes" | transloco }}</span>
+      </label>
+    </div>
+
+    <div>
+      <label>
+        <input type="radio" [(ngModel)]="question.response" [value]="false" name="response{{ i }}" />
+        <span id="no-option-{{ i }}">{{ "no" | transloco }}</span>
+      </label>
+    </div>
+
+  </fieldset>
+
+  <button type="submit" aria-label="Enviar Respostas do Quiz">{{ "send" | transloco }}</button>
+</form>

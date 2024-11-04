@@ -70,10 +70,10 @@ aio/out-tsc
 .env
 /src/environments/**
 
+
 #tests
 coverage/**
 
 #firebase
 /src/.firebase/**
 .firebase/
-.vscode
