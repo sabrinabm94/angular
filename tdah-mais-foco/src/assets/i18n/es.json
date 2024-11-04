@@ -1,143 +1,207 @@
 {
   "app_title": "TDAH + foco",
   "page_title_quiz": "Quiz",
-  "switch_language_title": "Selecione tua linguagem",
-  "error_404": "Erro 404",
-  "not_founded": "Não encontrado",
-  "term": "Termo",
+  "switch_language_title": "Seleccione su idioma",
+  "error_404": "Error 404",
+  "not_founded": "No encontrado",
+  "term": "Término",
   "limit": "Límite",
   "submit": "Enviar",
-  "yes": "Si",
+  "yes": "Sí",
   "no": "No",
   "send": "Enviar",
   "results_for": "Resultados para",
   "developed_by": "Desarrollado por",
   "all_rights_reserved": "Todos los derechos reservados",
-  "term_to_search": "Termo to busca",
-  "search_limit": "Limite de busca",
+  "term_to_search": "Término para buscar",
+  "search_limit": "Límite de búsqueda",
+  "field_required": "Campo obrigatório!",
   "quiz": {
-    "tdah": [
-      {
-        "question": "¿Te distraes fácilmente durante tareas repetitivas o largas?",
-        "example": "Ejemplo: Comienzas a leer un correo electrónico o un informe, luego piensas en otra cosa, te distraes y de repente te encuentras en otro sitio o mirando algo en tu celular.",
-        "frequency_and_context": "Esto ocurre al menos 4 veces por semana en al menos 2 contextos diferentes, como escuela/trabajo, relaciones, amigos y familia.",
-        "area": "Desatención"
-      },
-      {
-        "question": "¿Sueles olvidar eventos importantes, compromisos o plazos, a pesar de entender su relevancia?",
-        "example": "Ejemplo: Perder una reunión de trabajo, una cita médica o un plazo escolar.",
-        "frequency_and_context": "Esto ocurre al menos una vez por semana en al menos 2 contextos diferentes, como escuela/trabajo, relaciones, amigos y familia.",
-        "area": "Memoria"
-      },
-      {
-        "question": "¿Cometes errores con frecuencia por no prestar atención a los detalles?",
-        "example": "Ejemplo: Escribir un correo electrónico con errores, confundir fechas/hora similares o compartir información incorrecta porque asumiste que era correcta.",
-        "frequency_and_context": "Esto ocurre al menos dos veces por semana o en al menos el 50% de las comunicaciones en al menos 2 contextos diferentes, como escuela/trabajo, relaciones, amigos y familia.",
-        "area": "Desatención"
-      },
-      {
-        "question": "¿Tienes dificultad para recordar lo que las personas dijeron durante las conversaciones?",
-        "example": "Ejemplo: Incapaz de recordar los temas discutidos en una reunión de trabajo reciente, una charla de la semana pasada o un pedido de tu pareja.",
-        "frequency_and_context": "Esto ocurre al menos una vez por semana o en el 50% de las comunicaciones en al menos 2 contextos diferentes, como escuela/trabajo, relaciones, amigos y familia.",
-        "area": "Memoria"
-      },
-      {
-        "question": "¿Con frecuencia pierdes objetos personales?",
-        "example": "Ejemplo: Perder frecuentemente las llaves del coche, no poder encontrar el celular o perder otros objetos que usas con frecuencia.",
-        "frequency_and_context": "Esto ocurre al menos dos veces por semana y causa retrasos o problemas debido al objeto perdido.",
-        "area": "Memoria"
-      },
-      {
-        "question": "¿Sueles encontrar objetos en lugares extraños o tienes dificultad para encontrar cosas donde estás seguro de que las dejaste?",
-        "example": "Ejemplo: Encontrar las llaves en el baño, un anillo en el congelador, el control remoto de la TV en la basura, sin recordar haberlo dejado allí.",
-        "frequency_and_context": "Esto ocurre al menos una vez por semana y te hace perder tiempo, causa retrasos o afecta la productividad.",
-        "area": "Desatención"
-      },
-      {
-        "question": "¿Te sientes constantemente inquieto, incluso cuando necesitas mantener la calma?",
-        "example": "Ejemplo: Incapaz de quedarte quieto en una sala de espera o mantener la concentración durante una reunión, presentación o película, sintiendo la necesidad de moverte o teniendo tics en las manos, piernas o dientes cuando no puedes moverte.",
-        "frequency_and_context": "Esto ocurre la mayoría de las veces que necesitas esperar o esperar que algo suceda, a veces es más evidente para otras personas.",
-        "area": "Hiperactividad"
-      },
-      {
-        "question": "¿Tienes dificultad para controlar el volumen y el ritmo de tu habla durante las conversaciones?",
-        "example": "Ejemplo: En una conversación grupal, te das cuenta de que hablas alto, las personas a tu alrededor te miran cuando hablas o aquellos a tu lado piden que bajes el tono o te calles.",
-        "frequency_and_context": "Esto ocurre al menos tres veces por semana en la mayoría de las interacciones sociales en diferentes contextos, como escuela/trabajo, relaciones, amigos y familia.",
-        "area": [
-          "Impulsividad",
-          "Extroversión",
-          "Hiperactividad"
-        ]
-      },
-      {
-        "question": "¿Te resulta difícil esperar a que los demás terminen de hablar antes de interrumpir?",
-        "example": "Ejemplo: Durante una conversación, interrumpes varias veces antes de que alguien termine de hablar, ya sea por el deseo de hablar o por miedo a olvidar lo que deseas decir.",
-        "frequency_and_context": "Esto ocurre al menos tres veces por semana en la mayoría de las interacciones sociales en diferentes contextos, como escuela/trabajo, relaciones, amigos y familia.",
-        "area": [
-          "Impulsividad",
-          "Memoria"
-        ]
-      },
-      {
-        "question": "¿Tienes dificultad para absorber la mayoría de las cosas que alguien te está diciendo o te resulta difícil mantener la atención hasta que terminen de hablar?",
-        "example": "Ejemplo: Durante una conversación de almuerzo con colegas, cuanto más larga y llena se vuelve, menos información retienes.",
-        "frequency_and_context": "Esto ocurre al menos tres veces por semana o en al menos el 50% de las conversaciones en diferentes contextos, como escuela/trabajo, relaciones, amigos y familia.",
-        "area": [
-          "Impulsividad",
-          "Memoria"
-        ]
-      },
-      {
-        "question": "¿Tienes dificultad para absorber información de textos largos o de grandes volúmenes de mensajes cortos en las redes sociales?",
-        "example": "Ejemplo: Incapaz de leer un correo largo hasta el final y recordar la información completa o saltando grandes volúmenes de mensajes en redes sociales, leyendo solo el principio y el final o todo, pero olvidando rápidamente.",
-        "frequency_and_context": "Esto ocurre al menos tres veces por semana o en al menos el 50% de las conversaciones en diferentes contextos, como escuela/trabajo, relaciones, amigos y familia.",
-        "area": [
-          "Desatención"
-        ]
-      },
-      {
-        "question": "¿No tienes interés en socializar o encuentras a la mayoría de las personas poco interesantes?",
-        "example": "Ejemplo: Sin interés en conocer nuevas personas o prefiriendo quedarte solo haciendo actividades que consideras más interesantes.",
-        "frequency_and_context": "En los últimos tres meses, esto ha sucedido al menos cuatro veces por semana, especialmente cuando hay oportunidades de socialización.",
-        "area": [
-          "Hiperfoco",
-          "Introversión"
-        ]
-      },
-      {
-        "question": "¿Te irritas o tienes explosiones cuando te interrumpen durante una tarea en la que estás muy concentrado?",
-        "example": "Ejemplo: Durante una tarea inconclusa, si alguien interrumpe, sientes ira o frustración, reaccionando potencialmente con mal humor o comportamiento intenso.",
-        "frequency_and_context": "Esto ocurre en más del 50% de las situaciones en las que estabas inmerso y fuiste interrumpido antes de terminar.",
-        "area": [
-          "Hiperfoco",
-          "Impulsividad"
-        ]
-      },
-      {
-        "question": "¿Tienes dificultad para desviar el foco de una actividad para escuchar cuando alguien te habla directamente?",
-        "example": "Ejemplo: Alguien llama tu nombre o hace una pregunta, pero sigues concentrado en tu tarea, incapaz de recordar lo que se dijo o sin ganas de cambiar tu enfoque.",
-        "frequency_and_context": "En los últimos dos meses, esto ha ocurrido de cuatro a cinco veces, particularmente en situaciones de trabajo o estudio en las que estabas profundamente inmerso en una tarea importante.",
-        "area": [
-          "Hiperfoco",
-          "Desatención"
-        ]
-      },
-      {
-        "question": "¿Cambia de una tarea a otra antes de terminarlas?",
-        "example": "Ejemplo: Comenzaste a limpiar la casa, pero te distrajiste con el celular y acabaste haciendo otra cosa.",
-        "frequency_and_context": "Esto ha ocurrido al menos cinco veces en el último mes, especialmente en tareas diarias o trabajo donde tenías un plan definido.",
-        "area": [
-          "Desatención"
-        ]
-      },
-      {
-        "question": "En los últimos dos meses, has tenido dificultad para mantener una rutina diaria, a pesar de saber que necesitas realizar las mismas tareas consistentemente?",
-        "example": "Ejemplo: Planeaste hacer ejercicio todos los días a las 18h, pero a menudo te distraías y no seguías la rutina.",
-        "frequency_and_context": "En los últimos dos meses, al menos cuatro veces por semana, y el patrón se ha mantenido en al menos dos contextos, como el gimnasio o el trabajo.",
-        "area": [
-          "Desatención"
-        ]
-      }
-    ]
+    "tdah": {
+      "questions": [
+        {
+          "question": "¿Suele distraerse fácilmente durante tareas repetitivas o largas?",
+          "example": "Ejemplo: Comienza a leer un correo electrónico o un informe, luego piensa en otra cosa, se distrae y de repente se encuentra en otro sitio o mirando algo en su celular.",
+          "frequency_and_context": "Esto ocurre al menos 4 veces por semana en al menos 2 contextos diferentes, como escuela/trabajo, relaciones, amigos y familia.",
+          "area": "Desatenção"
+        },
+        {
+          "question": "¿Suele olvidar eventos importantes, compromisos o plazos, incluso entendiendo su relevancia?",
+          "example": "Ejemplo: Perder una reunión de trabajo, una cita médica o un plazo escolar.",
+          "frequency_and_context": "Esto ocurre al menos una vez por semana en al menos 2 contextos diferentes, como escuela/trabajo, relaciones, amigos y familia.",
+          "area": "Memória"
+        },
+        {
+          "question": "¿Frecuentemente comete errores por no prestar atención a los detalles?",
+          "example": "Ejemplo: Escribir un correo electrónico con errores, confundir fechas/hora similares o compartir información incorrecta porque asumió que estaba correcta.",
+          "frequency_and_context": "Esto ocurre al menos dos veces por semana o en al menos el 50% de las comunicaciones en al menos 2 contextos diferentes, como escuela/trabajo, relaciones, amigos y familia.",
+          "area": "Desatenção"
+        },
+        {
+          "question": "¿Tiene dificultad en recordar lo que las personas dijeron durante las conversaciones?",
+          "example": "Ejemplo: Incapaz de recordar los temas discutidos en una reunión de trabajo reciente, una charla de la semana pasada o un pedido de su pareja.",
+          "frequency_and_context": "Esto ocurre al menos una vez por semana o en el 50% de las comunicaciones en al menos 2 contextos diferentes, como escuela/trabajo, relaciones, amigos y familia.",
+          "area": "Memória"
+        },
+        {
+          "question": "¿Frecuentemente pierde objetos personales?",
+          "example": "Ejemplo: Perder frecuentemente las llaves del coche, no poder encontrar el celular o perder otros objetos que usa con frecuencia.",
+          "frequency_and_context": "Esto ocurre al menos dos veces por semana y causa retrasos o problemas debido al objeto perdido.",
+          "area": "Memória"
+        },
+        {
+          "question": "¿Suele encontrar objetos en lugares extraños o tiene dificultad en encontrar cosas donde está seguro de que las dejó?",
+          "example": "Ejemplo: Encontrar las llaves en el baño, un anillo en el congelador, el control remoto de la TV en la basura, sin recordar haberlo dejado ahí.",
+          "frequency_and_context": "Esto ocurre al menos una vez por semana y le hace perder tiempo, causa retrasos o afecta la productividad.",
+          "area": "Desatenção"
+        },
+        {
+          "question": "¿Se siente constantemente inquieto, incluso cuando necesita mantener la calma?",
+          "example": "Ejemplo: Incapaz de quedarse quieto en una sala de espera o mantener el foco durante una reunión, presentación o película, sintiendo la necesidad de moverse o teniendo tics en las manos, piernas o dientes cuando no puede moverse.",
+          "frequency_and_context": "Esto ocurre en la mayoría de las veces que necesita esperar o esperar que algo suceda, a veces percibido más por otras personas.",
+          "area": "Hiperatividade"
+        },
+        {
+          "question": "¿Tiene dificultad en controlar el volumen y el ritmo de su habla durante las conversaciones?",
+          "example": "Ejemplo: En una conversación en grupo, se da cuenta de que está hablando alto, las personas alrededor lo miran cuando habla o quienes están a su lado le piden que baje el tono o se calle.",
+          "frequency_and_context": "Esto ocurre al menos tres veces por semana en la mayoría de las interacciones sociales en diferentes contextos, como escuela/trabajo, relaciones, amigos y familia.",
+          "area": [
+            "Impulsividade",
+            "Extroversão",
+            "Hiperatividade"
+          ]
+        },
+        {
+          "question": "¿Le resulta difícil esperar a que los demás terminen de hablar antes de interrumpir?",
+          "example": "Ejemplo: Durante una conversación, interrumpe varias veces antes de que alguien termine de hablar, ya sea por el deseo de hablar o por miedo a olvidar lo que desea decir.",
+          "frequency_and_context": "Esto ocurre al menos tres veces por semana en la mayoría de las interacciones sociales en diferentes contextos, como escuela/trabajo, relaciones, amigos y familia.",
+          "area": [
+            "Impulsividade",
+            "Memória"
+          ]
+        },
+        {
+          "question": "¿Tiene dificultad en absorber la mayoría de las cosas que alguien le está diciendo o le resulta difícil mantener el foco hasta que terminen de hablar?",
+          "example": "Ejemplo: Durante una conversación de almuerzo con colegas, cuanto más larga y más llena se vuelve, menos información retiene.",
+          "frequency_and_context": "Esto ocurre al menos tres veces por semana o en al menos el 50% de las conversaciones en diferentes contextos, como escuela/trabajo, relaciones, amigos y familia.",
+          "area": [
+            "Impulsividade",
+            "Memória"
+          ]
+        },
+        {
+          "question": "¿Tiene dificultad en absorber información de textos largos o de grandes volúmenes de mensajes cortos en redes sociales?",
+          "example": "Ejemplo: Incapaz de leer un correo electrónico largo hasta el final y recordar la información completa o saltándose grandes volúmenes de mensajes en redes sociales, leyendo solo el principio y el final o todo, pero olvidando rápidamente.",
+          "frequency_and_context": "Esto ocurre al menos tres veces por semana o en al menos el 50% de las conversaciones en diferentes contextos, como escuela/trabajo, relaciones, amigos y familia.",
+          "area": [
+            "Desatenção"
+          ]
+        },
+        {
+          "question": "¿No tiene interés en socializar o le parece que la mayoría de las personas son poco interesantes?",
+          "example": "Ejemplo: Sin interés en conocer nuevas personas o prefiriendo quedarse solo haciendo actividades que considera más interesantes.",
+          "frequency_and_context": "En los últimos tres meses, esto ocurrió al menos cuatro veces por semana, especialmente cuando hay oportunidades de socialización.",
+          "area": [
+            "Hiperfoco",
+            "Introversão"
+          ]
+        },
+        {
+          "question": "¿Se irrita o tiene explosiones cuando es interrumpido durante una tarea en la que está muy concentrado?",
+          "example": "Ejemplo: Durante una tarea inacabada, si alguien interrumpe, siente rabia o frustración, reaccionando potencialmente con mal humor o comportamiento intenso.",
+          "frequency_and_context": "Esto ocurre en más del 50% de las situaciones en las que estaba inmerso y fue interrumpido antes de terminar.",
+          "area": [
+            "Hiperfoco",
+            "Impulsividade"
+          ]
+        },
+        {
+          "question": "¿Tiene dificultad en desviar el enfoque de una actividad para escuchar cuando alguien le habla directamente?",
+          "example": "Ejemplo: Alguien llama su nombre o hace una pregunta, pero usted sigue enfocado en su tarea, incapaz de recordar lo que se dijo o sin ganas de cambiar su enfoque.",
+          "frequency_and_context": "En los últimos dos meses, esto ocurrió de cuatro a cinco veces, particularmente en situaciones de trabajo o estudio en las que estaba profundamente inmerso en una tarea importante.",
+          "area": [
+            "Hiperfoco",
+            "Desatenção"
+          ]
+        },
+        {
+          "question": "¿Cambia de una tarea a otra antes de terminarlas?",
+          "example": "Ejemplo: Comenzó a limpiar la casa, pero se distrajo con el celular y terminó haciendo otra cosa.",
+          "frequency_and_context": "Esto ocurrió al menos cinco veces en la última semana, especialmente cuando sus actividades requieren un enfoque intenso.",
+          "area": [
+            "Desatenção"
+          ]
+        },
+        {
+          "question": "¿Siente que no puede completar sus tareas de manera eficiente?",
+          "example": "Ejemplo: Se da cuenta de que, aunque comienza muchas tareas, rara vez las termina con la calidad deseada, como en la escuela o en el trabajo.",
+          "frequency_and_context": "Esto ocurre al menos dos veces a la semana y le genera ansiedad o frustración porque le gustaría poder hacerlo mejor.",
+          "area": [
+            "Desatenção",
+            "Impulsividade"
+          ]
+        },
+        {
+          "question": "¿Siente que necesita terminar una tarea o actividad antes de realizar otra, pero se distrae antes de completarla?",
+          "example": "Ejemplo: Comenzó a organizar su escritorio, pero se distrae con su celular y no completa la tarea.",
+          "frequency_and_context": "Esto ocurre al menos cuatro veces por semana, a menudo afectando su productividad.",
+          "area": [
+            "Desatenção"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "area": "Desatenção",
+          "maxValue": 10
+        },
+        {
+          "area": "Extroversão",
+          "maxValue": 10
+        },
+        {
+          "area": "Hiperatividade",
+          "maxValue": 10
+        },
+        {
+          "area": "Hiperfoco",
+          "maxValue": 10
+        },
+        {
+          "area": "Impulsividade",
+          "maxValue": 10
+        },
+        {
+          "area": "Introversão",
+          "maxValue": 10
+        },
+        {
+          "area": "Memória",
+          "maxValue": 10
+        },
+        {
+          "area": "Procastinação",
+          "maxValue": 10
+        }
+      ],
+      "messages": [
+        {
+          "score": "5",
+          "text": "Puede que no tenga TDAH, pero es importante estar consciente de cómo la desatención puede impactar su vida diaria. Considere revisar sus rutinas, enfocarse en hábitos que mejoren su atención y buscar técnicas de gestión del tiempo para aumentar la productividad."
+        },
+        {
+          "score": "10",
+          "text": "Puede estar enfrentando algunos desafíos relacionados con la desatención. Intente identificar qué áreas necesitan más enfoque y considere adoptar estrategias de gestión del tiempo y mindfulness para mejorar su concentración y organización."
+        },
+        {
+          "score": "15",
+          "text": "Los signos de TDAH pueden estar presentes, y puede ser útil buscar orientación profesional. Identificar patrones y desencadenantes en su vida diaria puede ayudarle a entender mejor cómo lidiar con la desatención y mejorar su enfoque."
+        },
+        {
+          "title": "16",
+          "text": "Se recomienda consultar a un profesional de salud mental o un especialista en TDAH. Muchas personas con TDAH no son diagnosticadas, y recibir apoyo puede ayudarle a desarrollar estrategias para lidiar con la desatención y mejorar su calidad de vida."
+        }
+      ]
+    }
   }
 }

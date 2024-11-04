@@ -1,0 +1,15 @@
+<!-- src/app/features/gif-search/components/results/results.component.html -->
+<h2>{{ 'results_title' | transloco }}</h2>
+<div *ngFor="let result of results" class="result-item">
+  <h3>{{ result.area | transloco }}</h3>
+  <p>
+    <strong>{{ 'level' | transloco }}:</strong> {{ result.level }}
+    <br />
+    <strong>{{ 'points' | transloco }}:</strong> {{ result.points }}
+  </p>
+
+  <h4>{{ 'tips' | transloco }}</h4>
+  <ul>
+    <li *ngFor="let tip of result.tips">{{ tip }}</li>
+  </ul>
+</div>

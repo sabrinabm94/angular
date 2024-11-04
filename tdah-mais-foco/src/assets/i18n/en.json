@@ -1,9 +1,9 @@
 {
-  "app_title": "TDAH + focus",
+  "app_title": "ADHD + Focus",
   "page_title_quiz": "Quiz",
   "switch_language_title": "Select your language",
-  "error_404": "Erro 404",
-  "not_founded": "Not founded",
+  "error_404": "Error 404",
+  "not_founded": "Not found",
   "term": "Term",
   "limit": "Limit",
   "submit": "Submit",
@@ -12,132 +12,193 @@
   "send": "Send",
   "results_for": "Results for",
   "developed_by": "Developed by",
-  "all_rights_reserved": "All Rights Reserved",
+  "all_rights_reserved": "All rights reserved",
   "term_to_search": "Term to search",
   "search_limit": "Search limit",
+  "field_required": "Field required!",
   "quiz": {
-    "tdah": [
-      {
-        "question": "Do you often get easily distracted during repetitive or long tasks?",
-        "example": "E.g., You start reading an email or report, then think of something else, get distracted, and suddenly find yourself on another website or looking at something on your phone.",
-        "frequency_and_context": "This happens at least 4 times a week in at least 2 different contexts, like school/work, relationships, friends, and family.",
-        "area": "Desatenção"
-      },
-      {
-        "question": "Do you often forget important events, appointments, or deadlines, even understanding their relevance?",
-        "example": "E.g., Missing a work meeting, a doctor's appointment, or a school deadline.",
-        "frequency_and_context": "This happens at least once a week in at least 2 different contexts, like school/work, relationships, friends, and family.",
-        "area": "Memória"
-      },
-      {
-        "question": "Do you frequently make mistakes due to not paying attention to details?",
-        "example": "E.g., Typing an email with mistakes, confusing similar dates/times, or sharing incorrect information because you assumed it was correct.",
-        "frequency_and_context": "This happens at least twice a week or in at least 50% of communications in at least 2 different contexts, like school/work, relationships, friends, and family.",
-        "area": "Desatenção"
-      },
-      {
-        "question": "Do you have trouble remembering what people said during conversations?",
-        "example": "E.g., Unable to recall topics discussed in a recent work meeting, a lecture from the past week, or a request from your partner.",
-        "frequency_and_context": "This happens at least once a week or in 50% of communications in at least 2 different contexts, like school/work, relationships, friends, and family.",
-        "area": "Memória"
-      },
-      {
-        "question": "Do you frequently lose personal items?",
-        "example": "E.g., Frequently losing your car keys, not being able to find your phone, or misplacing other frequently used items.",
-        "frequency_and_context": "This happens at least twice a week and causes delays or problems due to the lost item.",
-        "area": "Memória"
-      },
-      {
-        "question": "Do you often find items in strange places or struggle to find things where you are sure you left them?",
-        "example": "E.g., Finding your keys in the bathroom, a ring in the freezer, the TV remote in the trash, without remembering leaving them there.",
-        "frequency_and_context": "This happens at least once a week and makes you lose time, causes delays, or affects productivity.",
-        "area": "Desatenção"
-      },
-      {
-        "question": "Do you feel constantly restless, even when you need to stay calm?",
-        "example": "E.g., Unable to sit still in a waiting room or stay focused during a meeting, presentation, or movie, feeling the need to move or having tics in hands, legs, or teeth when you can't move.",
-        "frequency_and_context": "This happens most of the time when you need to wait or expect something to happen, sometimes noticed more by others.",
-        "area": "Hiperatividade"
-      },
-      {
-        "question": "Do you have difficulty controlling the volume and pace of your speech during conversations?",
-        "example": "E.g., In a group conversation, you notice you're speaking loudly, people around look at you when you speak, or those beside you ask you to lower your tone or keep quiet.",
-        "frequency_and_context": "This happens at least three times a week in most social interactions across different contexts, like school/work, relationships, friends, and family.",
-        "area": [
-          "Impulsividade",
-          "Extroversão",
-          "Hiperatividade"
-        ]
-      },
-      {
-        "question": "Do you find it hard to wait for others to finish talking before interrupting?",
-        "example": "E.g., During a conversation, you interrupt multiple times before someone finishes speaking, either due to an urge to speak or a fear of forgetting what you want to say.",
-        "frequency_and_context": "This happens at least three times a week in most social interactions across different contexts, like school/work, relationships, friends, and family.",
-        "area": [
-          "Impulsividade",
-          "Memória"
-        ]
-      },
-      {
-        "question": "Do you struggle to absorb most things someone is saying to you, or find it hard to stay focused until they finish speaking?",
-        "example": "E.g., During a lunch conversation with colleagues, the longer and more crowded it gets, the less information you retain.",
-        "frequency_and_context": "This happens at least three times a week or in at least 50% of conversations across different contexts, like school/work, relationships, friends, and family.",
-        "area": [
-          "Impulsividade",
-          "Memória"
-        ]
-      },
-      {
-        "question": "Do you have difficulty absorbing information from long texts or high volumes of short messages on social media?",
-        "example": "E.g., Unable to read a long email to the end and remember the complete information, or skipping through large volumes of social media messages, reading only the first and last or all but quickly forgetting.",
-        "frequency_and_context": "This happens at least three times a week or in at least 50% of conversations across different contexts, like school/work, relationships, friends, and family.",
-        "area": [
-          "Desatenção"
-        ]
-      },
-      {
-        "question": "Do you lack interest in socializing or find most people uninteresting?",
-        "example": "E.g., Not interested in meeting new people or preferring to stay alone doing activities you find more interesting.",
-        "frequency_and_context": "In the last three months, this happened at least four times a week, especially when there are socializing opportunities.",
-        "area": [
-          "Hiperfoco",
-          "Introversão"
-        ]
-      },
-      {
-        "question": "Do you get irritated or have outbursts when interrupted during a task you are very focused on?",
-        "example": "E.g., During an unfinished task, if someone interrupts, you feel anger or frustration, potentially reacting with moodiness or intense behavior.",
-        "frequency_and_context": "This happens in more than 50% of situations where you were immersed and interrupted before finishing.",
-        "area": [
-          "Hiperfoco",
-          "Impulsividade"
-        ]
-      },
-      {
-        "question": "Do you find it hard to divert focus from an activity to listen when someone addresses you directly?",
-        "example": "E.g., Someone calls your name or asks a question, but you remain focused on your task, unable to recall what was said or lacking the desire to shift your focus.",
-        "frequency_and_context": "In the past two months, this happened four to five times, particularly in work or study situations where you were deeply immersed in an important task.",
-        "area": [
-          "Hiperfoco",
-          "Desatenção"
-        ]
-      },
-      {
-        "question": "Do you switch from one task to another before finishing them?",
-        "example": "E.g., You started cleaning the house but got distracted by your phone and ended up doing something else.",
-        "frequency_and_context": "This happened at least five times last month, especially in daily tasks or work where you had a set plan.",
-        "area": [
-          "Desatenção"
-        ]
-      },
-      {
-        "question": "In the last two months, have you had difficulty maintaining a daily routine, even knowing that you need to perform the same tasks consistently?",
-        "example": "E.g., You planned to exercise every day at 6 pm, but often got distracted and didn't stick to the routine.",
-        "frequency_and_context": "At least three times a week in different life contexts.",
-        "area": [
-          "Desatenção"
-        ]
-      }
-    ]
+    "tdah": {
+      "questions": [
+        {
+          "question": "Do you often get easily distracted during repetitive or lengthy tasks?",
+          "example": "Example: You start reading an email or a report, then think of something else, get distracted, and suddenly find yourself somewhere else or looking at something on your phone.",
+          "frequency_and_context": "This occurs at least 4 times a week in at least 2 different contexts, such as school/work, relationships, friends, and family.",
+          "area": "Desatenção"
+        },
+        {
+          "question": "Do you often forget important events, commitments, or deadlines, even understanding their relevance?",
+          "example": "Example: Missing a work meeting, a medical appointment, or a school deadline.",
+          "frequency_and_context": "This occurs at least once a week in at least 2 different contexts, such as school/work, relationships, friends, and family.",
+          "area": "Memória"
+        },
+        {
+          "question": "Do you frequently make mistakes by not paying attention to details?",
+          "example": "Example: Writing an email with mistakes, confusing similar dates/times, or sharing incorrect information because you assumed it was correct.",
+          "frequency_and_context": "This occurs at least twice a week or in at least 50% of communications in at least 2 different contexts, such as school/work, relationships, friends, and family.",
+          "area": "Desatenção"
+        },
+        {
+          "question": "Do you have difficulty remembering what people said during conversations?",
+          "example": "Example: Unable to recall the topics discussed in a recent work meeting, a chat from last week, or a request from your partner.",
+          "frequency_and_context": "This occurs at least once a week or in 50% of communications in at least 2 different contexts, such as school/work, relationships, friends, and family.",
+          "area": "Memória"
+        },
+        {
+          "question": "Do you frequently lose personal items?",
+          "example": "Example: Frequently losing car keys, not being able to find your phone, or losing other items you use regularly.",
+          "frequency_and_context": "This occurs at least twice a week and causes delays or problems due to the lost item.",
+          "area": "Memória"
+        },
+        {
+          "question": "Do you often find objects in strange places or have difficulty finding things where you are sure you left them?",
+          "example": "Example: Finding keys in the bathroom, a ring in the freezer, the TV remote in the trash, without remembering having left it there.",
+          "frequency_and_context": "This occurs at least once a week and makes you lose time, causes delays, or affects productivity.",
+          "area": "Desatenção"
+        },
+        {
+          "question": "Do you feel constantly restless, even when you need to stay calm?",
+          "example": "Example: Unable to stay still in a waiting room or maintain focus during a meeting, presentation, or movie, feeling the need to move or having tics in your hands, legs, or teeth when you can't move.",
+          "frequency_and_context": "This occurs most of the time you need to wait or expect something to happen, sometimes perceived more by others.",
+          "area": "Hiperatividade"
+        },
+        {
+          "question": "Do you have difficulty controlling the volume and pace of your speech during conversations?",
+          "example": "Example: In a group conversation, you realize you are speaking loudly, people around you look at you when you talk, or those next to you ask you to lower your tone or be quiet.",
+          "frequency_and_context": "This occurs at least three times a week in most social interactions in different contexts, such as school/work, relationships, friends, and family.",
+          "area": [
+            "Impulsividade",
+            "Extroversão",
+            "Hiperatividade"
+          ]
+        },
+        {
+          "question": "Do you find it hard to wait for others to finish speaking before interrupting?",
+          "example": "Example: During a conversation, you interrupt several times before someone finishes speaking, either out of a desire to talk or fear of forgetting what you want to say.",
+          "frequency_and_context": "This occurs at least three times a week in most social interactions in different contexts, such as school/work, relationships, friends, and family.",
+          "area": [
+            "Impulsividade",
+            "Memória"
+          ]
+        },
+        {
+          "question": "Do you have difficulty absorbing most things someone is telling you, or do you find it hard to maintain focus until they finish speaking?",
+          "example": "Example: During a lunch conversation with colleagues, the longer and fuller it gets, the less information you retain.",
+          "frequency_and_context": "This occurs at least three times a week or in at least 50% of conversations in different contexts, such as school/work, relationships, friends, and family.",
+          "area": [
+            "Impulsividade",
+            "Memória"
+          ]
+        },
+        {
+          "question": "Do you have difficulty absorbing information from long texts or large volumes of short messages on social media?",
+          "example": "Example: Unable to read a long email to the end and remember all the information or skipping large volumes of messages on social media, only reading the beginning and end or everything but quickly forgetting.",
+          "frequency_and_context": "This occurs at least three times a week or in at least 50% of conversations in different contexts, such as school/work, relationships, friends, and family.",
+          "area": [
+            "Desatenção"
+          ]
+        },
+        {
+          "question": "Are you uninterested in socializing or find most people uninteresting?",
+          "example": "Example: Uninterested in meeting new people or preferring to stay alone doing activities you find more interesting.",
+          "frequency_and_context": "In the last three months, this occurred at least four times a week, especially when there are opportunities for socialization.",
+          "area": [
+            "Hiperfoco",
+            "Introversão"
+          ]
+        },
+        {
+          "question": "Do you get irritated or have outbursts when interrupted during a task you are very focused on?",
+          "example": "Example: During an unfinished task, if someone interrupts, you feel anger or frustration, potentially reacting with a bad mood or intense behavior.",
+          "frequency_and_context": "This occurs in more than 50% of the situations where you were immersed and were interrupted before finishing.",
+          "area": [
+            "Hiperfoco",
+            "Impulsividade"
+          ]
+        },
+        {
+          "question": "Do you have difficulty shifting your focus from one activity to listen when someone speaks to you directly?",
+          "example": "Example: Someone calls your name or asks a question, but you remain focused on your task, unable to remember what was said or unwilling to change your focus.",
+          "frequency_and_context": "In the last two months, this occurred four to five times, particularly in work or study situations where you were deeply immersed in an important task.",
+          "area": [
+            "Hiperfoco",
+            "Desatenção"
+          ]
+        },
+        {
+          "question": "Do you switch from one task to another before finishing them?",
+          "example": "Example: You started cleaning the house but got distracted by your phone and ended up doing something else.",
+          "frequency_and_context": "This occurred at least five times in the last week, especially when your activities require intense focus.",
+          "area": [
+            "Desatenção"
+          ]
+        },
+        {
+          "question": "Do you feel that you cannot complete your tasks efficiently?",
+          "example": "Example: You realize that although you start many tasks, you rarely finish them with the desired quality, such as in school or at work.",
+          "frequency_and_context": "This occurs at least twice a week and causes you anxiety or frustration because you wish you could do better.",
+          "area": [
+            "Desatenção",
+            "Impulsividade"
+          ]
+        },
+        {
+          "question": "Do you feel that you need to finish one task or activity before doing another, but get distracted before completing it?",
+          "example": "Example: You started organizing your desk, but get distracted by your phone and do not complete the task.",
+          "frequency_and_context": "This occurs at least four times a week, often affecting your productivity."
+        }
+      ],
+      "results": [
+        {
+          "area": "Desatenção",
+          "maxValue": 10
+        },
+        {
+          "area": "Extroversão",
+          "maxValue": 10
+        },
+        {
+          "area": "Hiperatividade",
+          "maxValue": 10
+        },
+        {
+          "area": "Hiperfoco",
+          "maxValue": 10
+        },
+        {
+          "area": "Impulsividade",
+          "maxValue": 10
+        },
+        {
+          "area": "Introversão",
+          "maxValue": 10
+        },
+        {
+          "area": "Memória",
+          "maxValue": 10
+        },
+        {
+          "area": "Procastinação",
+          "maxValue": 10
+        }
+      ],
+      "messages": [
+        {
+          "score": "5",
+          "text": "You may not have ADHD, but it's important to be aware of how inattention can impact your daily life. Consider reviewing your routines, focusing on habits that improve your attention, and seeking time management techniques to increase productivity."
+        },
+        {
+          "score": "10",
+          "text": "You may be facing some challenges related to inattention. Try to identify which areas need more focus and consider adopting time management and mindfulness strategies to improve your concentration and organization."
+        },
+        {
+          "score": "15",
+          "text": "Signs of ADHD may be present, and it might be helpful to seek professional guidance. Identifying patterns and triggers in your daily life can help you better understand how to cope with inattention and improve your focus."
+        },
+        {
+          "title": "16",
+          "text": "It is recommended to consult a mental health professional or an ADHD specialist. Many people with ADHD go undiagnosed, and receiving support can help you develop strategies to cope with inattention and improve your quality of life."
+        }
+      ]
+    }
   }
 }

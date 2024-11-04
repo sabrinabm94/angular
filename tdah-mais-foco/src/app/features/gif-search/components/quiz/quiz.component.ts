@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { QuizService } from 'src/app/core/services/quiz.service';
 import { LanguageService } from 'src/app/core/services/language.service';
 import { Subscription } from 'rxjs';
@@ -16,8 +22,11 @@ import { environment } from 'src/environments/environment';
 })
 export class QuizComponent implements OnInit, OnDestroy {
   questions: any = [];
-  results: any = null;
+  score: Record<string, number> = {};
   languageSubscription: Subscription;
+  submitted: boolean = false;
+
+  @Output() results = new EventEmitter<Record<string, number>>();
 
   constructor(
     private quizService: QuizService,
@@ -35,11 +44,26 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   async loadQuestions(language: string) {
+    this.submitted = false;
     this.questions = await this.quizService.getQuizQuestions(language);
   }
 
   submitQuiz() {
-    this.results = this.quizService.calculateResults(this.questions);
+    if (this.isFormValid()) {
+      this.submitted = true;
+      this.score = this.quizService.calculateResults(this.questions);
+      this.results.emit(this.score);
+    } else {
+      this.submitted = false;
+    }
+  }
+
+  isFormValid(): boolean {
+    return this.questions.every((question) => question.response !== null);
+  }
+
+  checkRequired(question: any) {
+    return question.response !== null;
   }
 
   ngOnDestroy() {

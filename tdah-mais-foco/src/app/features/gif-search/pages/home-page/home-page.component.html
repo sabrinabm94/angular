@@ -2,10 +2,10 @@
   <h1 class="main-title center">{{ "app_title" | transloco }}</h1>
   <div class="row">
     <div class="col-12 col-sm-12">
-      <app-quiz />
+      <app-quiz (results)="results = $event"></app-quiz>
     </div>
     <div class="col-12 col-sm-12">
-      <app-results />
+      <app-results *ngIf="results" [score]="results"></app-results>
     </div>
   </div>
 </div>

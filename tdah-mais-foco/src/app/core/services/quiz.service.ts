@@ -35,8 +35,8 @@ export class QuizService {
 
     return this.getQuestions(language).then(
       (data: any) => {
-        if (data && data.quiz && data.quiz.tdah) {
-          const questions = data.quiz.tdah;
+        if (data && data.quiz && data.quiz.tdah && data.quiz.tdah.questions) {
+          const questions = data.quiz.tdah.questions;
           questions.forEach((question) => {
             answers.push({
               question: question.question,
@@ -56,13 +56,34 @@ export class QuizService {
     );
   }
 
-  // Função para calcular resultados
-  calculateResults(answers: { question: any; response: boolean | null }[]) {
+  calculateResults(answers: any[]) {
     const score = answers.reduce((acc, answer) => {
-      if (answer.response)
-        acc[answer.question.area] = (acc[answer.question.area] || 0) + 1;
+      if (answer.response) {
+        let areas: string[] = [];
+
+        // Verifica se a área é um array
+        if (Array.isArray(answer.area)) {
+          areas = answer.area; // Se já for um array, usamos diretamente
+        } else if (typeof answer.area === 'string') {
+          // Se for uma string, dividimos e mapeamos
+          areas = answer.area.split(',').map((area) => area.trim());
+        } else {
+          return acc;
+        }
+
+        // Contar o escore individualmente para cada área
+        areas.forEach((area) => {
+          acc[area] = (acc[area] || 0) + 1;
+        });
+      }
       return acc;
     }, {} as Record<string, number>);
+
     return score;
+  }
+
+  buildResultsMessage(score: any) {
+    if (score) {
+    }
   }
 }

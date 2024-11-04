@@ -1,25 +1,35 @@
 <h2>{{ "page_title_quiz" | transloco }}</h2>
 <form (ngSubmit)="submitQuiz()" *ngIf="this.questions && this.questions.length > 0">
   <fieldset *ngFor="let question of questions; let i = index">
-    <legend>{{ question.question }}</legend>
+    <legend
+      [class.strikethrough]="question.response !== '' && question.response !== null  && question.response !== undefined">
+      {{ question.question }}</legend>
     <p><em>{{ question.example }}</em></p>
     <p><em>{{ question.frequency_and_context }}</em></p>
 
     <div>
       <label>
-        <input type="radio" [(ngModel)]="question.response" [value]="true" name="response{{ i }}" />
+        <input type="radio" [(ngModel)]="question.response" [value]="true" name="response{{ i }}"
+          (blur)="checkRequired(question)" />
         <span id="yes-option-{{ i }}">{{ "yes" | transloco }}</span>
       </label>
     </div>
 
     <div>
       <label>
-        <input type="radio" [(ngModel)]="question.response" [value]="false" name="response{{ i }}" />
+        <input type="radio" [(ngModel)]="question.response" [value]="false" name="response{{ i }}"
+          (blur)="checkRequired(question)" />
         <span id="no-option-{{ i }}">{{ "no" | transloco }}</span>
       </label>
     </div>
 
+    <div
+      *ngIf="(question.response !== '' || question.response !== null  || question.response !== undefined) && submitted === true"
+      class="error-message">
+      <i>{{ "field_required" | transloco }}</i>
+    </div>
   </fieldset>
 
-  <button type="submit" aria-label="Enviar Respostas do Quiz">{{ "send" | transloco }}</button>
+  <button type="submit" aria-label="Enviar Respostas do Quiz" [disabled]="!isFormValid()">{{ "send" | transloco
+    }}</button>
 </form>
