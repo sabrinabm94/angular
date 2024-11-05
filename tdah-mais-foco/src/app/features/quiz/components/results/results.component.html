@@ -1,0 +1,19 @@
+<section class="result">
+  <app-container>
+    <h2 class="text-center">{{ 'title_results' | transloco }}</h2>
+    <div class="results" *ngIf="result && areasResults">
+      <div class="area" *ngFor="let areaResult of areasResults">
+        <h3>{{areaResult.name}}</h3>
+        <p>
+          {{areaResult.message}}
+        </p>
+      </div>
+      <div class="result" *ngIf="result">
+        <h3 class="text-center">{{ 'subtitle_results' | transloco }}</h3>
+        <p>
+          {{result.message}}
+        </p>
+      </div>
+    </div>
+  </app-container>
+</section>

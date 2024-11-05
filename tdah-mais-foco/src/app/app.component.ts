@@ -6,10 +6,10 @@ import {
   RouterModule,
   RouterOutlet,
 } from '@angular/router';
-import { HomePageComponent } from './features/gif-search/pages/home-page/home-page.component';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { TranslocoModule } from '@ngneat/transloco';
+import { HomePageComponent } from './features/quiz/pages/home-page/home-page.component';
 
 @Component({
   selector: 'app-root',

@@ -71,7 +71,10 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   isFormValid(): boolean {
-    return this.questions.every((question) => question.response !== null);
+    let isValid = this.questions.every(
+      (question) => question.response !== null
+    );
+    return isValid;
   }
 
   checkRequired(question: any) {

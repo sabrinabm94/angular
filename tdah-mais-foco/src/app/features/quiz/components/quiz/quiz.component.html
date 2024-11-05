@@ -1,4 +1,4 @@
-<section>
+<section class="quiz">
   <app-container>
     <h2>{{ "title_quiz" | transloco }}</h2>
     <form (ngSubmit)="submitQuiz()" *ngIf="this.questions && this.questions.length > 0">
@@ -20,13 +20,13 @@
             (blur)="checkRequired(question)" />
           <span id="no-option-{{ i }}">{{ "no" | transloco }}</span>
         </label>
-        {{question.response}} {{submitted}}
-        <app-error-message *ngIf="(question.response !== true || question.response !== false) && submitted === true">
+        <app-error-message *ngIf="(question.response !== true && question.response !== false) && submitted === true">
         </app-error-message>
       </app-fieldset>
 
-      <app-button [disabled]="!isFormValid()">{{ "send" | transloco
-        }}</app-button>
+      <app-button [disabled]="!isFormValid()">
+        {{ "send" | transloco }}
+      </app-button>
     </form>
   </app-container>
 </section>

@@ -1,14 +1,32 @@
+import { NgModule, importProvidersFrom } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 import {
   TranslocoModule,
   TRANSLOCO_CONFIG,
   translocoConfig,
 } from '@ngneat/transloco';
-import { HttpClientModule } from '@angular/common/http';
-import { environment } from '../environments/environment';
-import { NgModule } from '@angular/core';
+import { routes } from './app.routes';
+import { AppComponent } from './app.component';
+
+import { environment } from 'src/environments/environment';
+
+// Importações do Firebase
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
 @NgModule({
-  imports: [HttpClientModule, TranslocoModule],
+  imports: [
+    BrowserModule,
+    RouterModule.forRoot(routes),
+    HttpClientModule,
+    TranslocoModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
+    AngularFireAuthModule,
+  ],
   providers: [
     {
       provide: TRANSLOCO_CONFIG,
@@ -21,5 +39,6 @@ import { NgModule } from '@angular/core';
       }),
     },
   ],
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
