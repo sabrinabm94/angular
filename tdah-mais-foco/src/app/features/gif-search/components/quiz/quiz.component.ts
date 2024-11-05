@@ -12,13 +12,25 @@ import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { environment } from 'src/environments/environment';
+import { ContainerComponent } from '../../../../shared/components/container/container.component';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { FieldsetComponent } from 'src/app/shared/components/fieldset/fieldset.component';
+import { ErrorMessageComponent } from 'src/app/shared/components/error-message/error-message.component';
 
 @Component({
   selector: 'app-quiz',
   standalone: true,
   templateUrl: './quiz.component.html',
   styleUrls: ['./quiz.component.css'],
-  imports: [CommonModule, FormsModule, TranslocoModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    TranslocoModule,
+    ContainerComponent,
+    ButtonComponent,
+    FieldsetComponent,
+    ErrorMessageComponent,
+  ],
 })
 export class QuizComponent implements OnInit, OnDestroy {
   questions: any = [];
@@ -51,7 +63,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   submitQuiz() {
     if (this.isFormValid()) {
       this.submitted = true;
-      this.score = this.quizService.calculateResults(this.questions);
+      this.score = this.quizService.calculateQuestionsScore(this.questions);
       this.results.emit(this.score);
     } else {
       this.submitted = false;

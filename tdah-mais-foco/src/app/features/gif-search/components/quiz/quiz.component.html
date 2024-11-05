@@ -1,35 +1,32 @@
-<h2>{{ "page_title_quiz" | transloco }}</h2>
-<form (ngSubmit)="submitQuiz()" *ngIf="this.questions && this.questions.length > 0">
-  <fieldset *ngFor="let question of questions; let i = index">
-    <legend
-      [class.strikethrough]="question.response !== '' && question.response !== null  && question.response !== undefined">
-      {{ question.question }}</legend>
-    <p><em>{{ question.example }}</em></p>
-    <p><em>{{ question.frequency_and_context }}</em></p>
+<section>
+  <app-container>
+    <h2>{{ "title_quiz" | transloco }}</h2>
+    <form (ngSubmit)="submitQuiz()" *ngIf="this.questions && this.questions.length > 0">
+      <app-fieldset *ngFor="let question of questions; let i = index"
+        [class.strikethrough]="question.response !== '' && question.response !== null  && question.response !== undefined">
+        <legend>
+          {{ question.question }}</legend>
+        <p><em>{{ question.example }}</em></p>
+        <p>{{ question.frequency_and_context }}</p>
 
-    <div>
-      <label>
-        <input type="radio" [(ngModel)]="question.response" [value]="true" name="response{{ i }}"
-          (blur)="checkRequired(question)" />
-        <span id="yes-option-{{ i }}">{{ "yes" | transloco }}</span>
-      </label>
-    </div>
+        <label>
+          <input type="radio" [(ngModel)]="question.response" [value]="true" name="response{{ i }}"
+            (blur)="checkRequired(question)" />
+          <span id="yes-option-{{ i }}">{{ "yes" | transloco }}</span>
+        </label>
 
-    <div>
-      <label>
-        <input type="radio" [(ngModel)]="question.response" [value]="false" name="response{{ i }}"
-          (blur)="checkRequired(question)" />
-        <span id="no-option-{{ i }}">{{ "no" | transloco }}</span>
-      </label>
-    </div>
+        <label>
+          <input type="radio" [(ngModel)]="question.response" [value]="false" name="response{{ i }}"
+            (blur)="checkRequired(question)" />
+          <span id="no-option-{{ i }}">{{ "no" | transloco }}</span>
+        </label>
+        {{question.response}} {{submitted}}
+        <app-error-message *ngIf="(question.response !== true || question.response !== false) && submitted === true">
+        </app-error-message>
+      </app-fieldset>
 
-    <div
-      *ngIf="(question.response !== '' || question.response !== null  || question.response !== undefined) && submitted === true"
-      class="error-message">
-      <i>{{ "field_required" | transloco }}</i>
-    </div>
-  </fieldset>
-
-  <button type="submit" aria-label="Enviar Respostas do Quiz" [disabled]="!isFormValid()">{{ "send" | transloco
-    }}</button>
-</form>
+      <app-button [disabled]="!isFormValid()">{{ "send" | transloco
+        }}</app-button>
+    </form>
+  </app-container>
+</section>

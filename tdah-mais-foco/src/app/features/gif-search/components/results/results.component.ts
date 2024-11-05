@@ -2,6 +2,7 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslocoModule } from '@ngneat/transloco';
 import { FormsModule } from '@angular/forms';
+import { QuizService } from 'src/app/core/services/quiz.service';
 
 @Component({
   selector: 'app-results',
@@ -12,45 +13,28 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./results.component.css'],
 })
 export class ResultsComponent {
-  @Input() score: Record<string, number>; // Recebe o score calculado do quiz
-  results: any[] = [];
+  @Input() score: Record<string, number>;
+  areasResults: any[] = [];
+  result: any;
+
+  constructor(private quizService: QuizService) {}
 
   ngOnInit() {
     this.generateResults();
   }
 
-  generateResults() {
-    for (const area in this.score) {
-      const points = this.score[area];
-      let level: string;
-      let tips: string[];
+  async generateResults() {
+    try {
+      const messagesByArea = await this.quizService.getResultsMessageByArea();
+      this.areasResults = this.quizService.calculateResultsByArea(
+        this.score,
+        messagesByArea
+      );
 
-      if (points >= 8) {
-        level = 'Alto';
-        tips = [
-          'Tente técnicas de respiração e mindfulness para acalmar a mente.',
-          'Estabeleça uma rotina diária para melhorar o foco.',
-        ];
-      } else if (points >= 4) {
-        level = 'Moderado';
-        tips = [
-          'Considere listas de tarefas para organização.',
-          'Evite multitarefas, concentrando-se em uma atividade de cada vez.',
-        ];
-      } else {
-        level = 'Baixo';
-        tips = [
-          'Pratique atividades de atenção plena regularmente.',
-          'Mantenha um ambiente de trabalho sem distrações.',
-        ];
-      }
-
-      this.results.push({
-        area,
-        level,
-        points,
-        tips,
-      });
+      const messages = await this.quizService.getResultsMessage();
+      this.result = this.quizService.calculateResults(this.score, messages);
+    } catch (error) {
+      console.error('Error generating results:', error);
     }
   }
 }

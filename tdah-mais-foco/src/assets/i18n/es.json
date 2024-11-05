@@ -1,6 +1,8 @@
 {
   "app_title": "TDAH + foco",
-  "page_title_quiz": "Quiz",
+  "title_quiz": "Quiz",
+  "title_results": "Análisis por áreas",
+  "subtitle_results": "Resultado final",
   "switch_language_title": "Seleccione su idioma",
   "error_404": "Error 404",
   "not_founded": "No encontrado",
@@ -23,43 +25,50 @@
           "question": "¿Suele distraerse fácilmente durante tareas repetitivas o largas?",
           "example": "Ejemplo: Comienza a leer un correo electrónico o un informe, luego piensa en otra cosa, se distrae y de repente se encuentra en otro sitio o mirando algo en su celular.",
           "frequency_and_context": "Esto ocurre al menos 4 veces por semana en al menos 2 contextos diferentes, como escuela/trabajo, relaciones, amigos y familia.",
-          "area": "Desatenção"
+          "area": "Desatenção",
+          "personality": ""
         },
         {
           "question": "¿Suele olvidar eventos importantes, compromisos o plazos, incluso entendiendo su relevancia?",
           "example": "Ejemplo: Perder una reunión de trabajo, una cita médica o un plazo escolar.",
           "frequency_and_context": "Esto ocurre al menos una vez por semana en al menos 2 contextos diferentes, como escuela/trabajo, relaciones, amigos y familia.",
-          "area": "Memória"
+          "area": "Memória",
+          "personality": ""
         },
         {
           "question": "¿Frecuentemente comete errores por no prestar atención a los detalles?",
           "example": "Ejemplo: Escribir un correo electrónico con errores, confundir fechas/hora similares o compartir información incorrecta porque asumió que estaba correcta.",
           "frequency_and_context": "Esto ocurre al menos dos veces por semana o en al menos el 50% de las comunicaciones en al menos 2 contextos diferentes, como escuela/trabajo, relaciones, amigos y familia.",
-          "area": "Desatenção"
+          "area": "Desatenção",
+          "personality": ""
         },
         {
           "question": "¿Tiene dificultad en recordar lo que las personas dijeron durante las conversaciones?",
           "example": "Ejemplo: Incapaz de recordar los temas discutidos en una reunión de trabajo reciente, una charla de la semana pasada o un pedido de su pareja.",
           "frequency_and_context": "Esto ocurre al menos una vez por semana o en el 50% de las comunicaciones en al menos 2 contextos diferentes, como escuela/trabajo, relaciones, amigos y familia.",
-          "area": "Memória"
+          "area": "Memória",
+          "personality": ""
         },
         {
           "question": "¿Frecuentemente pierde objetos personales?",
           "example": "Ejemplo: Perder frecuentemente las llaves del coche, no poder encontrar el celular o perder otros objetos que usa con frecuencia.",
           "frequency_and_context": "Esto ocurre al menos dos veces por semana y causa retrasos o problemas debido al objeto perdido.",
-          "area": "Memória"
+          "area": "Memória",
+          "personality": ""
         },
         {
           "question": "¿Suele encontrar objetos en lugares extraños o tiene dificultad en encontrar cosas donde está seguro de que las dejó?",
           "example": "Ejemplo: Encontrar las llaves en el baño, un anillo en el congelador, el control remoto de la TV en la basura, sin recordar haberlo dejado ahí.",
           "frequency_and_context": "Esto ocurre al menos una vez por semana y le hace perder tiempo, causa retrasos o afecta la productividad.",
-          "area": "Desatenção"
+          "area": "Desatenção",
+          "personality": ""
         },
         {
           "question": "¿Se siente constantemente inquieto, incluso cuando necesita mantener la calma?",
           "example": "Ejemplo: Incapaz de quedarse quieto en una sala de espera o mantener el foco durante una reunión, presentación o película, sintiendo la necesidad de moverse o teniendo tics en las manos, piernas o dientes cuando no puede moverse.",
           "frequency_and_context": "Esto ocurre en la mayoría de las veces que necesita esperar o esperar que algo suceda, a veces percibido más por otras personas.",
-          "area": "Hiperatividade"
+          "area": "Hiperatividade",
+          "personality": ""
         },
         {
           "question": "¿Tiene dificultad en controlar el volumen y el ritmo de su habla durante las conversaciones?",
@@ -67,9 +76,9 @@
           "frequency_and_context": "Esto ocurre al menos tres veces por semana en la mayoría de las interacciones sociales en diferentes contextos, como escuela/trabajo, relaciones, amigos y familia.",
           "area": [
             "Impulsividade",
-            "Extroversão",
             "Hiperatividade"
-          ]
+          ],
+          "personality": "Extroversão"
         },
         {
           "question": "¿Le resulta difícil esperar a que los demás terminen de hablar antes de interrumpir?",
@@ -78,7 +87,8 @@
           "area": [
             "Impulsividade",
             "Memória"
-          ]
+          ],
+          "personality": ""
         },
         {
           "question": "¿Tiene dificultad en absorber la mayoría de las cosas que alguien le está diciendo o le resulta difícil mantener el foco hasta que terminen de hablar?",
@@ -87,7 +97,8 @@
           "area": [
             "Impulsividade",
             "Memória"
-          ]
+          ],
+          "personality": ""
         },
         {
           "question": "¿Tiene dificultad en absorber información de textos largos o de grandes volúmenes de mensajes cortos en redes sociales?",
@@ -95,16 +106,17 @@
           "frequency_and_context": "Esto ocurre al menos tres veces por semana o en al menos el 50% de las conversaciones en diferentes contextos, como escuela/trabajo, relaciones, amigos y familia.",
           "area": [
             "Desatenção"
-          ]
+          ],
+          "personality": ""
         },
         {
           "question": "¿No tiene interés en socializar o le parece que la mayoría de las personas son poco interesantes?",
           "example": "Ejemplo: Sin interés en conocer nuevas personas o prefiriendo quedarse solo haciendo actividades que considera más interesantes.",
           "frequency_and_context": "En los últimos tres meses, esto ocurrió al menos cuatro veces por semana, especialmente cuando hay oportunidades de socialización.",
           "area": [
-            "Hiperfoco",
-            "Introversão"
-          ]
+            "Hiperfoco"
+          ],
+          "personality": "Introversão"
         },
         {
           "question": "¿Se irrita o tiene explosiones cuando es interrumpido durante una tarea en la que está muy concentrado?",
@@ -113,7 +125,8 @@
           "area": [
             "Hiperfoco",
             "Impulsividade"
-          ]
+          ],
+          "personality": ""
         },
         {
           "question": "¿Tiene dificultad en desviar el enfoque de una actividad para escuchar cuando alguien le habla directamente?",
@@ -122,7 +135,8 @@
           "area": [
             "Hiperfoco",
             "Desatenção"
-          ]
+          ],
+          "personality": ""
         },
         {
           "question": "¿Cambia de una tarea a otra antes de terminarlas?",
@@ -130,7 +144,8 @@
           "frequency_and_context": "Esto ocurrió al menos cinco veces en la última semana, especialmente cuando sus actividades requieren un enfoque intenso.",
           "area": [
             "Desatenção"
-          ]
+          ],
+          "personality": ""
         },
         {
           "question": "¿Siente que no puede completar sus tareas de manera eficiente?",
@@ -139,7 +154,8 @@
           "area": [
             "Desatenção",
             "Impulsividade"
-          ]
+          ],
+          "personality": ""
         },
         {
           "question": "¿Siente que necesita terminar una tarea o actividad antes de realizar otra, pero se distrae antes de completarla?",
@@ -147,61 +163,98 @@
           "frequency_and_context": "Esto ocurre al menos cuatro veces por semana, a menudo afectando su productividad.",
           "area": [
             "Desatenção"
-          ]
+          ],
+          "personality": ""
         }
       ],
       "results": [
         {
           "area": "Desatenção",
-          "maxValue": 10
-        },
-        {
-          "area": "Extroversão",
-          "maxValue": 10
+          "maxValue": 10,
+          "messages": {
+            "low": "Nivel de atención adecuado para la edad, con distracciones ocasionales.",
+            "moderate": "Dificultad moderada para mantener el enfoque en tareas prolongadas; propenso a distracciones.",
+            "medium": "Episodios frecuentes de falta de atención que afectan el rendimiento en tareas.",
+            "high": "Incapacidad casi constante de concentrarse, comprometiendo seriamente las actividades diarias."
+          }
         },
         {
           "area": "Hiperatividade",
-          "maxValue": 10
+          "maxValue": 10,
+          "messages": {
+            "low": "Nivel de actividad física y mental adecuado para la edad.",
+            "moderate": "Ligera inquietud y necesidad de movimiento.",
+            "medium": "Alta necesidad de movimiento o actividad mental que distrae a uno mismo y a los demás.",
+            "high": "Hiperactividad intensa, incapaz de permanecer quieto por períodos prolongados."
+          }
         },
         {
           "area": "Hiperfoco",
-          "maxValue": 10
+          "maxValue": 10,
+          "messages": {
+            "low": "Capaz de concentrarse intensamente sin perjuicio significativo.",
+            "moderate": "Episodios ocasionales de hiperfoco en detrimento de otras actividades.",
+            "medium": "Incapacidad frecuente de interrumpir actividades de interés, ignorando otras tareas.",
+            "high": "Hiperfoco constante que compromete responsabilidades y actividades importantes."
+          }
         },
         {
           "area": "Impulsividade",
-          "maxValue": 10
-        },
-        {
-          "area": "Introversão",
-          "maxValue": 10
+          "maxValue": 10,
+          "messages": {
+            "low": "Capacidad adecuada de inhibición de impulsos para la edad, ocasionalmente impulsivo.",
+            "moderate": "Impulsividad moderada; ocasional dificultad para controlar acciones espontáneas.",
+            "medium": "Episodios frecuentes de impulsividad que causan problemas sociales y/o en el trabajo.",
+            "high": "Impulsividad constante y perjudicial, comprometiendo relaciones y decisiones."
+          }
         },
         {
           "area": "Memória",
-          "maxValue": 10
+          "maxValue": 10,
+          "messages": {
+            "low": "Buena memoria, olvidos esporádicos.",
+            "moderate": "Olvidos frecuentes que afectan las tareas diarias.",
+            "medium": "Dificultad significativa para recordar citas o instrucciones; olvidos frecuentes.",
+            "high": "Memoria extremadamente limitada, comprometiendo significativamente la vida cotidiana."
+          }
         },
         {
           "area": "Procastinação",
-          "maxValue": 10
+          "maxValue": 10,
+          "messages": {
+            "low": "Buena capacidad para iniciar y completar tareas sin necesidad de posponerlas, incluso en situaciones más difíciles.",
+            "moderate": "Encuentra cierta dificultad para iniciar tareas importantes o posponerlas ocasionalmente, especialmente en situaciones menos motivadoras.",
+            "medium": "Suele retrasar el inicio o finalización de tareas, incluso cuando son importantes, lo que interfiere con el cumplimiento de plazos y obligaciones.",
+            "high": "Procrastina en prácticamente todas las tareas, siendo casi incapaz de iniciarlas o completarlas sin un alto nivel de presión externa."
+          }
+        },
+        {
+          "area": "Desorganização",
+          "maxValue": 10,
+          "messages": {
+            "low": "Organizado, con lapsos ocasionales.",
+            "moderate": "Desorganización moderada que afecta la vida cotidiana, pero con esfuerzo puede organizarse.",
+            "medium": "Alta desorganización que dificulta completar tareas y mantener el orden.",
+            "high": "Incapacidad para organizar cualquier aspecto de la vida, causando constantes retrasos y olvidos."
+          }
         }
       ],
-      "messages": [
-        {
-          "score": "5",
-          "text": "Puede que no tenga TDAH, pero es importante estar consciente de cómo la desatención puede impactar su vida diaria. Considere revisar sus rutinas, enfocarse en hábitos que mejoren su atención y buscar técnicas de gestión del tiempo para aumentar la productividad."
-        },
-        {
-          "score": "10",
-          "text": "Puede estar enfrentando algunos desafíos relacionados con la desatención. Intente identificar qué áreas necesitan más enfoque y considere adoptar estrategias de gestión del tiempo y mindfulness para mejorar su concentración y organización."
-        },
-        {
-          "score": "15",
-          "text": "Los signos de TDAH pueden estar presentes, y puede ser útil buscar orientación profesional. Identificar patrones y desencadenantes en su vida diaria puede ayudarle a entender mejor cómo lidiar con la desatención y mejorar su enfoque."
-        },
-        {
-          "title": "16",
-          "text": "Se recomienda consultar a un profesional de salud mental o un especialista en TDAH. Muchas personas con TDAH no son diagnosticadas, y recibir apoyo puede ayudarle a desarrollar estrategias para lidiar con la desatención y mejorar su calidad de vida."
-        }
-      ]
-    }
+      "messages": {
+        "low": "La presencia de síntomas es baja, pero algunas estrategias pueden ayudar a mantener la organización. Intenta usar listas de tareas y establecer recordatorios diarios para mantener el enfoque. Mantener una rutina regular y dividir tareas más grandes en metas pequeñas también puede facilitar la concentración.",
+        "moderate": "Los síntomas de TDAH están presentes de manera moderada. Para manejar mejor la situación, prueba a crear una rutina diaria con horarios fijos para las actividades principales y pausas regulares. Utiliza herramientas como aplicaciones de organización o un planificador físico para ayudar a recordar compromisos. Establecer pequeñas recompensas al completar tareas puede ser motivador y efectivo para mantener el enfoque.",
+        "medium": "Los síntomas están presentes en una intensidad media, afectando el día a día. Intenta usar cronómetros o técnicas como Pomodoro (25 minutos de trabajo con pausas cortas) para mejorar la productividad. Organizar el ambiente, con menos distracciones y objetos esenciales a la vista, puede facilitar la concentración. Seguir una agenda semanal con metas claras y revisiones diarias también ayuda a organizar prioridades. Evaluar el apoyo de un profesional puede ser útil para aprender más estrategias de manejo efectivas.",
+        "high": "La presencia de síntomas es alta y impacta significativamente la rutina y el bienestar. Intenta crear un ambiente estructurado, con horarios para cada actividad y listas de tareas diarias priorizadas. Establece pausas frecuentes y limita las distracciones en el entorno laboral o de estudio. Se recomienda encarecidamente buscar el apoyo de un psicólogo para obtener ayuda personalizada y de un médico para evaluar la necesidad de tratamiento, ya que intervenciones adecuadas pueden hacer una gran diferencia."
+      }
+    },
+    "personality": [
+      {
+        "area": "Extroversão",
+        "maxValue": 10
+      },
+      {
+        "area": "Introversão",
+        "maxValue": 10
+      }
+    ]
   }
 }

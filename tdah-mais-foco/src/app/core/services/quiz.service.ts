@@ -8,24 +8,21 @@ import { environment } from 'src/environments/environment';
 export class QuizService {
   constructor(private httpClient: HttpClient) {}
 
-  // Função para buscar perguntas do arquivo JSON
-  async getQuestions(language: string): Promise<any[]> {
+  async readFileContentByLanguage(language: string): Promise<any[]> {
     language = language ? language : environment.lang;
     let filePath = '/assets/i18n/' + language + '.json';
 
     try {
-      let questions: any = await this.httpClient
-        .get<any[]>(filePath)
-        .toPromise();
+      let content: any = await this.httpClient.get<any[]>(filePath).toPromise();
       if (language === 'pt') {
-        return questions.pt;
+        return content.pt;
       }
       if (language === 'pt-br') {
-        return questions.ptBr;
+        return content.ptBr;
       }
-      return questions || [];
+      return content || [];
     } catch (error) {
-      console.error('Erro ao buscar perguntas:', error);
+      console.error('Erro ao ler arquivo:', error);
       return [];
     }
   }
@@ -33,7 +30,7 @@ export class QuizService {
   getQuizQuestions(language: string) {
     const answers = [];
 
-    return this.getQuestions(language).then(
+    return this.readFileContentByLanguage(language).then(
       (data: any) => {
         if (data && data.quiz && data.quiz.tdah && data.quiz.tdah.questions) {
           const questions = data.quiz.tdah.questions;
@@ -47,16 +44,127 @@ export class QuizService {
             });
           });
         }
-        return answers; // Retorne answers para que a promessa resolva com esse valor
+        return answers;
       },
       (error) => {
-        console.error('Erro ao carregar perguntas:', error);
-        return []; // Retorne uma lista vazia em caso de erro
+        console.error('Erro ao processar as perguntas do quiz:', error);
+        return [];
       }
     );
   }
 
-  calculateResults(answers: any[]) {
+  getQuizResultsByArea(language: string) {
+    return this.readFileContentByLanguage(language).then(
+      (data: any) => {
+        if (data && data.quiz && data.quiz.tdah && data.quiz.tdah.results) {
+          return data.quiz.tdah.results;
+        }
+      },
+      (error) => {
+        console.error('Erro ao processar os resultados do quiz:', error);
+        return [];
+      }
+    );
+  }
+
+  getQuizResults(language: string) {
+    return this.readFileContentByLanguage(language).then(
+      (data: any) => {
+        if (data && data.quiz && data.quiz.tdah && data.quiz.tdah.messages) {
+          return data.quiz.tdah.messages;
+        }
+      },
+      (error) => {
+        console.error('Erro ao processar os resultados do quiz:', error);
+        return [];
+      }
+    );
+  }
+
+  calculateResultsByArea(
+    score: Record<string, number>,
+    messagesByArea: any[]
+  ): any[] {
+    const resultsByAreas = [];
+
+    if (score) {
+      for (const areaName in score) {
+        let areaScore = score[areaName];
+        let areaLevel = '';
+
+        // Determine the level based on areaScore
+        if (areaScore >= 1 && areaScore <= 3) {
+          areaLevel = 'low';
+        } else if (areaScore >= 4 && areaScore <= 6) {
+          areaLevel = 'moderate';
+        } else if (areaScore >= 7 && areaScore <= 9) {
+          areaLevel = 'medium';
+        } else if (areaScore >= 10) {
+          areaLevel = 'high';
+        }
+
+        // Find the message for the current area (if any)
+        const areaResultsMessage =
+          messagesByArea.find((messages) => messages.area === areaName)
+            ?.messages || '';
+
+        resultsByAreas.push({
+          name: areaName,
+          score: areaScore,
+          level: areaLevel,
+          message: areaResultsMessage[areaLevel],
+        });
+      }
+    }
+
+    return resultsByAreas;
+  }
+
+  calculateResults(score: Record<string, number>, messages: any[]): any {
+    if (score) {
+      let totalAreas = 0;
+      let totalAreasScore = 0;
+      let finalScore = 0;
+      let finalLevel = '';
+
+      for (const areaName in score) {
+        totalAreasScore = +score[areaName];
+        totalAreas = +1;
+      }
+
+      finalScore = totalAreasScore / totalAreas;
+
+      // Determine the level based on areaScore
+      if (finalScore >= 1 && finalScore <= 3) {
+        finalLevel = 'low';
+      } else if (finalScore >= 4 && finalScore <= 6) {
+        finalLevel = 'moderate';
+      } else if (finalScore >= 7 && finalScore <= 9) {
+        finalLevel = 'medium';
+      } else if (finalScore >= 10) {
+        finalLevel = 'high';
+      }
+
+      const result = {
+        score: Number(finalScore),
+        level: Number(finalLevel),
+        message: String(messages[finalLevel]),
+      };
+
+      return result;
+    }
+    return null;
+  }
+
+  async getResultsMessageByArea() {
+    return await this.getQuizResultsByArea(environment.lang);
+  }
+
+  async getResultsMessage() {
+    return await this.getQuizResults(environment.lang);
+  }
+
+  calculateQuestionsScore(answers: any[]) {
     const score = answers.reduce((acc, answer) => {
       if (answer.response) {
         let areas: string[] = [];
@@ -80,10 +188,5 @@ export class QuizService {
     }, {} as Record<string, number>);
 
     return score;
-  }
-
-  buildResultsMessage(score: any) {
-    if (score) {
-    }
   }
 }

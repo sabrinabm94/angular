@@ -1,15 +1,23 @@
-<!-- src/app/features/gif-search/components/results/results.component.html -->
-<h2>{{ 'results_title' | transloco }}</h2>
-<div *ngFor="let result of results" class="result-item">
-  <h3>{{ result.area | transloco }}</h3>
-  <p>
-    <strong>{{ 'level' | transloco }}:</strong> {{ result.level }}
-    <br />
-    <strong>{{ 'points' | transloco }}:</strong> {{ result.points }}
-  </p>
-
-  <h4>{{ 'tips' | transloco }}</h4>
-  <ul>
-    <li *ngFor="let tip of result.tips">{{ tip }}</li>
-  </ul>
-</div>
+<section>
+  <app-container>
+    <h2>{{ 'title_results' | transloco }}</h2>
+    <div class="results" *ngIf="result && areasResults">
+      <div class="area" *ngFor="let areaResult of areasResults">
+        <app-container>
+          <h3>{{areaResult.name}}</h3>
+          <p>
+            {{areaResult.message}}
+          </p>
+        </app-container>
+      </div>
+      <div class="result" *ngIf="result">
+        <app-container>
+          <h3>{{ 'subtitle_results' | transloco }}</h3>
+          <p>
+            {{result.message}}
+          </p>
+        </app-container>
+      </div>
+    </div>
+  </app-container>
+</section>
