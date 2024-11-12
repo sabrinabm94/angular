@@ -1,13 +1,10 @@
-import { NgModule } from '@angular/core';
-import { ServerModule } from '@angular/platform-server';
-import { AppModule } from './app/app.module';
+import { enableProdMode } from '@angular/core';
+import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
+import { environment } from './environments/environment';
 
-@NgModule({
-  imports: [
-    AppModule,
-    ServerModule
-  ],
-  bootstrap: [AppComponent]
-})
-export class AppServerModule {}
+if (environment.production) {
+  enableProdMode();
+}
+
+bootstrapApplication(AppComponent).catch((err) => console.error(err));

@@ -1,44 +1,18 @@
-import { NgModule, importProvidersFrom } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
-import {
-  TranslocoModule,
-  TRANSLOCO_CONFIG,
-  translocoConfig,
-} from '@ngneat/transloco';
-import { routes } from './app.routes';
-import { AppComponent } from './app.component';
-
-import { environment } from 'src/environments/environment';
-
-// Importações do Firebase
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { provideAuth, getAuth } from '@angular/fire/auth';
+import { NgModule } from '@angular/core';
+import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { environment } from 'src/environments/environment';
+import { FirebaseModule } from './firebase.module';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { SharedModule } from './shared/shared.module';
+import { HttpClientModule } from '@angular/common/http';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @NgModule({
-  imports: [
-    BrowserModule,
-    RouterModule.forRoot(routes),
-    HttpClientModule,
-    TranslocoModule,
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => getAuth()),
-    AngularFireAuthModule,
-  ],
-  providers: [
-    {
-      provide: TRANSLOCO_CONFIG,
-      useValue: translocoConfig({
-        availableLangs: ['en', 'es', 'pt', 'pt-br'],
-        defaultLang: 'pt-br',
-        fallbackLang: 'pt',
-        reRenderOnLangChange: true,
-        prodMode: environment.production,
-      }),
-    },
-  ],
-  bootstrap: [AppComponent],
+  providers: [TranslocoModule],
+  imports: [CommonModule, RouterModule, SharedModule, HttpClientModule],
+  exports: [],
+  declarations: [],
 })
 export class AppModule {}

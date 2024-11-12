@@ -1,62 +1,10 @@
-h2 {
-  font-size: 1.8rem;
-  text-align: center;
-  color: #4A90E2;
-  margin-bottom: 20px;
-}
-
-form {
-  background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  transition: transform 0.2s;
-}
-
-legend {
-  font-weight: bold;
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-}
-
-p {
-  font-size: 0.9rem;
-  margin: 5px 0 15px;
-}
-
-label {
-  margin: 10px 0;
-  position: relative;
-  cursor: pointer;
-  padding-left: 30px;
+.label {
   display: inline-block;
   width: 45%;
   text-align: center;
+  padding-left: 30px;
 }
 
-input[type="radio"] {
-  margin-right: 10px;
-}
-
-.strikethrough {
-  opacity: 0.5;
-}
-
-.strikethrough legend {
-  text-decoration: line-through;
-  color: grey;
-}
-
-@media (min-width: 600px) {
-  form {
-    padding: 40px;
-  }
-
-  h2 {
-    font-size: 2rem;
-  }
-
-  button {
-    font-size: 1.2rem;
-  }
+fieldset {
+  background-color: #f2f2f2;
 }

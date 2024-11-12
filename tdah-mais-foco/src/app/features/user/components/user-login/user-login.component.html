@@ -1,0 +1,40 @@
+<section class="user-login">
+  <app-container>
+    <h2>{{ "title_user_login" | transloco }}</h2>
+    <form class="form" (ngSubmit)="loginUser()">
+      <app-fieldset>
+        <div class="form-group">
+          <!-- Campo Email -->
+          <legend>{{ "email_label" | transloco }}</legend>
+          <input type="email" id="email" [(ngModel)]="user.email" name="email" required
+            [attr.aria-invalid]="user.email && !validEmail(user.email) ? 'true' : 'false'" />
+          <app-error-message *ngIf="!validEmail(user.email) && submitted" aria-live="assertive">
+            {{ 'invalid_email' | transloco }}
+          </app-error-message>
+        </div>
+
+        <div class="form-group">
+          <!-- Campo Senha -->
+          <legend>{{ "password_label" | transloco }}</legend>
+          <input type="password" id="password" [(ngModel)]="user.password" name="password" required
+            [attr.aria-invalid]="user.password && user.password.trim() === '' ? 'true' : 'false'" />
+          <app-error-message *ngIf="user.password.trim() === '' && submitted" aria-live="assertive">
+            {{ 'field_required' | transloco }}
+          </app-error-message>
+        </div>
+      </app-fieldset>
+
+      <app-button [disabled]="!isFormValid()">
+        {{ "login" | transloco }}
+      </app-button>
+    </form>
+
+    <app-button [className]="'outline-success'" [disabled]="!isFormValid()" (click)="loginWithGoogle()">
+      {{ "login_with_google" | transloco }}
+    </app-button>
+
+    <app-button [className]="'link'" (click)="resetPassword()">
+      {{ "forgot_password" | transloco }}
+    </app-button>
+  </app-container>
+</section>

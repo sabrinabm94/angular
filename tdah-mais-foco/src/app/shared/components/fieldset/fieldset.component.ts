@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, HostBinding, Input } from '@angular/core';
 
 @Component({
@@ -6,7 +5,6 @@ import { Component, HostBinding, Input } from '@angular/core';
   standalone: true,
   templateUrl: './fieldset.component.html',
   styleUrls: ['./fieldset.component.css'],
-  imports: [CommonModule],
 })
 export class FieldsetComponent {
   @Input() title: string;

@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, HostBinding, Input } from '@angular/core';
 import { TranslocoModule } from '@ngneat/transloco';
 

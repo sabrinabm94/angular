@@ -1,32 +1,17 @@
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
-import {
-  RouterLink,
-  RouterLinkActive,
-  RouterModule,
-  RouterOutlet,
-} from '@angular/router';
-import { HeaderComponent } from './shared/components/header/header.component';
-import { FooterComponent } from './shared/components/footer/footer.component';
+import { RouterModule } from '@angular/router';
 import { TranslocoModule } from '@ngneat/transloco';
-import { HomePageComponent } from './features/quiz/pages/home-page/home-page.component';
+import { FirebaseModule } from './firebase.module';
+import { SharedModule } from './shared/shared.module';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [
-    CommonModule,
-    TranslocoModule,
-    RouterModule,
-    RouterOutlet,
-    RouterLink,
-    RouterLinkActive,
-    HeaderComponent,
-    FooterComponent,
-    HomePageComponent,
-  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
+  standalone: true,
+  imports: [CommonModule, RouterModule, SharedModule, HttpClientModule],
 })
 export class AppComponent {
   title = 'tdah-mais-foco';

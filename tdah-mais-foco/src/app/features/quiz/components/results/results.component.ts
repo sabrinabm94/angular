@@ -1,14 +1,12 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { TranslocoModule } from '@ngneat/transloco';
-import { FormsModule } from '@angular/forms';
+import { Component, Input } from '@angular/core';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 import { QuizService } from 'src/app/core/services/quiz.service';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
   selector: 'app-results',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslocoModule],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [SharedModule, TranslocoModule],
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.css'],
 })
@@ -17,7 +15,10 @@ export class ResultsComponent {
   areasResults: any[] = [];
   result: any;
 
-  constructor(private quizService: QuizService) {}
+  constructor(
+    private quizService: QuizService,
+    private translocoService: TranslocoService
+  ) {}
 
   ngOnInit() {
     this.generateResults();

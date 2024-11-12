@@ -1,8 +1,8 @@
 // switch-language-nav.component.ts
 import { Component } from '@angular/core';
-import { TranslocoModule } from '@ngneat/transloco';
 import { LanguageService } from 'src/app/core/services/language.service';
 import { environment } from 'src/environments/environment';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-switch-language-nav',

@@ -1,16 +1,11 @@
-import { Component, HostBinding } from '@angular/core';
+import { Component } from '@angular/core';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
   templateUrl: './footer.component.html',
-  styleUrl: './footer.component.css'
+  styleUrl: './footer.component.css',
+  imports: [TranslocoModule],
 })
-export class FooterComponent {
-  @HostBinding('class') class: string = "app-footer";
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-}
+export class FooterComponent {}

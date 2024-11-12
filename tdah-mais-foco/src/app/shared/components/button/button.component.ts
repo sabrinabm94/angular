@@ -7,9 +7,8 @@ import { Component, HostBinding, Input } from '@angular/core';
   styleUrls: ['./button.component.css'],
 })
 export class ButtonComponent {
-  @HostBinding('class') hostClass: string = 'app-button';
   @Input() id: string = '';
-  @Input() class: string = '';
+  @Input() className: string = 'primary';
   @Input() form: any = null;
   @Input() disabled: boolean = false;
 }
