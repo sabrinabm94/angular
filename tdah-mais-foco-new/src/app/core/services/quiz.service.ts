@@ -14,12 +14,6 @@ export class QuizService {
 
     try {
       let content: any = await this.httpClient.get<any[]>(filePath).toPromise();
-      if (language === 'pt') {
-        return content.pt;
-      }
-      if (language === 'pt-br') {
-        return content.ptBr;
-      }
       return content || [];
     } catch (error) {
       console.error('Erro ao ler arquivo:', error);

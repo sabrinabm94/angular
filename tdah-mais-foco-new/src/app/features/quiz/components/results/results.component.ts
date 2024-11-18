@@ -1,21 +1,13 @@
 import { Component, Input } from '@angular/core';
-import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 import { QuizService } from '../../../../core/services/quiz.service';
 import { ContainerComponent } from '../../../../shared/components/container/container.component';
 import { CommonModule } from '@angular/common';
-import { TranslocoRootModule } from '../../../../core/transloco/transloco-root.module';
-import { LanguageService } from '../../../../core/services/language.service';
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 
 @Component({
   selector: 'app-results',
   standalone: true,
-  imports: [
-    TranslocoModule,
-    TranslocoRootModule,
-    ContainerComponent,
-    CommonModule,
-  ],
-  providers: [TranslocoService, LanguageService],
+  imports: [ContainerComponent, CommonModule, TranslatePipe],
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.css'],
 })
@@ -24,10 +16,7 @@ export class ResultsComponent {
   areasResults: any[] = [];
   result: any;
 
-  constructor(
-    private quizService: QuizService,
-    private translocoService: TranslocoService
-  ) {}
+  constructor(private quizService: QuizService) {}
 
   ngOnInit() {
     this.generateResults();

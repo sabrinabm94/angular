@@ -6,12 +6,12 @@ import {
 import { provideServerRendering } from '@angular/platform-server';
 import { appConfig } from './app.config';
 import { HttpClientModule } from '@angular/common/http';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslatePipe } from './core/pipes/translate.pipe';
 
 const serverConfig: ApplicationConfig = {
   providers: [
     provideServerRendering(),
-    importProvidersFrom(HttpClientModule, TranslocoModule),
+    importProvidersFrom(HttpClientModule, TranslatePipe),
   ],
 };
 

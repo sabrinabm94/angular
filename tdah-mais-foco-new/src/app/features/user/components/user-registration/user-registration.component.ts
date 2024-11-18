@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
-import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 import { FormsModule, NgForm } from '@angular/forms';
-import { ContainerComponent } from '../../../../shared/components/container/container.component';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import {
   AngularFireAuth,
   AngularFireAuthModule,
@@ -10,13 +7,31 @@ import {
 import { Router } from '@angular/router';
 import { FirebaseAppModule } from '@angular/fire/app';
 import { BrowserModule } from '@angular/platform-browser';
+import { EmailUtils } from '../../../../core/utils/email.utils';
+import { ContainerComponent } from '../../../../shared/components/container/container.component';
+import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
+import { FieldsetComponent } from '../../../../shared/components/fieldset/fieldset.component';
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
+import { CommonModule } from '@angular/common';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-user-registration',
   standalone: true,
   templateUrl: './user-registration.component.html',
   styleUrls: ['./user-registration.component.css'],
-  imports: [FirebaseAppModule, BrowserModule, AngularFireAuthModule],
+  imports: [
+    FirebaseAppModule,
+    BrowserModule,
+    CommonModule,
+    FormsModule,
+    AngularFireAuthModule,
+    ContainerComponent,
+    ErrorMessageComponent,
+    FieldsetComponent,
+    TranslatePipe,
+    ButtonComponent,
+  ],
 })
 export class UserRegistrationComponent {
   user = {
@@ -26,7 +41,7 @@ export class UserRegistrationComponent {
     password: '',
   };
 
-  firebaseUser: FirebaseUser = {
+  firebaseUser: any = {
     displayName: '',
     username: '',
     email: '',

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { TranslocoService } from '@ngneat/transloco';
 import { environment } from '../../../environments/environment';
+import { TranslateService } from './translate.service';
 
 @Injectable({
   providedIn: 'root',
@@ -8,19 +8,22 @@ import { environment } from '../../../environments/environment';
 export class LanguageService {
   private currentLanguage: string = environment.lang;
 
-  constructor(private translocoService: TranslocoService) {}
+  constructor(private translateService: TranslateService) {}
 
   // Método para obter a linguagem atual
   getLanguage(): string {
-    //return this.currentLanguage;
-    return this.translocoService.getActiveLang();
+    return this.currentLanguage;
   }
 
   // Método para alterar a linguagem
-  switchLanguage(language: string): void {
-    if (language) {
-      this.translocoService.setActiveLang(language);
-      this.currentLanguage = language; // Atualiza a linguagem atual
+  async switchLanguage(language: string): Promise<void> {
+    if (language && language !== this.currentLanguage) {
+      try {
+        await this.translateService.setLanguage(language); // Carrega as traduções
+        this.currentLanguage = language; // Atualiza a linguagem atual
+      } catch (error) {
+        console.error(`Erro ao carregar idioma ${language}:`, error);
+      }
     }
   }
 }

@@ -1,6 +1,6 @@
 <section class="quiz">
   <app-container>
-    <h2>{{ "title_quiz" | transloco }}</h2>
+    <h2>{{ "title_quiz" | translate }}</h2>
     <form (ngSubmit)="submitQuiz()" *ngIf="this.questions && this.questions.length > 0">
       <app-fieldset *ngFor="let question of questions; let i = index"
         [class.strikethrough]="question.response !== '' && question.response !== null  && question.response !== undefined">
@@ -12,20 +12,20 @@
         <label>
           <input type="radio" [(ngModel)]="question.response" [value]="true" name="response{{ i }}"
             (blur)="checkRequired(question)" />
-          <span id="yes-option-{{ i }}">{{ "yes" | transloco }}</span>
+          <span id="yes-option-{{ i }}">{{ "yes" | translate }}</span>
         </label>
 
         <label>
           <input type="radio" [(ngModel)]="question.response" [value]="false" name="response{{ i }}"
             (blur)="checkRequired(question)" />
-          <span id="no-option-{{ i }}">{{ "no" | transloco }}</span>
+          <span id="no-option-{{ i }}">{{ "no" | translate }}</span>
         </label>
         <app-error-message *ngIf="(question.response !== true && question.response !== false) && submitted === true">
         </app-error-message>
       </app-fieldset>
 
       <app-button [disabled]="!isFormValid()">
-        {{ "send" | transloco }}
+        {{ "send" | translate }}
       </app-button>
     </form>
   </app-container>

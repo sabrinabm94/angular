@@ -1,10 +1,10 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
 import { FooterComponent } from '../../../../shared/components/footer/footer.component';
 import { CommonModule } from '@angular/common';
-import { TranslocoRootModule } from '../../../../core/transloco/transloco-root.module';
-import { LanguageService } from '../../../../core/services/language.service';
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
+import { QuizComponent } from '../../components/quiz/quiz.component';
+import { ResultsComponent } from '../../components/results/results.component';
 
 @Component({
   selector: 'app-home-page',
@@ -13,16 +13,15 @@ import { LanguageService } from '../../../../core/services/language.service';
     CommonModule,
     HeaderComponent,
     FooterComponent,
-    TranslocoModule,
-    TranslocoRootModule,
+    TranslatePipe,
+    QuizComponent,
+    ResultsComponent,
   ],
-  providers: [TranslocoService, LanguageService],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.css'],
 })
 export class HomePageComponent {
   results: any;
 
-  constructor(private translocoService: TranslocoService) {}
+  constructor() {}
 }

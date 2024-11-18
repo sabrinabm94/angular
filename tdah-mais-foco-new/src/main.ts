@@ -5,9 +5,6 @@ import {
 import { AppComponent } from './app/app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
-import { TranslocoModule } from '@ngneat/transloco';
-import { TranslocoRootModule } from './app/core/transloco/transloco-root.module';
-import { TranslocoHttpLoader } from './app/core/transloco/transloco-loader';
 import { appRoutes } from './app/app.routes';
 import { provideRouter } from '@angular/router';
 
@@ -16,10 +13,6 @@ bootstrapApplication(AppComponent, {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(appRoutes),
     provideClientHydration(),
-    importProvidersFrom(
-      HttpClientModule,
-      TranslocoRootModule,
-      TranslocoHttpLoader
-    ),
+    importProvidersFrom(HttpClientModule),
   ],
 }).catch((err) => console.error(err));

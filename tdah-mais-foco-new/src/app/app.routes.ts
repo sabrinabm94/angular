@@ -8,8 +8,19 @@ import { LoginPageComponent } from './features/user/pages/login-page/login-page.
 import { NotFoundPageComponent } from './features/quiz/pages/not-found-page/not-found-page.component';
 
 export const appRoutes: Routes = [
+  //logados
   {
     path: '',
+    component: HomePageComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'home',
+    component: HomePageComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'quiz',
     component: HomePageComponent,
     canActivate: [AuthGuard],
   },
@@ -18,10 +29,14 @@ export const appRoutes: Routes = [
     component: UserLogoutComponent,
     canActivate: [AuthGuard],
   },
+
+  //deslogados
   {
     path: 'login',
     component: LoginPageComponent,
     canActivate: [GuestGuard],
   },
+
+  //todos
   { path: '**', component: NotFoundPageComponent },
 ];

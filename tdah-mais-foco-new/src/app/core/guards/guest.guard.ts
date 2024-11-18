@@ -6,10 +6,10 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
   providedIn: 'root',
 })
 export class GuestGuard implements CanActivate {
-  constructor(private auth: AngularFireAuth, private router: Router) {}
+  constructor(private router: Router) {}
 
   canActivate(): boolean {
-    // Obtém o usuário autenticado diretamente do serviço AngularFireAuth
+    /* // Obtém o usuário autenticado diretamente do serviço AngularFireAuth
     const user = this.auth.authState;
 
     // Verifica se o usuário NÃO está autenticado
@@ -18,6 +18,7 @@ export class GuestGuard implements CanActivate {
     } else {
       this.router.navigate(['/quiz']);
       return false; // Impede o acesso à rota
-    }
+    } */
+    return true;
   }
 }

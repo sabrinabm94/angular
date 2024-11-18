@@ -1,5 +1,4 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 import { LanguageService } from '../../../../core/services/language.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -9,7 +8,8 @@ import { ContainerComponent } from '../../../../shared/components/container/cont
 import { FieldsetComponent } from '../../../../shared/components/fieldset/fieldset.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
-import { TranslocoRootModule } from '../../../../core/transloco/transloco-root.module';
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
+import { TranslateService } from '../../../../core/services/translate.service';
 
 @Component({
   selector: 'app-quiz',
@@ -22,10 +22,9 @@ import { TranslocoRootModule } from '../../../../core/transloco/transloco-root.m
     FieldsetComponent,
     ButtonComponent,
     ErrorMessageComponent,
-    TranslocoModule,
-    TranslocoRootModule,
+    TranslatePipe,
   ],
-  providers: [TranslocoService, LanguageService],
+  providers: [LanguageService],
   templateUrl: './quiz.component.html',
   styleUrls: ['./quiz.component.css'],
 })
@@ -39,17 +38,21 @@ export class QuizComponent {
   constructor(
     private quizService: QuizService,
     private languageService: LanguageService,
-    private translocoService: TranslocoService
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
     const language = this.languageService.getLanguage();
     this.loadQuestions(language);
+
+    // Inscrever-se para as mudanças de idioma
+    this.translateService.getLanguageChanged().subscribe((language) => {
+      this.loadQuestions(language); // Recarrega as perguntas com o novo idioma
+    });
   }
 
   // Método para carregar as perguntas com base na linguagem atual
   async loadQuestions(language: string) {
-    console.log('load');
     this.submitted = false;
     this.questions = await this.quizService.getQuizQuestions(language);
   }

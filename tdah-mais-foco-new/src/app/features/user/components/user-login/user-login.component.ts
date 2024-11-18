@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ContainerComponent } from '../../../../shared/components/container/container.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
@@ -15,8 +14,8 @@ import { EmailUtils } from '../../../../core/utils/email.utils';
 import { CommonModule } from '@angular/common';
 import { FirebaseAppModule } from '@angular/fire/app';
 import { BrowserModule } from '@angular/platform-browser';
-import { AngularFireModule } from '@angular/fire/compat';
-import { environment } from '../../../../../environments/environment';
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
+import { TranslateService } from '../../../../core/services/translate.service';
 
 @Component({
   selector: 'app-user-login',
@@ -26,7 +25,6 @@ import { environment } from '../../../../../environments/environment';
   imports: [
     CommonModule,
     FormsModule,
-    TranslocoModule,
     FirebaseAppModule,
     BrowserModule,
     AngularFireAuthModule,
@@ -34,6 +32,7 @@ import { environment } from '../../../../../environments/environment';
     ButtonComponent,
     FieldsetComponent,
     ErrorMessageComponent,
+    TranslatePipe,
   ],
 })
 export class UserloginComponent {
@@ -47,8 +46,8 @@ export class UserloginComponent {
   constructor(
     private auth: AngularFireAuth,
     private router: Router,
-    private translocoService: TranslocoService,
-    private emailUtils: EmailUtils
+    private emailUtils: EmailUtils,
+    private translateService: TranslateService
   ) {}
 
   loginUser() {
@@ -58,14 +57,14 @@ export class UserloginComponent {
       .then((result) => {
         console.log(result);
         // Navegação após o login bem-sucedido
-        alert(this.translocoService.translate('login_success'));
+        alert(this.translateService.translate('login_success'));
         setTimeout(() => {
           this.router.navigate(['/quiz']);
         }, 2000);
       })
       .catch((error) => {
         console.error(error);
-        alert(this.translocoService.translate('login_failed'));
+        alert(this.translateService.translate('login_failed'));
       })
       .finally(() => {
         this.clearUserCredentials();
@@ -82,7 +81,7 @@ export class UserloginComponent {
       })
       .catch((error) => {
         console.error(error);
-        alert(this.translocoService.translate('login_failed'));
+        alert(this.translateService.translate('login_failed'));
       });
   }
 
@@ -102,18 +101,18 @@ export class UserloginComponent {
   // Função de recuperação de senha
   resetPassword() {
     if (!this.user.email || !this.validEmail(this.user.email)) {
-      alert(this.translocoService.translate('invalid_email_message'));
+      alert(this.translateService.translate('invalid_email_message'));
       return;
     }
 
     this.auth
       .sendPasswordResetEmail(this.user.email)
       .then(() => {
-        alert(this.translocoService.translate('password_reset_email_sent'));
+        alert(this.translateService.translate('password_reset_email_sent'));
       })
       .catch((error) => {
         console.error(error);
-        alert(this.translocoService.translate('password_reset_error'));
+        alert(this.translateService.translate('password_reset_error'));
       });
   }
 

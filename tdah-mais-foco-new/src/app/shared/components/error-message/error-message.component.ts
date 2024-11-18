@@ -1,11 +1,11 @@
 import { Component, HostBinding, Input } from '@angular/core';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslatePipe } from '../../../core/pipes/translate.pipe';
 
 @Component({
   selector: 'app-error-message',
   standalone: true,
   templateUrl: './error-message.component.html',
   styleUrls: ['./error-message.component.css'],
-  imports: [TranslocoModule],
+  imports: [TranslatePipe],
 })
 export class ErrorMessageComponent {}
