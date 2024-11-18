@@ -23,17 +23,26 @@ input[type="password"] {
   text-align: center;
 }
 
+h2,
+h3 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
 h2 {
   font-size: 1.8rem;
-  text-align: center;
   color: #4A90E2;
-  margin-bottom: 20px;
+}
+
+h3 {
+  font-size: 1.2rem;
+  text-transform: uppercase;
 }
 
 form {
   background: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 5px 5px rgba(0, 0, 0, 0.1);
   padding: 20px;
   transition: transform 0.2s;
 }

@@ -1,7 +1,9 @@
 {
   "app_title": "ADHD + Focus",
   "title_quiz": "Quiz",
-  "title_results": "Analysis by Areas",
+  "title_results": "Results",
+  "title_areas_results": "Results by Areas",
+  "title_final_results": "Final Results",
   "title_user_login": "Login",
   "title_user_registration": "Registration",
   "subtitle_results": "Final Result",
@@ -38,6 +40,9 @@
   "forgot_password": "Recover password",
   "login_failed": "Incorrect email or password, please try again.",
   "login_success": "Login successful, entering...",
+  "next": "Next",
+  "back": "Back",
+  "part": "Part",
   "quiz": {
     "tdah": {
       "questions": [

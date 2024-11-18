@@ -5,7 +5,9 @@
   "all_rights_reserved": "Todos os direitos reservados",
   "app_title": "TDAH + foco",
   "title_quiz": "Quiz",
-  "title_results": "Análise por áreas",
+  "title_results": "Resultados",
+  "title_areas_results": "Resultados pela area",
+  "title_final_results": "Resultados finais",
   "title_user_login": "Entrar",
   "title_user_registration": "Cadastro",
   "subtitle_results": "Resultado final",
@@ -42,6 +44,9 @@
   "login_failed": "E-mail ou senha incorreta, tente novamente.",
   "login_success": "Login bem sucedido, entrando...",
   "logout": "Sair",
+  "next": "Avançar",
+  "back": "Voltar",
+  "part": "Parte",
   "quiz": {
     "tdah": {
       "questions": [
