@@ -40,7 +40,7 @@
           {{ "send" | translate }}
         </app-button>
 
-        <app-button *ngIf="this.currentStep >= 1 && this.currentStep < this.maxSteps" (click)="backStep()">
+        <app-button *ngIf="this.currentStep >= 1 && this.currentStep <= this.maxSteps" (click)="backStep()">
           {{ "back" | translate }}
         </app-button>
       </div>
