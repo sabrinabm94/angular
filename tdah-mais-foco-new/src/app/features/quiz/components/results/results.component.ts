@@ -4,11 +4,18 @@ import { ContainerComponent } from '../../../../shared/components/container/cont
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { FieldsetComponent } from '../../../../shared/components/fieldset/fieldset.component';
 
 @Component({
   selector: 'app-results',
   standalone: true,
-  imports: [ContainerComponent, CommonModule, TranslatePipe, ButtonComponent],
+  imports: [
+    ContainerComponent,
+    CommonModule,
+    TranslatePipe,
+    ButtonComponent,
+    FieldsetComponent,
+  ],
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.css'],
 })

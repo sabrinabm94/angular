@@ -1,21 +1,24 @@
 <section class="result">
   <app-container>
-    <h2 class="text-center">{{ 'title_results' | translate }}</h2>
-    <h3 class="text-center">{{ 'title_areas_results' | translate }}</h3>
     <div class="results" *ngIf="result && areasResults">
-      <div class="area" *ngFor="let areaResult of areasResults">
-        <h4>{{areaResult.name}}</h4>
-        <p>
-          {{areaResult.message}}
-        </p>
-      </div>
-      <hr>
-      <div class="result" *ngIf="result">
-        <h3 class="text-center">{{ 'title_final_results' | translate }}</h3>
-        <p>
-          {{result.message}}
-        </p>
-      </div>
+      <h2 class="text-center">{{ 'title_results' | translate }}</h2>
+      <app-fieldset>
+        <h3 class="text-center">{{ 'title_areas_results' | translate }}</h3>
+        <div class="area" *ngFor="let areaResult of areasResults">
+          <h4>{{areaResult.name}}</h4>
+          <p>
+            {{areaResult.message}}
+          </p>
+        </div>
+      </app-fieldset>
+      <app-fieldset>
+        <div class="result" *ngIf="result">
+          <h3 class="text-center">{{ 'title_final_results' | translate }}</h3>
+          <p>
+            {{result.message}}
+          </p>
+        </div>
+      </app-fieldset>
     </div>
   </app-container>
 </section>

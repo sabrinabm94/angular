@@ -9,7 +9,7 @@
         <hr>
         <app-fieldset
           [class.strikethrough]="question.response !== '' && question.response !== null && question.response !== undefined">
-          <legend>{{ question.question }}</legend>
+          <h4>{{ question.question }}</h4>
           <p><em>{{ question.example }}</em></p>
           <p>{{ question.frequency_and_context }}</p>
 
@@ -32,9 +32,14 @@
 
       <!-- Botões de navegação -->
       <div class="navigation-buttons">
-        <app-button *ngIf="this.currentStep < this.maxSteps" (click)="nextStep()" [disabled]="!isFormValid()">
-          {{ "next" | translate }}
-        </app-button>
+        <div class="send action" *ngIf="this.currentStep < this.maxSteps">
+          <app-button *ngIf="this.currentStep < this.maxSteps" (click)="nextStep()" [disabled]="!isFormValid()">
+            {{ "next" | translate }}
+          </app-button>
+          <app-button *ngIf="this.currentStep >= 1 && this.currentStep <= this.maxSteps" (click)="backStep()">
+            {{ "back" | translate }}
+          </app-button>
+        </div>
 
         <div class="send action" *ngIf="this.currentStep >= this.maxSteps">
           <h3>{{ "title_quiz_send" | translate }}</h3>
@@ -45,10 +50,6 @@
             {{ "revise_quiz" | translate }}
           </app-button>
         </div>
-
-        <app-button *ngIf="this.currentStep >= 1 && this.currentStep <= this.maxSteps" (click)="backStep()">
-          {{ "back" | translate }}
-        </app-button>
       </div>
     </form>
   </app-container>
