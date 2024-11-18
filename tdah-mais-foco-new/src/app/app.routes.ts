@@ -6,6 +6,7 @@ import { UserLogoutComponent } from './features/user/components/user-logout/user
 import { GuestGuard } from './core/guards/guest.guard';
 import { LoginPageComponent } from './features/user/pages/login-page/login-page.component';
 import { NotFoundPageComponent } from './features/quiz/pages/not-found-page/not-found-page.component';
+import { ResultsPageComponent } from './features/quiz/pages/results-page/results-page.component';
 
 export const appRoutes: Routes = [
   //logados
@@ -22,6 +23,11 @@ export const appRoutes: Routes = [
   {
     path: 'quiz',
     component: HomePageComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'results/:id',
+    component: ResultsPageComponent,
     canActivate: [AuthGuard],
   },
   {

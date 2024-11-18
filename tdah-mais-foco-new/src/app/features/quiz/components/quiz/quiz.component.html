@@ -36,9 +36,15 @@
           {{ "next" | translate }}
         </app-button>
 
-        <app-button *ngIf="this.currentStep >= this.maxSteps" [disabled]="!isFormValid()" (click)="submitQuiz()">
-          {{ "send" | translate }}
-        </app-button>
+        <div class="send action" *ngIf="this.currentStep >= this.maxSteps">
+          <h3>{{ "title_quiz_send" | translate }}</h3>
+          <app-button [disabled]="!isFormValid()" (click)="submitQuiz()">
+            {{ "calculate_results" | translate }}
+          </app-button>
+          <app-button *ngIf="this.currentStep >= 1 && this.currentStep <= this.maxSteps" (click)="backStep()">
+            {{ "revise_quiz" | translate }}
+          </app-button>
+        </div>
 
         <app-button *ngIf="this.currentStep >= 1 && this.currentStep <= this.maxSteps" (click)="backStep()">
           {{ "back" | translate }}

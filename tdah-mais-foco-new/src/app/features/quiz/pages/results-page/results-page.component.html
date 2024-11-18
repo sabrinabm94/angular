@@ -1,0 +1,13 @@
+<app-header />
+<main class="main">
+  <h1 class="main-title center">{{ "app_title" | translate }}</h1>
+  <app-results *ngIf="results" [score]="results"></app-results>
+  <div class="share-buttons">
+    <app-button (click)="shareResults()">Compartilhar</app-button>
+    <app-button (click)="shareOnWhatsApp()">Compartilhar no WhatsApp</app-button>
+    <app-button (click)="shareOnInstagram()">Compartilhar no Instagram</app-button>
+    <app-button (click)="shareOnFacebook()">Compartilhar no Facebook</app-button>
+    <app-button (click)="shareOnTwitter()">Compartilhar no Twitter</app-button>
+  </div>
+</main>
+<app-footer class="center" />
