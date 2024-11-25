@@ -1,7 +1,7 @@
 <app-header />
 <main class="main">
   <div class="content" *ngIf="results">
-    <h1 class="main-title center">{{ "app_title" | translate }}</h1>
+    <h1 class="main-title text-center">{{ "app_title" | translate }}</h1>
     <app-results [score]="results"></app-results>
     <div class="share-buttons">
       <app-button (click)="shareResults()">Compartilhar</app-button>
@@ -12,4 +12,4 @@
     </div>
   </div>
 </main>
-<app-footer class="center" />
+<app-footer />

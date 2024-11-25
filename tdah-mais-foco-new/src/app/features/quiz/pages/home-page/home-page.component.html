@@ -1,7 +1,7 @@
-<app-header></app-header>
+<app-header />
 <main class="main">
-  <h1 class="main-title center">{{ "app_title" | translate }}</h1>
+  <h1 class="main-title text-center">{{ "app_title" | translate }}</h1>
   <app-quiz *ngIf="!results" (results)="results = $event"></app-quiz>
   <app-results *ngIf="results" [score]="results"></app-results>
 </main>
-<app-footer class="center" />
+<app-footer />

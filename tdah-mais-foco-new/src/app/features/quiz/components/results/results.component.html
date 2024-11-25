@@ -19,9 +19,9 @@
           </p>
         </div>
       </app-fieldset>
-      <app-button [url]="'/register'">{{
-        "save_results" | translate
-        }}</app-button>
+      <a className="link" href="/register">
+        <app-button>{{"save_results" | translate}}</app-button>
+      </a>
     </div>
   </app-container>
 </section>

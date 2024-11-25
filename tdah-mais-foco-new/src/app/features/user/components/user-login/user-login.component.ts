@@ -100,7 +100,7 @@ export class UserloginComponent {
   // Função de recuperação de senha
   resetPassword() {
     if (!this.user.email || !this.validEmail(this.user.email)) {
-      alert(this.translateService.translate('invalid_email_message'));
+      alert(this.translateService.translate('invalid_email'));
       return;
     }
 

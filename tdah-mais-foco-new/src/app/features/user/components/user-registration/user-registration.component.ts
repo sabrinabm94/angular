@@ -6,13 +6,12 @@ import {
 } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { FirebaseAppModule } from '@angular/fire/app';
-import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { EmailUtils } from '../../../../core/utils/email.utils';
 import { ContainerComponent } from '../../../../shared/components/container/container.component';
 import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
 import { FieldsetComponent } from '../../../../shared/components/fieldset/fieldset.component';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
-import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 
 @Component({
@@ -40,17 +39,6 @@ export class UserRegistrationComponent {
     password: '',
   };
 
-  firebaseUser: any = {
-    displayName: '',
-    username: '',
-    email: '',
-    password: '',
-    phoneNumber: '',
-    photoURL: '',
-    providerId: '',
-    uid: '',
-  };
-
   submitted = false;
 
   constructor(
@@ -63,7 +51,6 @@ export class UserRegistrationComponent {
   registerUser() {
     this.submitted = true;
 
-    // Verifica se o formulário é válido antes de tentar registrar o usuário
     if (this.isFormValid()) {
       const { email, password } = this.user;
 
@@ -71,29 +58,29 @@ export class UserRegistrationComponent {
       this.auth
         .createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
-          // Usuário registrado com sucesso
-          console.log('Usuário registrado com sucesso', userCredential);
-          // Redireciona para uma outra página, como o painel de usuário
+          console.log('Usuário registrado com sucesso:', userCredential);
           this.router.navigate(['/dashboard']);
         })
         .catch((error) => {
-          // Caso haja erro, mostre a mensagem
           console.error('Erro ao registrar usuário:', error);
         });
     }
   }
 
+  // Função de validação de e-mail
   validEmail(email: string): boolean {
     return this.emailUtils.validEmail(email);
   }
 
   // Função de validação do formulário
   isFormValid(): boolean {
+    const { displayName, username, email, password } = this.user;
     return (
-      this.user.displayName.trim() !== '' &&
-      this.user.username.trim() !== '' &&
-      this.user.email.trim() !== '' &&
-      this.user.password.trim() !== ''
+      displayName.trim() !== '' &&
+      username.trim() !== '' &&
+      email.trim() !== '' &&
+      password.trim() !== '' &&
+      this.validEmail(email)
     );
   }
 

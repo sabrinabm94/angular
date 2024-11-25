@@ -37,6 +37,7 @@
   "password_placeholder": "Crie uma senha",
   "invalid_password": "Senha inválida!",
   "login": "Entrar",
+  "login_with_email": "Entrar com e-mail",
   "register": "Registro",
   "login_with_google": "Entrar com Google",
   "forgot_password": "Recuperar senha",
@@ -48,6 +49,8 @@
   "part": "Parte",
   "continue_without_login": "Continuar sem entrar (Convidado)",
   "save_results": "Quer salvar os seus resultados? Cadastre-se!",
+  "password_reset_email_sent": "O e-mail para redefinir a senha foi enviado.",
+  "password_reset_error": "Ocorreu um erro ao redefinir a senha.",
   "quiz": {
     "tdah": {
       "questions": [

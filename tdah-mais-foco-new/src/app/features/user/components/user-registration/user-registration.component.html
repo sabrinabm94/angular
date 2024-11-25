@@ -41,7 +41,9 @@
         {{ "register" | translate }}
       </app-button>
 
-      <app-button [url]="'/login'">{{"login" | translate}}</app-button>
+      <a className="link" href="/login">
+        <app-button>{{"login" | translate}}</app-button>
+      </a>
     </form>
   </app-container>
 </section>

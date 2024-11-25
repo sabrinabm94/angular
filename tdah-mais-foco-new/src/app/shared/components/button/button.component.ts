@@ -10,9 +10,14 @@ import { Component, HostBinding, Input } from '@angular/core';
 })
 export class ButtonComponent {
   @Input() id: string = '';
-  @Input() className: string = 'primary';
+  @Input() className: string = '';
   @Input() form: any = null;
   @Input() disabled: boolean = false;
-  @Input() url: string = '';
-  @Input() target: string = '_blank';
+  @Input() type: string = 'button';
+
+  public componentClassName: string = this.className
+    ? 'button btn btn-' + this.className
+    : 'button btn btn-primary';
+
+  constructor() {}
 }

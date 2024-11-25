@@ -37,6 +37,7 @@
   "password_placeholder": "Cree una contraseña",
   "invalid_password": "¡Contraseña inválida!",
   "login": "Iniciar sesión",
+  "login_with_email": "Iniciar com e-mail",
   "register": "Registro",
   "login_with_google": "Iniciar sesión con Google",
   "forgot_password": "Recuperar contraseña",
@@ -48,6 +49,8 @@
   "part": "parte",
   "continue_without_login": "Continuar sin iniciar sesión (Invitado)",
   "save_results": "¿Quieres guardar tus resultados? ¡Regístrate!",
+  "password_reset_email_sent": "El correo para restablecer la contraseña ha sido enviado.",
+  "password_reset_error": "Ocurrió un error al restablecer la contraseña.",
   "quiz": {
     "tdah": {
       "questions": [

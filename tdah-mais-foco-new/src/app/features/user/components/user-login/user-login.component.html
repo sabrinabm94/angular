@@ -25,7 +25,7 @@
       </app-fieldset>
 
       <app-button [disabled]="!isFormValid()">
-        {{ "login com e-mail" | translate }}
+        {{ "login_with_email" | translate }}
       </app-button>
     </form>
 
@@ -33,11 +33,11 @@
       {{ "login_with_google" | translate }}
     </app-button>
 
-    <app-button [url]="'/quiz'">
-      {{ "continue_without_login" | translate }}
-    </app-button>
+    <a className="link" href="/quiz">
+      <app-button>{{"continue_without_login" | translate}}</app-button>
+    </a>
 
-    <app-button [className]="'link'" (click)="resetPassword()">
+    <app-button [className]="'link'" (click)="resetPassword()" [disabled]="!user.email">
       {{ "forgot_password" | translate }}
     </app-button>
   </app-container>
