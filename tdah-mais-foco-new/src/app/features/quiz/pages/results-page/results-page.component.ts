@@ -6,21 +6,20 @@ import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { ActivatedRoute } from '@angular/router';
 import { Meta } from '@angular/platform-browser';
-import { ResultsComponent } from '../../components/results/results.component';
 import { FooterComponent } from '../../../../shared/components/footer/footer.component';
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
+import { ResultsComponent } from '../../components/results/results.component';
 
 @Component({
   selector: 'app-results-page',
   standalone: true,
   imports: [
-    ContainerComponent,
     CommonModule,
     TranslatePipe,
     ButtonComponent,
-    ResultsComponent,
     FooterComponent,
     HeaderComponent,
+    ResultsComponent,
   ],
   templateUrl: './results-page.component.html',
   styleUrls: ['./results-page.component.css'],

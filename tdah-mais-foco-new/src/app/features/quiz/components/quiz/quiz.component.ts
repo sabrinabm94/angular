@@ -24,7 +24,6 @@ import { FloorPipe } from '../../../../core/pipes/floor.pipe';
     ButtonComponent,
     ErrorMessageComponent,
     TranslatePipe,
-    FloorPipe,
   ],
   providers: [LanguageService],
   templateUrl: './quiz.component.html',
@@ -37,6 +36,7 @@ export class QuizComponent {
   currentStep: number = 0; // Etapa atual
   maxSteps: number = 3;
   responses: Record<number, any> = {}; // Armazena respostas por etapa
+  language: string = '';
 
   @Output() results = new EventEmitter<Record<string, number>>();
 
@@ -47,29 +47,43 @@ export class QuizComponent {
   ) {}
 
   ngOnInit() {
-    const language = this.languageService.getLanguage();
-    this.loadQuestions(language);
+    this.submitted = false;
+    this.language = this.languageService.getLanguage();
+    this.loadQuestions(this.language);
 
     // Inscrever-se para as mudanças de idioma
     this.translateService.getLanguageChanged().subscribe((language) => {
-      this.loadQuestions(language); // Recarrega as perguntas com o novo idioma
+      this.language = language; // Atualiza a linguagem
+      this.loadQuestions(this.language); // Recarrega as perguntas com o novo idioma
     });
   }
 
   // Método para carregar as perguntas com base na linguagem atual
   async loadQuestions(language: string) {
-    this.submitted = false;
-    this.questions = await this.quizService.getQuizQuestions(language);
+    this.quizService
+      .getQuizQuestions(language)
+      .then((questions: any[]) => {
+        this.questions = questions;
+      })
+      .catch((error) => {
+        console.error('Erro ao carregar perguntas:', error);
+      });
   }
 
   // Método para enviar o quiz e calcular a pontuação
-  submitQuiz() {
+  async submitQuiz() {
     if (this.isFormValid()) {
       this.submitted = true;
-      this.score = this.quizService.calculateQuestionsScore(this.questions);
-      this.results.emit(this.score);
+      this.calculateScore(this.questions);
     } else {
       this.submitted = false;
+    }
+  }
+
+  calculateScore(questions: any[]) {
+    if (questions) {
+      this.score = this.quizService.calculateQuestionsScore(this.questions);
+      this.results.emit(this.score);
     }
   }
 

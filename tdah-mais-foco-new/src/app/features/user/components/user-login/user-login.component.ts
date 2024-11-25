@@ -26,7 +26,6 @@ import { TranslateService } from '../../../../core/services/translate.service';
     CommonModule,
     FormsModule,
     FirebaseAppModule,
-    BrowserModule,
     AngularFireAuthModule,
     ContainerComponent,
     ButtonComponent,

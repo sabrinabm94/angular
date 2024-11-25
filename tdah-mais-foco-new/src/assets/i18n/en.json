@@ -46,6 +46,8 @@
   "next": "Next",
   "back": "Back",
   "part": "Part",
+  "continue_without_login": "Continue without login (Guest)",
+  "save_results": "Do you want save your results? Register now!",
   "quiz": {
     "tdah": {
       "questions": [

@@ -7,6 +7,7 @@ import { GuestGuard } from './core/guards/guest.guard';
 import { LoginPageComponent } from './features/user/pages/login-page/login-page.component';
 import { NotFoundPageComponent } from './features/quiz/pages/not-found-page/not-found-page.component';
 import { ResultsPageComponent } from './features/quiz/pages/results-page/results-page.component';
+import { RegisterPageComponent } from './features/user/pages/register-page/register-page.component';
 
 export const appRoutes: Routes = [
   //logados
@@ -40,6 +41,11 @@ export const appRoutes: Routes = [
   {
     path: 'login',
     component: LoginPageComponent,
+    canActivate: [GuestGuard],
+  },
+  {
+    path: 'register',
+    component: RegisterPageComponent,
     canActivate: [GuestGuard],
   },
 

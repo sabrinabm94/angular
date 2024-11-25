@@ -1,24 +1,27 @@
 <section class="result">
   <app-container>
-    <div class="results" *ngIf="result && areasResults">
-      <h2 class="text-center">{{ 'title_results' | translate }}</h2>
+    <div class="results" *ngIf="results && areasResults">
+      <h2 class="text-center">{{ "title_results" | translate }}</h2>
       <app-fieldset>
-        <h3 class="text-center">{{ 'title_areas_results' | translate }}</h3>
+        <h3 class="text-center">{{ "title_areas_results" | translate }}</h3>
         <div class="area" *ngFor="let areaResult of areasResults">
-          <h4>{{areaResult.name}}</h4>
+          <!-- <h4>{{ areaResult.name }}</h4> -->
           <p>
-            {{areaResult.message}}
+            {{ areaResult.message }}
           </p>
         </div>
       </app-fieldset>
       <app-fieldset>
-        <div class="result" *ngIf="result">
-          <h3 class="text-center">{{ 'title_final_results' | translate }}</h3>
+        <div class="result" *ngIf="results">
+          <h3 class="text-center">{{ "title_final_results" | translate }}</h3>
           <p>
-            {{result.message}}
+            {{ results.message }}
           </p>
         </div>
       </app-fieldset>
+      <app-button [url]="'/register'">{{
+        "save_results" | translate
+        }}</app-button>
     </div>
   </app-container>
 </section>

@@ -46,6 +46,8 @@
   "next": "Avançar",
   "back": "Voltar",
   "part": "Parte",
+  "continue_without_login": "Continuar sem entrar (Convidado)",
+  "save_results": "Quer salvar os seus resultados? Cadastre-se!",
   "quiz": {
     "tdah": {
       "questions": [

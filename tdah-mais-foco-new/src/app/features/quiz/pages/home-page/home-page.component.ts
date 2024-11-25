@@ -21,7 +21,7 @@ import { ResultsComponent } from '../../components/results/results.component';
   styleUrls: ['./home-page.component.css'],
 })
 export class HomePageComponent {
-  results: any;
+  results: any = null;
 
   constructor() {}
 }

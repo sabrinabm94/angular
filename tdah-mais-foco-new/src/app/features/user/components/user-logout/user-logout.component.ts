@@ -17,7 +17,6 @@ import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
   imports: [
     ButtonComponent,
     FirebaseAppModule,
-    BrowserModule,
     AngularFireAuthModule,
     TranslatePipe,
   ],

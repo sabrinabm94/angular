@@ -157,12 +157,12 @@ export class QuizService {
     return null;
   }
 
-  async getResultsMessageByArea() {
-    return await this.getQuizResultsByArea(environment.lang);
+  async getResultsMessageByArea(language: string) {
+    return await this.getQuizResultsByArea(language);
   }
 
-  async getResultsMessage() {
-    return await this.getQuizResults(environment.lang);
+  async getResultsMessage(language: string) {
+    return await this.getQuizResults(language);
   }
 
   calculateQuestionsScore(answers: any[]) {

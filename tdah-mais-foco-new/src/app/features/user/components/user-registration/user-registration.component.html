@@ -40,6 +40,8 @@
       <app-button [disabled]="!registrationForm.valid">
         {{ "register" | translate }}
       </app-button>
+
+      <app-button [url]="'/login'">{{"login" | translate}}</app-button>
     </form>
   </app-container>
 </section>

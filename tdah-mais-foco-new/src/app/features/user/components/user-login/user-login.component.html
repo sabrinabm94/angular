@@ -25,12 +25,16 @@
       </app-fieldset>
 
       <app-button [disabled]="!isFormValid()">
-        {{ "login" | translate }}
+        {{ "login com e-mail" | translate }}
       </app-button>
     </form>
 
     <app-button [className]="'outline-success'" [disabled]="!isFormValid()" (click)="loginWithGoogle()">
       {{ "login_with_google" | translate }}
+    </app-button>
+
+    <app-button [url]="'/quiz'">
+      {{ "continue_without_login" | translate }}
     </app-button>
 
     <app-button [className]="'link'" (click)="resetPassword()">

@@ -22,7 +22,6 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
   styleUrls: ['./user-registration.component.css'],
   imports: [
     FirebaseAppModule,
-    BrowserModule,
     CommonModule,
     FormsModule,
     AngularFireAuthModule,
