@@ -27,35 +27,33 @@ import { ResultsComponent } from '../../components/results/results.component';
 export class ResultsPageComponent {
   @Input() score: any;
   areasResults: any[] = [];
-  result: any;
-  shareUrl: string = '';
-  resultId: string | null = null;
   results: any;
+  resultShareUrl: string = '';
+  userId: string = '';
 
-  constructor(
-    private quizService: QuizService,
-    private route: ActivatedRoute,
-    private meta: Meta
-  ) {}
+  private message: string = `Olá, eu acabei de fazer meu teste de TDAH, faça você também !`;
+
+  constructor(private route: ActivatedRoute, private meta: Meta) {}
 
   ngOnInit() {
-    this.getResultId();
+    this.getUserId();
     this.updateMetaTags();
   }
 
-  getResultId(): void {
+  getUserId(): void {
     this.route.paramMap.subscribe((params) => {
-      this.resultId = params.get('id');
-      if (this.resultId) {
-        this.results = this.recoverResults(this.resultId); // Chama recoverResults somente quando resultId for obtido
+      let paramsValue = params.get('id');
+      this.userId = paramsValue ? paramsValue : '';
+      if (this.userId) {
+        this.results = this.recoverResults(this.userId);
       }
     });
   }
 
-  async recoverResults(resultId: string) {
+  async recoverResults(id: string) {
     try {
-      if (resultId) {
-        this.shareUrl = `${window.location.origin}/results/${resultId}`;
+      if (id) {
+        this.resultShareUrl = `${window.location.origin}/result/${id}`;
       }
     } catch (error) {
       console.error('Error recovering results:', error);
@@ -68,8 +66,8 @@ export class ResultsPageComponent {
       navigator
         .share({
           title: 'Confira meus resultados!',
-          text: `Eu acabei de fazer o quiz e meu resultado é: ${this.result.name}`, // Customize com o texto dos resultados
-          url: this.shareUrl,
+          text: this.message,
+          url: this.resultShareUrl,
         })
         .then(() => {
           console.log('Compartilhado com sucesso!');
@@ -80,38 +78,10 @@ export class ResultsPageComponent {
     }
   }
 
-  // Compartilhamento por rede social
-  shareOnWhatsApp() {
-    const message = `Eu acabei de fazer o quiz e meu resultado é: ${this.result?.name}`;
-    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(
-      message + ' - ' + this.shareUrl
-    )}`;
-    window.open(whatsappUrl, '_blank');
-  }
-
-  shareOnInstagram() {
-    const instagramUrl = `https://www.instagram.com`;
-    window.open(instagramUrl, '_blank');
-  }
-
-  shareOnFacebook() {
-    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-      this.shareUrl
-    )}`;
-    window.open(facebookUrl, '_blank');
-  }
-
-  shareOnTwitter() {
-    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-      `Eu acabei de fazer o quiz e meu resultado é: ${this.result.name}`
-    )}&url=${encodeURIComponent(this.shareUrl)}`;
-    window.open(twitterUrl, '_blank');
-  }
-
   updateMetaTags() {
-    const resultUrl = `${window.location.origin}/results/${this.resultId}`;
-    const description = `Confira meu resultado: ${this.result.name}!`;
-    const imageUrl = this.result.image;
+    const resultUrl = `${window.location.origin}/results/${this.userId}`;
+    const description = `Confira meu resultado: ${this.results.name}!`;
+    const imageUrl = this.results.image;
 
     // Atualizar título
     this.meta.updateTag({ name: 'title', content: 'Meu Resultado do Quiz' });

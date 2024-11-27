@@ -9,7 +9,6 @@ import { Component, HostBinding, Input } from '@angular/core';
   imports: [CommonModule],
 })
 export class ButtonComponent {
-  @Input() id: string = '';
   @Input() className: string = '';
   @Input() form: any = null;
   @Input() disabled: boolean = false;

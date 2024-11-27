@@ -1,6 +1,6 @@
 <section class="quiz">
   <app-container>
-    <form (ngSubmit)="submitQuiz()" *ngIf="this.questions && this.questions.length > 0">
+    <form (ngSubmit)="submitQuizAwsers()" *ngIf="this.questions && this.questions.length > 0">
       <h2>{{ "title_quiz" | translate }}</h2>
       <h3 *ngIf="this.currentStep < this.maxSteps">{{ "part" | translate }} {{this.currentStep + 1}} / {{this.maxSteps}}
       </h3>
@@ -43,7 +43,7 @@
 
         <div class="send action" *ngIf="this.currentStep >= this.maxSteps">
           <h3>{{ "title_quiz_send" | translate }}</h3>
-          <app-button [disabled]="!isFormValid()" (click)="submitQuiz()">
+          <app-button [disabled]="!isFormValid()" (click)="submitQuizAwsers()">
             {{ "calculate_results" | translate }}
           </app-button>
           <app-button *ngIf="this.currentStep >= 1 && this.currentStep <= this.maxSteps" (click)="backStep()">

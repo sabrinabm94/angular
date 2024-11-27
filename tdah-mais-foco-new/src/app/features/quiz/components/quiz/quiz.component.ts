@@ -1,4 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LanguageService } from '../../../../core/services/language.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -10,7 +11,8 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
 import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { TranslateService } from '../../../../core/services/translate.service';
-import { FloorPipe } from '../../../../core/pipes/floor.pipe';
+import { UserService } from '../../../../core/services/user.service';
+import { FirebaseUser } from '../../../../data/models/user-firebase.interface';
 
 @Component({
   selector: 'app-quiz',
@@ -37,29 +39,46 @@ export class QuizComponent {
   maxSteps: number = 3;
   responses: Record<number, any> = {}; // Armazena respostas por etapa
   language: string = '';
+  userId: string = ''; // ID do usuário obtido da URL
+  loggedUser: FirebaseUser | null = null;
 
   @Output() results = new EventEmitter<Record<string, number>>();
 
   constructor(
+    private router: Router,
     private quizService: QuizService,
     private languageService: LanguageService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
     this.submitted = false;
     this.language = this.languageService.getLanguage();
-    this.loadQuestions(this.language);
 
-    // Inscrever-se para as mudanças de idioma
+    // Busca usuário pelo id
+    if (!this.userId) {
+      this.loggedUser = this.userService.getUser();
+      if (this.loggedUser) {
+        console.log('Usuário logado:', this.loggedUser);
+        this.userId = this.loggedUser.uid;
+      } else {
+        console.log('Convidado.');
+      }
+    }
+
+    // Carrega perguntas
+    this.loadQuizQuestions(this.language);
+
+    // Observa mudanças de idioma
     this.translateService.getLanguageChanged().subscribe((language) => {
-      this.language = language; // Atualiza a linguagem
-      this.loadQuestions(this.language); // Recarrega as perguntas com o novo idioma
+      this.language = language;
+      this.loadQuizQuestions(this.language);
     });
   }
 
-  // Método para carregar as perguntas com base na linguagem atual
-  async loadQuestions(language: string) {
+  // Carregar as perguntas com base na linguagem
+  private async loadQuizQuestions(language: string) {
     this.quizService
       .getQuizQuestions(language)
       .then((questions: any[]) => {
@@ -70,53 +89,86 @@ export class QuizComponent {
       });
   }
 
-  // Método para enviar o quiz e calcular a pontuação
-  async submitQuiz() {
+  // Submeter o quiz e salvar a pontuação no banco
+  public async submitQuizAwsers() {
     if (this.isFormValid()) {
       this.submitted = true;
-      this.calculateScore(this.questions);
+      this.calculateQuizScore(this.questions);
     } else {
       this.submitted = false;
     }
   }
 
-  calculateScore(questions: any[]) {
+  private calculateQuizScore(questions: any[]): any {
     if (questions) {
-      this.score = this.quizService.calculateQuestionsScore(this.questions);
-      this.results.emit(this.score);
+      // Calcula escore do usuário
+      return this.quizService
+        .calculateQuestionsScore(this.questions)
+        .then((result) => {
+          //Salva o score no banco de dados e redireciona a página de resultados
+          if (this.userId) {
+            // Usuário logado
+            this.saveUserScore(this.userId).then((result) => {
+              this.router.navigate([`/result/${this.userId}`]);
+            });
+          } else {
+            // Convidado
+            // Envia o score para o componente de resultados
+            this.results.emit(this.score);
+          }
+          return (this.score = result);
+        });
     }
   }
 
   // Verifica se todas as perguntas da etapa atual foram respondidas
-  isFormValid(): boolean {
+  public isFormValid(): boolean {
     const currentQuestions = this.getQuestionsForStep();
-    const isValid = currentQuestions.every(
+    return currentQuestions.every(
       (question: { response: null }) => question.response !== null
     );
-    return isValid;
   }
 
   // Avança para a próxima etapa
-  nextStep() {
+  public nextStep() {
     if (this.isFormValid() && this.currentStep < this.maxSteps) {
       this.currentStep++;
     }
   }
 
   // Volta para a etapa anterior
-  backStep() {
+  public backStep() {
     this.currentStep--;
   }
 
   // Retorna as perguntas da etapa atual
-  getQuestionsForStep() {
-    const stepSize = Math.ceil(this.questions.length / this.maxSteps); // 3 perguntas por etapa (ajustar conforme necessário)
+  public getQuestionsForStep() {
+    const stepSize = Math.ceil(this.questions.length / this.maxSteps);
     const startIndex = this.currentStep * stepSize;
     return this.questions.slice(startIndex, startIndex + stepSize);
   }
 
   // Verifica se uma pergunta é obrigatória
-  checkRequired(question: any) {
+  public checkRequired(question: any) {
     return question.response !== null;
+  }
+
+  private async saveUserScore(id: string): Promise<any> {
+    // Se logado, salva resultados no banco de dados
+    if (id) {
+      this.userService
+        .saveUserScore(id, this.score)
+        .then((result) => {
+          console.log('Usuário logado: Pontuação salva com sucesso!');
+          return result;
+        })
+        .catch((error) => {
+          console.error('Usuário logado: Erro ao salvar pontuação: ', error);
+          return error;
+        });
+    } else {
+      console.error('Usuário deslogado.');
+      return null;
+    }
   }
 }

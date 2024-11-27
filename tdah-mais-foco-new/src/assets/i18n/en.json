@@ -28,6 +28,8 @@
   "email_label": "Email",
   "email_placeholder": "Enter your email",
   "invalid_email": "Invalid email!",
+  "invalid_email_in_use": "Email already in use",
+  "invalid_data": "Invalid data, try again!",
   "name_label": "Name",
   "username_placeholder": "Create a username",
   "username_label": "Username",
@@ -35,7 +37,7 @@
   "name_placeholder": "Enter your name",
   "password_label": "Password",
   "password_placeholder": "Create a password",
-  "invalid_password": "Invalid password!",
+  "invalid_password": "Password should be at least 6 characters, try again.",
   "login": "Login",
   "login_with_email": "Login with e-mail",
   "register": "Register",
@@ -51,6 +53,7 @@
   "part": "Part",
   "continue_without_login": "Continue without login (Guest)",
   "save_results": "Do you want save your results? Register now!",
+  "register_success": "Register successful, redirecting...",
   "quiz": {
     "tdah": {
       "questions": [

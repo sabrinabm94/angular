@@ -1,24 +1,20 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GuestGuard implements CanActivate {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
-  canActivate(): boolean {
-    /* // Obtém o usuário autenticado diretamente do serviço AngularFireAuth
-    const user = this.auth.authState;
-
-    // Verifica se o usuário NÃO está autenticado
+  async canActivate(): Promise<boolean> {
+    const user = await this.authService.getCurrentUser();
     if (!user) {
-      return true; // Permite o acesso à rota
+      return true; // Usuário não autenticado, permite o acesso
     } else {
-      this.router.navigate(['/quiz']);
-      return false; // Impede o acesso à rota
-    } */
-    return true;
+      this.router.navigate(['/']); // Redireciona para a página inicial
+      return false; // Bloqueia o acesso
+    }
   }
 }

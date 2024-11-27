@@ -1,6 +1,6 @@
-interface User {
-  displayName: string;
-  username: string;
-  email: string;
-  password: string;
+export interface User {
+  displayName?: string | null;
+  username?: string;
+  email: string | null;
+  password?: string;
 }

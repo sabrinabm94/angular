@@ -7,6 +7,8 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
 import { FieldsetComponent } from '../../../../shared/components/fieldset/fieldset.component';
 import { LanguageService } from '../../../../core/services/language.service';
 import { TranslateService } from '../../../../core/services/translate.service';
+import { UserService } from '../../../../core/services/user.service';
+import { FirebaseUser } from '../../../../data/models/user-firebase.interface';
 
 @Component({
   selector: 'app-results',
@@ -22,43 +24,83 @@ import { TranslateService } from '../../../../core/services/translate.service';
   styleUrls: ['./results.component.css'],
 })
 export class ResultsComponent {
-  @Input() score: any;
+  @Input() score: Record<string, number> | any = null;
+  @Input() userId: string = '';
   areasResults: any[] = [];
   results: any;
   language: string = '';
+  loggedUser: FirebaseUser | null = null;
 
   constructor(
     private quizService: QuizService,
     private languageService: LanguageService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
     this.language = this.languageService.getLanguage();
-    this.loadResults(this.language);
 
-    // Inscrever-se para as mudanças de idioma
+    // Verifica se o usuário está logado
+    if (!this.userId) {
+      this.loggedUser = this.userService.getUser();
+      if (this.loggedUser) {
+        console.log('Usuário logado:', this.loggedUser);
+        this.userId = this.loggedUser.uid;
+      } else {
+        console.warn('Convidado.');
+      }
+    }
+
+    // Se não houver score e userId, obtém a pontuação do usuário
+    if (!this.score && this.userId) {
+      console.log(this.userId);
+      this.userService
+        .getUserScore(this.userId)
+        .then((userScore) => {
+          this.score = userScore;
+          this.loadResults(this.language, userScore);
+        })
+        .catch((error) => {
+          console.error('Erro ao buscar pontuação do usuário:', error);
+        });
+    }
+
+    // Inscrever-se para mudanças de idioma
     this.translateService.getLanguageChanged().subscribe((language) => {
-      this.language = language; // Atualiza a linguagem
-      this.loadResults(this.language); // Recarrega as perguntas com o novo idioma
+      this.language = language;
+      // Recarrega os resultados com o novo idioma e o score
+      this.loadResults(this.language, this.score);
     });
   }
 
-  async loadResults(language: string) {
-    if (language) {
-      try {
-        const messagesByArea = await this.quizService.getResultsMessageByArea(
-          language
-        );
-        this.areasResults = this.quizService.calculateResultsByArea(
-          this.score,
-          messagesByArea
-        );
+  async loadResults(language: string, score: any): Promise<void> {
+    console.log('language ', language);
+    console.log('score', score);
 
-        const messages = await this.quizService.getResultsMessage(language);
-        this.results = this.quizService.calculateResults(this.score, messages);
+    if (language && score) {
+      try {
+        this.areasResults = await this.quizService
+          .getResultsMessageByArea(language)
+          .then((areaResultsMessages) => {
+            console.log('areaResultsMessages ', areaResultsMessages);
+            return this.quizService.calculateResultsByArea(
+              score,
+              areaResultsMessages
+            );
+          });
+
+        this.results = await this.quizService
+          .getResultsMessage(language)
+          .then((resultsMessages) => {
+            console.log('resultsMessages ', resultsMessages);
+            return this.quizService.calculateResults(score, resultsMessages);
+          });
+
+        console.log('this.areasResults: ', this.areasResults);
+        console.log('this.results: ', this.results);
       } catch (error) {
-        console.error('Error generating results:', error);
+        console.error('Erro ao carregar resultados:', error);
       }
     }
   }

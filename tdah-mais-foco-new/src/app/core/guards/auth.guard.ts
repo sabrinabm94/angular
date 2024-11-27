@@ -1,23 +1,20 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
-  canActivate(): boolean {
-    // Verifica se o usuário está autenticado de forma síncrona
-    /* const user = await this.auth.currentUser;
-
+  async canActivate(): Promise<boolean> {
+    const user = await this.authService.getCurrentUser();
     if (user) {
-      return true; // Permite o acesso à rota
+      return true; // Usuário autenticado, permite o acesso
     } else {
-      this.router.navigate(['/login']);
-      return false; // Impede o acesso à rota
-    } */
-    return true;
+      this.router.navigate(['/login']); // Redireciona para a página de login
+      return false; // Bloqueia o acesso
+    }
   }
 }

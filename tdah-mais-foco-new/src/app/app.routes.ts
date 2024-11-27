@@ -1,51 +1,67 @@
 // src/app/app.routes.ts
 import { Routes } from '@angular/router';
-import { HomePageComponent } from './features/quiz/pages/home-page/home-page.component';
-import { AuthGuard } from './core/guards/auth.guard';
-import { UserLogoutComponent } from './features/user/components/user-logout/user-logout.component';
 import { GuestGuard } from './core/guards/guest.guard';
-import { LoginPageComponent } from './features/user/pages/login-page/login-page.component';
 import { NotFoundPageComponent } from './features/quiz/pages/not-found-page/not-found-page.component';
-import { ResultsPageComponent } from './features/quiz/pages/results-page/results-page.component';
-import { RegisterPageComponent } from './features/user/pages/register-page/register-page.component';
+import { AuthGuard } from './core/guards/auth.guard';
 
 export const appRoutes: Routes = [
   //logados
   {
     path: '',
-    component: HomePageComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'home',
-    component: HomePageComponent,
+    loadComponent: () =>
+      import('./features/quiz/pages/home-page/home-page.component').then(
+        (m) => m.HomePageComponent
+      ),
     canActivate: [AuthGuard],
   },
   {
     path: 'quiz',
-    component: HomePageComponent,
+    loadComponent: () =>
+      import('./features/quiz/pages/home-page/home-page.component').then(
+        (m) => m.HomePageComponent
+      ),
+    canActivate: [GuestGuard],
+  },
+  {
+    path: 'quiz/:id',
+    loadComponent: () =>
+      import('./features/quiz/pages/home-page/home-page.component').then(
+        (m) => m.HomePageComponent
+      ),
     canActivate: [AuthGuard],
   },
   {
-    path: 'results/:id',
-    component: ResultsPageComponent,
-    canActivate: [AuthGuard],
+    path: 'result/:id',
+    loadComponent: () =>
+      import('./features/quiz/pages/results-page/results-page.component').then(
+        (m) => m.ResultsPageComponent
+      ),
+    //canActivate: [AuthGuard],
   },
   {
     path: 'logout',
-    component: UserLogoutComponent,
+    loadComponent: () =>
+      import(
+        './features/user/components/user-logout/user-logout.component'
+      ).then((m) => m.UserLogoutComponent),
     canActivate: [AuthGuard],
   },
 
   //deslogados
   {
     path: 'login',
-    component: LoginPageComponent,
+    loadComponent: () =>
+      import('./features/user/pages/login-page/login-page.component').then(
+        (m) => m.LoginPageComponent
+      ),
     canActivate: [GuestGuard],
   },
   {
     path: 'register',
-    component: RegisterPageComponent,
+    loadComponent: () =>
+      import(
+        './features/user/pages/register-page/register-page.component'
+      ).then((m) => m.RegisterPageComponent),
     canActivate: [GuestGuard],
   },
 

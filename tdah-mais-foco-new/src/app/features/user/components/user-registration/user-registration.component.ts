@@ -1,11 +1,7 @@
 import { Component } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
-import {
-  AngularFireAuth,
-  AngularFireAuthModule,
-} from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
-import { FirebaseAppModule } from '@angular/fire/app';
+import { FormsModule } from '@angular/forms';
+import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { CommonModule } from '@angular/common';
 import { EmailUtils } from '../../../../core/utils/email.utils';
 import { ContainerComponent } from '../../../../shared/components/container/container.component';
@@ -13,6 +9,9 @@ import { ErrorMessageComponent } from '../../../../shared/components/error-messa
 import { FieldsetComponent } from '../../../../shared/components/fieldset/fieldset.component';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { TranslateService } from '../../../../core/services/translate.service';
+import { FirebaseUser } from '../../../../data/models/user-firebase.interface';
+import { UserService } from '../../../../core/services/user.service';
 
 @Component({
   selector: 'app-user-registration',
@@ -20,10 +19,8 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
   templateUrl: './user-registration.component.html',
   styleUrls: ['./user-registration.component.css'],
   imports: [
-    FirebaseAppModule,
     CommonModule,
     FormsModule,
-    AngularFireAuthModule,
     ContainerComponent,
     ErrorMessageComponent,
     FieldsetComponent,
@@ -32,61 +29,60 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
   ],
 })
 export class UserRegistrationComponent {
-  user = {
-    displayName: '',
-    username: '',
-    email: '',
-    password: '',
-  };
-
+  user = { displayName: '', email: '', password: '' };
   submitted = false;
 
   constructor(
-    private auth: AngularFireAuth,
+    private auth: Auth,
     private router: Router,
-    private emailUtils: EmailUtils
+    private emailUtils: EmailUtils,
+    private translateService: TranslateService,
+    private userService: UserService
   ) {}
 
-  // Função chamada ao enviar o formulário
-  registerUser() {
+  public async registerUser() {
     this.submitted = true;
 
     if (this.isFormValid()) {
-      const { email, password } = this.user;
-
-      // Chama o Firebase Authentication para criar um novo usuário
-      this.auth
-        .createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          console.log('Usuário registrado com sucesso:', userCredential);
-          this.router.navigate(['/dashboard']);
+      const user = await createUserWithEmailAndPassword(
+        this.auth,
+        this.user.email,
+        this.user.password
+      )
+        .then((result) => {
+          console.log('Usuário registrado:', result);
+          alert(this.translateService.translate('register_success'));
+          //Faz o login automático após o registro
+          const loggedUser: FirebaseUser = {
+            email: result.user.email,
+            displayName: result.user.displayName,
+            uid: result.user.uid,
+          };
+          this.userService.setUser(loggedUser);
+          this.router.navigate(['/quiz']);
         })
         .catch((error) => {
           console.error('Erro ao registrar usuário:', error);
+          alert(this.translateService.translate('invalid_data'));
+          /*
+          alert(this.translateService.translate('invalid_password'));
+          alert(this.translateService.translate('invalid_email_in_use'));
+          */
         });
     }
   }
 
-  // Função de validação de e-mail
-  validEmail(email: string): boolean {
+  public validEmail(email: string): boolean {
     return this.emailUtils.validEmail(email);
   }
 
-  // Função de validação do formulário
-  isFormValid(): boolean {
-    const { displayName, username, email, password } = this.user;
+  public isFormValid(): boolean {
+    const { displayName, email, password } = this.user;
     return (
       displayName.trim() !== '' &&
-      username.trim() !== '' &&
       email.trim() !== '' &&
       password.trim() !== '' &&
       this.validEmail(email)
     );
-  }
-
-  // Função para limpar os campos do formulário
-  resetForm(form: NgForm) {
-    form.reset();
-    this.submitted = false;
   }
 }

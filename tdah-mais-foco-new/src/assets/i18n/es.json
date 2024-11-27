@@ -28,6 +28,8 @@
   "email_label": "Correo electrónico",
   "email_placeholder": "Ingrese su correo electrónico",
   "invalid_email": "¡Correo electrónico inválido!",
+  "invalid_email_in_use": "El correo electrónico ya está en uso",
+  "invalid_data": "Dados inválidos, intente de nuevo!",
   "name_label": "Nombre",
   "username_placeholder": "Cree un usuario",
   "username_label": "Usuario",
@@ -51,6 +53,7 @@
   "save_results": "¿Quieres guardar tus resultados? ¡Regístrate!",
   "password_reset_email_sent": "El correo para restablecer la contraseña ha sido enviado.",
   "password_reset_error": "Ocurrió un error al restablecer la contraseña.",
+  "register_success": "Registro exitoso, redirigiendo...",
   "quiz": {
     "tdah": {
       "questions": [

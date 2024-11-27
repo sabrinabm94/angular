@@ -1,21 +1,23 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
+import {
+  Auth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  sendPasswordResetEmail,
+} from '@angular/fire/auth';
+import { GoogleAuthProvider } from 'firebase/auth';
 import { ContainerComponent } from '../../../../shared/components/container/container.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import {
-  AngularFireAuth,
-  AngularFireAuthModule,
-} from '@angular/fire/compat/auth';
-import { Router } from '@angular/router';
-import { GoogleAuthProvider } from 'firebase/auth';
 import { FieldsetComponent } from '../../../../shared/components/fieldset/fieldset.component';
 import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
-import { EmailUtils } from '../../../../core/utils/email.utils';
-import { CommonModule } from '@angular/common';
-import { FirebaseAppModule } from '@angular/fire/app';
-import { BrowserModule } from '@angular/platform-browser';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
+import { EmailUtils } from '../../../../core/utils/email.utils';
+import { UserService } from '../../../../core/services/user.service';
+import { FirebaseUser } from '../../../../data/models/user-firebase.interface';
 import { TranslateService } from '../../../../core/services/translate.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-user-login',
@@ -25,8 +27,6 @@ import { TranslateService } from '../../../../core/services/translate.service';
   imports: [
     CommonModule,
     FormsModule,
-    FirebaseAppModule,
-    AngularFireAuthModule,
     ContainerComponent,
     ButtonComponent,
     FieldsetComponent,
@@ -34,54 +34,78 @@ import { TranslateService } from '../../../../core/services/translate.service';
     TranslatePipe,
   ],
 })
-export class UserloginComponent {
-  user = {
-    email: '',
-    password: '',
-  };
-
+export class UserLoginComponent {
+  user = { email: '', password: '' };
   submitted = false;
 
   constructor(
-    private auth: AngularFireAuth,
+    private auth: Auth,
     private router: Router,
     private emailUtils: EmailUtils,
+    private userService: UserService,
     private translateService: TranslateService
   ) {}
 
-  loginUser() {
-    this.submitted = true;
-    this.auth
-      .signInWithEmailAndPassword(this.user.email, this.user.password)
-      .then((result) => {
-        console.log(result);
-        // Navegação após o login bem-sucedido
-        alert(this.translateService.translate('login_success'));
-        setTimeout(() => {
-          this.router.navigate(['/quiz']);
-        }, 2000);
-      })
-      .catch((error) => {
-        console.error(error);
-        alert(this.translateService.translate('login_failed'));
-      })
-      .finally(() => {
-        this.clearUserCredentials();
-      });
+  async resetPassword() {
+    if (!this.user.email || !this.validEmail(this.user.email)) {
+      alert(this.translateService.translate('invalid_email'));
+      return;
+    }
+
+    try {
+      await sendPasswordResetEmail(this.auth, this.user.email);
+      alert(this.translateService.translate('password_reset_email_sent'));
+    } catch (error) {
+      console.error('Erro ao enviar e-mail de redefinição de senha:', error);
+      alert(this.translateService.translate('password_reset_error'));
+    }
   }
 
-  loginWithGoogle() {
-    const provider = new GoogleAuthProvider();
-    this.auth
-      .signInWithPopup(provider)
-      .then((result) => {
-        console.log(result);
-        this.router.navigate(['/quiz']);
-      })
-      .catch((error) => {
+  async loginWithEmail() {
+    this.submitted = true;
+
+    if (this.user.email && this.user.password) {
+      try {
+        const result = await signInWithEmailAndPassword(
+          this.auth,
+          this.user.email,
+          this.user.password
+        );
+        const loggedUser: FirebaseUser = {
+          email: result.user.email,
+          displayName: result.user.displayName,
+          uid: result.user.uid,
+        };
+
+        this.userService.setUser(loggedUser);
+        alert('Login realizado com sucesso!');
+        this.router.navigate([`/quiz/${loggedUser.uid}`]);
+      } catch (error) {
         console.error(error);
-        alert(this.translateService.translate('login_failed'));
-      });
+        alert('Falha no login. Tente novamente.');
+      } finally {
+        this.clearUserCredentials();
+      }
+    }
+  }
+
+  async loginWithGoogle() {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(this.auth, provider);
+      const loggedUser = {
+        email: result.user.email,
+        displayName: result.user.displayName,
+        uid: result.user.uid,
+      };
+
+      this.userService.setUser(loggedUser);
+      alert('Login com Google realizado com sucesso!');
+      this.router.navigate([`/quiz/${loggedUser.uid}`]);
+    } catch (error) {
+      console.error(error);
+      alert('Erro ao usar login com Google.');
+    }
   }
 
   validEmail(email: string): boolean {
@@ -92,31 +116,12 @@ export class UserloginComponent {
     return this.user.email.trim() !== '' && this.user.password.trim() !== '';
   }
 
+  private clearUserCredentials() {
+    this.user = { email: '', password: '' };
+  }
+
   resetForm(form: NgForm) {
     form.resetForm();
     this.submitted = false;
-  }
-
-  // Função de recuperação de senha
-  resetPassword() {
-    if (!this.user.email || !this.validEmail(this.user.email)) {
-      alert(this.translateService.translate('invalid_email'));
-      return;
-    }
-
-    this.auth
-      .sendPasswordResetEmail(this.user.email)
-      .then(() => {
-        alert(this.translateService.translate('password_reset_email_sent'));
-      })
-      .catch((error) => {
-        console.error(error);
-        alert(this.translateService.translate('password_reset_error'));
-      });
-  }
-
-  private clearUserCredentials() {
-    this.user.email = '';
-    this.user.password = '';
   }
 }

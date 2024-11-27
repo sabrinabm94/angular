@@ -1,7 +1,7 @@
 <section class="user-login">
   <app-container>
     <h2>{{ "title_user_login" | translate }}</h2>
-    <form class="form" (ngSubmit)="loginUser()">
+    <form class="form" (ngSubmit)="loginWithEmail()">
       <app-fieldset>
         <div class="form-group">
           <!-- Campo Email -->
@@ -18,13 +18,13 @@
           <legend>{{ "password_label" | translate }}</legend>
           <input type="password" id="password" [(ngModel)]="user.password" name="password" required
             [attr.aria-invalid]="user.password && user.password.trim() === '' ? 'true' : 'false'" />
-          <app-error-message *ngIf="user.password.trim() === '' && submitted" aria-live="assertive">
+          <app-error-message *ngIf="user.password && user.password.trim() === '' && submitted" aria-live="assertive">
             {{ 'field_required' | translate }}
           </app-error-message>
         </div>
       </app-fieldset>
 
-      <app-button [disabled]="!isFormValid()">
+      <app-button [disabled]="!isFormValid()" (click)="loginWithEmail()">
         {{ "login_with_email" | translate }}
       </app-button>
     </form>
@@ -33,12 +33,16 @@
       {{ "login_with_google" | translate }}
     </app-button>
 
-    <a className="link" href="/quiz">
-      <app-button>{{"continue_without_login" | translate}}</app-button>
-    </a>
-
     <app-button [className]="'link'" (click)="resetPassword()" [disabled]="!user.email">
       {{ "forgot_password" | translate }}
     </app-button>
+
+    <a className="link" href="/register">
+      <app-button>{{"register" | translate}}</app-button>
+    </a>
+
+    <a className="link" href="/quiz">
+      <app-button>{{"continue_without_login" | translate}}</app-button>
+    </a>
   </app-container>
 </section>

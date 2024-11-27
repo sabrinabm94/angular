@@ -19,7 +19,7 @@
           </p>
         </div>
       </app-fieldset>
-      <a className="link" href="/register">
+      <a className="link" href="/register" *ngIf="!this.userId">
         <app-button>{{"save_results" | translate}}</app-button>
       </a>
     </div>

@@ -2,13 +2,9 @@
 <main class="main">
   <div class="content" *ngIf="results">
     <h1 class="main-title text-center">{{ "app_title" | translate }}</h1>
-    <app-results [score]="results"></app-results>
+    <app-results *ngIf="results" [score]="results" [userId]="userId"></app-results>
     <div class="share-buttons">
-      <app-button (click)="shareResults()">Compartilhar</app-button>
-      <app-button (click)="shareOnWhatsApp()">Compartilhar no WhatsApp</app-button>
-      <app-button (click)="shareOnInstagram()">Compartilhar no Instagram</app-button>
-      <app-button (click)="shareOnFacebook()">Compartilhar no Facebook</app-button>
-      <app-button (click)="shareOnTwitter()">Compartilhar no Twitter</app-button>
+      <app-button (click)="shareResults()">Compartilhar resultados</app-button>
     </div>
   </div>
 </main>

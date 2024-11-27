@@ -82,10 +82,7 @@ export class QuizService {
     );
   }
 
-  calculateResultsByArea(
-    score: Record<string, number>,
-    messagesByArea: any[]
-  ): any[] {
+  calculateResultsByArea(score: any, messagesByArea: any[]): any[] {
     const resultsByAreas = [];
 
     if (score) {
@@ -121,7 +118,7 @@ export class QuizService {
     return resultsByAreas;
   }
 
-  calculateResults(score: Record<string, number>, messages: any): any {
+  calculateResults(score: any, messages: any): any {
     if (score) {
       let totalAreas = 0;
       let totalAreasScore = 0;
@@ -165,7 +162,9 @@ export class QuizService {
     return await this.getQuizResults(language);
   }
 
-  calculateQuestionsScore(answers: any[]) {
+  async calculateQuestionsScore(
+    answers: any[]
+  ): Promise<Record<string, number>> {
     const score = answers.reduce((acc, answer) => {
       if (answer.response) {
         let areas: string[] = [];

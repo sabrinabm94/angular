@@ -28,6 +28,8 @@
   "email_label": "E-mail",
   "email_placeholder": "Digite seu e-mail",
   "invalid_email": "E-mail inválido!",
+  "invalid_email_in_use": "E-mail já registrado!",
+  "invalid_data": "Dados inválidos, tente novamente!",
   "name_label": "Nome",
   "username_placeholder": "Crie um usuário",
   "username_label": "Usuário",
@@ -35,7 +37,7 @@
   "name_placeholder": "Informe seu nome",
   "password_label": "Senha",
   "password_placeholder": "Crie uma senha",
-  "invalid_password": "Senha inválida!",
+  "invalid_password": "A senha deve ter no mínimo 6 caracteres, tente novamente.",
   "login": "Entrar",
   "login_with_email": "Entrar com e-mail",
   "register": "Registro",
@@ -51,6 +53,7 @@
   "save_results": "Quer salvar os seus resultados? Cadastre-se!",
   "password_reset_email_sent": "O e-mail para redefinir a senha foi enviado.",
   "password_reset_error": "Ocorreu um erro ao redefinir a senha.",
+  "register_success": "Registro realizado com sucesso, redirecionando...",
   "quiz": {
     "tdah": {
       "questions": [

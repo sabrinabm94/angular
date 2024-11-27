@@ -1,12 +1,7 @@
 import { Component } from '@angular/core';
-import {
-  AngularFireAuth,
-  AngularFireAuthModule,
-} from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
+import { Auth, signOut } from '@angular/fire/auth';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { FirebaseAppModule } from '@angular/fire/app';
-import { BrowserModule } from '@angular/platform-browser';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 
 @Component({
@@ -14,19 +9,17 @@ import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
   standalone: true,
   templateUrl: './user-logout.component.html',
   styleUrls: ['./user-logout.component.css'],
-  imports: [
-    ButtonComponent,
-    FirebaseAppModule,
-    AngularFireAuthModule,
-    TranslatePipe,
-  ],
+  imports: [ButtonComponent, TranslatePipe],
 })
 export class UserLogoutComponent {
-  constructor(private auth: AngularFireAuth, private router: Router) {}
+  constructor(private auth: Auth, private router: Router) {}
 
-  logout() {
-    this.auth.signOut().then(() => {
+  async logout() {
+    try {
+      await signOut(this.auth);
       this.router.navigate(['/login']);
-    });
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+    }
   }
 }
