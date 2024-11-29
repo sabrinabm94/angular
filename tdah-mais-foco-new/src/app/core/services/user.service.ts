@@ -43,9 +43,13 @@ export class UserService {
       const snapshot = await get(
         child(dbRef, `users/${uid}${this.tdahQuizScorePath}`)
       );
-      return snapshot.exists()
+      const score = snapshot.exists()
         ? (snapshot.val() as Record<string, number>)
         : {};
+      console.log('uid ', uid);
+
+      console.log('score ', score);
+      return score;
     } catch (error) {
       console.error('Erro ao buscar pontuação do usuário:', error);
       throw error;

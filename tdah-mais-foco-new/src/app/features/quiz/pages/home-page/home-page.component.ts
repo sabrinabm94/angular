@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { QuizComponent } from '../../components/quiz/quiz.component';
 import { ResultsComponent } from '../../components/results/results.component';
-import { UserService } from '../../../../core/services/user.service';
 
 @Component({
   selector: 'app-home-page',

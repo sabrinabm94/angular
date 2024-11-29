@@ -54,7 +54,7 @@ export class QuizService {
     );
   }
 
-  getQuizResultsByArea(language: string) {
+  getQuizResultsByArea(language: string): Promise<any[]> {
     return this.readFileContentByLanguage(language).then(
       (data: any) => {
         if (data && data.quiz && data.quiz.tdah && data.quiz.tdah.results) {

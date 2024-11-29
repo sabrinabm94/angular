@@ -79,7 +79,7 @@ export class UserLoginComponent {
 
         this.userService.setUser(loggedUser);
         alert('Login realizado com sucesso!');
-        this.router.navigate([`/quiz/${loggedUser.uid}`]);
+        this.router.navigate([`/quiz/`]);
       } catch (error) {
         console.error(error);
         alert('Falha no login. Tente novamente.');
@@ -101,7 +101,7 @@ export class UserLoginComponent {
 
       this.userService.setUser(loggedUser);
       alert('Login com Google realizado com sucesso!');
-      this.router.navigate([`/quiz/${loggedUser.uid}`]);
+      this.router.navigate([`/quiz/`]);
     } catch (error) {
       console.error(error);
       alert('Erro ao usar login com Google.');

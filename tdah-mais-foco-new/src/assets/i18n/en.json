@@ -2,8 +2,8 @@
   "app_title": "ADHD + Focus",
   "title_quiz": "Quiz",
   "title_results": "Results",
-  "title_areas_results": "Results by Areas",
-  "title_final_results": "Final Results",
+  "title_areas_results": "Results",
+  "title_final_results": "Typs",
   "title_quiz_send": "Send Form",
   "calculate_results": "Calculate Results",
   "revise_quiz": "Revise Answers",
@@ -54,6 +54,8 @@
   "continue_without_login": "Continue without login (Guest)",
   "save_results": "Do you want save your results? Register now!",
   "register_success": "Register successful, redirecting...",
+  "quiz_try_again": "Try again",
+  "results_share": "Share results",
   "quiz": {
     "tdah": {
       "questions": [

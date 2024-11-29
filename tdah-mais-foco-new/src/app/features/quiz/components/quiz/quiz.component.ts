@@ -99,25 +99,28 @@ export class QuizComponent {
     }
   }
 
-  private calculateQuizScore(questions: any[]): any {
+  private async calculateQuizScore(questions: any[]): Promise<any> {
     if (questions) {
-      // Calcula escore do usuário
-      return this.quizService
-        .calculateQuestionsScore(this.questions)
-        .then((result) => {
-          //Salva o score no banco de dados e redireciona a página de resultados
-          if (this.userId) {
-            // Usuário logado
-            this.saveUserScore(this.userId).then((result) => {
-              this.router.navigate([`/result/${this.userId}`]);
-            });
-          } else {
-            // Convidado
-            // Envia o score para o componente de resultados
-            this.results.emit(this.score);
-          }
-          return (this.score = result);
-        });
+      try {
+        const result = await this.quizService.calculateQuestionsScore(
+          this.questions
+        );
+        this.score = result;
+
+        if (this.userId) {
+          // Usuário logado
+          await this.saveUserScore(this.userId);
+          this.router.navigate([`/result/${this.userId}`]);
+        } else {
+          // Convidado
+          this.results.emit(this.score);
+        }
+
+        return this.score;
+      } catch (error) {
+        console.error('Erro ao calcular ou salvar pontuação:', error);
+        throw error;
+      }
     }
   }
 
@@ -154,21 +157,20 @@ export class QuizComponent {
   }
 
   private async saveUserScore(id: string): Promise<any> {
-    // Se logado, salva resultados no banco de dados
     if (id) {
-      this.userService
+      return this.userService
         .saveUserScore(id, this.score)
         .then((result) => {
           console.log('Usuário logado: Pontuação salva com sucesso!');
-          return result;
+          return result; // Certifique-se de retornar aqui
         })
         .catch((error) => {
           console.error('Usuário logado: Erro ao salvar pontuação: ', error);
-          return error;
+          throw error; // Lance o erro para ser tratado adequadamente
         });
     } else {
       console.error('Usuário deslogado.');
-      return null;
+      throw new Error('Usuário deslogado');
     }
   }
 }

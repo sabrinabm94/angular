@@ -2,8 +2,8 @@
   "app_title": "TDAH + foco",
   "title_quiz": "Quiz",
   "title_results": "Resultados",
-  "title_areas_results": "Resultados por area",
-  "title_final_results": "Resumo",
+  "title_areas_results": "Resultados",
+  "title_final_results": "Dicas",
   "title_quiz_send": "Enviar formulário",
   "calculate_results": "Calcular resultados",
   "revise_quiz": "Revisar respostas",
@@ -54,6 +54,8 @@
   "password_reset_email_sent": "O e-mail para redefinir a senha foi enviado.",
   "password_reset_error": "Ocorreu um erro ao redefinir a senha.",
   "register_success": "Registro realizado com sucesso, redirecionando...",
+  "quiz_try_again": "Tentar novamente",
+  "results_share": "Compartilhar resultados",
   "quiz": {
     "tdah": {
       "questions": [

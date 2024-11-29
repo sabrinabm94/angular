@@ -23,14 +23,6 @@ export const appRoutes: Routes = [
     canActivate: [GuestGuard],
   },
   {
-    path: 'quiz/:id',
-    loadComponent: () =>
-      import('./features/quiz/pages/home-page/home-page.component').then(
-        (m) => m.HomePageComponent
-      ),
-    canActivate: [AuthGuard],
-  },
-  {
     path: 'result/:id',
     loadComponent: () =>
       import('./features/quiz/pages/results-page/results-page.component').then(

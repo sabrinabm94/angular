@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { QuizService } from '../../../../core/services/quiz.service';
 import { ContainerComponent } from '../../../../shared/components/container/container.component';
 import { CommonModule } from '@angular/common';
@@ -38,70 +38,91 @@ export class ResultsComponent {
     private userService: UserService
   ) {}
 
-  ngOnInit() {
-    this.language = this.languageService.getLanguage();
+  async ngOnInit() {
+    this.language = this.getLanguage(); // Obtenha a linguagem imediatamente
+    if (!this.language) {
+      console.warn('Linguagem não carregada.');
+      return;
+    }
 
-    // Verifica se o usuário está logado
     if (!this.userId) {
-      this.loggedUser = this.userService.getUser();
-      if (this.loggedUser) {
-        console.log('Usuário logado:', this.loggedUser);
-        this.userId = this.loggedUser.uid;
-      } else {
-        console.warn('Convidado.');
+      this.getUser(); // Atualiza o userId a partir do serviço
+      if (
+        this.userId &&
+        (!this.score || this.score instanceof Promise === true)
+      ) {
+        this.score = await this.userService.getUserScore(this.userId);
       }
     }
 
-    // Se não houver score e userId, obtém a pontuação do usuário
-    if (!this.score && this.userId) {
-      console.log(this.userId);
-      this.userService
-        .getUserScore(this.userId)
-        .then((userScore) => {
-          this.score = userScore;
-          this.loadResults(this.language, userScore);
-        })
-        .catch((error) => {
-          console.error('Erro ao buscar pontuação do usuário:', error);
-        });
-    }
-
-    // Inscrever-se para mudanças de idioma
-    this.translateService.getLanguageChanged().subscribe((language) => {
-      this.language = language;
-      // Recarrega os resultados com o novo idioma e o score
-      this.loadResults(this.language, this.score);
-    });
+    await this.ensureResultsLoaded(this.language, this.score, this.userId);
   }
 
-  async loadResults(language: string, score: any): Promise<void> {
-    console.log('language ', language);
-    console.log('score', score);
+  async ngOnChanges(changes: SimpleChanges) {
+    if (changes['score'] && changes['score'].currentValue) {
+      await this.ensureResultsLoaded(this.language, this.score, this.userId);
+    }
+  }
 
-    if (language && score) {
-      try {
-        this.areasResults = await this.quizService
-          .getResultsMessageByArea(language)
-          .then((areaResultsMessages) => {
-            console.log('areaResultsMessages ', areaResultsMessages);
-            return this.quizService.calculateResultsByArea(
-              score,
-              areaResultsMessages
-            );
-          });
+  private async ensureResultsLoaded(language: string, score: any, id: string) {
+    if (!this.score || !this.language) {
+      console.warn(
+        'Não é possível carregar resultados: linguagem ou score ausentes.'
+      );
+      return;
+    }
 
-        this.results = await this.quizService
-          .getResultsMessage(language)
-          .then((resultsMessages) => {
-            console.log('resultsMessages ', resultsMessages);
-            return this.quizService.calculateResults(score, resultsMessages);
-          });
+    try {
+      await this.loadResults(language, score, id);
+    } catch (error) {
+      console.error('Erro ao carregar resultados:', error);
+    }
+  }
 
-        console.log('this.areasResults: ', this.areasResults);
-        console.log('this.results: ', this.results);
-      } catch (error) {
-        console.error('Erro ao carregar resultados:', error);
-      }
+  private getUser(): string {
+    this.loggedUser = this.userService.getUser();
+    if (this.loggedUser) {
+      this.userId = this.loggedUser.uid;
+    } else {
+      console.warn('Convidado.');
+    }
+
+    return this.userId;
+  }
+
+  private getLanguage(): string {
+    return (this.language = this.languageService.getLanguage());
+  }
+
+  async loadResults(language: string, score: any, id: string) {
+    if ((!score || this.score instanceof Promise === true) && id) {
+      score = await this.userService
+        .getUserScore(this.userId)
+        .then((result) => result);
+    }
+
+    if (!language) {
+      console.warn('Linguagem ausente para carregar os resultados.');
+      return;
+    }
+
+    try {
+      const areaResultsMessages =
+        await this.quizService.getResultsMessageByArea(language);
+      this.areasResults = await this.quizService.calculateResultsByArea(
+        score,
+        areaResultsMessages
+      );
+
+      const resultsMessages = await this.quizService.getResultsMessage(
+        language
+      );
+      this.results = await this.quizService.calculateResults(
+        score,
+        resultsMessages
+      );
+    } catch (error) {
+      console.error('Erro ao carregar resultados:', error);
     }
   }
 }
