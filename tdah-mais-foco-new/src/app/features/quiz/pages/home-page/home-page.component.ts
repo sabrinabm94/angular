@@ -5,6 +5,9 @@ import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { QuizComponent } from '../../components/quiz/quiz.component';
 import { ResultsComponent } from '../../components/results/results.component';
+import { FirebaseUser } from '../../../../data/models/user-firebase.interface';
+import { UserService } from '../../../../core/services/user.service';
+import { LanguageService } from '../../../../core/services/language.service';
 
 @Component({
   selector: 'app-home-page',
@@ -22,6 +25,32 @@ import { ResultsComponent } from '../../components/results/results.component';
 })
 export class HomePageComponent {
   results: any = null;
+  public language: string = '';
+  private loggedUser: FirebaseUser | null = null;
+  public userId: string = '';
 
-  constructor() {}
+  constructor(
+    private userService: UserService,
+    private languageService: LanguageService
+  ) {}
+
+  ngOnInit() {
+    this.getCurrentLanguage();
+    this.getLoggedUser();
+  }
+
+  private getLoggedUser() {
+    this.loggedUser = this.userService.getUser();
+    if (this.loggedUser) {
+      this.userId = this.loggedUser.uid;
+    } else {
+      console.warn('Convidado.');
+    }
+
+    return this.userId;
+  }
+
+  private getCurrentLanguage() {
+    return (this.language = this.languageService.getLanguage());
+  }
 }

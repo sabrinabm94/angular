@@ -46,9 +46,6 @@ export class UserService {
       const score = snapshot.exists()
         ? (snapshot.val() as Record<string, number>)
         : {};
-      console.log('uid ', uid);
-
-      console.log('score ', score);
       return score;
     } catch (error) {
       console.error('Erro ao buscar pontuação do usuário:', error);

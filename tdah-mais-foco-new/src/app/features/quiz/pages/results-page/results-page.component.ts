@@ -9,6 +9,9 @@ import { Meta } from '@angular/platform-browser';
 import { FooterComponent } from '../../../../shared/components/footer/footer.component';
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
 import { ResultsComponent } from '../../components/results/results.component';
+import { UserService } from '../../../../core/services/user.service';
+import { LanguageService } from '../../../../core/services/language.service';
+import { FirebaseUser } from '../../../../data/models/user-firebase.interface';
 
 @Component({
   selector: 'app-results-page',
@@ -25,32 +28,53 @@ import { ResultsComponent } from '../../components/results/results.component';
   styleUrls: ['./results-page.component.css'],
 })
 export class ResultsPageComponent {
-  @Input() score: any;
-  areasResults: any[] = [];
-  results: any;
-  resultShareUrl: string = '';
-  userId: string = '';
-
+  public results: any;
+  public resultShareUrl: string = '';
+  public language: string = '';
+  private loggedUser: FirebaseUser | null = null;
+  public userId: string = '';
   private message: string = `Olá, eu acabei de fazer meu teste de TDAH, faça você também !`;
 
-  constructor(private route: ActivatedRoute, private meta: Meta) {}
+  constructor(
+    private userService: UserService,
+    private languageService: LanguageService,
+    private route: ActivatedRoute,
+    private meta: Meta
+  ) {}
 
   ngOnInit() {
-    this.getUserId();
+    this.getCurrentLanguage();
+    this.getLoggedUser();
     this.updateMetaTags();
+    this.getUrlParams();
+    if (this.userId) {
+      this.results = this.generateResultsUrl(this.userId);
+    }
   }
 
-  getUserId(): void {
+  private getLoggedUser() {
+    this.loggedUser = this.userService.getUser();
+    if (this.loggedUser) {
+      this.userId = this.loggedUser.uid;
+    } else {
+      console.warn('Convidado.');
+    }
+
+    return this.userId;
+  }
+
+  private getCurrentLanguage() {
+    return (this.language = this.languageService.getLanguage());
+  }
+
+  private getUrlParams(): void {
     this.route.paramMap.subscribe((params) => {
       let paramsValue = params.get('id');
       this.userId = paramsValue ? paramsValue : '';
-      if (this.userId) {
-        this.results = this.recoverResults(this.userId);
-      }
     });
   }
 
-  async recoverResults(id: string) {
+  async generateResultsUrl(id: string) {
     try {
       if (id) {
         this.resultShareUrl = `${window.location.origin}/result/${id}`;
@@ -60,8 +84,7 @@ export class ResultsPageComponent {
     }
   }
 
-  // Função para compartilhar os resultados via Share API
-  shareResults() {
+  public shareResults() {
     if (navigator.share) {
       navigator
         .share({
@@ -78,10 +101,10 @@ export class ResultsPageComponent {
     }
   }
 
-  updateMetaTags() {
+  private updateMetaTags() {
     const resultUrl = `${window.location.origin}/results/${this.userId}`;
-    const description = `Confira meu resultado: ${this.results.name}!`;
-    const imageUrl = this.results.image;
+    const description = this.message;
+    const imageUrl = '';
 
     // Atualizar título
     this.meta.updateTag({ name: 'title', content: 'Meu Resultado do Quiz' });

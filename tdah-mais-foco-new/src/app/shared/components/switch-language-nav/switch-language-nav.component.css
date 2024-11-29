@@ -1,14 +1,21 @@
 .switch-language-nav {
-  text-align: center;
-  margin: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
 }
 
 .nav-item {
-  margin-right: 5px;
   cursor: pointer;
-  font-weight: 500;
+  margin-right: 10px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.nav-item.active {
+  color: gray;
+  cursor: not-allowed;
 }
 
 .nav-item:hover {
-  opacity: 0.8;
+  text-decoration: underline;
 }

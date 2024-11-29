@@ -11,11 +11,21 @@ import { TranslatePipe } from '../../../core/pipes/translate.pipe';
   imports: [TranslatePipe],
 })
 export class SwitchLanguageNavComponent {
+  currentLanguage: string;
+
   constructor(private languageService: LanguageService) {
-    this.languageService.switchLanguage(environment.lang);
+    // Inicializa a linguagem com a padrão do ambiente
+    this.currentLanguage = environment.lang;
+    this.languageService.switchLanguage(this.currentLanguage);
   }
 
   switchLanguage(language: string): void {
     this.languageService.switchLanguage(language);
+    this.currentLanguage = language; // Atualiza a linguagem ativa
+  }
+
+  // Verifica se a linguagem atual é a ativa
+  isActive(language: string): boolean {
+    return this.currentLanguage === language;
   }
 }

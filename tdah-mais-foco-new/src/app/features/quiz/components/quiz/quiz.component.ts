@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LanguageService } from '../../../../core/services/language.service';
 import { CommonModule } from '@angular/common';
@@ -38,11 +38,11 @@ export class QuizComponent {
   currentStep: number = 0; // Etapa atual
   maxSteps: number = 3;
   responses: Record<number, any> = {}; // Armazena respostas por etapa
-  language: string = '';
-  userId: string = ''; // ID do usuário obtido da URL
   loggedUser: FirebaseUser | null = null;
 
   @Output() results = new EventEmitter<Record<string, number>>();
+  @Input() userId: string = '';
+  @Input() language: string = '';
 
   constructor(
     private router: Router,
@@ -54,27 +54,25 @@ export class QuizComponent {
 
   ngOnInit() {
     this.submitted = false;
-    this.language = this.languageService.getLanguage();
 
-    // Busca usuário pelo id
+    if (!this.language) {
+      this.language = this.getLanguage();
+    }
+
     if (!this.userId) {
-      this.loggedUser = this.userService.getUser();
-      if (this.loggedUser) {
-        console.log('Usuário logado:', this.loggedUser);
-        this.userId = this.loggedUser.uid;
-      } else {
-        console.log('Convidado.');
-      }
+      this.getUser();
     }
 
     // Carrega perguntas
     this.loadQuizQuestions(this.language);
 
     // Observa mudanças de idioma
-    this.translateService.getLanguageChanged().subscribe((language) => {
-      this.language = language;
-      this.loadQuizQuestions(this.language);
-    });
+    this.translateService
+      .getLanguageChanged()
+      .subscribe((currentLanguage: string) => {
+        this.language = currentLanguage;
+        this.loadQuizQuestions(this.language);
+      });
   }
 
   // Carregar as perguntas com base na linguagem
@@ -172,5 +170,20 @@ export class QuizComponent {
       console.error('Usuário deslogado.');
       throw new Error('Usuário deslogado');
     }
+  }
+
+  private getUser(): string {
+    this.loggedUser = this.userService.getUser();
+    if (this.loggedUser) {
+      this.userId = this.loggedUser.uid;
+    } else {
+      console.warn('Convidado.');
+    }
+
+    return this.userId;
+  }
+
+  private getLanguage(): string {
+    return (this.language = this.languageService.getLanguage());
   }
 }

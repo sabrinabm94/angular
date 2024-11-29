@@ -13,22 +13,16 @@ import { FirebaseUser } from '../../../../data/models/user-firebase.interface';
 @Component({
   selector: 'app-results',
   standalone: true,
-  imports: [
-    ContainerComponent,
-    CommonModule,
-    TranslatePipe,
-    ButtonComponent,
-    FieldsetComponent,
-  ],
+  imports: [ContainerComponent, CommonModule, TranslatePipe, FieldsetComponent],
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.css'],
 })
 export class ResultsComponent {
   @Input() score: Record<string, number> | any = null;
   @Input() userId: string = '';
+  @Input() language: string = '';
   areasResults: any[] = [];
   results: any;
-  language: string = '';
   loggedUser: FirebaseUser | null = null;
 
   constructor(
@@ -39,14 +33,14 @@ export class ResultsComponent {
   ) {}
 
   async ngOnInit() {
-    this.language = this.getLanguage(); // Obtenha a linguagem imediatamente
     if (!this.language) {
-      console.warn('Linguagem não carregada.');
-      return;
+      this.language = this.getLanguage();
     }
 
     if (!this.userId) {
-      this.getUser(); // Atualiza o userId a partir do serviço
+      this.getUser();
+
+      // Busca score de usuário registrado (para logados)
       if (
         this.userId &&
         (!this.score || this.score instanceof Promise === true)
@@ -55,11 +49,23 @@ export class ResultsComponent {
       }
     }
 
+    // pega resultados do usuário
     await this.ensureResultsLoaded(this.language, this.score, this.userId);
+
+    // Inscrever-se para mudanças de idioma
+    this.translateService
+      .getLanguageChanged()
+      .subscribe(async (currentLanguage: string) => {
+        this.language = currentLanguage;
+      });
   }
 
   async ngOnChanges(changes: SimpleChanges) {
     if (changes['score'] && changes['score'].currentValue) {
+      if (!this.language) {
+        this.language = this.getLanguage();
+      }
+
       await this.ensureResultsLoaded(this.language, this.score, this.userId);
     }
   }
@@ -77,21 +83,6 @@ export class ResultsComponent {
     } catch (error) {
       console.error('Erro ao carregar resultados:', error);
     }
-  }
-
-  private getUser(): string {
-    this.loggedUser = this.userService.getUser();
-    if (this.loggedUser) {
-      this.userId = this.loggedUser.uid;
-    } else {
-      console.warn('Convidado.');
-    }
-
-    return this.userId;
-  }
-
-  private getLanguage(): string {
-    return (this.language = this.languageService.getLanguage());
   }
 
   async loadResults(language: string, score: any, id: string) {
@@ -124,5 +115,20 @@ export class ResultsComponent {
     } catch (error) {
       console.error('Erro ao carregar resultados:', error);
     }
+  }
+
+  private getUser(): string {
+    this.loggedUser = this.userService.getUser();
+    if (this.loggedUser) {
+      this.userId = this.loggedUser.uid;
+    } else {
+      console.warn('Convidado.');
+    }
+
+    return this.userId;
+  }
+
+  private getLanguage(): string {
+    return (this.language = this.languageService.getLanguage());
   }
 }

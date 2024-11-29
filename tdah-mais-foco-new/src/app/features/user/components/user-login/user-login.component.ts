@@ -79,10 +79,10 @@ export class UserLoginComponent {
 
         this.userService.setUser(loggedUser);
         alert('Login realizado com sucesso!');
-        this.router.navigate([`/quiz/`]);
+        this.router.navigate([`/result/${loggedUser.uid}`]);
       } catch (error) {
         console.error(error);
-        alert('Falha no login. Tente novamente.');
+        alert(this.translateService.translate('invalid_data'));
       } finally {
         this.clearUserCredentials();
       }

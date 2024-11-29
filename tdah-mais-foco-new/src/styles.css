@@ -61,6 +61,12 @@ legend {
   margin: 10px;
 }
 
+.link {
+  text-decoration: underline;
+  cursor: pointer;
+  color: #4A90E2;
+}
+
 input[type="text"],
 input[type="email"],
 input[type="password"] {

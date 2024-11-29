@@ -1,6 +1,9 @@
 <header class="header text-center">
   <div class="container">
-    <app-switch-language-nav />
-    <ng-content></ng-content>
+    <app-switch-language-nav class="languages" />
+    <div class="auth">
+      <a class="link" *ngIf="!user" href="/login">Login</a>
+      <span class="link" *ngIf="user" (click)="logout()">Logout</span>
+    </div>
   </div>
 </header>

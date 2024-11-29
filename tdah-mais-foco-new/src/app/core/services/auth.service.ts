@@ -40,6 +40,13 @@ export class AuthService {
     }
   }
 
+  // Logout do usuário
+  logout(): void {
+    this.auth.signOut().catch((error) => {
+      console.error('Erro ao fazer logout:', error);
+    });
+  }
+
   // Obter usuário logado
   getCurrentUser(): User | null {
     return this.auth.currentUser;
