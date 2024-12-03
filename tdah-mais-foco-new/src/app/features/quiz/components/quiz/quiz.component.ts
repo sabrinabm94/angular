@@ -35,9 +35,9 @@ export class QuizComponent {
   questions: any = [];
   score: Record<string, number> = {};
   submitted: boolean = false;
-  currentStep: number = 0; // Etapa atual
+  currentStep: number = 0;
   maxSteps: number = 3;
-  responses: Record<number, any> = {}; // Armazena respostas por etapa
+  responses: Record<number, any> = {};
   loggedUser: FirebaseUser | null = null;
 
   @Output() results = new EventEmitter<Record<string, number>>();
@@ -55,16 +55,10 @@ export class QuizComponent {
   ngOnInit() {
     this.submitted = false;
 
-    if (!this.language) {
-      this.language = this.getLanguage();
+    if (this.language) {
+      // Carrega perguntas
+      this.loadQuizQuestions(this.language);
     }
-
-    if (!this.userId) {
-      this.getUser();
-    }
-
-    // Carrega perguntas
-    this.loadQuizQuestions(this.language);
 
     // Observa mudanças de idioma
     this.translateService
@@ -100,17 +94,19 @@ export class QuizComponent {
   private async calculateQuizScore(questions: any[]): Promise<any> {
     if (questions) {
       try {
+        console.log('Calculando pontuação para as perguntas:', questions);
         const result = await this.quizService.calculateQuestionsScore(
-          this.questions
+          questions
         );
+        console.log('Pontuação calculada:', result);
         this.score = result;
 
         if (this.userId) {
-          // Usuário logado
-          await this.saveUserScore(this.userId);
-          this.router.navigate([`/result/${this.userId}`]);
+          await this.saveUserScore(this.userId, this.score).then((response) => {
+            console.log('Pontuação salva:', response);
+            this.router.navigate([`/result/${this.userId}`]);
+          });
         } else {
-          // Convidado
           this.results.emit(this.score);
         }
 
@@ -126,7 +122,8 @@ export class QuizComponent {
   public isFormValid(): boolean {
     const currentQuestions = this.getQuestionsForStep();
     return currentQuestions.every(
-      (question: { response: null }) => question.response !== null
+      (question: any) =>
+        question.response !== null && question.response !== undefined
     );
   }
 
@@ -154,36 +151,29 @@ export class QuizComponent {
     return question.response !== null;
   }
 
-  private async saveUserScore(id: string): Promise<any> {
+  private async saveUserScore(
+    id: string,
+    score: Record<string, number>
+  ): Promise<any> {
     if (id) {
-      return this.userService
-        .saveUserScore(id, this.score)
-        .then((result) => {
-          console.log('Usuário logado: Pontuação salva com sucesso!');
-          return result; // Certifique-se de retornar aqui
-        })
-        .catch((error) => {
-          console.error('Usuário logado: Erro ao salvar pontuação: ', error);
-          throw error; // Lance o erro para ser tratado adequadamente
-        });
+      try {
+        const result = await this.userService.saveUserScore(id, score);
+        console.log('Pontuação salva:', result); // Agora 'result' contém a pontuação salva
+        return result;
+      } catch (error) {
+        console.error('Erro ao salvar pontuação:', error);
+        throw error;
+      }
     } else {
-      console.error('Usuário deslogado.');
-      throw new Error('Usuário deslogado');
+      console.error('Usuário deslogado ou pontuação inválida.');
+      throw new Error('Usuário deslogado ou pontuação inválida');
     }
   }
 
-  private getUser(): string {
-    this.loggedUser = this.userService.getUser();
-    if (this.loggedUser) {
-      this.userId = this.loggedUser.uid;
-    } else {
-      console.warn('Convidado.');
-    }
-
-    return this.userId;
-  }
-
-  private getLanguage(): string {
-    return (this.language = this.languageService.getLanguage());
+  private async loadQuizResults(userId: string) {
+    this.userService.getUserScore(userId).then((score) => {
+      console.log('Resultados carregados:', score);
+      this.score = score;
+    });
   }
 }

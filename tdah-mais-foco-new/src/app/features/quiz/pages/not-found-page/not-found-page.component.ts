@@ -30,17 +30,18 @@ export class NotFoundPageComponent {
   }
 
   private getLoggedUser() {
-    this.loggedUser = this.userService.getUser();
-    if (this.loggedUser) {
-      this.userId = this.loggedUser.uid;
-    } else {
-      console.warn('Convidado.');
-    }
-
-    return this.userId;
+    this.userService.user$.subscribe((user) => {
+      if (user) {
+        this.loggedUser = user;
+        this.userId = user.uid;
+        console.warn('Usuário logado: ' + this.userId);
+      } else {
+        console.warn('Convidado');
+      }
+    });
   }
 
   private getCurrentLanguage() {
-    return (this.language = this.languageService.getLanguage());
+    this.language = this.languageService.getLanguage();
   }
 }

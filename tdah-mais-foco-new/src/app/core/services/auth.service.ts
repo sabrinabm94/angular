@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import {
   Auth,
+  browserLocalPersistence,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   User,
 } from '@angular/fire/auth';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private auth: Auth) {}
+  constructor(private auth: Auth, private userService: UserService) {}
 
   // Registrar usuário com e-mail e senha
   async register(email: string, password: string): Promise<User | null> {
@@ -34,6 +36,7 @@ export class AuthService {
         email,
         password
       );
+      this.auth.setPersistence(browserLocalPersistence);
       return userCredential.user;
     } catch (error: any) {
       throw new Error(`Erro ao fazer login: ${error.message}`);
@@ -41,10 +44,9 @@ export class AuthService {
   }
 
   // Logout do usuário
-  logout(): void {
-    this.auth.signOut().catch((error) => {
-      console.error('Erro ao fazer logout:', error);
-    });
+  async logout() {
+    await this.auth.signOut();
+    this.userService.setUser(null); // Limpa o estado do usuário
   }
 
   // Obter usuário logado

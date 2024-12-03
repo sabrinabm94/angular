@@ -1,12 +1,14 @@
-<app-header />
-<main class="main">
-  <div class="content" *ngIf="results">
-    <h1 class="main-title text-center">{{ "app_title" | translate }}</h1>
-    <app-results *ngIf="results" [score]="results" [userId]="userId"></app-results>
-    <div class="buttons">
-      <app-button (click)="shareResults()">{{ "results_share" | translate }}</app-button>
-      <a href="/quiz" class="link"><app-button>{{ "quiz_try_again" | translate }}</app-button></a>
+<div class="results-page" *ngIf="userId && userId !== ''">
+  <app-header [userId]="userId" />
+  <main class="main">
+    <div class="content">
+      <h1 class="main-title text-center">{{ "app_title" | translate }}</h1>
+      <app-results [score]="results" [userId]="userId" [language]="language"></app-results>
+      <div class="buttons">
+        <app-button (click)="shareResults()">{{ "results_share" | translate }}</app-button>
+        <a href="/quiz" class="link"><app-button>{{ "quiz_try_again" | translate }}</app-button></a>
+      </div>
     </div>
-  </div>
-</main>
-<app-footer />
+  </main>
+  <app-footer />
+</div>

@@ -1,6 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { QuizService } from '../../../../core/services/quiz.service';
-import { ContainerComponent } from '../../../../shared/components/container/container.component';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
@@ -32,8 +30,8 @@ export class ResultsPageComponent {
   public resultShareUrl: string = '';
   public language: string = '';
   private loggedUser: FirebaseUser | null = null;
-  public userId: string = '';
-  private message: string = `Olá, eu acabei de fazer meu teste de TDAH, faça você também !`;
+  public userId: string = ''; // id do usuário
+  private message: string = `Olá, eu acabei de fazer meu teste de TDAH, faça você também!`;
 
   constructor(
     private userService: UserService,
@@ -44,27 +42,33 @@ export class ResultsPageComponent {
 
   ngOnInit() {
     this.getCurrentLanguage();
-    this.getLoggedUser();
+    this.getLoggedUser(); // Método para obter o usuário logado
     this.updateMetaTags();
     this.getUrlParams();
+
     if (this.userId) {
-      this.results = this.generateResultsUrl(this.userId);
+      this.generateResultsUrl(this.userId);
     }
   }
 
-  private getLoggedUser() {
-    this.loggedUser = this.userService.getUser();
-    if (this.loggedUser) {
-      this.userId = this.loggedUser.uid;
-    } else {
-      console.warn('Convidado.');
-    }
+  private getLoggedUser(): string {
+    this.userService.user$.subscribe((user: any) => {
+      if (user) {
+        this.loggedUser = user;
+        this.userId = user.uid;
+        console.warn('Usuário logado: ' + this.userId);
+        return this.userId;
+      } else {
+        console.warn('Convidado');
+        return null;
+      }
+    });
 
     return this.userId;
   }
 
   private getCurrentLanguage() {
-    return (this.language = this.languageService.getLanguage());
+    this.language = this.languageService.getLanguage();
   }
 
   private getUrlParams(): void {
@@ -74,14 +78,12 @@ export class ResultsPageComponent {
     });
   }
 
-  async generateResultsUrl(id: string) {
-    try {
-      if (id) {
-        this.resultShareUrl = `${window.location.origin}/result/${id}`;
-      }
-    } catch (error) {
-      console.error('Error recovering results:', error);
+  private generateResultsUrl(id: string): string {
+    if (id) {
+      this.resultShareUrl = `${window.location.origin}/result/${id}`;
     }
+
+    return this.resultShareUrl;
   }
 
   public shareResults() {

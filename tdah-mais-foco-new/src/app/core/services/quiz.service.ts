@@ -145,9 +145,11 @@ export class QuizService {
 
       const result = {
         score: Number(finalScore),
-        level: Number(finalLevel),
+        level: String(finalLevel),
         message: String(messages[finalLevel]),
       };
+
+      console.log('calculateResults ', result);
 
       return result;
     }
@@ -166,27 +168,31 @@ export class QuizService {
     answers: any[]
   ): Promise<Record<string, number>> {
     const score = answers.reduce((acc, answer) => {
-      if (answer.response) {
-        let areas: string[] = [];
+      if (answer.response != null && answer.response === true) {
+        // Verifica explicitamente por null ou undefined
+        let selectedAreas: string[] = [];
 
-        // Verifica se a área é um array
         if (Array.isArray(answer.area)) {
-          areas = answer.area; // Se já for um array, usamos diretamente
+          selectedAreas = answer.area;
         } else if (typeof answer.area === 'string') {
-          // Se for uma string, dividimos e mapeamos
-          areas = answer.area.split(',').map((area: string) => area.trim());
+          selectedAreas = answer.area
+            .split(',')
+            .map((area: string) => area.trim());
         } else {
+          console.warn(`Pergunta sem área válida:`, answer);
           return acc;
         }
 
-        // Contar o escore individualmente para cada área
-        areas.forEach((area) => {
-          acc[area] = (acc[area] || 0) + 1;
+        selectedAreas.forEach((selectedArea) => {
+          acc[selectedArea] = (acc[selectedArea] || 0) + 1;
         });
+      } else {
+        console.warn('Resposta ausente para a pergunta:', answer);
       }
       return acc;
     }, {} as Record<string, number>);
 
+    console.log('Pontuação calculada:', score);
     return score;
   }
 }

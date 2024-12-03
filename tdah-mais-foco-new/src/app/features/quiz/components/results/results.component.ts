@@ -1,4 +1,9 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  SimpleChanges,
+} from '@angular/core';
 import { QuizService } from '../../../../core/services/quiz.service';
 import { ContainerComponent } from '../../../../shared/components/container/container.component';
 import { CommonModule } from '@angular/common';
@@ -33,26 +38,20 @@ export class ResultsComponent {
   ) {}
 
   async ngOnInit() {
-    if (!this.language) {
-      this.language = this.getLanguage();
-    }
-
-    if (!this.userId) {
-      this.getUser();
-
-      // Busca score de usuário registrado (para logados)
-      if (
-        this.userId &&
-        (!this.score || this.score instanceof Promise === true)
-      ) {
+    console.log('oi');
+    console.log('user id: ', this.userId);
+    if (this.userId) {
+      console.log('user id: ', this.userId);
+      if (!this.score || this.score instanceof Promise === true) {
+        console.log('results componente pegando score');
         this.score = await this.userService.getUserScore(this.userId);
       }
     }
 
-    // pega resultados do usuário
+    console.log('score: ', this.score);
+
     await this.ensureResultsLoaded(this.language, this.score, this.userId);
 
-    // Inscrever-se para mudanças de idioma
     this.translateService
       .getLanguageChanged()
       .subscribe(async (currentLanguage: string) => {
@@ -60,12 +59,17 @@ export class ResultsComponent {
       });
   }
 
+  // atualiza valores do componente caso alterar o usuário logado ou resultados do quiz
   async ngOnChanges(changes: SimpleChanges) {
-    if (changes['score'] && changes['score'].currentValue) {
-      if (!this.language) {
-        this.language = this.getLanguage();
-      }
+    console.log('ngOnChanges disparado:', changes);
+    if (changes['userId'] && changes['userId'].currentValue) {
+      console.log('Atualizando userId e carregando score:', this.userId);
+      this.score = await this.userService.getUserScore(this.userId);
+      await this.ensureResultsLoaded(this.language, this.score, this.userId);
+    }
 
+    if (changes['score'] && changes['score'].currentValue) {
+      console.log('Atualizando score no ResultsComponent:', this.score);
       await this.ensureResultsLoaded(this.language, this.score, this.userId);
     }
   }
@@ -115,20 +119,5 @@ export class ResultsComponent {
     } catch (error) {
       console.error('Erro ao carregar resultados:', error);
     }
-  }
-
-  private getUser(): string {
-    this.loggedUser = this.userService.getUser();
-    if (this.loggedUser) {
-      this.userId = this.loggedUser.uid;
-    } else {
-      console.warn('Convidado.');
-    }
-
-    return this.userId;
-  }
-
-  private getLanguage(): string {
-    return (this.language = this.languageService.getLanguage());
   }
 }

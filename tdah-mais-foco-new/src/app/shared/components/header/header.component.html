@@ -2,8 +2,8 @@
   <div class="container">
     <app-switch-language-nav class="languages" />
     <div class="auth">
-      <a class="link" *ngIf="!user" href="/login">Login</a>
-      <span class="link" *ngIf="user" (click)="logout()">Logout</span>
+      <a class="link" *ngIf="!userId || userId === ''" href="/login">{{ "login" | translate }}</a>
+      <span class="link" *ngIf="userId && userId !== ''" (click)="logout()">{{ "logout" | translate }}</span>
     </div>
   </div>
 </header>

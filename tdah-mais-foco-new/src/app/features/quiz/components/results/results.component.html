@@ -1,4 +1,4 @@
-<section class="result">
+<section class="result" *ngIf="userId && userId !== ''">
   <app-container>
     <div class="results" *ngIf="results && areasResults">
       <!-- <h2 class="text-center">{{ "title_results" | translate }}</h2> -->
