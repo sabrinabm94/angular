@@ -94,20 +94,17 @@ export class QuizComponent {
   private async calculateQuizScore(questions: any[]): Promise<any> {
     if (questions) {
       try {
-        console.log('Calculando pontuação para as perguntas:', questions);
-        const result = await this.quizService.calculateQuestionsScore(
+        const result = await this.quizService.calculateResultsScoreByArea(
           questions
         );
-        console.log('Pontuação calculada:', result);
         this.score = result;
 
         if (this.userId) {
           await this.saveUserScore(this.userId, this.score).then((response) => {
-            console.log('Pontuação salva:', response);
             this.router.navigate([`/result/${this.userId}`]);
           });
         } else {
-          this.results.emit(this.score);
+          this.results.emit({ ...this.score });
         }
 
         return this.score;
@@ -158,7 +155,6 @@ export class QuizComponent {
     if (id) {
       try {
         const result = await this.userService.saveUserScore(id, score);
-        console.log('Pontuação salva:', result); // Agora 'result' contém a pontuação salva
         return result;
       } catch (error) {
         console.error('Erro ao salvar pontuação:', error);
@@ -168,12 +164,5 @@ export class QuizComponent {
       console.error('Usuário deslogado ou pontuação inválida.');
       throw new Error('Usuário deslogado ou pontuação inválida');
     }
-  }
-
-  private async loadQuizResults(userId: string) {
-    this.userService.getUserScore(userId).then((score) => {
-      console.log('Resultados carregados:', score);
-      this.score = score;
-    });
   }
 }

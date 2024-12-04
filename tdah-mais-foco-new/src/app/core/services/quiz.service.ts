@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { QuizResult } from '../../data/models/quizResult.interface';
+import { QuizResultByArea } from '../../data/models/quizResultByArea.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -54,7 +56,7 @@ export class QuizService {
     );
   }
 
-  getQuizResultsByArea(language: string): Promise<any[]> {
+  getQuizAreaMessages(language: string): Promise<any[]> {
     return this.readFileContentByLanguage(language).then(
       (data: any) => {
         if (data && data.quiz && data.quiz.tdah && data.quiz.tdah.results) {
@@ -68,7 +70,7 @@ export class QuizService {
     );
   }
 
-  getQuizResults(language: string) {
+  getQuizResumeMessages(language: string) {
     return this.readFileContentByLanguage(language).then(
       (data: any) => {
         if (data && data.quiz && data.quiz.tdah && data.quiz.tdah.messages) {
@@ -82,27 +84,30 @@ export class QuizService {
     );
   }
 
-  calculateResultsByArea(score: any, messagesByArea: any[]): any[] {
-    const resultsByAreas = [];
+  calculateResultsByArea(
+    score: any,
+    messagesByArea: any[]
+  ): QuizResultByArea[] {
+    const resultsByAreas: QuizResultByArea[] = [];
 
     if (score) {
       for (const areaName in score) {
-        let areaScore = score[areaName];
-        let areaLevel = '';
+        let areaScore: number = score[areaName];
+        let areaLevel: any = '';
 
         // Determine the level based on areaScore
-        if (areaScore >= 1 && areaScore <= 3) {
-          areaLevel = 'low';
-        } else if (areaScore >= 4 && areaScore <= 6) {
+        if (areaScore >= 4 && areaScore <= 6) {
           areaLevel = 'moderate';
         } else if (areaScore >= 7 && areaScore <= 9) {
           areaLevel = 'medium';
         } else if (areaScore >= 10) {
           areaLevel = 'high';
+        } else if (areaScore <= 3) {
+          areaLevel = 'low';
         }
 
         // Find the message for the current area (if any)
-        const areaResultsMessage =
+        const areaResultsMessage: string =
           messagesByArea.find((messages) => messages.area === areaName)
             ?.messages || '';
 
@@ -118,13 +123,18 @@ export class QuizService {
     return resultsByAreas;
   }
 
-  calculateResults(score: any, messages: any): any {
-    if (score) {
-      let totalAreas = 0;
-      let totalAreasScore = 0;
-      let finalScore = 0;
-      let finalLevel = '';
+  calculateResults(score: any, messages: any): QuizResult | null {
+    let totalAreas = 0;
+    let totalAreasScore = 0;
+    let finalScore = 0;
+    let finalLevel = 'low';
+    let quizResult: QuizResult = {
+      score: 0,
+      level: finalLevel,
+      message: String(messages[finalLevel]),
+    };
 
+    if (score) {
       for (const areaName in score) {
         totalAreasScore = +score[areaName];
         totalAreas = +1;
@@ -132,67 +142,70 @@ export class QuizService {
 
       finalScore = totalAreasScore / totalAreas;
 
-      // Determine the level based on areaScore
-      if (finalScore >= 1 && finalScore <= 3) {
-        finalLevel = 'low';
-      } else if (finalScore >= 4 && finalScore <= 6) {
-        finalLevel = 'moderate';
-      } else if (finalScore >= 7 && finalScore <= 9) {
-        finalLevel = 'medium';
-      } else if (finalScore >= 10) {
-        finalLevel = 'high';
+      if (finalScore) {
+        // Determine the level based on areaScore
+        if (finalScore >= 4 && finalScore <= 6) {
+          finalLevel = 'moderate';
+        } else if (finalScore >= 7 && finalScore <= 9) {
+          finalLevel = 'medium';
+        } else if (finalScore >= 10) {
+          finalLevel = 'high';
+        } else if (finalScore <= 3) {
+          finalLevel = 'low';
+        }
+
+        quizResult = {
+          score: Number(finalScore),
+          level: String(finalLevel),
+          message: String(messages[finalLevel]),
+        };
       }
-
-      const result = {
-        score: Number(finalScore),
-        level: String(finalLevel),
-        message: String(messages[finalLevel]),
-      };
-
-      console.log('calculateResults ', result);
-
-      return result;
     }
-    return null;
+
+    return quizResult;
   }
 
   async getResultsMessageByArea(language: string) {
-    return await this.getQuizResultsByArea(language);
+    return await this.getQuizAreaMessages(language);
   }
 
   async getResultsMessage(language: string) {
-    return await this.getQuizResults(language);
+    return await this.getQuizResumeMessages(language);
   }
 
-  async calculateQuestionsScore(
+  async calculateResultsScoreByArea(
     answers: any[]
   ): Promise<Record<string, number>> {
-    const score = answers.reduce((acc, answer) => {
-      if (answer.response != null && answer.response === true) {
-        // Verifica explicitamente por null ou undefined
-        let selectedAreas: string[] = [];
+    let score = null;
 
-        if (Array.isArray(answer.area)) {
-          selectedAreas = answer.area;
-        } else if (typeof answer.area === 'string') {
-          selectedAreas = answer.area
-            .split(',')
-            .map((area: string) => area.trim());
+    if (answers && answers.length > 0) {
+      score = answers.reduce((acc, answer) => {
+        //seleciona somente as respostas que foram selecionadas
+
+        if (answer.response != null && answer.response === true) {
+          let selectedAreas: string[] = [];
+
+          if (Array.isArray(answer.area)) {
+            selectedAreas = answer.area;
+          } else if (typeof answer.area === 'string') {
+            selectedAreas = answer.area
+              .split(',')
+              .map((area: string) => area.trim());
+          } else {
+            console.warn(`Pergunta sem área válida:`, answer);
+            return acc;
+          }
+
+          selectedAreas.forEach((selectedArea) => {
+            acc[selectedArea] = (acc[selectedArea] || 0) + 1;
+          });
         } else {
-          console.warn(`Pergunta sem área válida:`, answer);
-          return acc;
+          console.warn('Resposta ausente para a pergunta:', answer);
         }
+        return acc;
+      }, {} as Record<string, number>);
+    }
 
-        selectedAreas.forEach((selectedArea) => {
-          acc[selectedArea] = (acc[selectedArea] || 0) + 1;
-        });
-      } else {
-        console.warn('Resposta ausente para a pergunta:', answer);
-      }
-      return acc;
-    }, {} as Record<string, number>);
-
-    console.log('Pontuação calculada:', score);
     return score;
   }
 }

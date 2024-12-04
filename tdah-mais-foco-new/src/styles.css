@@ -12,10 +12,27 @@ input[type="text"],
 input[type="email"],
 input[type="password"] {
   width: 100%;
+}
+
+.form-group,
+.container,
+section,
+input[type="text"],
+input[type="email"],
+input[type="password"] {
   margin-right: auto;
   margin-left: auto;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.form-group,
+.container,
+section,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+.text-center {
   display: block;
 }
 

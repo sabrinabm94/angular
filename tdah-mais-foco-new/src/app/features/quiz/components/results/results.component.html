@@ -1,27 +1,23 @@
-<section class="result" *ngIf="userId && userId !== ''">
-  <app-container>
-    <div class="results" *ngIf="results && areasResults">
-      <!-- <h2 class="text-center">{{ "title_results" | translate }}</h2> -->
-      <app-fieldset>
-        <h3 class="text-center">{{ "title_areas_results" | translate }}</h3>
-        <div class="area" *ngFor="let areaResult of areasResults">
-          <!-- <h4>{{ areaResult.name }}</h4> -->
-          <p>
-            {{ areaResult.message }}
-          </p>
-        </div>
-      </app-fieldset>
-      <app-fieldset>
-        <div class="result" *ngIf="results">
-          <h3 class="text-center">{{ "title_final_results" | translate }}</h3>
-          <p>
-            {{ results.message }}
-          </p>
-        </div>
-      </app-fieldset>
-      <a className="link" href="/register" *ngIf="!this.userId">
-        {{"save_results" | translate}}
-      </a>
-    </div>
+<section class="result">
+  <app-container class="results">
+    <!-- <h2 class="text-center">{{ "title_results" | translate }}</h2> -->
+    <app-fieldset class="areasResults" *ngIf="areasResults && areasResults.length > 0">
+      <h3 class="text-center">{{ "title_areas_results" | translate }}</h3>
+      <div class="area" *ngFor="let areaResult of areasResults">
+        <!-- <h4>{{ areaResult.name }}</h4> -->
+        <p>
+          {{ areaResult.message }}
+        </p>
+      </div>
+    </app-fieldset>
+    <app-fieldset class="result" *ngIf="results">
+      <h3 class="text-center">{{ "title_final_results" | translate }}</h3>
+      <p>
+        {{ results.message }}
+      </p>
+    </app-fieldset>
+    <a class="link text-center" href="/register" *ngIf="!this.userId">
+      {{"save_results" | translate}}
+    </a>
   </app-container>
 </section>

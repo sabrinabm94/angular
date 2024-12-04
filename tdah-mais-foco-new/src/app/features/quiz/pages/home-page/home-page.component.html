@@ -2,7 +2,7 @@
 <main class="main">
   <h1 class="main-title text-center">{{ "app_title" | translate }}</h1>
   <app-quiz *ngIf="!results" (results)="results = $event" [userId]="userId" [language]="language"></app-quiz>
-  <app-results *ngIf="results && userId" [score]="results" [userId]="userId" [language]="language">
+  <app-results *ngIf="results" [score]="results" [userId]="userId" [language]="language">
   </app-results>
 </main>
 <app-footer />

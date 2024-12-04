@@ -50,7 +50,6 @@ export class UserRegistrationComponent {
         this.user.password
       )
         .then((result) => {
-          console.log('Usuário registrado:', result);
           alert(this.translateService.translate('register_success'));
           //Faz o login automático após o registro
           const loggedUser: FirebaseUser = {

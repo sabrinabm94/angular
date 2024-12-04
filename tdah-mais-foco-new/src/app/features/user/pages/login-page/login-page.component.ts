@@ -25,7 +25,6 @@ export class LoginPageComponent {
       const user = await this.authService
         .login(email, password)
         .then((data) => data);
-      console.log('Usuário logado:', user);
     } catch (error) {
       console.error('Erro ao logar:', error);
     }
