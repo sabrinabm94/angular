@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import {
+  Auth,
+  createUserWithEmailAndPassword,
+  IdTokenResult,
+} from '@angular/fire/auth';
 import { CommonModule } from '@angular/common';
 import { EmailUtils } from '../../../../core/utils/email.utils';
 import { ContainerComponent } from '../../../../shared/components/container/container.component';
@@ -29,7 +33,11 @@ import { UserService } from '../../../../core/services/user.service';
   ],
 })
 export class UserRegistrationComponent {
-  user = { displayName: '', email: '', password: '' };
+  user: FirebaseUser | null = {
+    uid: '',
+    email: '',
+    password: null,
+  };
   submitted = false;
 
   constructor(
@@ -40,34 +48,40 @@ export class UserRegistrationComponent {
     private userService: UserService
   ) {}
 
-  public async registerUser() {
+  public async registerUser(): Promise<void> {
     this.submitted = true;
 
     if (this.isFormValid()) {
-      const user = await createUserWithEmailAndPassword(
-        this.auth,
-        this.user.email,
-        this.user.password
-      )
-        .then((result) => {
-          alert(this.translateService.translate('register_success'));
-          //Faz o login automático após o registro
-          const loggedUser: FirebaseUser = {
-            email: result.user.email,
-            displayName: result.user.displayName,
-            uid: result.user.uid,
-          };
-          this.userService.setUser(loggedUser);
-          this.router.navigate(['/quiz']);
-        })
-        .catch((error) => {
-          console.error('Erro ao registrar usuário:', error);
-          alert(this.translateService.translate('invalid_data'));
-          /*
-          alert(this.translateService.translate('invalid_password'));
-          alert(this.translateService.translate('invalid_email_in_use'));
-          */
-        });
+      if (this.user && this.user.email && this.user.password) {
+        await createUserWithEmailAndPassword(
+          this.auth,
+          this.user.email,
+          this.user.password
+        )
+          .then((result) => {
+            if (result) {
+              alert(this.translateService.translate('register_success'));
+              //Faz o login automático após o registro
+              const loggedUser: FirebaseUser = {
+                email: result.user.email ? result.user.email : '',
+                displayName: result.user.displayName
+                  ? result.user.displayName
+                  : '',
+                uid: result.user.uid,
+              };
+              this.user = this.userService.setUser(loggedUser);
+              this.router.navigate(['/quiz']);
+            }
+          })
+          .catch((error) => {
+            console.error('Erro ao registrar usuário:', error);
+            alert(this.translateService.translate('invalid_data'));
+            /*
+            alert(this.translateService.translate('invalid_password'));
+            alert(this.translateService.translate('invalid_email_in_use'));
+            */
+          });
+      }
     }
   }
 
@@ -76,12 +90,20 @@ export class UserRegistrationComponent {
   }
 
   public isFormValid(): boolean {
-    const { displayName, email, password } = this.user;
-    return (
-      displayName.trim() !== '' &&
-      email.trim() !== '' &&
-      password.trim() !== '' &&
-      this.validEmail(email)
-    );
+    if (
+      this.user &&
+      this.user.displayName &&
+      this.user.email &&
+      this.user.password
+    ) {
+      return (
+        this.user.displayName.trim() !== '' &&
+        this.user.email.trim() !== '' &&
+        this.user.password.trim() !== '' &&
+        this.validEmail(this.user.email)
+      );
+    } else {
+      return false;
+    }
   }
 }

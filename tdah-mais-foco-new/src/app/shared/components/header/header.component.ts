@@ -15,8 +15,7 @@ import { TranslatePipe } from '../../../core/pipes/translate.pipe';
   imports: [CommonModule, SwitchLanguageNavComponent, TranslatePipe],
 })
 export class HeaderComponent implements OnInit {
-  loggedUser: FirebaseUser | null = null;
-  @Input() userId: string = '';
+  @Input() userId: string | null = '';
 
   constructor(
     private router: Router,
@@ -24,27 +23,11 @@ export class HeaderComponent implements OnInit {
     private userService: UserService
   ) {}
 
-  async ngOnInit() {
-    if (!this.userId) {
-      this.getUser();
-    }
-  }
-
-  private getUser(): string {
-    this.loggedUser = this.userService.getUser();
-    if (this.loggedUser) {
-      this.userId = this.loggedUser.uid;
-      console.warn('Usuário logado: ' + this.userId);
-    } else {
-      console.warn('Convidado.');
-    }
-
-    return this.userId;
-  }
+  async ngOnInit() {}
 
   logout() {
     this.authService.logout();
-    this.loggedUser = null;
+    this.userService.setUser(null);
     this.userId = '';
     this.router.navigate([`/login`]);
   }

@@ -3,10 +3,9 @@
     <h2>{{ "title_user_registration" | translate }}</h2>
     <form class="form text-center" (ngSubmit)="registerUser()" #registrationForm="ngForm">
       <app-fieldset>
-        <div class="form-group">
+        <div class="form-group" *ngIf="user && user.displayName">
           <!-- Campo nome -->
           <legend>{{ "name_label" | translate }}</legend>
-          <label for="displayName">{{ "name_placeholder" | translate }}</label>
           <input type="text" id="displayName" [(ngModel)]="user.displayName" name="displayName" required
             #displayName="ngModel" aria-required="true"
             [attr.aria-invalid]="displayName.invalid && displayName.touched ? 'true' : 'false'" />
@@ -15,10 +14,9 @@
           </app-error-message>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" *ngIf="user && user.email">
           <!-- Campo E-mail -->
           <legend>{{ "email_label" | translate }}</legend>
-          <label for="email">{{ "email_placeholder" | translate }}</label>
           <input type="email" id="email" [(ngModel)]="user.email" name="email" required #email="ngModel"
             aria-required="true" [attr.aria-invalid]="email.invalid && email.touched ? 'true' : 'false'" />
           <app-error-message *ngIf="email.invalid && email.touched" aria-live="assertive">
@@ -26,12 +24,12 @@
           </app-error-message>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" *ngIf="user && user.password">
           <!-- Campo Senha -->
           <legend>{{ "password_label" | translate }}</legend>
-          <label for="password">{{ "password_placeholder" | translate }}</label>
-          <input type="password" id="password" [(ngModel)]="user.password" name="password" required #password="ngModel"
-            aria-required="true" [attr.aria-invalid]="password.invalid && password.touched ? 'true' : 'false'" />
+          <input type="password" id="password" [(ngModel)]="user.password" name="password"
+            autocomplete="current-password" required #password="ngModel" aria-required="true"
+            [attr.aria-invalid]="password.invalid && password.touched ? 'true' : 'false'" />
           <app-error-message *ngIf="password.invalid && password.touched" aria-live="assertive">
             {{ 'invalid_password' | translate }}
           </app-error-message>

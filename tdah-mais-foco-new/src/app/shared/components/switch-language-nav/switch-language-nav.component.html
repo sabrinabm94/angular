@@ -1,12 +1,12 @@
 <nav class="switch-language-nav nav-container">
   <span>{{ "switch_language_title" | translate }}: </span>
   <span (click)="switchLanguage('pt-br')" class="nav-item link" [class.active]="isActive('pt-br')">
-    Portuguese
+    {{ "portuguese" | translate }}
   </span>
   <span (click)="switchLanguage('en')" class="nav-item link" [class.active]="isActive('en')">
-    | English
+    | {{ "english" | translate }}
   </span>
   <span (click)="switchLanguage('es')" class="nav-item link" [class.active]="isActive('es')">
-    | Español
+    | {{ "spanish" | translate }}
   </span>
 </nav>

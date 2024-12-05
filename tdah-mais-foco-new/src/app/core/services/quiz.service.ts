@@ -199,8 +199,6 @@ export class QuizService {
           selectedAreas.forEach((selectedArea) => {
             acc[selectedArea] = (acc[selectedArea] || 0) + 1;
           });
-        } else {
-          console.warn('Resposta ausente para a pergunta:', answer);
         }
         return acc;
       }, {} as Record<string, number>);

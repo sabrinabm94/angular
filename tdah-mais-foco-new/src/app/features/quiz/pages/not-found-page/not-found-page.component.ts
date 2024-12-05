@@ -41,7 +41,7 @@ export class NotFoundPageComponent {
     });
   }
 
-  private getCurrentLanguage() {
-    this.language = this.languageService.getLanguage();
+  private getCurrentLanguage(): string {
+    return (this.language = this.languageService.getLanguage());
   }
 }

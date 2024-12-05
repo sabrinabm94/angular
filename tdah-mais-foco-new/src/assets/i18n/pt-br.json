@@ -1,11 +1,16 @@
 {
   "app_title": "TDAH + foco",
-  "title_quiz": "Quiz",
+  "title_quiz": "Perguntas",
   "title_results": "Resultados",
   "title_areas_results": "Resultados",
   "title_final_results": "Dicas",
   "title_quiz_send": "Enviar formulário",
   "calculate_results": "Calcular resultados",
+  "page_home_title": "Home",
+  "page_quiz_title": "Perguntas",
+  "page_results_title": "Resultados",
+  "page_login_title": "Iniciar",
+  "page_register_title": "Registro",
   "revise_quiz": "Revisar respostas",
   "title_user_login": "Entrar",
   "title_user_registration": "Cadastro",
@@ -56,6 +61,9 @@
   "register_success": "Registro realizado com sucesso, redirecionando...",
   "quiz_try_again": "Tentar novamente",
   "results_share": "Compartilhar resultados",
+  "portuguese": "Português",
+  "spanish": "Espanhol",
+  "english": "Inglês",
   "quiz": {
     "tdah": {
       "questions": [

@@ -71,14 +71,15 @@ export class UserLoginComponent {
           this.user.email,
           this.user.password
         );
-        const loggedUser: FirebaseUser = {
-          email: result.user.email,
-          displayName: result.user.displayName,
-          uid: result.user.uid,
+
+        const loggedUser = {
+          email: String(result.user.email),
+          displayName: String(result.user.displayName),
+          uid: String(result.user.uid),
         };
 
         this.userService.setUser(loggedUser);
-        alert('Login realizado com sucesso!');
+        alert(this.translateService.translate('login_success'));
         this.router.navigate([`/result/${loggedUser.uid}`]);
       } catch (error) {
         console.error(error);
@@ -94,17 +95,19 @@ export class UserLoginComponent {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(this.auth, provider);
       const loggedUser = {
-        email: result.user.email,
-        displayName: result.user.displayName,
-        uid: result.user.uid,
+        email: String(result.user.email),
+        displayName: String(result.user.displayName),
+        uid: String(result.user.uid),
       };
 
       this.userService.setUser(loggedUser);
-      alert('Login com Google realizado com sucesso!');
-      this.router.navigate([`/quiz/`]);
+      alert(this.translateService.translate('login_success'));
+      this.router.navigate([`/result/${loggedUser.uid}`]);
     } catch (error) {
       console.error(error);
-      alert('Erro ao usar login com Google.');
+      alert(this.translateService.translate('invalid_data'));
+    } finally {
+      this.clearUserCredentials();
     }
   }
 

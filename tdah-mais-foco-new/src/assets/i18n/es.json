@@ -6,6 +6,11 @@
   "title_final_results": "Dicas",
   "title_quiz_send": "Enviar registros",
   "calculate_results": "Calcular resultados",
+  "page_home_title": "Home",
+  "page_quiz_title": "Cuestionario",
+  "page_results_title": "Resultados",
+  "page_login_title": "Iniciar",
+  "page_register_title": "Registro",
   "revise_quiz": "Revisar respuestas",
   "title_user_login": "Iniciar sesión",
   "title_user_registration": "Registro",
@@ -56,6 +61,9 @@
   "register_success": "Registro exitoso, redirigiendo...",
   "quiz_try_again": "Intentar de nuevo",
   "results_share": "Compartir resultados",
+  "portuguese": "Portugués",
+  "spanish": "Español",
+  "english": "Inglés",
   "quiz": {
     "tdah": {
       "questions": [

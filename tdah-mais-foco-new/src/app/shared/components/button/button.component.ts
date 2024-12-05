@@ -15,8 +15,8 @@ export class ButtonComponent {
   @Input() type: string = 'button';
 
   public componentClassName: string = this.className
-    ? 'button btn btn-' + this.className
-    : 'button btn btn-primary';
+    ? ' btn btn-' + this.className
+    : ' btn btn-primary';
 
   constructor() {}
 }

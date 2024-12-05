@@ -100,7 +100,7 @@ export class QuizComponent {
         this.score = result;
 
         if (this.userId) {
-          await this.saveUserScore(this.userId, this.score).then((response) => {
+          await this.saveUserScore(this.score).then((response) => {
             this.router.navigate([`/result/${this.userId}`]);
           });
         } else {
@@ -148,13 +148,10 @@ export class QuizComponent {
     return question.response !== null;
   }
 
-  private async saveUserScore(
-    id: string,
-    score: Record<string, number>
-  ): Promise<any> {
-    if (id) {
+  private async saveUserScore(score: Record<string, number>): Promise<any> {
+    if (score) {
       try {
-        const result = await this.userService.saveUserScore(id, score);
+        const result = await this.userService.saveUserScore(score);
         return result;
       } catch (error) {
         console.error('Erro ao salvar pontuação:', error);

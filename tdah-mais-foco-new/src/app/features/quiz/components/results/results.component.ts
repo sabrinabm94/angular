@@ -18,7 +18,7 @@ import { FirebaseUser } from '../../../../data/models/user-firebase.interface';
 })
 export class ResultsComponent {
   @Input() score: Record<string, number> | any = null;
-  @Input() userId: string = '';
+  @Input() userId: string | null = '';
   @Input() language: string = '';
   areasResults: any[] = [];
   results: any;
@@ -31,30 +31,53 @@ export class ResultsComponent {
   ) {}
 
   async ngOnInit() {
-    if (this.userId) {
-      if (!this.score || this.score instanceof Promise === true) {
-        this.score = await this.userService.getUserScore(this.userId);
-      }
+    if (!this.userId) {
+      console.warn(
+        'ID do usuário não está definido. Tentando obter o usuário autenticado...'
+      );
+
+      this.userId = this.getUserId();
     }
 
-    await this.ensureResultsLoaded(this.language, this.score, this.userId);
+    if (!this.userId) {
+      console.error('ID do usuário inválido ou não encontrado.');
+      return;
+    }
+
+    await this.initializeResults(this.userId, this.language, this.score);
 
     this.translateService
       .getLanguageChanged()
       .subscribe(async (currentLanguage: string) => {
         this.language = currentLanguage;
+        await this.initializeResults(this.userId, this.language, this.score);
       });
   }
 
-  // atualiza valores do componente caso alterar o usuário logado ou resultados do quiz
   async ngOnChanges(changes: SimpleChanges) {
-    if (changes['userId'] && changes['userId'].currentValue) {
-      this.score = await this.userService.getUserScore(this.userId);
-      await this.ensureResultsLoaded(this.language, this.score, this.userId);
+    if (changes['userId'] || changes['score']) {
+      await this.initializeResults(this.userId, this.language, this.score);
+    }
+  }
+
+  private async initializeResults(
+    id: string | null,
+    language: string,
+    score: any
+  ) {
+    if (!id) {
+      console.error('ID do usuário não encontrado.');
+      return;
     }
 
-    if (changes['score']?.currentValue) {
-      await this.ensureResultsLoaded(this.language, this.score, this.userId);
+    if (!score || score instanceof Promise) {
+      score = await this.userService.getUserScore();
+    }
+
+    try {
+      await this.ensureResultsLoaded(language, score, id);
+    } catch (error) {
+      console.error('Erro ao inicializar os resultados:', error);
     }
   }
 
@@ -66,7 +89,7 @@ export class ResultsComponent {
     }
   }
 
-  async loadResults(language: string, score: any, id: string) {
+  private async loadResults(language: string, score: any, id: string) {
     try {
       const areaResultsMessages =
         await this.quizService.getResultsMessageByArea(language);
@@ -85,5 +108,12 @@ export class ResultsComponent {
     } catch (error) {
       console.error('Erro ao carregar resultados:', error);
     }
+  }
+
+  private getUserId(): string | null {
+    const user = this.userService.getUser();
+    this.userId = user ? user.uid : null;
+
+    return this.userId;
   }
 }

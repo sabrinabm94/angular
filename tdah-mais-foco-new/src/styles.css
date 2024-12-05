@@ -78,6 +78,10 @@ legend {
   margin: 10px;
 }
 
+a {
+  text-decoration: none;
+}
+
 .link {
   text-decoration: underline;
   cursor: pointer;

@@ -28,7 +28,7 @@ export const appRoutes: Routes = [
       import('./features/quiz/pages/results-page/results-page.component').then(
         (m) => m.ResultsPageComponent
       ),
-    //canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'logout',

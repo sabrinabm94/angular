@@ -6,6 +6,11 @@
   "title_final_results": "Typs",
   "title_quiz_send": "Send Form",
   "calculate_results": "Calculate Results",
+  "page_home_title": "Home page",
+  "page_quiz_title": "Quiz page",
+  "page_results_title": "Results page",
+  "page_login_title": "Login page",
+  "page_register_title": "Register page",
   "revise_quiz": "Revise Answers",
   "title_user_login": "Login",
   "title_user_registration": "Registration",
@@ -56,6 +61,9 @@
   "register_success": "Register successful, redirecting...",
   "quiz_try_again": "Try again",
   "results_share": "Share results",
+  "portuguese": "Portuguese",
+  "spanish": "Spanish",
+  "english": "English",
   "quiz": {
     "tdah": {
       "questions": [

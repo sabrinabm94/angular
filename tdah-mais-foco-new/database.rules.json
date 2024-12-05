@@ -1,6 +1,16 @@
 {
   "rules": {
-    ".read": false,
-    ".write": false
+    "users": {
+      "$userId": {
+        "quiz": {
+          "tdah": {
+            "score": {
+              ".read": "auth != null && auth.uid === $userId",
+              ".write": "auth != null && auth.uid === $userId"
+            }
+          }
+        }
+      }
+    }
   }
 }

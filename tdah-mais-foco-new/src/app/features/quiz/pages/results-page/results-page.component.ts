@@ -30,7 +30,7 @@ export class ResultsPageComponent {
   public resultShareUrl: string = '';
   public language: string = '';
   private loggedUser: FirebaseUser | null = null;
-  public userId: string = ''; // id do usuário
+  public userId: string | null = ''; // id do usuário
   private message: string = `Olá, eu acabei de fazer meu teste de TDAH, faça você também!`;
 
   constructor(
@@ -42,43 +42,26 @@ export class ResultsPageComponent {
 
   ngOnInit() {
     this.getCurrentLanguage();
-    this.getLoggedUser(); // Método para obter o usuário logado
+    this.getUserId();
     this.updateMetaTags();
-    this.getUrlParams();
 
     if (this.userId) {
-      this.generateResultsUrl(this.userId);
+      this.generateUserResultsShareUrl(this.userId);
     }
   }
 
-  private getLoggedUser(): string {
-    this.userService.user$.subscribe((user: any) => {
-      if (user) {
-        this.loggedUser = user;
-        this.userId = user.uid;
-        console.warn('Usuário logado: ' + this.userId);
-        return this.userId;
-      } else {
-        console.warn('Convidado');
-        return null;
-      }
-    });
+  private getUserId(): string | null {
+    const user = this.userService.getUser();
+    this.userId = user ? user.uid : null;
 
     return this.userId;
   }
 
-  private getCurrentLanguage() {
-    this.language = this.languageService.getLanguage();
+  private getCurrentLanguage(): string {
+    return (this.language = this.languageService.getLanguage());
   }
 
-  private getUrlParams(): void {
-    this.route.paramMap.subscribe((params) => {
-      let paramsValue = params.get('id');
-      this.userId = paramsValue ? paramsValue : '';
-    });
-  }
-
-  private generateResultsUrl(id: string): string {
+  private generateUserResultsShareUrl(id: string): string {
     if (id) {
       this.resultShareUrl = `${window.location.origin}/result/${id}`;
     }

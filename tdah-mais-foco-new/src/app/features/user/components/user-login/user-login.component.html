@@ -16,7 +16,8 @@
         <div class="form-group">
           <!-- Campo Senha -->
           <legend>{{ "password_label" | translate }}</legend>
-          <input type="password" id="password" [(ngModel)]="user.password" name="password" required
+          <input type="password" id="password" [(ngModel)]="user.password" name="password"
+            autocomplete="current-password" required
             [attr.aria-invalid]="user.password && user.password.trim() === '' ? 'true' : 'false'" />
           <app-error-message *ngIf="user.password && user.password.trim() === '' && submitted" aria-live="assertive">
             {{ 'field_required' | translate }}
@@ -29,20 +30,17 @@
       </app-button>
     </form>
 
-    <app-button [className]="'outline-success'" [disabled]="!isFormValid()" (click)="loginWithGoogle()">
-      {{ "login_with_google" | translate }}
-    </app-button>
-
-    <app-button [className]="'link'" (click)="resetPassword()" [disabled]="!user.email">
-      {{ "forgot_password" | translate }}
-    </app-button>
+    <a className="link" href="/quiz">
+      <app-button>{{"continue_without_login" | translate}}</app-button>
+    </a>
 
     <a className="link" href="/register">
       <app-button>{{"register" | translate}}</app-button>
     </a>
 
-    <a className="link" href="/quiz">
-      <app-button>{{"continue_without_login" | translate}}</app-button>
-    </a>
+    <app-button [type]="'link'" (click)="resetPassword()" [disabled]="!user.email">
+      {{ "forgot_password" | translate }}
+    </app-button>
+
   </app-container>
 </section>
