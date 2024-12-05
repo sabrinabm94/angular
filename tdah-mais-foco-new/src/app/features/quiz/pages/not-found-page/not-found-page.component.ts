@@ -3,7 +3,7 @@ import { HeaderComponent } from '../../../../shared/components/header/header.com
 import { FooterComponent } from '../../../../shared/components/footer/footer.component';
 import { LanguageService } from '../../../../core/services/language.service';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
-import { FirebaseUser } from '../../../../data/models/user-firebase.interface';
+import { FirebaseUser } from '../../../../data/models/FirebaseUser.interface';
 import { UserService } from '../../../../core/services/user.service';
 
 @Component({
@@ -15,9 +15,8 @@ import { UserService } from '../../../../core/services/user.service';
   providers: [],
 })
 export class NotFoundPageComponent {
-  public language: string = '';
-  private loggedUser: FirebaseUser | null = null;
-  public userId: string = '';
+  public languageName: string | null = null;
+  public userId: string | null = null;
 
   constructor(
     private userService: UserService,
@@ -25,23 +24,18 @@ export class NotFoundPageComponent {
   ) {}
 
   ngOnInit() {
-    this.getCurrentLanguage();
-    this.getLoggedUser();
+    this.getLanguage();
+    this.getUser();
   }
 
-  private getLoggedUser() {
-    this.userService.user$.subscribe((user) => {
-      if (user) {
-        this.loggedUser = user;
-        this.userId = user.uid;
-        console.warn('Usuário logado: ' + this.userId);
-      } else {
-        console.warn('Convidado');
-      }
-    });
+  private getUser(): string | null {
+    const user = this.userService.getUser();
+    console.log('this.userId ', this.userId);
+    return (this.userId = user ? user.uid : null);
   }
 
-  private getCurrentLanguage(): string {
-    return (this.language = this.languageService.getLanguage());
+  private getLanguage(): string | null {
+    const language = this.languageService.getLanguage();
+    return (this.languageName = language ? language : null);
   }
 }

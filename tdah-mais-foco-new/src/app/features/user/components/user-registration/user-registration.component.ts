@@ -14,7 +14,7 @@ import { FieldsetComponent } from '../../../../shared/components/fieldset/fields
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { TranslateService } from '../../../../core/services/translate.service';
-import { FirebaseUser } from '../../../../data/models/user-firebase.interface';
+import { FirebaseUser } from '../../../../data/models/FirebaseUser.interface';
 import { UserService } from '../../../../core/services/user.service';
 
 @Component({

@@ -12,7 +12,7 @@ import { ErrorMessageComponent } from '../../../../shared/components/error-messa
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { TranslateService } from '../../../../core/services/translate.service';
 import { UserService } from '../../../../core/services/user.service';
-import { FirebaseUser } from '../../../../data/models/user-firebase.interface';
+import { FirebaseUser } from '../../../../data/models/FirebaseUser.interface';
 
 @Component({
   selector: 'app-quiz',
@@ -40,9 +40,10 @@ export class QuizComponent {
   responses: Record<number, any> = {};
   loggedUser: FirebaseUser | null = null;
 
+  @Input() userId: string | null = '';
+  @Input() languageName: string | null = '';
+
   @Output() results = new EventEmitter<Record<string, number>>();
-  @Input() userId: string = '';
-  @Input() language: string = '';
 
   constructor(
     private router: Router,
@@ -55,17 +56,17 @@ export class QuizComponent {
   ngOnInit() {
     this.submitted = false;
 
-    if (this.language) {
+    if (this.languageName) {
       // Carrega perguntas
-      this.loadQuizQuestions(this.language);
+      this.loadQuizQuestions(this.languageName);
     }
 
     // Observa mudanças de idioma
     this.translateService
       .getLanguageChanged()
       .subscribe((currentLanguage: string) => {
-        this.language = currentLanguage;
-        this.loadQuizQuestions(this.language);
+        this.languageName = currentLanguage;
+        this.loadQuizQuestions(this.languageName);
       });
   }
 

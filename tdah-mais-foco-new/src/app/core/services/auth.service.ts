@@ -44,13 +44,8 @@ export class AuthService {
   }
 
   // Logout do usuário
-  async logout() {
+  async logout(): Promise<void> {
     await this.auth.signOut();
-    this.userService.setUser(null); // Limpa o estado do usuário
-  }
-
-  // Obter usuário logado
-  getCurrentUser(): User | null {
-    return this.auth.currentUser;
+    this.userService.setUser(null);
   }
 }

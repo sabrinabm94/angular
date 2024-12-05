@@ -9,7 +9,7 @@ import { HeaderComponent } from '../../../../shared/components/header/header.com
 import { ResultsComponent } from '../../components/results/results.component';
 import { UserService } from '../../../../core/services/user.service';
 import { LanguageService } from '../../../../core/services/language.service';
-import { FirebaseUser } from '../../../../data/models/user-firebase.interface';
+import { FirebaseUser } from '../../../../data/models/FirebaseUser.interface';
 
 @Component({
   selector: 'app-results-page',
@@ -26,11 +26,10 @@ import { FirebaseUser } from '../../../../data/models/user-firebase.interface';
   styleUrls: ['./results-page.component.css'],
 })
 export class ResultsPageComponent {
+  public languageName: string | null = null;
+  public userId: string | null = null;
   public results: any;
   public resultShareUrl: string = '';
-  public language: string = '';
-  private loggedUser: FirebaseUser | null = null;
-  public userId: string | null = ''; // id do usuário
   private message: string = `Olá, eu acabei de fazer meu teste de TDAH, faça você também!`;
 
   constructor(
@@ -41,8 +40,8 @@ export class ResultsPageComponent {
   ) {}
 
   ngOnInit() {
-    this.getCurrentLanguage();
-    this.getUserId();
+    this.getLanguage();
+    this.getUser();
     this.updateMetaTags();
 
     if (this.userId) {
@@ -50,15 +49,15 @@ export class ResultsPageComponent {
     }
   }
 
-  private getUserId(): string | null {
+  private getUser(): string | null {
     const user = this.userService.getUser();
-    this.userId = user ? user.uid : null;
-
-    return this.userId;
+    console.log('this.userId ', this.userId);
+    return (this.userId = user ? user.uid : null);
   }
 
-  private getCurrentLanguage(): string {
-    return (this.language = this.languageService.getLanguage());
+  private getLanguage(): string | null {
+    const language = this.languageService.getLanguage();
+    return (this.languageName = language ? language : null);
   }
 
   private generateUserResultsShareUrl(id: string): string {

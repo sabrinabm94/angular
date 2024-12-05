@@ -15,7 +15,7 @@ import { ErrorMessageComponent } from '../../../../shared/components/error-messa
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { EmailUtils } from '../../../../core/utils/email.utils';
 import { UserService } from '../../../../core/services/user.service';
-import { FirebaseUser } from '../../../../data/models/user-firebase.interface';
+import { FirebaseUser } from '../../../../data/models/FirebaseUser.interface';
 import { TranslateService } from '../../../../core/services/translate.service';
 import { CommonModule } from '@angular/common';
 

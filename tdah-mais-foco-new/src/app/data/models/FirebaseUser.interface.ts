@@ -9,12 +9,13 @@ export interface FirebaseUser extends User {
   isAnonymous?: boolean;
   metadata?: { creationTime?: string; lastSignInTime?: string };
   providerData?: Array<{
-    providerId: string;
-    uid: string;
-    displayName: string | null;
-    email: string | null;
-    photoURL: string | null;
+    displayName?: string | null;
+    email?: string | null;
+    phoneNumber?: string | null;
+    photoURL?: string | null;
+    providerId?: string;
+    uid?: string;
   }>;
   refreshToken?: string | null;
-  tenantId?: null;
+  tenantId?: string | null;
 }

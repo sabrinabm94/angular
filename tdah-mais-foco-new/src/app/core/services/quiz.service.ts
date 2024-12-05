@@ -10,7 +10,7 @@ import { QuizResultByArea } from '../../data/models/quizResultByArea.interface';
 export class QuizService {
   constructor(private httpClient: HttpClient) {}
 
-  async readFileContentByLanguage(language: string): Promise<any[]> {
+  async readFileContentByLanguage(language: string | null): Promise<any[]> {
     language = language ? language : environment.lang;
     let filePath = 'assets/i18n/' + language + '.json';
 
@@ -23,7 +23,7 @@ export class QuizService {
     }
   }
 
-  getQuizQuestions(language: string) {
+  getQuizQuestions(language: string | null) {
     const answers: any[] | PromiseLike<any[]> = [];
 
     return this.readFileContentByLanguage(language).then(
@@ -56,7 +56,7 @@ export class QuizService {
     );
   }
 
-  getQuizAreaMessages(language: string): Promise<any[]> {
+  getQuizAreaMessages(language: string | null): Promise<any[]> {
     return this.readFileContentByLanguage(language).then(
       (data: any) => {
         if (data && data.quiz && data.quiz.tdah && data.quiz.tdah.results) {
@@ -70,7 +70,7 @@ export class QuizService {
     );
   }
 
-  getQuizResumeMessages(language: string) {
+  getQuizResumeMessages(language: string | null) {
     return this.readFileContentByLanguage(language).then(
       (data: any) => {
         if (data && data.quiz && data.quiz.tdah && data.quiz.tdah.messages) {
@@ -87,7 +87,7 @@ export class QuizService {
   calculateResultsByArea(
     score: any,
     messagesByArea: any[]
-  ): QuizResultByArea[] {
+  ): QuizResultByArea[] | [] {
     const resultsByAreas: QuizResultByArea[] = [];
 
     if (score) {
@@ -165,11 +165,11 @@ export class QuizService {
     return quizResult;
   }
 
-  async getResultsMessageByArea(language: string) {
+  async getResultsMessageByArea(language: string | null) {
     return await this.getQuizAreaMessages(language);
   }
 
-  async getResultsMessage(language: string) {
+  async getResultsMessage(language: string | null) {
     return await this.getQuizResumeMessages(language);
   }
 
