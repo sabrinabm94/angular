@@ -7,20 +7,12 @@ import { AuthGuard } from './core/guards/auth.guard';
 export const appRoutes: Routes = [
   //logados
   {
-    path: '',
-    loadComponent: () =>
-      import('./features/quiz/pages/home-page/home-page.component').then(
-        (m) => m.HomePageComponent
-      ),
-    canActivate: [AuthGuard],
-  },
-  {
     path: 'quiz',
     loadComponent: () =>
       import('./features/quiz/pages/home-page/home-page.component').then(
         (m) => m.HomePageComponent
       ),
-    canActivate: [GuestGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'result/:id',

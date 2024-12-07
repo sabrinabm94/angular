@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
   Auth,
-  browserLocalPersistence,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
   User,
+  browserLocalPersistence,
 } from '@angular/fire/auth';
 import { UserService } from './user.service';
 
@@ -12,7 +13,19 @@ import { UserService } from './user.service';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private auth: Auth, private userService: UserService) {}
+  constructor(private auth: Auth, private userService: UserService) {
+    // Configura a persistência da autenticação
+    this.configurePersistence();
+  }
+
+  private async configurePersistence() {
+    try {
+      await this.auth.setPersistence(browserLocalPersistence);
+      console.log('Persistência de autenticação configurada como LOCAL.');
+    } catch (error) {
+      console.error('Erro ao configurar persistência de autenticação:', error);
+    }
+  }
 
   // Registrar usuário com e-mail e senha
   async register(email: string, password: string): Promise<User | null> {
@@ -36,7 +49,7 @@ export class AuthService {
         email,
         password
       );
-      this.auth.setPersistence(browserLocalPersistence);
+      this.userService.setUser(userCredential.user);
       return userCredential.user;
     } catch (error: any) {
       throw new Error(`Erro ao fazer login: ${error.message}`);
@@ -45,7 +58,11 @@ export class AuthService {
 
   // Logout do usuário
   async logout(): Promise<void> {
-    await this.auth.signOut();
-    this.userService.setUser(null);
+    try {
+      await signOut(this.auth);
+      this.userService.setUser(null);
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+    }
   }
 }

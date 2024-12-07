@@ -18,6 +18,7 @@ import { UserService } from '../../../../core/services/user.service';
 import { FirebaseUser } from '../../../../data/models/FirebaseUser.interface';
 import { TranslateService } from '../../../../core/services/translate.service';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-user-login',
@@ -43,6 +44,7 @@ export class UserLoginComponent {
     private router: Router,
     private emailUtils: EmailUtils,
     private userService: UserService,
+    private authService: AuthService,
     private translateService: TranslateService
   ) {}
 
@@ -66,21 +68,14 @@ export class UserLoginComponent {
 
     if (this.user.email && this.user.password) {
       try {
-        const result = await signInWithEmailAndPassword(
-          this.auth,
-          this.user.email,
-          this.user.password
-        );
-
-        const loggedUser = {
-          email: String(result.user.email),
-          displayName: String(result.user.displayName),
-          uid: String(result.user.uid),
-        };
-
-        this.userService.setUser(loggedUser);
-        alert(this.translateService.translate('login_success'));
-        this.router.navigate([`/result/${loggedUser.uid}`]);
+        this.authService
+          .login(this.user.email, this.user.password)
+          .then((user: FirebaseUser | null) => {
+            if (user) {
+              alert(this.translateService.translate('login_success'));
+              this.router.navigate([`/result/${user.uid}`]);
+            }
+          });
       } catch (error) {
         console.error(error);
         alert(this.translateService.translate('invalid_data'));

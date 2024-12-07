@@ -1,37 +1,44 @@
 import { Injectable } from '@angular/core';
+import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { FirebaseUser } from '../../data/models/FirebaseUser.interface';
-import { Database, ref, set, get, child } from '@angular/fire/database';
-import {
-  Auth,
-  onAuthStateChanged,
-  User as FirebaseAuthUser,
-} from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private readonly databasePath = '/quiz/tdah/score';
-  private user: FirebaseUser | null = null;
+  private user: any = null;
+  private userLoaded: boolean = false;
 
-  constructor(private auth: Auth, private db: Database) {}
+  constructor(private auth: Auth) {}
 
-  // Pega o usuário autenticado
-  getUser(): FirebaseUser | null {
-    return (this.user = this.auth.currentUser);
+  initializeUser(): Promise<void> {
+    return new Promise((resolve) => {
+      onAuthStateChanged(this.auth, (user) => {
+        this.user = user;
+        this.userLoaded = true;
+        resolve(); // Finaliza o processo de inicialização
+      });
+    });
   }
 
-  // Pega o usuário autenticado
+  getUser(): any {
+    return this.user;
+  }
+
+  isUserLoaded(): boolean {
+    return this.userLoaded;
+  }
+
   setUser(user: FirebaseUser | null): FirebaseUser | null {
-    return (this.user = user);
+    this.user = user;
+    return this.user;
   }
 
-  // Salva a pontuação do usuário
   async saveUserScore(
     score: Record<string, number>
   ): Promise<Record<string, number> | null> {
-    //pega usuário autenticado
     const user = this.getUser();
+    console.log('user service save score user ', user);
 
     if (user) {
       const userId = user.uid;
@@ -52,10 +59,9 @@ export class UserService {
     return null;
   }
 
-  // Busca a pontuação do usuário
   async getUserScore(): Promise<Record<string, number> | null> {
-    //pega usuário autenticado
     const user = this.getUser();
+    console.log('user service get score user ', user);
 
     if (user) {
       const userId = user.uid;

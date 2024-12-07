@@ -59,8 +59,11 @@ export class ResultsComponent {
     score: any
   ) {
     if (!id) {
-      console.error('ID do usuário não encontrado.');
-      return;
+      let user = this.userService.getUser();
+      if (user) {
+        this.userId = user.uid;
+        id = this.userId;
+      }
     }
 
     if (!score || score instanceof Promise) {
@@ -77,7 +80,7 @@ export class ResultsComponent {
   private async ensureResultsLoaded(
     language: string | null,
     score: any,
-    id: string
+    id: string | null
   ) {
     try {
       await this.loadResults(language, score, id);
@@ -86,7 +89,11 @@ export class ResultsComponent {
     }
   }
 
-  private async loadResults(language: string | null, score: any, id: string) {
+  private async loadResults(
+    language: string | null,
+    score: any,
+    id: string | null
+  ) {
     try {
       const areaResultsMessages =
         await this.quizService.getResultsMessageByArea(language);

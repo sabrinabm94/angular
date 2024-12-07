@@ -159,8 +159,8 @@ export class QuizComponent {
         throw error;
       }
     } else {
-      console.error('Usuário deslogado ou pontuação inválida.');
-      throw new Error('Usuário deslogado ou pontuação inválida');
+      console.error('Pontuação inválida.');
+      throw new Error('Pontuação inválida');
     }
   }
 }
