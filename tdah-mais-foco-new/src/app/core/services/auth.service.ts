@@ -13,12 +13,10 @@ import { UserService } from './user.service';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private auth: Auth, private userService: UserService) {
-    // Configura a persistência da autenticação
-    this.configurePersistence();
-  }
+  constructor(private auth: Auth, private userService: UserService) {}
 
-  private async configurePersistence() {
+  // Função para configurar persistência
+  async configureAuthPersistence(): Promise<void> {
     try {
       await this.auth.setPersistence(browserLocalPersistence);
       console.log('Persistência de autenticação configurada como LOCAL.');

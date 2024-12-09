@@ -1,27 +1,44 @@
 import { Injectable } from '@angular/core';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
+import { Database, ref, child, get, set } from '@angular/fire/database';
 import { FirebaseUser } from '../../data/models/FirebaseUser.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private user: any = null;
+  private user: FirebaseUser | null = null;
   private userLoaded: boolean = false;
+  private databasePath: string = '';
 
-  constructor(private auth: Auth) {}
+  constructor(private auth: Auth, private database: Database) {
+    this.initializeUser();
+  }
 
   initializeUser(): Promise<void> {
-    return new Promise((resolve) => {
-      onAuthStateChanged(this.auth, (user) => {
-        this.user = user;
-        this.userLoaded = true;
-        resolve(); // Finaliza o processo de inicialização
-      });
+    return new Promise((resolve, reject) => {
+      onAuthStateChanged(
+        this.auth,
+        (user) => {
+          this.user = user;
+          this.userLoaded = true;
+
+          // Define o caminho do banco de dados com base no usuário autenticado
+          if (user) {
+            this.databasePath = `users/${user.uid}/quiz/tdah/score`;
+          }
+
+          resolve();
+        },
+        (error) => {
+          console.error('Erro ao carregar estado do usuário:', error);
+          reject(error);
+        }
+      );
     });
   }
 
-  getUser(): any {
+  getUser(): FirebaseUser | null {
     return this.user;
   }
 
@@ -41,10 +58,8 @@ export class UserService {
     console.log('user service save score user ', user);
 
     if (user) {
-      const userId = user.uid;
-
       try {
-        const scoreRef = ref(this.db, `users/${userId}${this.databasePath}`);
+        const scoreRef = ref(this.database, this.databasePath);
         await set(scoreRef, score);
         return score;
       } catch (error: any) {
@@ -64,13 +79,9 @@ export class UserService {
     console.log('user service get score user ', user);
 
     if (user) {
-      const userId = user.uid;
-
       try {
-        const dbRef = ref(this.db);
-        const snapshot = await get(
-          child(dbRef, `users/${userId}${this.databasePath}`)
-        );
+        const dbRef = ref(this.database);
+        const snapshot = await get(child(dbRef, this.databasePath));
 
         if (!snapshot.exists()) {
           throw new Error(
