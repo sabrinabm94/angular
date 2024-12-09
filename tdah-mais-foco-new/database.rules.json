@@ -2,6 +2,8 @@
   "rules": {
     "users": {
       "$userId": {
+        ".read": "auth != null && auth.uid === $userId",
+        ".write": "auth != null && auth.uid === $userId",
         "quiz": {
           "tdah": {
             "score": {

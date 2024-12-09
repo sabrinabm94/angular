@@ -57,23 +57,28 @@ export class UserRegisterComponent {
           this.user.password
         )
           .then(
-            (result: {
+            async (result: {
               user: {
                 email: string | null;
-                displayName: string | null | null;
+                displayName: string | null;
                 uid: any;
               };
             }) => {
               if (result) {
-                alert(this.translateService.translate('register_success'));
                 // Faz o login automático após o registro
-                const loggedUser: FirebaseUser = {
+                let loggedUser: FirebaseUser = {
                   email: result.user.email ? result.user.email : '',
-                  displayName: result.user.displayName || '', // Usa '' caso displayName seja null ou null
+                  displayName: this.user ? this.user.displayName : '',
                   uid: result.user.uid,
                 };
                 this.user = this.userService.setUser(loggedUser);
-                this.router.navigate(['/quiz']);
+
+                await this.userService
+                  .saveUserData(loggedUser)
+                  .then((response) => {
+                    alert(this.translateService.translate('register_success'));
+                    this.router.navigate(['/quiz']);
+                  });
               }
             }
           )
