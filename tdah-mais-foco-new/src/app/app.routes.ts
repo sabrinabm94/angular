@@ -1,26 +1,26 @@
-// src/app/app.routes.ts
 import { Routes } from '@angular/router';
 import { GuestGuard } from './core/guards/guest.guard';
 import { NotFoundPageComponent } from './features/quiz/pages/not-found-page/not-found-page.component';
 import { AuthGuard } from './core/guards/auth.guard';
 
 export const appRoutes: Routes = [
-  //logados
+  // Rota acessível por todos (logados e deslogados)
   {
     path: 'quiz',
     loadComponent: () =>
       import('./features/quiz/pages/home-page/home-page.component').then(
         (m) => m.HomePageComponent
       ),
-    canActivate: [AuthGuard],
   },
+
+  // Rotas para usuários logados
   {
     path: 'result/:id',
     loadComponent: () =>
       import('./features/quiz/pages/results-page/results-page.component').then(
         (m) => m.ResultsPageComponent
       ),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard], // Apenas usuários logados
   },
   {
     path: 'logout',
@@ -28,17 +28,17 @@ export const appRoutes: Routes = [
       import(
         './features/user/components/user-logout/user-logout.component'
       ).then((m) => m.UserLogoutComponent),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard], // Apenas usuários logados
   },
 
-  //deslogados
+  // Rotas para usuários deslogados
   {
     path: 'login',
     loadComponent: () =>
       import('./features/user/pages/login-page/login-page.component').then(
         (m) => m.LoginPageComponent
       ),
-    canActivate: [GuestGuard],
+    canActivate: [GuestGuard], // Apenas usuários deslogados
   },
   {
     path: 'register',
@@ -46,9 +46,9 @@ export const appRoutes: Routes = [
       import(
         './features/user/pages/register-page/register-page.component'
       ).then((m) => m.RegisterPageComponent),
-    canActivate: [GuestGuard],
+    canActivate: [GuestGuard], // Apenas usuários deslogados
   },
 
-  //todos
+  // Rota para páginas não encontradas
   { path: '**', component: NotFoundPageComponent },
 ];

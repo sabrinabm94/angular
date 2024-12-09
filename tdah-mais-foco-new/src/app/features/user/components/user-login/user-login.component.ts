@@ -36,7 +36,13 @@ import { AuthService } from '../../../../core/services/auth.service';
   ],
 })
 export class UserLoginComponent {
-  user = { email: '', password: '' };
+  user: FirebaseUser | null = {
+    displayName: '',
+    email: '',
+    password: '',
+    uid: '',
+  };
+
   submitted = false;
 
   constructor(
@@ -49,24 +55,26 @@ export class UserLoginComponent {
   ) {}
 
   async resetPassword() {
-    if (!this.user.email || !this.validEmail(this.user.email)) {
-      alert(this.translateService.translate('invalid_email'));
-      return;
-    }
+    if (this.user) {
+      if (!this.user.email || !this.validEmail(this.user.email)) {
+        alert(this.translateService.translate('invalid_email'));
+        return;
+      }
 
-    try {
-      await sendPasswordResetEmail(this.auth, this.user.email);
-      alert(this.translateService.translate('password_reset_email_sent'));
-    } catch (error) {
-      console.error('Erro ao enviar e-mail de redefinição de senha:', error);
-      alert(this.translateService.translate('password_reset_error'));
+      try {
+        await sendPasswordResetEmail(this.auth, this.user.email);
+        alert(this.translateService.translate('password_reset_email_sent'));
+      } catch (error) {
+        console.error('Erro ao enviar e-mail de redefinição de senha:', error);
+        alert(this.translateService.translate('password_reset_error'));
+      }
     }
   }
 
   async loginWithEmail() {
     this.submitted = true;
 
-    if (this.user.email && this.user.password) {
+    if (this.user && this.user.email && this.user.password) {
       try {
         this.authService
           .login(this.user.email, this.user.password)
@@ -79,8 +87,6 @@ export class UserLoginComponent {
       } catch (error) {
         console.error(error);
         alert(this.translateService.translate('invalid_data'));
-      } finally {
-        this.clearUserCredentials();
       }
     }
   }
@@ -106,16 +112,29 @@ export class UserLoginComponent {
     }
   }
 
-  validEmail(email: string): boolean {
-    return this.emailUtils.validEmail(email);
+  validEmail(email: string | null): boolean {
+    if (email) {
+      return this.emailUtils.validEmail(email);
+    }
+    return false;
   }
 
-  isFormValid(): boolean {
-    return this.user.email.trim() !== '' && this.user.password.trim() !== '';
+  public isFormValid(): boolean {
+    if (this.user) {
+      return (
+        this.user.password?.trim() !== '' && this.validEmail(this.user.email)
+      );
+    }
+    return false;
   }
 
   private clearUserCredentials() {
-    this.user = { email: '', password: '' };
+    this.user = {
+      displayName: '',
+      email: '',
+      password: '',
+      uid: '',
+    };
   }
 
   resetForm(form: NgForm) {

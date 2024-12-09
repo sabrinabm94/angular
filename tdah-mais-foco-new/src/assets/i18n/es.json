@@ -60,11 +60,14 @@
   "password_reset_error": "Ocurrió un error al restablecer la contraseña.",
   "register_success": "Registro exitoso, redirigiendo...",
   "quiz_try_again": "Intentar de nuevo",
+  "quiz_do": "Fazer Quiz",
   "results_share": "Compartir resultados",
   "portuguese": "Portugués",
   "spanish": "Español",
   "english": "Inglés",
   "loading": "Carregando...",
+  "title_results_not_found": "Resultados no encontrados.",
+  "subtitle_results_not_found": "Realiza el quiz para obtener tus resultados.",
   "quiz": {
     "tdah": {
       "questions": [

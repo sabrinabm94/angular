@@ -1,7 +1,8 @@
 <section class="result">
-  <app-container class="results">
+  <app-container class="results" *ngIf="areasResults && results">
     <!-- <h2 class="text-center">{{ "title_results" | translate }}</h2> -->
-    <app-fieldset class="areasResults" *ngIf="areasResults && areasResults.length > 0">
+    <app-fieldset class="areasResults"
+      *ngIf="areasResults && areasResults.length > 0 && areasResults[0].name !== 'default'">
       <h3 class="text-center">{{ "title_areas_results" | translate }}</h3>
       <div class="area" *ngFor="let areaResult of areasResults">
         <!-- <h4>{{ areaResult.name }}</h4> -->
@@ -19,5 +20,16 @@
     <a class="link text-center" href="/register" *ngIf="!this.userId">
       {{"save_results" | translate}}
     </a>
+    <div class="buttons">
+      <app-button (click)="shareResults()">{{ "results_share" | translate }}</app-button>
+      <a href="/quiz" class=""><app-button>{{ "quiz_try_again" | translate }}</app-button></a>
+    </div>
+  </app-container>
+  <app-container *ngIf="!areasResults && !results">
+    <app-fieldset>
+      <h1 class="text-center">{{ "title_results_not_found" | translate }}</h1>
+      <h2 class="text-center">{{ "subtitle_results_not_found" | translate }}</h2>
+    </app-fieldset>
+    <a href="/quiz" class=""><app-button>{{ "quiz_do" | translate }}</app-button></a>
   </app-container>
 </section>

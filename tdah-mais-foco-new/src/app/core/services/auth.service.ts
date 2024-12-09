@@ -19,10 +19,7 @@ export class AuthService {
   async configureAuthPersistence(): Promise<void> {
     try {
       await this.auth.setPersistence(browserLocalPersistence);
-      console.log('Persistência de autenticação configurada como LOCAL.');
-    } catch (error) {
-      console.error('Erro ao configurar persistência de autenticação:', error);
-    }
+    } catch (error) {}
   }
 
   // Registrar usuário com e-mail e senha

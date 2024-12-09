@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { UserRegistrationComponent } from '../../components/user-registration/user-registration.component';
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { FooterComponent } from '../../../../shared/components/footer/footer.component';
+import { UserRegisterComponent } from '../../components/user-register/user-register.component';
 
 @Component({
   selector: 'app-register-page',
@@ -10,7 +10,7 @@ import { FooterComponent } from '../../../../shared/components/footer/footer.com
   templateUrl: './register-page.component.html',
   styleUrls: ['./register-page.component.css'],
   imports: [
-    UserRegistrationComponent,
+    UserRegisterComponent,
     TranslatePipe,
     HeaderComponent,
     FooterComponent,

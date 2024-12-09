@@ -29,8 +29,6 @@ export class ResultsPageComponent {
   public languageName: string | null = null;
   public userId: string | null = null;
   public results: any;
-  public resultShareUrl: string = '';
-  private message: string = `Olá, eu acabei de fazer meu teste de TDAH, faça você também!`;
 
   constructor(
     private userService: UserService,
@@ -43,15 +41,10 @@ export class ResultsPageComponent {
     this.getLanguage();
     this.getUser();
     this.updateMetaTags();
-
-    if (this.userId) {
-      this.generateUserResultsShareUrl(this.userId);
-    }
   }
 
   private getUser(): string | null {
     const user = this.userService.getUser();
-    console.log('this.userId ', this.userId);
     return (this.userId = user ? user.uid : null);
   }
 
@@ -60,34 +53,9 @@ export class ResultsPageComponent {
     return (this.languageName = language ? language : null);
   }
 
-  private generateUserResultsShareUrl(id: string): string {
-    if (id) {
-      this.resultShareUrl = `${window.location.origin}/result/${id}`;
-    }
-
-    return this.resultShareUrl;
-  }
-
-  public shareResults() {
-    if (navigator.share) {
-      navigator
-        .share({
-          title: 'Confira meus resultados!',
-          text: this.message,
-          url: this.resultShareUrl,
-        })
-        .then(() => {
-          console.log('Compartilhado com sucesso!');
-        })
-        .catch((error) => {
-          console.error('Erro ao compartilhar:', error);
-        });
-    }
-  }
-
   private updateMetaTags() {
     const resultUrl = `${window.location.origin}/results/${this.userId}`;
-    const description = this.message;
+    const description = '';
     const imageUrl = '';
 
     // Atualizar título

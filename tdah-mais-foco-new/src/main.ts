@@ -18,29 +18,25 @@ import { environment } from './environments/environment';
 import { UserService } from './app/core/services/user.service';
 import { AuthService } from './app/core/services/auth.service';
 
-// 1. Função para configurar persistência de autenticação antes de carregar o estado do usuário.
+// Função para configurar persistência de autenticação antes de carregar o estado do usuário
 export function configureAuthPersistence(
   authService: AuthService
 ): () => Promise<void> {
   return async () => {
-    console.log('Configurando persistência de autenticação...');
     await authService.configureAuthPersistence();
-    console.log('Persistência configurada com sucesso.');
   };
 }
 
-// 2. Função de inicialização do UserService (só será chamada após persistência).
+// Função de inicialização do UserService (só será chamada após persistência)
 export function initializeUserState(
   userService: UserService
 ): () => Promise<void> {
   return async () => {
-    console.log('Inicializando estado do usuário...');
     await userService.initializeUser();
-    console.log('Estado do usuário inicializado.');
   };
 }
 
-// 3. Inicialização do Angular com ordem correta de inicialização.
+// Inicialização do Angular com a ordem correta de inicialização
 bootstrapApplication(AppComponent, {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),

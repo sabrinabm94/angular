@@ -55,15 +55,18 @@ export class UserService {
     score: Record<string, number>
   ): Promise<Record<string, number> | null> {
     const user = this.getUser();
-    console.log('user service save score user ', user);
 
     if (user) {
       try {
+        // Garantir que algo seja salvo, mesmo que o score esteja vazio
+        const dataToSave =
+          Object.keys(score).length > 0 ? score : { default: 0 };
+
         const scoreRef = ref(this.database, this.databasePath);
-        await set(scoreRef, score);
-        return score;
+        await set(scoreRef, dataToSave);
+        return dataToSave;
       } catch (error: any) {
-        console.error('Erro ao salvar pontuação do usuário:', error);
+        console.error('Erro ao salvar pontuação no Firebase:', error);
         if (error.code === 'PERMISSION_DENIED') {
           throw new Error('Permissão negada para esse usuário.');
         }
@@ -71,12 +74,14 @@ export class UserService {
       }
     }
 
+    console.warn(
+      'Nenhum usuário autenticado encontrado. Pontuação não foi salva.'
+    );
     return null;
   }
 
   async getUserScore(): Promise<Record<string, number> | null> {
     const user = this.getUser();
-    console.log('user service get score user ', user);
 
     if (user) {
       try {

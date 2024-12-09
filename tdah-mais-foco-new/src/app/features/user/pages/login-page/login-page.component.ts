@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FooterComponent } from '../../../../shared/components/footer/footer.component';
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
-import { AuthService } from '../../../../core/services/auth.service';
 import { UserLoginComponent } from '../../components/user-login/user-login.component';
 
 @Component({
@@ -18,15 +17,5 @@ import { UserLoginComponent } from '../../components/user-login/user-login.compo
   ],
 })
 export class LoginPageComponent {
-  constructor(private authService: AuthService) {}
-
-  async login(email: string, password: string) {
-    try {
-      const user = await this.authService
-        .login(email, password)
-        .then((data) => data);
-    } catch (error) {
-      console.error('Erro ao logar:', error);
-    }
-  }
+  constructor() {}
 }

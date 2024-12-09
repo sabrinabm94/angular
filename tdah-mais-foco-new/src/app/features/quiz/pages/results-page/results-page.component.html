@@ -4,10 +4,6 @@
     <div class="content">
       <h1 class="main-title text-center">{{ "app_title" | translate }}</h1>
       <app-results [score]="results" [userId]="userId" [languageName]="languageName"></app-results>
-      <div class="buttons">
-        <app-button (click)="shareResults()">{{ "results_share" | translate }}</app-button>
-        <a href="/quiz" class="link"><app-button>{{ "quiz_try_again" | translate }}</app-button></a>
-      </div>
     </div>
   </main>
   <app-footer />

@@ -99,7 +99,6 @@ export class QuizComponent {
           questions
         );
         this.score = result;
-
         if (this.userId) {
           await this.saveUserScore(this.score).then((response) => {
             this.router.navigate([`/result/${this.userId}`]);

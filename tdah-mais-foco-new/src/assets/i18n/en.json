@@ -60,11 +60,14 @@
   "save_results": "Do you want save your results? Register now!",
   "register_success": "Register successful, redirecting...",
   "quiz_try_again": "Try again",
+  "quiz_do": "Do Quiz",
   "results_share": "Share results",
   "portuguese": "Portuguese",
   "spanish": "Spanish",
   "english": "English",
   "loading": "Loading...",
+  "title_results_not_found": "Results not found.",
+  "subtitle_results_not_found": "Take the quiz to get your results.",
   "quiz": {
     "tdah": {
       "questions": [

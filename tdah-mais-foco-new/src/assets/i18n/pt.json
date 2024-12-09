@@ -60,11 +60,14 @@
   "password_reset_error": "Ocorreu um erro ao redefinir a senha.",
   "register_success": "Registro realizado com sucesso, redirecionando...",
   "quiz_try_again": "Tentar novamente",
+  "quiz_do": "Fazer Quiz",
   "results_share": "Compartilhar resultados",
   "portuguese": "Português",
   "spanish": "Espanhol",
   "english": "Inglês",
   "loading": "Carregando...",
+  "title_results_not_found": "Resultados não encontrados.",
+  "subtitle_results_not_found": "Faça o quiz para obter seus resultados.",
   "quiz": {
     "tdah": {
       "questions": [

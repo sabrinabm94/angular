@@ -40,7 +40,6 @@ export class HomePageComponent implements OnInit {
 
   private getUser(): string | null {
     const user = this.userService.getUser();
-    console.log('this.userId ', this.userId);
     return (this.userId = user ? user.uid : null);
   }
 

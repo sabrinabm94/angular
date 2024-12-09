@@ -10,17 +10,26 @@ import { UserService } from '../../../../core/services/user.service';
 import { FirebaseUser } from '../../../../data/models/FirebaseUser.interface';
 import { QuizResult } from '../../../../data/models/quizResult.interface';
 import { QuizResultByArea } from '../../../../data/models/quizResultByArea.interface';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-results',
   standalone: true,
-  imports: [ContainerComponent, CommonModule, TranslatePipe, FieldsetComponent],
+  imports: [
+    ContainerComponent,
+    CommonModule,
+    TranslatePipe,
+    FieldsetComponent,
+    ButtonComponent,
+  ],
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.css'],
 })
 export class ResultsComponent {
-  results!: QuizResult | null;
-  areasResults!: QuizResultByArea[];
+  public results!: QuizResult | null;
+  public areasResults!: QuizResultByArea[];
+  public resultShareUrl: string = '';
+  private message: string = `Olá, eu acabei de fazer meu teste de TDAH, faça você também!`;
 
   @Input() score: Record<string, number> | any = null;
   @Input() userId: string | null = '';
@@ -34,6 +43,10 @@ export class ResultsComponent {
 
   async ngOnInit() {
     await this.initializeResults(this.userId, this.languageName, this.score);
+
+    if (this.userId) {
+      this.generateUserResultsShareUrl(this.userId);
+    }
 
     this.translateService
       .getLanguageChanged()
@@ -111,6 +124,28 @@ export class ResultsComponent {
       );
     } catch (error) {
       console.error('Erro ao carregar resultados:', error);
+    }
+  }
+
+  private generateUserResultsShareUrl(id: string): string {
+    if (id) {
+      this.resultShareUrl = `${window.location.origin}/result/${id}`;
+    }
+
+    return this.resultShareUrl;
+  }
+
+  public shareResults() {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: 'Confira meus resultados!',
+          text: this.message,
+          url: this.resultShareUrl,
+        })
+        .catch((error) => {
+          console.error('Erro ao compartilhar:', error);
+        });
     }
   }
 }

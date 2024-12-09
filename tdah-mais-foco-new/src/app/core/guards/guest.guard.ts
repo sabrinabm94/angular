@@ -15,11 +15,9 @@ export class GuestGuard implements CanActivate {
 
     const user = this.userService.getUser();
     if (!user) {
-      console.log('Usuário não autenticado, permitindo acesso ao Guest.');
       return true;
     } else {
-      console.log('Usuário autenticado, redirecionando para a Home.');
-      this.router.navigate(['/home']);
+      this.router.navigate([`/result/${user.uid}`]);
       return false;
     }
   }
