@@ -23,6 +23,14 @@ export const appRoutes: Routes = [
     canActivate: [AuthGuard], // Apenas usuários logados
   },
   {
+    path: 'profile/:id',
+    loadComponent: () =>
+      import('./features/user/pages/profile-page/profile-page.component').then(
+        (m) => m.ProfilePageComponent
+      ),
+    canActivate: [AuthGuard], // Apenas usuários logados
+  },
+  {
     path: 'logout',
     loadComponent: () =>
       import(

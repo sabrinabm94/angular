@@ -17,6 +17,11 @@
         {{ results.message }}
       </p>
     </app-fieldset>
+    <span class="results-data">
+      <hr>
+      <h4 *ngIf="dateResults" class="text-center">{{ "title_date_results" | translate }} {{dateResults}}</h4>
+      <hr>
+    </span>
     <a class="link text-center" href="/register" *ngIf="!this.userId">
       {{"save_results" | translate}}
     </a>

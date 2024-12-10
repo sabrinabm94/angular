@@ -6,6 +6,9 @@ import {
   signOut,
   User,
   browserLocalPersistence,
+  getAuth,
+  updateEmail,
+  updatePassword,
 } from '@angular/fire/auth';
 import { UserService } from './user.service';
 
@@ -36,6 +39,44 @@ export class AuthService {
     }
   }
 
+  public async updateEmail(newEmail: string): Promise<string | null> {
+    const auth = getAuth();
+    const currentUser = auth.currentUser;
+
+    if (currentUser) {
+      try {
+        await updateEmail(currentUser, newEmail).then((result) => {
+          return newEmail;
+        });
+      } catch (error) {
+        console.error('Erro ao atualizar credenciais:', error);
+      }
+    } else {
+      console.error('Nenhum usuário está logado.');
+    }
+
+    return null;
+  }
+
+  public async updatePassword(newPassword: string): Promise<string | null> {
+    const auth = getAuth();
+    const currentUser = auth.currentUser;
+
+    if (currentUser) {
+      try {
+        await updatePassword(currentUser, newPassword).then((result) => {
+          return newPassword;
+        });
+      } catch (error) {
+        console.error('Erro ao atualizar credenciais:', error);
+      }
+    } else {
+      console.error('Nenhum usuário está logado.');
+    }
+
+    return null;
+  }
+
   // Login com e-mail e senha
   async login(email: string, password: string): Promise<User | null> {
     try {
@@ -59,5 +100,11 @@ export class AuthService {
     } catch (error) {
       console.error('Erro ao fazer logout:', error);
     }
+  }
+
+  // Retorna usuário autenticado
+  public getCurrentFirebaseUser(): User | null {
+    const auth = getAuth();
+    return auth.currentUser; // Retorna o usuário autenticado no momento ou null se ninguém estiver logado
   }
 }

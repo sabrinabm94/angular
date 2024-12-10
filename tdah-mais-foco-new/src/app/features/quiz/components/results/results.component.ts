@@ -26,12 +26,13 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
   styleUrls: ['./results.component.css'],
 })
 export class ResultsComponent {
-  public results!: QuizResult | null;
+  public results: QuizResult | null = null;
   public areasResults!: QuizResultByArea[];
   public resultShareUrl: string = '';
   private message: string = `Olá, eu acabei de fazer meu teste de TDAH, faça você também!`;
+  public dateResults: String | null = null;
 
-  @Input() score: Record<string, number> | any = null;
+  @Input() score: QuizResult | null = null;
   @Input() userId: string | null = '';
   @Input() languageName: string | null = '';
 
@@ -122,6 +123,7 @@ export class ResultsComponent {
         score,
         resultsMessages
       );
+      this.dateResults = this.quizService.getQuizDate(score);
     } catch (error) {
       console.error('Erro ao carregar resultados:', error);
     }

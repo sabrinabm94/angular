@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { Database, ref, child, get, set, update } from '@angular/fire/database';
 import { FirebaseUser } from '../../data/models/FirebaseUser.interface';
+import { QuizData } from '../../data/models/quizData.interface';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +18,7 @@ export class UserService {
     this.initializeUser();
   }
 
-  initializeUser(): Promise<void> {
+  public initializeUser(): Promise<void> {
     return new Promise((resolve, reject) => {
       onAuthStateChanged(
         this.auth,
@@ -33,22 +35,20 @@ export class UserService {
     });
   }
 
-  getUser(): FirebaseUser | null {
-    return this.user;
-  }
-
-  isUserLoaded(): boolean {
+  public isUserLoaded(): boolean {
     return this.userLoaded;
   }
 
-  setUser(user: FirebaseUser | null): FirebaseUser | null {
+  public getUser(): FirebaseUser | null {
+    return this.user;
+  }
+
+  public setUser(user: FirebaseUser | null): FirebaseUser | null {
     this.user = user;
     return this.user;
   }
 
-  async saveUserScore(
-    score: Record<string, number>
-  ): Promise<Record<string, number> | null> {
+  public async saveUserScore(score: QuizData): Promise<QuizData | null> {
     const user = this.getUser();
 
     if (user) {
@@ -56,8 +56,12 @@ export class UserService {
         let databasePath = `${this.databaseUserPath}${user.uid}${this.databaseQuizPath}`;
 
         // Garantir que algo seja salvo, mesmo que o score esteja vazio
-        const dataToSave =
-          Object.keys(score).length > 0 ? score : { default: 0 };
+        let dataToSave: QuizData = {
+          date: `${new Date().getDate()}/${
+            new Date().getMonth() + 1
+          }/${new Date().getFullYear()}`,
+          score: Object.keys(score).length > 0 ? score : { default: 0 },
+        };
 
         const scoreRef = ref(this.database, databasePath);
         await set(scoreRef, dataToSave);
@@ -77,7 +81,7 @@ export class UserService {
     return null;
   }
 
-  async saveUserData(user: FirebaseUser): Promise<FirebaseUser | null> {
+  public async saveUserData(user: FirebaseUser): Promise<FirebaseUser | null> {
     try {
       // Garantir que algo seja salvo, mesmo que o score esteja vazio
       if (user && user.uid) {
@@ -106,7 +110,32 @@ export class UserService {
     }
   }
 
-  async getUserScore(): Promise<Record<string, number> | null> {
+  public async updateUserData(
+    user: FirebaseUser
+  ): Promise<FirebaseUser | null> {
+    try {
+      // Garantir que algo seja salvo, mesmo que o score esteja vazio
+      if (user && user.uid) {
+        const databasePath = `${this.databaseUserPath}${user.uid}`;
+        const databaseRef = ref(this.database, databasePath);
+
+        await update(databaseRef, user).catch((error) => {
+          console.error('Erro ao salvar dados do usuário:', error);
+        });
+      } else {
+        console.error('Dados inválidos.');
+      }
+      return user;
+    } catch (error: any) {
+      console.error('Erro ao salvar dados do usuário:', error);
+      if (error.code === 'PERMISSION_DENIED') {
+        throw new Error('Permissão negada para esse usuário.');
+      }
+      throw error;
+    }
+  }
+
+  public async getUserScore(): Promise<QuizData | null> {
     const user = this.getUser();
 
     if (user) {
@@ -120,9 +149,34 @@ export class UserService {
             'Pontuação não encontrada para o usuário especificado.'
           );
         }
-        return snapshot.val() as Record<string, number>;
+        return snapshot.val() as QuizData;
       } catch (error: any) {
         console.error('Erro ao buscar pontuação do usuário:', error);
+        if (error.code === 'PERMISSION_DENIED') {
+          throw new Error(
+            'Permissão negada para acessar os dados desse usuário.'
+          );
+        }
+        throw error;
+      }
+    }
+
+    return null;
+  }
+
+  public async getUserDataById(id: string): Promise<FirebaseUser | null> {
+    if (id) {
+      try {
+        let databasePath = `${this.databaseUserPath}${id}`;
+        const dbRef = ref(this.database);
+        const snapshot = await get(child(dbRef, databasePath));
+
+        if (!snapshot.exists()) {
+          throw new Error('Usuário não encontrado.');
+        }
+        return snapshot.val();
+      } catch (error: any) {
+        console.error('Erro ao buscar usuário:', error);
         if (error.code === 'PERMISSION_DENIED') {
           throw new Error(
             'Permissão negada para acessar os dados desse usuário.'

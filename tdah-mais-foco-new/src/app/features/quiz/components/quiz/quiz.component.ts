@@ -13,6 +13,7 @@ import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { TranslateService } from '../../../../core/services/translate.service';
 import { UserService } from '../../../../core/services/user.service';
 import { FirebaseUser } from '../../../../data/models/FirebaseUser.interface';
+import { QuizData } from '../../../../data/models/quizData.interface';
 
 @Component({
   selector: 'app-quiz',
@@ -33,7 +34,7 @@ import { FirebaseUser } from '../../../../data/models/FirebaseUser.interface';
 })
 export class QuizComponent {
   questions: any = [];
-  score: Record<string, number> = {};
+  score: QuizData | null = null;
   submitted: boolean = false;
   currentStep: number = 0;
   maxSteps: number = 3;
@@ -43,7 +44,7 @@ export class QuizComponent {
   @Input() userId: string | null = '';
   @Input() languageName: string | null = '';
 
-  @Output() results = new EventEmitter<Record<string, number>>();
+  @Output() results = new EventEmitter<QuizData | null>();
 
   constructor(
     private router: Router,
@@ -92,19 +93,18 @@ export class QuizComponent {
     }
   }
 
-  private async calculateQuizScore(questions: any[]): Promise<any> {
+  private async calculateQuizScore(questions: any[]): Promise<QuizData | null> {
     if (questions) {
       try {
-        const result = await this.quizService.calculateResultsScoreByArea(
+        this.score = await this.quizService.calculateResultsScoreByArea(
           questions
         );
-        this.score = result;
         if (this.userId) {
           await this.saveUserScore(this.score).then((response) => {
             this.router.navigate([`/result/${this.userId}`]);
           });
         } else {
-          this.results.emit({ ...this.score });
+          this.results.emit(this.score);
         }
 
         return this.score;
@@ -113,6 +113,7 @@ export class QuizComponent {
         throw error;
       }
     }
+    return null;
   }
 
   // Verifica se todas as perguntas da etapa atual foram respondidas
@@ -148,7 +149,9 @@ export class QuizComponent {
     return question.response !== null;
   }
 
-  private async saveUserScore(score: Record<string, number>): Promise<any> {
+  private async saveUserScore(
+    score: QuizData | null
+  ): Promise<QuizData | null> {
     if (score) {
       try {
         const result = await this.userService.saveUserScore(score);

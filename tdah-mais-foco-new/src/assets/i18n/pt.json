@@ -9,6 +9,7 @@
   "page_home_title": "Home",
   "page_quiz_title": "Perguntas",
   "page_results_title": "Resultados",
+  "page_profile_title": "Perfil",
   "page_login_title": "Iniciar",
   "page_register_title": "Registro",
   "revise_quiz": "Revisar respostas",
@@ -68,6 +69,11 @@
   "loading": "Carregando...",
   "title_results_not_found": "Resultados não encontrados.",
   "subtitle_results_not_found": "Faça o quiz para obter seus resultados.",
+  "birthdate_label": "Data de nascimento",
+  "ocupation_label": "Ocupação",
+  "education_level_label": "Escolaridade",
+  "update": "Atualizar",
+  "title_date_results": "Data dos últimos resultados: ",
   "quiz": {
     "tdah": {
       "questions": [

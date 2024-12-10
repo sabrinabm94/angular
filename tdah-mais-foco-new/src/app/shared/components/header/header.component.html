@@ -5,6 +5,8 @@
       <a class="link" href="/quiz"> {{ "page_quiz_title" | translate }}</a>
       <a class="link" *ngIf="userId && userId !== ''" [href]="'/result/' + userId">{{ "page_results_title" | translate
         }}</a>
+      <a class="link" *ngIf="userId && userId !== ''" [href]="'/profile/' + userId">{{ "page_profile_title" | translate
+        }}</a>
       <a class="link" *ngIf="!userId || userId === ''" href="/login"> {{ "login" | translate }}</a>
       <span class="link" *ngIf="userId && userId !== ''" (click)="logout()"> {{ "logout" | translate }}</span>
     </div>

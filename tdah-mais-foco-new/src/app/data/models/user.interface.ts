@@ -1,6 +1,8 @@
+import { QuizData } from './quizData.interface';
+
 export interface User {
-  displayName?: string | null;
-  username?: string;
-  email: string | null;
-  password?: string | null;
+  birthdate?: string | null;
+  ocupation?: string | null;
+  educationLevel?: string | null;
+  quiz?: QuizData;
 }

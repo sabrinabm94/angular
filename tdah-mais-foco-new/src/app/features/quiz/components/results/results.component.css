@@ -1,4 +1,11 @@
 h4,
-p {
+p,
+.results-data {
   text-align: center;
+}
+
+.results-data {
+  max-width: 300px;
+  display: block;
+  margin: auto;
 }

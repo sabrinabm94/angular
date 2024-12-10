@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { QuizResult } from '../../data/models/quizResult.interface';
 import { QuizResultByArea } from '../../data/models/quizResultByArea.interface';
+import { QuizData } from '../../data/models/quizData.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,9 @@ import { QuizResultByArea } from '../../data/models/quizResultByArea.interface';
 export class QuizService {
   constructor(private httpClient: HttpClient) {}
 
-  async readFileContentByLanguage(language: string | null): Promise<any[]> {
+  public async readFileContentByLanguage(
+    language: string | null
+  ): Promise<any[]> {
     language = language ? language : environment.lang;
     let filePath = 'assets/i18n/' + language + '.json';
 
@@ -23,7 +26,7 @@ export class QuizService {
     }
   }
 
-  getQuizQuestions(language: string | null) {
+  public getQuizQuestions(language: string | null) {
     const answers: any[] | PromiseLike<any[]> = [];
 
     return this.readFileContentByLanguage(language).then(
@@ -56,7 +59,7 @@ export class QuizService {
     );
   }
 
-  getQuizAreaMessages(language: string | null): Promise<any[]> {
+  public getQuizAreaMessages(language: string | null): Promise<any[]> {
     return this.readFileContentByLanguage(language).then(
       (data: any) => {
         if (data && data.quiz && data.quiz.tdah && data.quiz.tdah.results) {
@@ -70,7 +73,7 @@ export class QuizService {
     );
   }
 
-  getQuizResumeMessages(language: string | null) {
+  public getQuizResumeMessages(language: string | null) {
     return this.readFileContentByLanguage(language).then(
       (data: any) => {
         if (data && data.quiz && data.quiz.tdah && data.quiz.tdah.messages) {
@@ -84,15 +87,20 @@ export class QuizService {
     );
   }
 
-  calculateResultsByArea(
-    score: any,
+  public getQuizDate(score: QuizData): String | null {
+    return score ? score.date : null;
+  }
+
+  public calculateResultsByArea(
+    score: QuizData,
     messagesByArea: any[]
   ): QuizResultByArea[] | [] {
     const resultsByAreas: QuizResultByArea[] = [];
 
     if (score) {
-      for (const areaName in score) {
-        let areaScore: number = score[areaName];
+      let scoreData = score.score;
+      for (const areaName in scoreData) {
+        let areaScore: number = scoreData[areaName];
         let areaLevel: any = '';
 
         // Determine the level based on areaScore
@@ -123,7 +131,7 @@ export class QuizService {
     return resultsByAreas;
   }
 
-  calculateResults(score: any, messages: any): QuizResult | null {
+  public calculateResults(score: QuizData, messages: any): QuizResult | null {
     let totalAreas = 0;
     let totalAreasScore = 0;
     let finalScore = 0;
@@ -135,8 +143,9 @@ export class QuizService {
     };
 
     if (score) {
-      for (const areaName in score) {
-        totalAreasScore = +score[areaName];
+      let scoreData = score.score;
+      for (const areaName in scoreData) {
+        totalAreasScore = +scoreData[areaName];
         totalAreas = +1;
       }
 
@@ -165,17 +174,17 @@ export class QuizService {
     return quizResult;
   }
 
-  async getResultsMessageByArea(language: string | null) {
+  public async getResultsMessageByArea(language: string | null) {
     return await this.getQuizAreaMessages(language);
   }
 
-  async getResultsMessage(language: string | null) {
+  public async getResultsMessage(language: string | null) {
     return await this.getQuizResumeMessages(language);
   }
 
-  async calculateResultsScoreByArea(
+  public async calculateResultsScoreByArea(
     answers: any[]
-  ): Promise<Record<string, number>> {
+  ): Promise<QuizData | null> {
     let score = null;
 
     if (answers && answers.length > 0) {
@@ -201,7 +210,7 @@ export class QuizService {
           });
         }
         return acc;
-      }, {} as Record<string, number>);
+      }, {} as QuizData);
     }
 
     return score;

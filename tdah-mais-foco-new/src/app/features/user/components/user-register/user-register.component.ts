@@ -34,6 +34,9 @@ export class UserRegisterComponent {
     email: '',
     password: '',
     uid: '',
+    birthdate: '',
+    ocupation: '',
+    educationLevel: '',
   };
 
   submitted: boolean = false;
@@ -56,32 +59,29 @@ export class UserRegisterComponent {
           this.user.email,
           this.user.password
         )
-          .then(
-            async (result: {
-              user: {
-                email: string | null;
-                displayName: string | null;
-                uid: any;
+          .then(async (result: any) => {
+            if (result && result.user) {
+              // Faz o login automático após o registro
+              let loggedUser: FirebaseUser = {
+                uid: result.user.uid,
+                displayName: this.user ? this.user.displayName : '',
+                email: this.user ? this.user.email : '',
+                password: this.user ? this.user.password : '',
+                birthdate: this.user ? this.user.birthdate : '',
+                ocupation: this.user ? this.user.ocupation : '',
+                educationLevel: this.user ? this.user.educationLevel : '',
               };
-            }) => {
-              if (result) {
-                // Faz o login automático após o registro
-                let loggedUser: FirebaseUser = {
-                  email: result.user.email ? result.user.email : '',
-                  displayName: this.user ? this.user.displayName : '',
-                  uid: result.user.uid,
-                };
-                this.user = this.userService.setUser(loggedUser);
 
-                await this.userService
-                  .saveUserData(loggedUser)
-                  .then((response) => {
-                    alert(this.translateService.translate('register_success'));
-                    this.router.navigate(['/quiz']);
-                  });
-              }
+              this.user = this.userService.setUser(loggedUser);
+
+              await this.userService
+                .saveUserData(loggedUser)
+                .then((response) => {
+                  alert(this.translateService.translate('register_success'));
+                  this.router.navigate(['/quiz']);
+                });
             }
-          )
+          })
           .catch((error: any) => {
             console.error('Erro ao registrar usuário:', error);
             alert(this.translateService.translate('invalid_data'));
