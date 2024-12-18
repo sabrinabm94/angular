@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-button',
@@ -13,10 +13,4 @@ export class ButtonComponent {
   @Input() form: any = null;
   @Input() disabled: boolean = false;
   @Input() type: string = 'button';
-
-  public componentClassName: string = this.className
-    ? ' btn btn-' + this.className
-    : ' btn btn-primary';
-
-  constructor() {}
 }

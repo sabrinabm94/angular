@@ -1,4 +1,15 @@
-.languages,
-.auth {
-  display: inline-block;
+.menu {
+  background-color: #8f36a7;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.menu a,
+.menu span {
+  color: #ffffff;
+  padding: 10px;
+  text-decoration: none;
 }

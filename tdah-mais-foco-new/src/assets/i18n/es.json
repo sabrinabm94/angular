@@ -74,6 +74,19 @@
   "education_level_label": "Nivel educativo",
   "update": "Actualizar",
   "title_date_results": "Fecha de los últimos resultados: ",
+  "gender_label": "Género",
+  "male": "Hombre",
+  "female": "Mujer",
+  "other": "Otro",
+  "high_school": "Bachillerato",
+  "under_graduate": "Grado",
+  "post_graduate": "Posgrado",
+  "student": "Estudiante",
+  "worker": "Trabajador",
+  "freelancer": "Freelancer",
+  "unemployed": "Desempleado",
+  "update_success": "¡Actualización exitosa!",
+  "invalid_date": "El formato de la fecha debe ser DD/MM/YYYY",
   "quiz": {
     "tdah": {
       "questions": [

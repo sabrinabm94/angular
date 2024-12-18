@@ -12,4 +12,5 @@ export class FieldsetComponent {
   @Input() title: string = '';
   @Input() text: string = '';
   @Input() index: number = 0;
+  @Input() content_style: string = "";
 }

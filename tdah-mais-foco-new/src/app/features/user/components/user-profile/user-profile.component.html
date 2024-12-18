@@ -1,13 +1,21 @@
 <section class="user-profile" *ngIf="user">
   <app-container>
-    <h2>{{ "page_profile_title" | translate }}</h2>
+    <h2 class="text-center">{{ "page_profile_title" | translate }}</h2>
     <form class="form text-center" (ngSubmit)="updateUserData()" #profileForm="ngForm">
-      <app-fieldset>
+      <app-fieldset [content_style]="'row'">
         <!-- Campo nome -->
         <div class="form-group">
-          <legend>{{ "name_label" | translate }} *</legend>
+          <legend>{{ "name_label" | translate }}</legend>
+          <!-- <mat-form-field appearance="outline">
+            <mat-label>Data de nascimento</mat-label>
+            <input matInput [matDatepicker]="picker" placeholder="Escolha a data" id="birthdate" name="birthdate"
+              [(ngModel)]="user.birthdate"
+              [attr.aria-invalid]="!validDate(user.birthdate) && submitted ? 'true' : 'false'" />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field> -->
           <input type="text" id="displayName" [(ngModel)]="user.displayName" name="displayName"
-            autocomplete="current-displayName" required
+            autocomplete="current-displayName"
             [attr.aria-invalid]="user.displayName && user.displayName.trim() === '' ? 'true' : 'false'" />
           <app-error-message *ngIf="user.displayName && user.displayName.trim() === '' && submitted"
             aria-live="assertive">
@@ -17,8 +25,8 @@
 
         <!-- Campo E-mail -->
         <div class="form-group">
-          <legend>{{ "email_label" | translate }} *</legend>
-          <input type="email" id="email" [(ngModel)]="user.email" name="email" required
+          <legend>{{ "email_label" | translate }}</legend>
+          <input type="email" id="email" [(ngModel)]="user.email" name="email"
             [attr.aria-invalid]="user.email && !validEmail(user.email) ? 'true' : 'false'" />
           <app-error-message *ngIf="!validEmail(user.email) && submitted" aria-live="assertive">
             {{ 'invalid_email' | translate }}
@@ -36,23 +44,34 @@
           </app-error-message>
         </div> -->
 
+        <!-- Campo gênero  -->
+        <div class="form-group">
+          <legend>{{ "gender_label" | translate }}</legend>
+          <select id="gender" [(ngModel)]="user.gender" name="gender">
+            <option [value]="gender" *ngFor="let gender of genderOptions">
+              {{ gender | translate }}
+            </option>
+          </select>
+        </div>
+
         <!-- Campo data de nascimento  -->
         <div class="form-group">
           <legend>{{ "birthdate_label" | translate }}</legend>
           <input type="text" id="birthdate" [(ngModel)]="user.birthdate" name="birthdate"
-            autocomplete="current-birthdate"
-            [attr.aria-invalid]="user.birthdate && user.birthdate.trim() === '' ? 'true' : 'false'" />
-          <app-error-message *ngIf="user.birthdate && user.birthdate.trim() === '' && submitted" aria-live="assertive">
-            {{ 'field_required' | translate }}
+            autocomplete="current-birthdate" [attr.aria-invalid]="user.birthdate ? 'true' : 'false'" />
+          <app-error-message *ngIf="user.birthdate && submitted" aria-live="assertive">
+            {{ 'invalid_date' | translate }}
           </app-error-message>
         </div>
 
         <!-- Campo ocupação  -->
         <div class="form-group">
           <legend>{{ "ocupation_label" | translate }}</legend>
-          <input type="text" id="ocupation" [(ngModel)]="user.ocupation" name="ocupation"
-            autocomplete="current-ocupation"
-            [attr.aria-invalid]="user.ocupation && user.ocupation.trim() === '' ? 'true' : 'false'" />
+          <select id="ocupation" [(ngModel)]="user.ocupation" name="ocupation">
+            <option [value]="occupation" *ngFor="let occupation of occupationOptions">
+              {{ occupation | translate }}
+            </option>
+          </select>
           <app-error-message *ngIf="user.ocupation && user.ocupation.trim() === '' && submitted" aria-live="assertive">
             {{ 'field_required' | translate }}
           </app-error-message>
@@ -61,19 +80,21 @@
         <!-- Campo escolaridade  -->
         <div class="form-group">
           <legend>{{ "education_level_label" | translate }}</legend>
-          <input type="text" id="educationLevel" [(ngModel)]="user.educationLevel" name="educationLevel"
-            autocomplete="current-educationLevel"
-            [attr.aria-invalid]="user.educationLevel && user.educationLevel.trim() === '' ? 'true' : 'false'" />
+          <select id="educationLevel" [(ngModel)]="user.educationLevel" name="educationLevel">
+            <option [value]="educationLevel" *ngFor="let educationLevel of educationLevelOptions">
+              {{ educationLevel | translate }}
+            </option>
+          </select>
           <app-error-message *ngIf="user.educationLevel && user.educationLevel.trim() === '' && submitted"
             aria-live="assertive">
             {{ 'field_required' | translate }}
           </app-error-message>
         </div>
-      </app-fieldset>
 
-      <app-button [disabled]="!isFormValid()" (click)="updateUserData()">
-        {{ "update" | translate }}
-      </app-button>
+        <app-button [className]="'secundary'" [disabled]="!isFormValid()" (click)="updateUserData()">
+          {{ "update" | translate }}
+        </app-button>
+      </app-fieldset>
     </form>
   </app-container>
 </section>

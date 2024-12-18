@@ -1,8 +1,12 @@
+import { EducationLevel } from './enums/educationLevel.enum';
+import { Gender } from './enums/gender.enum';
+import { Occupation } from './enums/occupation.enum';
 import { QuizData } from './quizData.interface';
 
 export interface User {
-  birthdate?: string | null;
-  ocupation?: string | null;
-  educationLevel?: string | null;
-  quiz?: QuizData;
+  birthdate?: string | Date | null;
+  ocupation?: Occupation;
+  educationLevel?: EducationLevel;
+  gender?: Gender;
+  quiz?: QuizData | null;
 }

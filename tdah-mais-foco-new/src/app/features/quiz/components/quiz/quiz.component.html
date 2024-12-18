@@ -1,52 +1,67 @@
 <section class="quiz">
-  <app-container>
+  <app-container class="questions">
     <form (ngSubmit)="submitQuizAwsers()" *ngIf="this.questions && this.questions.length > 0">
-      <h2>{{ "title_quiz" | translate }}</h2>
-      <h3 *ngIf="this.currentStep < this.maxSteps">{{ "part" | translate }} {{this.currentStep + 1}} / {{this.maxSteps}}
+      <h2 class="text-center" *ngIf="this.currentStep < this.maxSteps">{{ "title_quiz" | translate }}</h2>
+      <h3 class="text-center" *ngIf="this.currentStep < this.maxSteps">
+        {{ "part" | translate }} {{ this.currentStep + 1 }} /
+        {{ this.maxSteps }}
       </h3>
       <!-- Exibir perguntas da etapa atual -->
-      <div *ngFor="let question of getQuestionsForStep(); let i = index">
-        <hr>
-        <app-fieldset
-          [class.strikethrough]="question.response !== '' && question.response !== null && question.response !== undefined">
+      <div class="question" *ngFor="let question of getQuestionsForStep(); let i = index">
+        <hr />
+        <app-fieldset [class.strikethrough]="
+            question.response !== '' &&
+            question.response !== null &&
+            question.response !== undefined
+          ">
           <h4>{{ question.question }}</h4>
-          <p><em>{{ question.example }}</em></p>
+          <p>
+            <em>{{ question.example }}</em>
+          </p>
           <p>{{ question.frequency_and_context }}</p>
 
-          <label>
-            <input type="radio" [(ngModel)]="question.response" [value]="true" name="response{{ i }}"
-              (blur)="checkRequired(question)" />
-            <span id="yes-option-{{ i }}">{{ "yes" | translate }}</span>
-          </label>
+          <div class="aswer">
+            <label>
+              <input type="radio" [(ngModel)]="question.response" [value]="true" name="response{{ i }}"
+                (blur)="checkRequired(question)" />
+              <span id="yes-option-{{ i }}">{{ "yes" | translate }}</span>
+            </label>
 
-          <label>
-            <input type="radio" [(ngModel)]="question.response" [value]="false" name="response{{ i }}"
-              (blur)="checkRequired(question)" />
-            <span id="no-option-{{ i }}">{{ "no" | translate }}</span>
-          </label>
+            <label>
+              <input type="radio" [(ngModel)]="question.response" [value]="false" name="response{{ i }}"
+                (blur)="checkRequired(question)" />
+              <span id="no-option-{{ i }}">{{ "no" | translate }}</span>
+            </label>
+          </div>
 
-          <app-error-message
-            *ngIf="(question.response !== true && question.response !== false) && submitted === true"></app-error-message>
+          <app-error-message *ngIf="
+              question.response !== true &&
+              question.response !== false &&
+              submitted === true
+            "></app-error-message>
         </app-fieldset>
       </div>
 
       <!-- Botões de navegação -->
-      <div class="navigation-buttons">
-        <div class="send action" *ngIf="this.currentStep < this.maxSteps">
-          <app-button *ngIf="this.currentStep < this.maxSteps" (click)="nextStep()" [disabled]="!isFormValid()">
-            {{ "next" | translate }}
-          </app-button>
-          <app-button *ngIf="this.currentStep >= 1 && this.currentStep <= this.maxSteps" (click)="backStep()">
-            {{ "back" | translate }}
-          </app-button>
-        </div>
+      <div class="buttons send action" *ngIf="this.currentStep < this.maxSteps">
+        <app-button *ngIf="this.currentStep < this.maxSteps" (click)="nextStep()" [className]="'secundary'"
+          [disabled]="!isFormValid()">
+          {{ "next" | translate }}
+        </app-button>
+        <app-button *ngIf="this.currentStep >= 1 && this.currentStep <= this.maxSteps" (click)="backStep()"
+          [className]="'secundary'">
+          {{ "back" | translate }}
+        </app-button>
+      </div>
 
-        <div class="send action" *ngIf="this.currentStep >= this.maxSteps">
-          <h3>{{ "title_quiz_send" | translate }}</h3>
-          <app-button [disabled]="!isFormValid()" (click)="submitQuizAwsers()">
+      <div class="send action" *ngIf="this.currentStep >= this.maxSteps">
+        <h3 class="text-center">{{ "title_quiz_send" | translate }}</h3>
+        <div class="buttons">
+          <app-button [disabled]="!isFormValid()" (click)="submitQuizAwsers()" [className]="'secundary'">
             {{ "calculate_results" | translate }}
           </app-button>
-          <app-button *ngIf="this.currentStep >= 1 && this.currentStep <= this.maxSteps" (click)="backStep()">
+          <app-button *ngIf="this.currentStep >= 1 && this.currentStep <= this.maxSteps" (click)="backStep()"
+            [className]="'secundary'">
             {{ "revise_quiz" | translate }}
           </app-button>
         </div>

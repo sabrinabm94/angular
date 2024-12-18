@@ -4,12 +4,13 @@ import { environment } from '../../../environments/environment';
 import { QuizResult } from '../../data/models/quizResult.interface';
 import { QuizResultByArea } from '../../data/models/quizResultByArea.interface';
 import { QuizData } from '../../data/models/quizData.interface';
+import { DateUtils } from '../utils/date.utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class QuizService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private dateUtils: DateUtils) {}
 
   public async readFileContentByLanguage(
     language: string | null
@@ -88,7 +89,10 @@ export class QuizService {
   }
 
   public getQuizDate(score: QuizData): String | null {
-    return score ? score.date : null;
+    if (score && score.date) {
+      return this.dateUtils.formateDateToStringInBrFormat(new Date(score.date));
+    }
+    return null;
   }
 
   public calculateResultsByArea(
@@ -185,12 +189,11 @@ export class QuizService {
   public async calculateResultsScoreByArea(
     answers: any[]
   ): Promise<QuizData | null> {
-    let score = null;
+    let score = { default: 0 };
 
     if (answers && answers.length > 0) {
       score = answers.reduce((acc, answer) => {
-        //seleciona somente as respostas que foram selecionadas
-
+        //seleciona somente as respostas que foram respondidas
         if (answer.response != null && answer.response === true) {
           let selectedAreas: string[] = [];
 
@@ -213,6 +216,9 @@ export class QuizService {
       }, {} as QuizData);
     }
 
-    return score;
+    return {
+      date: String(new Date()),
+      score: score,
+    };
   }
 }

@@ -3,7 +3,7 @@
   "title_quiz": "Perguntas",
   "title_results": "Resultados",
   "title_areas_results": "Resultados",
-  "title_final_results": "Dicas",
+  "title_final_results": "Indicações",
   "title_quiz_send": "Enviar formulário",
   "calculate_results": "Calcular resultados",
   "page_home_title": "Home",
@@ -74,6 +74,19 @@
   "education_level_label": "Escolaridade",
   "update": "Atualizar",
   "title_date_results": "Data dos últimos resultados: ",
+  "gender_label": "Gênero",
+  "male": "Homem",
+  "female": "Mulher",
+  "other": "Outro",
+  "high_school": "Ensino Médio",
+  "under_graduate": "Graduação",
+  "post_graduate": "Pós-graduação",
+  "student": "Estudante",
+  "worker": "Trabalhador",
+  "freelancer": "Freelancer",
+  "unemployed": "Desempregado",
+  "update_success": "Atualização realizada com sucesso!",
+  "invalid_date": "O formato da data deve ser DD/MM/YYYY",
   "quiz": {
     "tdah": {
       "questions": [

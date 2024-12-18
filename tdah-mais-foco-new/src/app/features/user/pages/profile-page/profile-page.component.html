@@ -1,8 +1,10 @@
 <app-header [userId]="userId" />
 <main class="main">
-  <h1 class="main-title text-center">{{ "app_title" | translate }}</h1>
-  <div class="login-page">
-    <app-user-profile></app-user-profile>
+  <div class="container">
+    <h1 class="main-title text-center">{{ "app_title" | translate }}</h1>
+    <div class="login-page">
+      <app-user-profile></app-user-profile>
+    </div>
   </div>
 </main>
 <app-footer />

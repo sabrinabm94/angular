@@ -3,7 +3,7 @@
   "title_quiz": "Quiz",
   "title_results": "Results",
   "title_areas_results": "Results",
-  "title_final_results": "Typs",
+  "title_final_results": "Indications",
   "title_quiz_send": "Send Form",
   "calculate_results": "Calculate Results",
   "page_home_title": "Home",
@@ -74,6 +74,19 @@
   "education_level_label": "Education Level",
   "update": "Update",
   "title_date_results": "Last results date: ",
+  "gender_label": "Gender",
+  "male": "Male",
+  "female": "Female",
+  "other": "Other",
+  "high_school": "Hight School",
+  "under_graduate": "Under Graduate",
+  "post_graduate": "Post Graduate",
+  "student": "Student",
+  "worker": "Worker",
+  "freelancer": "Freelancer",
+  "unemployed": "Unemployed",
+  "update_success": "Update success!",
+  "invalid_date": "The date format mus be DD/MM/YYYY",
   "quiz": {
     "tdah": {
       "questions": [

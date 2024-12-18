@@ -43,71 +43,47 @@ export class ResultsComponent {
   ) {}
 
   async ngOnInit() {
-    await this.initializeResults(this.userId, this.languageName, this.score);
-
     if (this.userId) {
       this.generateUserResultsShareUrl(this.userId);
+      await this.initializeResults(this.languageName, this.score);
     }
 
     this.translateService
       .getLanguageChanged()
       .subscribe(async (currentLanguage: string | null) => {
         this.languageName = currentLanguage;
-        await this.initializeResults(
-          this.userId,
-          this.languageName,
-          this.score
-        );
+
+        await this.initializeResults(this.languageName, this.score);
       });
   }
 
   async ngOnChanges(changes: SimpleChanges) {
-    if (changes['userId'] || changes['score']) {
-      await this.initializeResults(this.userId, this.languageName, this.score);
+    if (changes['score']) {
+      await this.initializeResults(this.languageName, this.score);
     }
   }
 
-  private async initializeResults(
-    id: string | null,
-    language: string | null,
-    score: any
-  ) {
-    if (!id) {
-      let user = this.userService.getUser();
-      if (user) {
-        this.userId = user.uid;
-        id = this.userId;
-      }
-    }
-
+  private async initializeResults(language: string | null, score: any) {
     if (!score || score instanceof Promise) {
       score = await this.userService.getUserScore();
     }
 
     try {
-      await this.ensureResultsLoaded(language, score, id);
+      await this.ensureResultsLoaded(language, score);
     } catch (error) {
       console.error('Erro ao inicializar os resultados:', error);
     }
   }
 
-  private async ensureResultsLoaded(
-    language: string | null,
-    score: any,
-    id: string | null
-  ) {
+  private async ensureResultsLoaded(language: string | null, score: any) {
     try {
-      await this.loadResults(language, score, id);
+      await this.loadResults(language, score);
     } catch (error) {
       console.error('Erro ao carregar resultados:', error);
     }
   }
 
-  private async loadResults(
-    language: string | null,
-    score: any,
-    id: string | null
-  ) {
+  private async loadResults(language: string | null, score: any) {
     try {
       const areaResultsMessages =
         await this.quizService.getResultsMessageByArea(language);

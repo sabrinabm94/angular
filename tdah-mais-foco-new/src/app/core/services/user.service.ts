@@ -4,6 +4,9 @@ import { Database, ref, child, get, set, update } from '@angular/fire/database';
 import { FirebaseUser } from '../../data/models/FirebaseUser.interface';
 import { QuizData } from '../../data/models/quizData.interface';
 import { AuthService } from './auth.service';
+import { Gender } from '../../data/models/enums/gender.enum';
+import { Occupation } from '../../data/models/enums/occupation.enum';
+import { EducationLevel } from '../../data/models/enums/educationLevel.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -54,18 +57,9 @@ export class UserService {
     if (user) {
       try {
         let databasePath = `${this.databaseUserPath}${user.uid}${this.databaseQuizPath}`;
-
-        // Garantir que algo seja salvo, mesmo que o score esteja vazio
-        let dataToSave: QuizData = {
-          date: `${new Date().getDate()}/${
-            new Date().getMonth() + 1
-          }/${new Date().getFullYear()}`,
-          score: Object.keys(score).length > 0 ? score : { default: 0 },
-        };
-
         const scoreRef = ref(this.database, databasePath);
-        await set(scoreRef, dataToSave);
-        return dataToSave;
+        await set(scoreRef, score);
+        return score;
       } catch (error: any) {
         console.error('Erro ao salvar pontuação no Firebase:', error);
         if (error.code === 'PERMISSION_DENIED') {
@@ -88,10 +82,17 @@ export class UserService {
         const databasePath = `${this.databaseUserPath}${user.uid}`;
         const databaseRef = ref(this.database, databasePath);
 
-        const dataToSave = {
-          displayName: user.displayName || '',
-          email: user.email || '',
+        let dataToSave: FirebaseUser = {
           uid: user.uid,
+          displayName: user ? user.displayName : '',
+          email: user ? user.email : '',
+          password: user ? user.password : '',
+          birthdate: user ? user.birthdate : '',
+          ocupation: user ? user.ocupation : Occupation.student,
+          gender: user ? user.gender : Gender.male,
+          educationLevel: user
+            ? user.educationLevel
+            : EducationLevel.high_school,
         };
 
         await update(databaseRef, dataToSave).catch((error) => {

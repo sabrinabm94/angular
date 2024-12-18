@@ -1,7 +1,7 @@
 <div class="results-page" *ngIf="userId && userId !== ''">
   <app-header [userId]="userId" />
   <main class="main">
-    <div class="content">
+    <div class="container">
       <h1 class="main-title text-center">{{ "app_title" | translate }}</h1>
       <app-results [score]="results" [userId]="userId" [languageName]="languageName"></app-results>
     </div>
