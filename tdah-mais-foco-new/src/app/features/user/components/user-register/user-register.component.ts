@@ -46,7 +46,7 @@ export class UserRegisterComponent {
     email: '',
     password: '',
     uid: '',
-    birthdate: '',
+    birthdate: '2000-01-01',
     ocupation: Occupation.student,
     gender: Gender.male,
     educationLevel: EducationLevel.high_school,
@@ -92,7 +92,7 @@ export class UserRegisterComponent {
                 uid: result.user.uid,
                 displayName: this.user.displayName ? this.user.displayName : '',
                 email: this.user.email ? this.user.email : '',
-                password: this.user.password ? this.user.password : '',
+                //password: this.user.password ? this.user.password : '',
                 birthdate: this.user.birthdate ? this.user.birthdate : '',
                 ocupation: this.user ? this.user.ocupation : Occupation.student,
                 gender: this.user ? this.user.gender : Gender.male,
@@ -102,17 +102,6 @@ export class UserRegisterComponent {
               };
 
               this.user = this.userService.setUser(newUser);
-
-              if (
-                this.user &&
-                this.user.birthdate &&
-                !(this.user.birthdate instanceof Date)
-              ) {
-                newUser.birthdate =
-                  this.dateUtils.formateBrFormatStringToLocalizeFormatString(
-                    this.user.birthdate
-                  );
-              }
 
               await this.userService.saveUserData(newUser).then((response) => {
                 alert(this.translateService.translate('register_success'));
@@ -135,27 +124,13 @@ export class UserRegisterComponent {
     return false;
   }
 
-  public validDate(date: string | Date | null): boolean {
-    if (date && !(date instanceof Date)) {
-      return this.dateUtils.validateStringDateInBrFormat(date);
-    }
-    return false;
-  }
-
   public isFormValid(): boolean {
     if (this.user) {
       const isDisplayNameValid = this.user.displayName?.trim() !== '';
       const isPasswordValid = this.user.password?.trim() !== '';
       const isEmailValid = this.validEmail(this.user.email);
-      const isBirthdateValid =
-        !this.user.birthdate || this.validDate(this.user.birthdate); // Valida apenas se preenchido
 
-      return (
-        isDisplayNameValid &&
-        isPasswordValid &&
-        isEmailValid &&
-        isBirthdateValid
-      );
+      return isDisplayNameValid && isPasswordValid && isEmailValid;
     }
     return false;
   }

@@ -1,8 +1,11 @@
 <section class="result">
   <app-container class="results" *ngIf="areasResults && results">
     <!-- <h2 class="text-center">{{ "title_results" | translate }}</h2> -->
-    <app-fieldset class="areasResults"
-      *ngIf="areasResults && areasResults.length > 0 && areasResults[0].name !== 'default'">
+    <app-fieldset class="areasResults" *ngIf="
+        areasResults &&
+        areasResults.length > 0 &&
+        areasResults[0].name !== 'default'
+      ">
       <h3 class="text-center">{{ "title_areas_results" | translate }}</h3>
       <div class="area" *ngFor="let areaResult of areasResults">
         <!-- <h4>{{ areaResult.name }}</h4> -->
@@ -18,24 +21,32 @@
       </p>
     </app-fieldset>
     <span class="results-data">
-      <hr>
-      <small *ngIf="dateResults" class="text-center">{{ "title_date_results" | translate }} {{dateResults}}</small>
-      <hr>
+      <hr />
+      <small *ngIf="dateResults" class="text-center">{{ "title_date_results" | translate }} {{ dateResults | date :
+        "dd/MM/yyyy" }}
+      </small>
+      <hr />
     </span>
-    <a class="link text-center" href="/register" *ngIf="!this.userId">
-      {{"save_results" | translate}}
+    <a class="link text-center" href="/register" *ngIf="!this.userId">a
+      {{ "save_results" | translate }}
     </a>
     <div class="buttons">
       <app-button *ngIf="this.userId && this.userId !== ''" [className]="'secundary'" (click)="shareResults()">{{
         "results_share" | translate }}</app-button>
-      <a href="/quiz"><app-button [className]="'secundary'">{{ "quiz_try_again" | translate }}</app-button></a>
+      <a href="/quiz"><app-button [className]="'secundary'">{{
+          "quiz_try_again" | translate
+          }}</app-button></a>
     </div>
   </app-container>
   <app-container *ngIf="!areasResults && !results">
     <app-fieldset>
       <h1 class="text-center">{{ "title_results_not_found" | translate }}</h1>
-      <h2 class="text-center">{{ "subtitle_results_not_found" | translate }}</h2>
+      <h2 class="text-center">
+        {{ "subtitle_results_not_found" | translate }}
+      </h2>
     </app-fieldset>
-    <a href="/quiz"><app-button [className]="'primary'">{{ "quiz_do" | translate }}</app-button></a>
+    <a href="/quiz"><app-button [className]="'primary'">{{
+        "quiz_do" | translate
+        }}</app-button></a>
   </app-container>
 </section>

@@ -223,6 +223,7 @@ a:not(:disabled):hover,
 input[type="text"],
 input[type="email"],
 input[type="password"],
+input[type="date"],
 select {
   height: 35px;
   padding: 5px;

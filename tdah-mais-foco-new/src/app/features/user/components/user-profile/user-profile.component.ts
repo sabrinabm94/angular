@@ -48,7 +48,7 @@ export class UserProfileComponent implements OnInit {
     email: '',
     password: '',
     uid: '',
-    birthdate: '',
+    birthdate: '2000-01-01',
     ocupation: Occupation.student,
     gender: Gender.male,
     educationLevel: EducationLevel.high_school,
@@ -107,11 +107,6 @@ export class UserProfileComponent implements OnInit {
       if (userData && currentUserData) {
         let user = userData;
         user.email = currentUserData.email;
-        if (user.birthdate && !(user.birthdate instanceof Date)) {
-          user.birthdate = this.dateUtils.formateDateToStringInBrFormat(
-            new Date(user.birthdate)
-          );
-        }
         //user.password = currentUserData.password;
         return user;
       }
@@ -124,21 +119,12 @@ export class UserProfileComponent implements OnInit {
 
   public async updateUserData(): Promise<void> {
     this.submitted = true;
-    let formattedBirthDate;
 
     if (this.isFormValid()) {
       if (this.user && this.user.email && this.user.password) {
-        if (this.user.birthdate && !(this.user.birthdate instanceof Date)) {
-          formattedBirthDate =
-            this.dateUtils.formateBrFormatStringToLocalizeFormatString(
-              this.user.birthdate
-            );
-        }
-
-        let newUser = this.user;
-        newUser.birthdate = formattedBirthDate
-          ? formattedBirthDate
-          : newUser.birthdate;
+        let newUser = {
+          ...this.user,
+        };
 
         // Atualiza no banco de dados
         await this.userService
@@ -152,23 +138,13 @@ export class UserProfileComponent implements OnInit {
               newUser.email &&
               currentUser?.email !== newUser.email
             ) {
-              await this.authService.updateEmail(newUser.email).then();
+              await this.authService.updateEmail(newUser.email);
             }
 
-            // Verifica se a senha foi alterada e atualiza no auth do Firebase
-            /* if (
-              this.user &&
-              this.user.password &&
-              currentUser?.password !== this.user.password
-            ) {
-              await this.authService.updatePassword(this.user.password).then();
-            } */
-
-            this.user = await this.getUserData(newUser.uid);
             alert(this.translateService.translate('update_success'));
           })
           .catch((error) => {
-            console.error('Erro ao atualizar usuário: ', error);
+            console.error('Erro ao atualizar dados do usuário:', error);
           });
       }
     }
@@ -181,13 +157,6 @@ export class UserProfileComponent implements OnInit {
     return false;
   }
 
-  public validDate(date: string | Date | null): boolean {
-    if (date && !(date instanceof Date)) {
-      return this.dateUtils.validateStringDateInBrFormat(date);
-    }
-    return false;
-  }
-
   //não há campos obrigatórios, pode ser atualizada somente uma info
   public isFormValid(): boolean {
     if (this.user) {
@@ -196,15 +165,8 @@ export class UserProfileComponent implements OnInit {
       const isPasswordValid =
         !this.user.password || this.user.password?.trim() !== '';
       const isEmailValid = !this.user.email || this.validEmail(this.user.email);
-      const isBirthdateValid =
-        !this.user.birthdate || this.validDate(this.user.birthdate);
 
-      return (
-        isDisplayNameValid &&
-        isPasswordValid &&
-        isEmailValid &&
-        isBirthdateValid
-      );
+      return isDisplayNameValid && isPasswordValid && isEmailValid;
     }
     return false;
   }

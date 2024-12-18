@@ -88,9 +88,9 @@ export class QuizService {
     );
   }
 
-  public getQuizDate(score: QuizData): String | null {
+  public getQuizDate(score: QuizData): string | null {
     if (score && score.date) {
-      return this.dateUtils.formateDateToStringInBrFormat(new Date(score.date));
+      return score.date;
     }
     return null;
   }
@@ -217,7 +217,7 @@ export class QuizService {
     }
 
     return {
-      date: String(new Date()),
+      date: this.dateUtils.formateDateToInternationFormatString(new Date()),
       score: score,
     };
   }

@@ -1,4 +1,4 @@
 export interface QuizData {
-  date: string;
+  date: string | null;
   score: any;
 }

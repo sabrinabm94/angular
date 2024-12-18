@@ -82,20 +82,7 @@ export class UserService {
         const databasePath = `${this.databaseUserPath}${user.uid}`;
         const databaseRef = ref(this.database, databasePath);
 
-        let dataToSave: FirebaseUser = {
-          uid: user.uid,
-          displayName: user ? user.displayName : '',
-          email: user ? user.email : '',
-          password: user ? user.password : '',
-          birthdate: user ? user.birthdate : '',
-          ocupation: user ? user.ocupation : Occupation.student,
-          gender: user ? user.gender : Gender.male,
-          educationLevel: user
-            ? user.educationLevel
-            : EducationLevel.high_school,
-        };
-
-        await update(databaseRef, dataToSave).catch((error) => {
+        await update(databaseRef, user).catch((error) => {
           console.error('Erro ao salvar dados do usuário:', error);
         });
       } else {

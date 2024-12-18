@@ -63,15 +63,10 @@
         <!-- Campo data de nascimento  -->
         <div class="form-group">
           <legend>{{ "birthdate_label" | translate }}</legend>
-          <input type="text" id="birthdate" [(ngModel)]="user.birthdate" name="birthdate"
-            autocomplete="current-birthdate" [attr.aria-invalid]="
-              user.birthdate && !validDate(user.birthdate) && submitted
-                ? 'true'
-                : 'false'
-            " />
-          <app-error-message *ngIf="              user.birthdate && !validDate(user.birthdate) && submitted
-            " aria-live="assertive">
-            {{ "invalid_birthdate" | translate }}s
+          <input type="date" id="birthdate" [(ngModel)]="user.birthdate" name="birthdate"
+            [attr.aria-invalid]="!user.birthdate && submitted ? 'true' : 'false'" required />
+          <app-error-message *ngIf="!user.birthdate && submitted" aria-live="assertive">
+            {{ 'invalid_date' | translate }}
           </app-error-message>
         </div>
 

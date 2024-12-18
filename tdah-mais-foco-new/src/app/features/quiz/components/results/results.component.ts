@@ -1,7 +1,7 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { QuizService } from '../../../../core/services/quiz.service';
 import { ContainerComponent } from '../../../../shared/components/container/container.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { FieldsetComponent } from '../../../../shared/components/fieldset/fieldset.component';
 import { LanguageService } from '../../../../core/services/language.service';
@@ -19,6 +19,7 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
     ContainerComponent,
     CommonModule,
     TranslatePipe,
+    DatePipe,
     FieldsetComponent,
     ButtonComponent,
   ],
@@ -30,7 +31,7 @@ export class ResultsComponent {
   public areasResults!: QuizResultByArea[];
   public resultShareUrl: string = '';
   private message: string = `Olá, eu acabei de fazer meu teste de TDAH, faça você também!`;
-  public dateResults: String | null = null;
+  public dateResults: string | null = null;
 
   @Input() score: QuizResult | null = null;
   @Input() userId: string | null = '';
