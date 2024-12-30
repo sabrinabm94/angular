@@ -8,26 +8,29 @@ import { BehaviorSubject, lastValueFrom } from 'rxjs';
 })
 export class TranslateService {
   private translations: any = {};
-  private currentLang: string;
+  private currentLanguage: string;
   private languageChanged: BehaviorSubject<string>;
 
   constructor(private http: HttpClient) {
-    this.currentLang = environment.lang || 'pt-br';
-    this.languageChanged = new BehaviorSubject(this.currentLang);
+    this.currentLanguage = environment.lang || 'pt-br';
+    this.languageChanged = new BehaviorSubject(this.currentLanguage);
   }
 
   // Carregar um arquivo de idioma
-  async loadTranslations(lang: string): Promise<void> {
+  async loadTranslations(language: string): Promise<void> {
     try {
       const data: any = await lastValueFrom(
-        this.http.get(`/assets/i18n/${lang}.json`)
+        this.http.get(`/assets/i18n/${language}.json`)
       );
-      this.currentLang = lang;
+      this.currentLanguage = language;
       this.translations = data;
-      this.languageChanged.next(this.currentLang); // Notifica os inscritos
+      this.languageChanged.next(this.currentLanguage); // Notifica os inscritos
     } catch (error) {
-      console.error(`Erro ao carregar traduções para o idioma ${lang}:`, error);
-      throw new Error(`Falha ao carregar o idioma: ${lang}`);
+      console.error(
+        `Erro ao carregar traduções para o idioma ${language}:`,
+        error
+      );
+      throw new Error(`Falha ao carregar o idioma: ${language}`);
     }
   }
 
@@ -41,12 +44,18 @@ export class TranslateService {
   }
 
   // Alterar idioma
-  async setLanguage(lang: string): Promise<void> {
+  async setLanguage(language: string): Promise<void> {
     try {
-      await this.loadTranslations(lang);
+      this.currentLanguage = language;
+      await this.loadTranslations(this.currentLanguage);
+      this.languageChanged.next(this.currentLanguage);
     } catch (error) {
-      console.error(`Erro ao alterar idioma para ${lang}:`, error);
+      console.error(`Erro ao alterar idioma para ${language}:`, error);
     }
+  }
+
+  getLanguage(): string {
+    return this.currentLanguage;
   }
 
   // Observable para escutar as mudanças de idioma

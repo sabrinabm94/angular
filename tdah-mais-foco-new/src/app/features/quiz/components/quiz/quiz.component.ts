@@ -1,6 +1,5 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LanguageService } from '../../../../core/services/language.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -28,7 +27,6 @@ import { QuizData } from '../../../../data/models/quizData.interface';
     ErrorMessageComponent,
     TranslatePipe,
   ],
-  providers: [LanguageService],
   templateUrl: './quiz.component.html',
   styleUrls: ['./quiz.component.css'],
 })
@@ -42,14 +40,13 @@ export class QuizComponent {
   loggedUser: FirebaseUser | null = null;
 
   @Input() userId: string | null = '';
-  @Input() languageName: string | null = '';
+  @Input() languageName: string = '';
 
   @Output() results = new EventEmitter<QuizData | null>();
 
   constructor(
     private router: Router,
     private quizService: QuizService,
-    private languageService: LanguageService,
     private translateService: TranslateService,
     private userService: UserService
   ) {}
@@ -58,7 +55,7 @@ export class QuizComponent {
     this.submitted = false;
 
     if (this.languageName) {
-      // Carrega perguntas
+      // Carrega as perguntas iniciais
       this.loadQuizQuestions(this.languageName);
     }
 

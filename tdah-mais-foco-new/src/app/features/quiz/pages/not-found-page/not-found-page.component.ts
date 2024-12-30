@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
 import { FooterComponent } from '../../../../shared/components/footer/footer.component';
-import { LanguageService } from '../../../../core/services/language.service';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
-import { FirebaseUser } from '../../../../data/models/FirebaseUser.interface';
 import { UserService } from '../../../../core/services/user.service';
+import { TranslateService } from '../../../../core/services/translate.service';
 
 @Component({
   selector: 'app-not-found-page',
@@ -20,7 +19,7 @@ export class NotFoundPageComponent {
 
   constructor(
     private userService: UserService,
-    private languageService: LanguageService
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
@@ -34,7 +33,7 @@ export class NotFoundPageComponent {
   }
 
   private getLanguage(): string | null {
-    const language = this.languageService.getLanguage();
+    const language = this.translateService.getLanguage();
     return (this.languageName = language ? language : null);
   }
 }

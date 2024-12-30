@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../../core/services/user.service';
-import { FirebaseUser } from '../../../../data/models/FirebaseUser.interface';
-import { LanguageService } from '../../../../core/services/language.service';
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
 import { FooterComponent } from '../../../../shared/components/footer/footer.component';
 import { ResultsComponent } from '../../components/results/results.component';
-import { QuizComponent } from '../../components/quiz/quiz.component';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
+import { TranslateService } from '../../../../core/services/translate.service';
+import { QuizComponent } from '../../components/quiz/quiz.component';
 
 @Component({
   selector: 'app-home-page',
@@ -24,13 +23,13 @@ import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
   ],
 })
 export class HomePageComponent implements OnInit {
-  public languageName: string | null = null;
+  public languageName: string = '';
   public userId: string | null = null;
   public results: any = null;
 
   constructor(
     private userService: UserService,
-    private languageService: LanguageService
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
@@ -44,7 +43,7 @@ export class HomePageComponent implements OnInit {
   }
 
   private getLanguage(): string | null {
-    const language = this.languageService.getLanguage();
-    return (this.languageName = language ? language : null);
+    const language = this.translateService.getLanguage();
+    return (this.languageName = language);
   }
 }

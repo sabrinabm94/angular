@@ -1,12 +1,15 @@
 <header class="header text-center">
   <app-switch-language-nav class="languages" />
   <div class="menu auth">
-    <a class="link" href="/quiz"> {{ "page_quiz_title" | translate }}</a>
-    <a class="link" *ngIf="userId && userId !== ''" [href]="'/result/' + userId">{{ "page_results_title" | translate
-      }}</a>
-    <a class="link" *ngIf="userId && userId !== ''" [href]="'/profile/' + userId">{{ "page_profile_title" | translate
-      }}</a>
-    <a class="link" *ngIf="!userId || userId === ''" href="/login"> {{ "login" | translate }}</a>
+    <a class="link" [routerLink]="['/quiz']" routerLinkActive="active"> {{ "page_quiz_title" | translate }}</a>
+    <a class="link" *ngIf="userId && userId !== ''" [routerLink]="['/result', userId]" routerLinkActive="active">
+      {{ "page_results_title" | translate }}
+    </a>
+    <a class="link" *ngIf="userId && userId !== ''" [routerLink]="['/profile', userId]" routerLinkActive="active">
+      {{ "page_profile_title" | translate }}
+    </a>
+    <a class="link" *ngIf="!userId || userId === ''" routerLink="login" routerLinkActive="active"> {{ "login" |
+      translate }}</a>
     <span class="link" *ngIf="userId && userId !== ''" (click)="logout()"> {{ "logout" | translate }}</span>
   </div>
 </header>

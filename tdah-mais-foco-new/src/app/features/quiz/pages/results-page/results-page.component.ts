@@ -8,8 +8,7 @@ import { FooterComponent } from '../../../../shared/components/footer/footer.com
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
 import { ResultsComponent } from '../../components/results/results.component';
 import { UserService } from '../../../../core/services/user.service';
-import { LanguageService } from '../../../../core/services/language.service';
-import { FirebaseUser } from '../../../../data/models/FirebaseUser.interface';
+import { TranslateService } from '../../../../core/services/translate.service';
 
 @Component({
   selector: 'app-results-page',
@@ -32,7 +31,7 @@ export class ResultsPageComponent {
 
   constructor(
     private userService: UserService,
-    private languageService: LanguageService,
+    private translateService: TranslateService,
     private route: ActivatedRoute,
     private meta: Meta
   ) {}
@@ -49,7 +48,7 @@ export class ResultsPageComponent {
   }
 
   private getLanguage(): string | null {
-    const language = this.languageService.getLanguage();
+    const language = this.translateService.getLanguage();
     return (this.languageName = language ? language : null);
   }
 

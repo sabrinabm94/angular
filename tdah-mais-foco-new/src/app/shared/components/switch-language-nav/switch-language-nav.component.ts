@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { LanguageService } from '../../../core/services/language.service';
 import { environment } from '../../../../environments/environment';
 import { TranslatePipe } from '../../../core/pipes/translate.pipe';
+import { TranslateService } from '../../../core/services/translate.service';
 
 @Component({
   selector: 'app-switch-language-nav',
@@ -11,17 +11,18 @@ import { TranslatePipe } from '../../../core/pipes/translate.pipe';
   imports: [TranslatePipe],
 })
 export class SwitchLanguageNavComponent {
-  currentLanguage: string;
+  currentLanguage: string = '';
 
-  constructor(private languageService: LanguageService) {
+  constructor(private translateService: TranslateService) {
     // Inicializa a linguagem com a padrão do ambiente
-    this.currentLanguage = environment.lang;
-    this.languageService.switchLanguage(this.currentLanguage);
+    this.currentLanguage = this.translateService.getLanguage();
+    this.translateService.setLanguage(this.currentLanguage);
   }
 
   switchLanguage(language: string): void {
-    this.languageService.switchLanguage(language);
-    this.currentLanguage = language; // Atualiza a linguagem ativa
+    this.translateService.setLanguage(language).then(() => {
+      this.currentLanguage = language; // Atualiza a linguagem ativa
+    });
   }
 
   // Verifica se a linguagem atual é a ativa

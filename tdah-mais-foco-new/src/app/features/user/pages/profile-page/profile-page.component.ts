@@ -4,6 +4,8 @@ import { HeaderComponent } from '../../../../shared/components/header/header.com
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { UserProfileComponent } from '../../components/user-profile/user-profile.component';
 import { UserService } from '../../../../core/services/user.service';
+import { Router } from 'express';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-profile-page',
@@ -15,6 +17,7 @@ import { UserService } from '../../../../core/services/user.service';
     TranslatePipe,
     FooterComponent,
     HeaderComponent,
+    RouterModule,
   ],
 })
 export class ProfilePageComponent implements OnInit {

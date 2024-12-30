@@ -4,10 +4,8 @@ import { ContainerComponent } from '../../../../shared/components/container/cont
 import { CommonModule, DatePipe } from '@angular/common';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { FieldsetComponent } from '../../../../shared/components/fieldset/fieldset.component';
-import { LanguageService } from '../../../../core/services/language.service';
 import { TranslateService } from '../../../../core/services/translate.service';
 import { UserService } from '../../../../core/services/user.service';
-import { FirebaseUser } from '../../../../data/models/FirebaseUser.interface';
 import { QuizResult } from '../../../../data/models/quizResult.interface';
 import { QuizResultByArea } from '../../../../data/models/quizResultByArea.interface';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
@@ -49,12 +47,12 @@ export class ResultsComponent {
       await this.initializeResults(this.languageName, this.score);
     }
 
+    // Observa mudanças de idioma
     this.translateService
       .getLanguageChanged()
-      .subscribe(async (currentLanguage: string | null) => {
+      .subscribe((currentLanguage: string) => {
         this.languageName = currentLanguage;
-
-        await this.initializeResults(this.languageName, this.score);
+        this.initializeResults(this.languageName, this.score);
       });
   }
 
