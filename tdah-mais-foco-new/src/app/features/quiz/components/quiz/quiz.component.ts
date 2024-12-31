@@ -1,41 +1,39 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { QuizService } from '../../../../core/services/quiz.service';
-import { ContainerComponent } from '../../../../shared/components/container/container.component';
-import { FieldsetComponent } from '../../../../shared/components/fieldset/fieldset.component';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
-import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
-import { TranslateService } from '../../../../core/services/translate.service';
 import { UserService } from '../../../../core/services/user.service';
+import { TranslateService } from '../../../../core/services/translate.service';
 import { FirebaseUser } from '../../../../data/models/FirebaseUser.interface';
 import { QuizData } from '../../../../data/models/quizData.interface';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
+import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
+import { FieldsetComponent } from '../../../../shared/components/fieldset/fieldset.component';
+import { ContainerComponent } from '../../../../shared/components/container/container.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-quiz',
+  templateUrl: './quiz.component.html',
+  styleUrls: ['./quiz.component.css'],
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
-    HttpClientModule,
-    ContainerComponent,
-    FieldsetComponent,
     ButtonComponent,
-    ErrorMessageComponent,
     TranslatePipe,
+    ErrorMessageComponent,
+    FormsModule,
+    FieldsetComponent,
+    ContainerComponent,
   ],
-  templateUrl: './quiz.component.html',
-  styleUrls: ['./quiz.component.css'],
 })
 export class QuizComponent {
   questions: any = [];
   score: QuizData | null = null;
   submitted: boolean = false;
   currentStep: number = 0;
-  maxSteps: number = 3;
+  maxSteps: number = 10;
   responses: Record<number, any> = {};
   loggedUser: FirebaseUser | null = null;
 
@@ -55,11 +53,9 @@ export class QuizComponent {
     this.submitted = false;
 
     if (this.languageName) {
-      // Carrega as perguntas iniciais
       this.loadQuizQuestions(this.languageName);
     }
 
-    // Observa mudanças de idioma
     this.translateService
       .getLanguageChanged()
       .subscribe((currentLanguage: string) => {
@@ -68,7 +64,6 @@ export class QuizComponent {
       });
   }
 
-  // Carregar as perguntas com base na linguagem
   private async loadQuizQuestions(language: string) {
     this.quizService
       .getQuizQuestions(language)
@@ -80,7 +75,6 @@ export class QuizComponent {
       });
   }
 
-  // Submeter o quiz e salvar a pontuação no banco
   public async submitQuizAwsers() {
     if (this.isFormValid()) {
       this.submitted = true;
@@ -103,7 +97,6 @@ export class QuizComponent {
         } else {
           this.results.emit(this.score);
         }
-
         return this.score;
       } catch (error) {
         console.error('Erro ao calcular ou salvar pontuação:', error);
@@ -113,7 +106,6 @@ export class QuizComponent {
     return null;
   }
 
-  // Verifica se todas as perguntas da etapa atual foram respondidas
   public isFormValid(): boolean {
     const currentQuestions = this.getQuestionsForStep();
     return currentQuestions.every(
@@ -122,28 +114,35 @@ export class QuizComponent {
     );
   }
 
-  // Avança para a próxima etapa
   public nextStep() {
     if (this.isFormValid() && this.currentStep < this.maxSteps) {
       this.currentStep++;
+      this.scrollToTop(); // Rola para o topo após avançar
     }
   }
 
-  // Volta para a etapa anterior
   public backStep() {
     this.currentStep--;
+    this.scrollToTop(); // Rola para o topo ao voltar
   }
 
-  // Retorna as perguntas da etapa atual
   public getQuestionsForStep() {
     const stepSize = Math.ceil(this.questions.length / this.maxSteps);
     const startIndex = this.currentStep * stepSize;
     return this.questions.slice(startIndex, startIndex + stepSize);
   }
 
-  // Verifica se uma pergunta é obrigatória
   public checkRequired(question: any) {
     return question.response !== null;
+  }
+
+  private scrollToTop() {
+    setTimeout(() => {
+      const quizContainer = document.querySelector('.quiz');
+      if (quizContainer) {
+        quizContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 0);
   }
 
   private async saveUserScore(
