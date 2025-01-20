@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { GuestGuard } from './core/guards/guest.guard';
 import { NotFoundPageComponent } from './features/quiz/pages/not-found-page/not-found-page.component';
 import { AuthGuard } from './core/guards/auth.guard';
+import { AdminGuard } from './core/guards/adm.guard';
 
 export const appRoutes: Routes = [
   // Rota acessível por todos (logados e deslogados)
@@ -37,6 +38,22 @@ export const appRoutes: Routes = [
         './features/user/components/user-logout/user-logout.component'
       ).then((m) => m.UserLogoutComponent),
     canActivate: [AuthGuard], // Apenas usuários logados
+  },
+  {
+    path: 'user-management',
+    loadComponent: () =>
+      import(
+        './features/admin/pages/user-manage-page/user-manage-page.component'
+      ).then((m) => m.UserManagePageComponent),
+    canActivate: [AdminGuard], // Apenas usuários administradores
+  },
+  {
+    path: 'users',
+    loadComponent: () =>
+      import(
+        './features/admin/pages/user-list-page/user-list-page.component'
+      ).then((m) => m.UserListPageComponent),
+    canActivate: [AdminGuard], // Apenas usuários administradores
   },
 
   // Rotas para usuários deslogados

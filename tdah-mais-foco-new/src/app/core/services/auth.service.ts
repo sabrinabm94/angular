@@ -9,6 +9,8 @@ import {
   getAuth,
   updateEmail,
   updatePassword,
+  signInWithPopup,
+  AuthProvider,
 } from '@angular/fire/auth';
 import { UserService } from './user.service';
 
@@ -78,14 +80,30 @@ export class AuthService {
   }
 
   // Login com e-mail e senha
-  async login(email: string, password: string): Promise<User | null> {
+  async loginWithEmail(email: string, password: string): Promise<User | null> {
     try {
       const userCredential = await signInWithEmailAndPassword(
         this.auth,
         email,
         password
       );
-      this.userService.setUser(userCredential.user);
+      console.log(userCredential);
+      this.userService.setUser(
+        this.userService.convertFirebaseAuthToUser(userCredential.user)
+      );
+      return userCredential.user;
+    } catch (error: any) {
+      throw new Error(`Erro ao fazer login: ${error.message}`);
+    }
+  }
+
+  // Login com google
+  async loginWithGoogle(
+    auth: Auth,
+    provider: AuthProvider
+  ): Promise<User | null> {
+    try {
+      const userCredential = await signInWithPopup(auth, provider);
       return userCredential.user;
     } catch (error: any) {
       throw new Error(`Erro ao fazer login: ${error.message}`);
@@ -103,8 +121,13 @@ export class AuthService {
   }
 
   // Retorna usuário autenticado
-  public getCurrentFirebaseUser(): User | null {
-    const auth = getAuth();
-    return auth.currentUser; // Retorna o usuário autenticado no momento ou null se ninguém estiver logado
+  public getCurrentFirebaseUser(): any | null {
+    let user = getAuth().currentUser; // Retorna o usuário autenticado no momento ou null se ninguém estiver logado
+    if (user) {
+      console.log('getCurrentFirebaseUser ');
+      console.log(user);
+      return user;
+    }
+    return null;
   }
 }

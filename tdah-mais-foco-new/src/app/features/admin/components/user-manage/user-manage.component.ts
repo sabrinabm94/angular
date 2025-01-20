@@ -1,4 +1,4 @@
-import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { Auth } from '@angular/fire/auth';
 import { FirebaseUser } from '../../../../data/models/FirebaseUser.interface';
 import { Router } from '@angular/router';
 import { EmailUtils } from '../../../../core/utils/email.utils';
@@ -16,7 +16,6 @@ import { FieldsetComponent } from '../../../../shared/components/fieldset/fields
 import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { Component, OnInit } from '@angular/core';
-import { FirebaseAuthUser } from '../../../../data/models/FirebaseAuthUser.interface';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Gender } from '../../../../data/models/enums/gender.enum';
 import { Occupation } from '../../../../data/models/enums/occupation.enum';
@@ -25,10 +24,10 @@ import { DateUtils } from '../../../../core/utils/date.utils';
 import { Role } from '../../../../data/models/enums/role.enum';
 
 @Component({
-  selector: 'app-user-profile',
+  selector: 'app-user-manage',
   standalone: true,
-  templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.css'],
+  templateUrl: './user-manage.component.html',
+  styleUrls: ['./user-manage.component.css'],
   imports: [
     CommonModule,
     FormsModule,
@@ -43,7 +42,7 @@ import { Role } from '../../../../data/models/enums/role.enum';
     TranslatePipe,
   ],
 })
-export class UserProfileComponent implements OnInit {
+export class UserManageComponent implements OnInit {
   user: FirebaseUser | null = {
     displayName: '',
     email: '',
@@ -56,11 +55,13 @@ export class UserProfileComponent implements OnInit {
     active: true,
   };
 
+  usersList: FirebaseUser[] | null = [];
+
   genderOptions: Gender[] = [];
   occupationOptions: Occupation[] = [];
   educationLevelOptions: EducationLevel[] = [];
-
   submitted: boolean = false;
+  roleOptions: Role[] = [];
 
   constructor(
     private auth: Auth,
@@ -75,29 +76,53 @@ export class UserProfileComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    const currentUser = this.userService.getUser();
-
-    if (currentUser && currentUser.uid) {
-      try {
-        const userData = await this.getUserData(currentUser.uid);
-        if (userData) {
-          // Atualiza o formulário com os dados do usuário
-          this.user = { ...this.user, ...userData };
-          this.user.uid = currentUser.uid;
-        }
-      } catch (error) {
-        console.error('Erro ao carregar os dados do usuário:', error);
-      }
-    }
+    await this.loadUser();
+    await this.loadUsersList(this.user);
   }
 
   private getFormOptions() {
     this.genderOptions = Object.values(Gender);
     this.occupationOptions = Object.values(Occupation);
     this.educationLevelOptions = Object.values(EducationLevel);
+    this.roleOptions = Object.values(Role);
   }
 
-  public async getUserData(id: string): Promise<FirebaseUser | null> {
+  private async loadUser(): Promise<FirebaseUser | null> {
+    const firebaseUser: FirebaseUser | null = this.userService.getUser();
+
+    if (firebaseUser && firebaseUser.uid) {
+      this.user = await this.userService.getUserDataById(firebaseUser.uid);
+    }
+
+    return this.user;
+  }
+
+  private async loadUsersList(
+    currentUser: FirebaseUser | null
+  ): Promise<FirebaseUser[] | null> {
+    if (currentUser) {
+      try {
+        const usersList = await this.userService.getAllUsersData(currentUser);
+        if (usersList) return (this.usersList = usersList);
+      } catch (error) {
+        console.error('Erro ao carregar lista de usuários:', error);
+      }
+    }
+    return null;
+  }
+
+  async onSaveUser(): Promise<void> {
+    if (this.user) {
+      try {
+        await this.userService.saveUserData(this.user);
+        alert('Usuário salvo com sucesso!');
+      } catch (error) {
+        console.error('Erro ao salvar usuário:', error);
+      }
+    }
+  }
+
+  public async getUserDataById(id: string): Promise<FirebaseUser | null> {
     try {
       let userData: FirebaseUser | null = await this.userService
         .getUserDataById(id)
@@ -112,35 +137,31 @@ export class UserProfileComponent implements OnInit {
         //user.password = currentUserData.password;
         return user;
       }
-      return null;
     } catch (error) {
       console.error('Erro ao obter dados do usuário:', error);
-      return null;
     }
+    return null;
   }
 
-  public async updateUserData(): Promise<void> {
-    this.submitted = true;
+  public async updateUserData(id: string | null): Promise<void> {
+    if (id) {
+      this.submitted = true;
+      const userToUpdate = await this.getUserDataById(id);
 
-    if (this.isFormValid()) {
-      if (this.user && this.user.email && this.user.password) {
-        let newUser = {
-          ...this.user,
-        };
-
+      if (this.isFormValid() && userToUpdate) {
         // Atualiza no banco de dados
         await this.userService
-          .updateUserData(newUser)
+          .updateUserData(userToUpdate)
           .then(async (response) => {
             // Verifica se o e-mail foi alterado e atualiza no auth do Firebase
-            const currentUser: FirebaseUser | null =
+            const userToUpdateFirebase: FirebaseUser | null =
               this.authService.getCurrentFirebaseUser();
             if (
-              newUser &&
-              newUser.email &&
-              currentUser?.email !== newUser.email
+              userToUpdate &&
+              userToUpdate.email &&
+              userToUpdateFirebase?.email !== userToUpdate.email
             ) {
-              await this.authService.updateEmail(newUser.email);
+              await this.authService.updateEmail(userToUpdate.email);
             }
 
             alert(this.translateService.translate('update_success'));

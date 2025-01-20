@@ -87,6 +87,17 @@
   "unemployed": "Desempregado",
   "update_success": "Atualização realizada com sucesso!",
   "invalid_date": "O formato da data deve ser DD/MM/YYYY",
+  "administrator": "Administrador",
+  "editor": "Editor",
+  "none": "Nenhum",
+  "page_user_manage_list_title": "Lista de usuários",
+  "page_user_manage_title": "Gerenciamento de usuário",
+  "role_label": "Papel",
+  "id": "Id",
+  "birthday": "Data de nascimento",
+  "email": "E-mail",
+  "name": "Nome",
+  "actions": "Ações",
   "quiz": {
     "tdah": {
       "questions": [

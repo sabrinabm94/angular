@@ -1,0 +1,30 @@
+<section class="users" *ngIf="usersList">
+  <app-container>
+    <h2 class="text-center">{{"page_user_manage_list_title" | translate }}</h2>
+    <div class="list-content user" *ngFor="let user of usersList">
+      <ul class="list-legend inline-list">
+        <li class="text-center">
+          {{ "id" | translate }}
+        </li>
+        <li class="text-center">{{ "birthday" | translate }}</li>
+        <li class="text-center">{{ "email" | translate }}</li>
+        <li class="text-center">{{ "name" | translate }}</li>
+        <li class="text-center">{{ "actions" | translate }}</li>
+      </ul>
+      <ul class="list-data inline-list">
+        <li class="text-center" *ngIf="user.uid">
+          {{user.uid}}
+        </li>
+        <li class="text-center">{{user.birthdate}}</li>
+        <li class="text-center">{{user.email}}</li>
+        <li class="text-center">{{user.displayName}}</li>
+        <li class="text-center">
+          <ul class="inline-list">
+            <li (click)="editUser(user)">{{ "edit" | translate }}</li>
+            <li (click)="deleteUser(user)">{{ "delete" | translate }}</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </app-container>
+</section>

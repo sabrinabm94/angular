@@ -1,16 +1,22 @@
 {
   "rules": {
     "users": {
+      ".read": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'administrator'",
+      ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'administrator'",
       "$userId": {
-        ".read": "auth != null && auth.uid === $userId",
-        ".write": "auth != null && auth.uid === $userId",
+        ".read": "auth != null && (auth.uid === $userId || root.child('users').child(auth.uid).child('role').val() === 'administrator')",
+        ".write": "auth != null && (auth.uid === $userId || root.child('users').child(auth.uid).child('role').val() === 'administrator')",
         "quiz": {
           "tdah": {
             "score": {
-              ".read": "auth != null && auth.uid === $userId",
+              ".read": "auth != null && (auth.uid === $userId || root.child('users').child(auth.uid).child('role').val() === 'administrator')",
               ".write": "auth != null && auth.uid === $userId"
             }
           }
+        },
+        "role": {
+          ".read": "auth != null && (auth.uid === $userId || root.child('users').child(auth.uid).child('role').val() === 'administrator')",
+          ".write": "auth != null && (auth.uid === $userId || root.child('users').child(auth.uid).child('role').val() === 'administrator')"
         }
       }
     }

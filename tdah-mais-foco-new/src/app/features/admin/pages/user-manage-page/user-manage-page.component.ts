@@ -2,25 +2,24 @@ import { Component, OnInit } from '@angular/core';
 import { FooterComponent } from '../../../../shared/components/footer/footer.component';
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
-import { UserProfileComponent } from '../../components/user-profile/user-profile.component';
 import { UserService } from '../../../../core/services/user.service';
-import { Router } from 'express';
 import { RouterModule } from '@angular/router';
+import { UserManageComponent } from '../../components/user-manage/user-manage.component';
 
 @Component({
-  selector: 'app-profile-page',
+  selector: 'app-user-manage-page',
   standalone: true,
-  templateUrl: './profile-page.component.html',
-  styleUrls: ['./profile-page.component.css'],
+  templateUrl: './user-manage-page.component.html',
+  styleUrls: ['./user-manage-page.component.css'],
   imports: [
-    UserProfileComponent,
+    UserManageComponent,
     TranslatePipe,
     FooterComponent,
     HeaderComponent,
     RouterModule,
   ],
 })
-export class ProfilePageComponent implements OnInit {
+export class UserManagePageComponent implements OnInit {
   public userId: string | null = null;
   public isAdmin: boolean = false;
 
@@ -28,7 +27,6 @@ export class ProfilePageComponent implements OnInit {
 
   async getUser(): Promise<string | null> {
     if (!this.userId) {
-      // Evitar chamada duplicada
       const user = this.userService.getUser();
       if (user && user.uid) {
         this.isAdmin = await this.userService.isUserAdminById(user.uid);

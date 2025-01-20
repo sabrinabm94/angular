@@ -20,6 +20,7 @@ import { DateUtils } from '../../../../core/utils/date.utils';
 import { Gender } from '../../../../data/models/enums/gender.enum';
 import { Occupation } from '../../../../data/models/enums/occupation.enum';
 import { EducationLevel } from '../../../../data/models/enums/educationLevel.enum';
+import { Role } from '../../../../data/models/enums/role.enum';
 
 @Component({
   selector: 'app-user-register',
@@ -50,6 +51,8 @@ export class UserRegisterComponent {
     ocupation: Occupation.student,
     gender: Gender.male,
     educationLevel: EducationLevel.high_school,
+    role: Role.none,
+    active: true,
   };
 
   genderOptions: Gender[] = [];
@@ -87,20 +90,8 @@ export class UserRegisterComponent {
         )
           .then(async (result: any) => {
             if (result && result.user && this.user) {
+              let newUser = result.user;
               // Faz o login automático após o registro
-              let newUser: FirebaseUser = {
-                uid: result.user.uid,
-                displayName: this.user.displayName ? this.user.displayName : '',
-                email: this.user.email ? this.user.email : '',
-                //password: this.user.password ? this.user.password : '',
-                birthdate: this.user.birthdate ? this.user.birthdate : '',
-                ocupation: this.user ? this.user.ocupation : Occupation.student,
-                gender: this.user ? this.user.gender : Gender.male,
-                educationLevel: this.user
-                  ? this.user.educationLevel
-                  : EducationLevel.high_school,
-              };
-
               this.user = this.userService.setUser(newUser);
 
               await this.userService.saveUserData(newUser).then((response) => {
@@ -141,6 +132,8 @@ export class UserRegisterComponent {
       email: '',
       password: '',
       uid: '',
+      role: Role.none,
+      active: true,
     };
   }
 }

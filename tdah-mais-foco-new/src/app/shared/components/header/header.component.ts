@@ -21,6 +21,7 @@ import { TranslatePipe } from '../../../core/pipes/translate.pipe';
 })
 export class HeaderComponent implements OnInit {
   @Input() userId: string | null = '';
+  @Input() isAdmin: boolean = false;
 
   constructor(
     private router: Router,

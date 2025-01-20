@@ -43,7 +43,8 @@ a {
 section,
 input[type="text"],
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+.full-width {
   width: 100%;
 }
 
@@ -254,6 +255,10 @@ input[type="radio"] {
 
 .required {
   color: red;
+}
+
+.full-basis {
+  flex-basis: 100%;
 }
 
 @media (min-width: 600px) {

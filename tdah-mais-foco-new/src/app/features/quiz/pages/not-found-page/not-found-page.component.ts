@@ -16,6 +16,7 @@ import { TranslateService } from '../../../../core/services/translate.service';
 export class NotFoundPageComponent {
   public languageName: string | null = null;
   public userId: string | null = null;
+  public isAdmin: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -27,9 +28,16 @@ export class NotFoundPageComponent {
     this.getUser();
   }
 
-  private getUser(): string | null {
-    const user = this.userService.getUser();
-    return (this.userId = user ? user.uid : null);
+  async getUser(): Promise<string | null> {
+    if (!this.userId) {
+      // Evitar chamada duplicada
+      const user = this.userService.getUser();
+      if (user && user.uid) {
+        this.isAdmin = await this.userService.isUserAdminById(user.uid);
+        return (this.userId = user.uid);
+      }
+    }
+    return null;
   }
 
   private getLanguage(): string | null {

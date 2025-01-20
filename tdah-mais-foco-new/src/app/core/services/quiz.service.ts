@@ -153,7 +153,7 @@ export class QuizService {
         totalAreas = +1;
       }
 
-      finalScore = totalAreasScore / totalAreas;
+      finalScore = totalAreasScore;
 
       if (finalScore) {
         // Determine the level based on areaScore

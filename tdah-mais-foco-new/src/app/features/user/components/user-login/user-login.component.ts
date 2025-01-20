@@ -19,6 +19,8 @@ import { FirebaseUser } from '../../../../data/models/FirebaseUser.interface';
 import { TranslateService } from '../../../../core/services/translate.service';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../core/services/auth.service';
+import { Role } from '../../../../data/models/enums/role.enum';
+import { FirebaseAuth } from '../../../../data/models/FirebaseAuth.interface';
 
 @Component({
   selector: 'app-user-login',
@@ -41,6 +43,7 @@ export class UserLoginComponent {
     email: '',
     password: '',
     uid: '',
+    active: true,
   };
 
   submitted = false;
@@ -77,9 +80,12 @@ export class UserLoginComponent {
     if (this.user && this.user.email && this.user.password) {
       try {
         this.authService
-          .login(this.user.email, this.user.password)
-          .then((user: FirebaseUser | null) => {
+          .loginWithEmail(this.user.email, this.user.password)
+          .then((user: FirebaseAuth | null) => {
             if (user) {
+              this.userService.setUser(
+                this.userService.convertFirebaseAuthToUser(user)
+              );
               alert(this.translateService.translate('login_success'));
               this.router.navigate([`/result/${user.uid}`]);
             }
@@ -92,27 +98,30 @@ export class UserLoginComponent {
   }
 
   async loginWithGoogle() {
-    try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(this.auth, provider);
-      const loggedUser = {
-        email: String(result.user.email),
-        displayName: String(result.user.displayName),
-        uid: String(result.user.uid),
-      };
+    this.submitted = true;
 
-      this.userService.setUser(loggedUser);
-      alert(this.translateService.translate('login_success'));
-      this.router.navigate([`/result/${loggedUser.uid}`]);
-    } catch (error) {
-      console.error(error);
-      alert(this.translateService.translate('invalid_data'));
-    } finally {
-      this.clearUserCredentials();
+    if (this.auth) {
+      try {
+        const provider = new GoogleAuthProvider();
+        this.authService
+          .loginWithGoogle(this.auth, provider)
+          .then((user: FirebaseAuth | null) => {
+            if (user) {
+              this.userService.setUser(
+                this.userService.convertFirebaseAuthToUser(user)
+              );
+              alert(this.translateService.translate('login_success'));
+              this.router.navigate([`/result/${user.uid}`]);
+            }
+          });
+      } catch (error) {
+        console.error(error);
+        alert(this.translateService.translate('invalid_data'));
+      }
     }
   }
 
-  validEmail(email: string | null): boolean {
+  public validEmail(email: string | null): boolean {
     if (email) {
       return this.emailUtils.validEmail(email);
     }
@@ -134,6 +143,8 @@ export class UserLoginComponent {
       email: '',
       password: '',
       uid: '',
+      role: Role.none,
+      active: true,
     };
   }
 

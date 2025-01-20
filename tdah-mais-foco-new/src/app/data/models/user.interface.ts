@@ -9,4 +9,5 @@ export interface User {
   educationLevel?: EducationLevel;
   gender?: Gender;
   quiz?: QuizData | null;
+  active: boolean;
 }
