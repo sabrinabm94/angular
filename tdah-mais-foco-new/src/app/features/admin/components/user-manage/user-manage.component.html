@@ -1,24 +1,10 @@
-<section class="user-list" *ngIf="usersList">
-  <app-container>
-    <h2 class="text-center">{{"page_user_manage_list_title" | translate }}</h2>
-    <div class="user" *ngFor="let user of usersList">
-      <p class="text-center" *ngIf="user.uid">
-        {{user.uid}}
-      </p>
-      <p class="text-center">{{user.birthdate}}</p>
-      <p class="text-center">{{user.email}}</p>
-      <p class="text-center">{{user.displayName}}</p>
-    </div>
-  </app-container>
-</section>
-
-<section class="user-manage" *ngIf="user && user.active === true">
+<section class="user-manage" *ngIf="user">
   <app-container>
     <h2 class="text-center">{{ "page_user_manage_title" | translate }}</h2>
     <p class="text-center" *ngIf="user.uid">
       Id: {{user.uid}}
     </p>
-    <form class="form text-center" (ngSubmit)="updateUserData(user.uid)" #profileForm="ngForm">
+    <form class="form text-center" (ngSubmit)="updateUserData()" #profileForm="ngForm">
       <app-fieldset [content_style]="'row'">
         <!-- Campo nome -->
         <div class="form-group">
@@ -92,8 +78,21 @@
           </select>
         </div>
 
+        <!-- Campo ativo  -->
+        <div class="form-group full-basis">
+          <legend>{{ "active" | translate }}</legend>
+          <select id="active" [(ngModel)]="user.active" name="active" required>
+            <option [value]="true">
+              {{ "yes" | translate }}
+            </option>
+            <option [value]="false">
+              {{ "no" | translate }}
+            </option>
+          </select>
+        </div>
+
         <div class="full-width">
-          <app-button [className]="'secundary'" [disabled]="!isFormValid()" (click)="updateUserData(user.uid)">
+          <app-button [className]="'secundary'" [disabled]="!isFormValid()" (click)="updateUserData()">
             {{ "update" | translate }}
           </app-button>
         </div>

@@ -122,32 +122,46 @@ export class UserProfileComponent implements OnInit {
   public async updateUserData(): Promise<void> {
     this.submitted = true;
 
-    if (this.isFormValid()) {
-      if (this.user && this.user.email && this.user.password) {
-        let newUser = {
-          ...this.user,
+    if (this.isFormValid() === true) {
+      if (this.user && this.user.email) {
+        let newUser: FirebaseUser = {
+          active: this.user.active,
+          birthdate: this.user.birthdate,
+          displayName: this.user.displayName,
+          educationLevel: this.user.educationLevel,
+          email: this.user.email,
+          gender: this.user.gender,
+          ocupation: this.user.ocupation,
+          role: this.user.role,
+          uid: this.user.uid,
         };
 
-        // Atualiza no banco de dados
-        await this.userService
-          .updateUserData(newUser)
-          .then(async (response) => {
-            // Verifica se o e-mail foi alterado e atualiza no auth do Firebase
-            const currentUser: FirebaseUser | null =
-              this.authService.getCurrentFirebaseUser();
-            if (
-              newUser &&
-              newUser.email &&
-              currentUser?.email !== newUser.email
-            ) {
-              await this.authService.updateEmail(newUser.email);
-            }
+        if (newUser) {
+          // Atualiza no banco de dados
+          await this.userService
+            .updateUserData(newUser)
+            .then(async (response) => {
+              console.log('response', response);
+              if (response) {
+                // Verifica se o e-mail foi alterado salva atualizado
+                const currentUser: FirebaseUser | null =
+                  this.authService.getCurrentFirebaseUser();
+                if (
+                  newUser &&
+                  newUser.email &&
+                  currentUser?.email !== newUser.email
+                ) {
+                  //Atualiza e-mail do usuário no auth do firebase
+                  await this.authService.updateEmail(newUser.email);
+                }
 
-            alert(this.translateService.translate('update_success'));
-          })
-          .catch((error) => {
-            console.error('Erro ao atualizar dados do usuário:', error);
-          });
+                alert(this.translateService.translate('update_success'));
+              }
+            })
+            .catch((error) => {
+              console.error('Erro ao atualizar dados do usuário:', error);
+            });
+        }
       }
     }
   }
@@ -163,23 +177,10 @@ export class UserProfileComponent implements OnInit {
     if (this.user) {
       const isDisplayNameValid =
         !this.user.displayName || this.user.displayName?.trim() !== '';
-      const isPasswordValid =
-        !this.user.password || this.user.password?.trim() !== '';
       const isEmailValid = !this.user.email || this.validEmail(this.user.email);
 
-      return isDisplayNameValid && isPasswordValid && isEmailValid;
+      return isDisplayNameValid && isEmailValid;
     }
     return false;
-  }
-
-  private clearUserCredentials() {
-    this.user = {
-      displayName: '',
-      email: '',
-      password: '',
-      uid: '',
-      role: Role.none,
-      active: true,
-    };
   }
 }

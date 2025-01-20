@@ -20,11 +20,18 @@
         <li class="text-center">{{user.displayName}}</li>
         <li class="text-center">
           <ul class="inline-list">
-            <li (click)="editUser(user)">{{ "edit" | translate }}</li>
-            <li (click)="deleteUser(user)">{{ "delete" | translate }}</li>
+            <li><a (click)="editUser(user)">{{ "edit" | translate }}</a> </li>
+            <li><a (click)="deleteUserPopUp(true)">{{ "delete" | translate }}</a></li>
           </ul>
         </li>
       </ul>
     </div>
   </app-container>
 </section>
+
+<app-pop-up *ngIf="showDeleteUserPopup && showDeleteUserPopup === true && user">
+  <h2 class="title">Desativar usuário</h2>
+  <h3 class="subtitle">Você quer desativar o usuário {{user.uid}} - {{user.displayName}}?</h3>
+  <a (click)="deleteUser(user)">{{ "yes" | translate }}</a>
+  <a (click)="showDeleteUserPopup = false">{{ "no" | translate }}</a>
+</app-pop-up>

@@ -98,6 +98,9 @@
   "email": "Correo electrónico",
   "name": "Nombre",
   "actions": "Opciones",
+  "edit": "Editar",
+  "delete": "Eliminar",
+  "active": "Active",
   "quiz": {
     "tdah": {
       "questions": [

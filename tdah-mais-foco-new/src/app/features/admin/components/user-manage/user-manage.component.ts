@@ -1,6 +1,5 @@
-import { Auth } from '@angular/fire/auth';
 import { FirebaseUser } from '../../../../data/models/FirebaseUser.interface';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EmailUtils } from '../../../../core/utils/email.utils';
 import { TranslateService } from '../../../../core/services/translate.service';
 import { UserService } from '../../../../core/services/user.service';
@@ -20,7 +19,6 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { Gender } from '../../../../data/models/enums/gender.enum';
 import { Occupation } from '../../../../data/models/enums/occupation.enum';
 import { EducationLevel } from '../../../../data/models/enums/educationLevel.enum';
-import { DateUtils } from '../../../../core/utils/date.utils';
 import { Role } from '../../../../data/models/enums/role.enum';
 
 @Component({
@@ -64,20 +62,17 @@ export class UserManageComponent implements OnInit {
   roleOptions: Role[] = [];
 
   constructor(
-    private auth: Auth,
-    private router: Router,
     private emailUtils: EmailUtils,
     private translateService: TranslateService,
     private userService: UserService,
     private authService: AuthService,
-    private dateUtils: DateUtils
+    private route: ActivatedRoute
   ) {
     this.getFormOptions();
   }
 
   async ngOnInit(): Promise<void> {
     await this.loadUser();
-    await this.loadUsersList(this.user);
   }
 
   private getFormOptions() {
@@ -87,39 +82,18 @@ export class UserManageComponent implements OnInit {
     this.roleOptions = Object.values(Role);
   }
 
-  private async loadUser(): Promise<FirebaseUser | null> {
-    const firebaseUser: FirebaseUser | null = this.userService.getUser();
+  private getIdFromUrl() {
+    return this.route.snapshot.paramMap.get('id') || null;
+  }
 
-    if (firebaseUser && firebaseUser.uid) {
-      this.user = await this.userService.getUserDataById(firebaseUser.uid);
+  private async loadUser(): Promise<FirebaseUser | null> {
+    const userId = this.getIdFromUrl();
+
+    if (userId) {
+      this.user = await this.userService.getUserDataById(userId);
     }
 
     return this.user;
-  }
-
-  private async loadUsersList(
-    currentUser: FirebaseUser | null
-  ): Promise<FirebaseUser[] | null> {
-    if (currentUser) {
-      try {
-        const usersList = await this.userService.getAllUsersData(currentUser);
-        if (usersList) return (this.usersList = usersList);
-      } catch (error) {
-        console.error('Erro ao carregar lista de usuários:', error);
-      }
-    }
-    return null;
-  }
-
-  async onSaveUser(): Promise<void> {
-    if (this.user) {
-      try {
-        await this.userService.saveUserData(this.user);
-        alert('Usuário salvo com sucesso!');
-      } catch (error) {
-        console.error('Erro ao salvar usuário:', error);
-      }
-    }
   }
 
   public async getUserDataById(id: string): Promise<FirebaseUser | null> {
@@ -143,32 +117,49 @@ export class UserManageComponent implements OnInit {
     return null;
   }
 
-  public async updateUserData(id: string | null): Promise<void> {
-    if (id) {
-      this.submitted = true;
-      const userToUpdate = await this.getUserDataById(id);
+  public async updateUserData(): Promise<void> {
+    this.submitted = true;
 
-      if (this.isFormValid() && userToUpdate) {
-        // Atualiza no banco de dados
-        await this.userService
-          .updateUserData(userToUpdate)
-          .then(async (response) => {
-            // Verifica se o e-mail foi alterado e atualiza no auth do Firebase
-            const userToUpdateFirebase: FirebaseUser | null =
-              this.authService.getCurrentFirebaseUser();
-            if (
-              userToUpdate &&
-              userToUpdate.email &&
-              userToUpdateFirebase?.email !== userToUpdate.email
-            ) {
-              await this.authService.updateEmail(userToUpdate.email);
-            }
+    if (this.isFormValid() === true) {
+      if (this.user && this.user.email) {
+        let newUser: FirebaseUser = {
+          active: this.user.active,
+          birthdate: this.user.birthdate,
+          displayName: this.user.displayName,
+          educationLevel: this.user.educationLevel,
+          email: this.user.email,
+          gender: this.user.gender,
+          ocupation: this.user.ocupation,
+          role: this.user.role,
+          uid: this.user.uid,
+        };
 
-            alert(this.translateService.translate('update_success'));
-          })
-          .catch((error) => {
-            console.error('Erro ao atualizar dados do usuário:', error);
-          });
+        if (newUser) {
+          // Atualiza no banco de dados
+          await this.userService
+            .updateUserData(newUser)
+            .then(async (response) => {
+              console.log('response', response);
+              if (response) {
+                // Verifica se o e-mail foi alterado salva atualizado
+                const currentUser: FirebaseUser | null =
+                  this.authService.getCurrentFirebaseUser();
+                if (
+                  newUser &&
+                  newUser.email &&
+                  currentUser?.email !== newUser.email
+                ) {
+                  //Atualiza e-mail do usuário no auth do firebase
+                  await this.authService.updateEmail(newUser.email);
+                }
+
+                alert(this.translateService.translate('update_success'));
+              }
+            })
+            .catch((error) => {
+              console.error('Erro ao atualizar dados do usuário:', error);
+            });
+        }
       }
     }
   }
@@ -184,23 +175,10 @@ export class UserManageComponent implements OnInit {
     if (this.user) {
       const isDisplayNameValid =
         !this.user.displayName || this.user.displayName?.trim() !== '';
-      const isPasswordValid =
-        !this.user.password || this.user.password?.trim() !== '';
       const isEmailValid = !this.user.email || this.validEmail(this.user.email);
 
-      return isDisplayNameValid && isPasswordValid && isEmailValid;
+      return isDisplayNameValid && isEmailValid;
     }
     return false;
-  }
-
-  private clearUserCredentials() {
-    this.user = {
-      displayName: '',
-      email: '',
-      password: '',
-      uid: '',
-      role: Role.none,
-      active: true,
-    };
   }
 }

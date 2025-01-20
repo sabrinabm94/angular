@@ -14,6 +14,8 @@ import { Gender } from '../../../../data/models/enums/gender.enum';
 import { Occupation } from '../../../../data/models/enums/occupation.enum';
 import { EducationLevel } from '../../../../data/models/enums/educationLevel.enum';
 import { Role } from '../../../../data/models/enums/role.enum';
+import { ButtonComponent } from '../../../../shared/components/pop-up/pop-up.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-list',
@@ -29,6 +31,7 @@ import { Role } from '../../../../data/models/enums/role.enum';
     MatButtonModule,
     ContainerComponent,
     TranslatePipe,
+    ButtonComponent,
   ],
 })
 export class UserListComponent implements OnInit {
@@ -50,10 +53,12 @@ export class UserListComponent implements OnInit {
   educationLevelOptions: EducationLevel[] = [];
   submitted: boolean = false;
   roleOptions: Role[] = [];
+  showDeleteUserPopup: boolean = false;
 
   constructor(
     private userService: UserService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -106,16 +111,22 @@ export class UserListComponent implements OnInit {
     return null;
   }
 
-  public async editUser(user: FirebaseUser): Promise<FirebaseUser | null> {
-    if (user) {
-      return await this.userService.updateUserData(user);
+  public deleteUserPopUp(showPopup: boolean) {
+    this.showDeleteUserPopup = showPopup;
+  }
+
+  public async editUser(user: FirebaseUser): Promise<boolean | null> {
+    if (user && user.uid) {
+      return this.router.navigate([`/user-management/${user.uid}`]);
     }
     return null;
   }
 
   public async deleteUser(user: FirebaseUser): Promise<FirebaseUser | null> {
     if (user) {
-      return await this.userService.deleteUserData(user);
+      return await this.userService
+        .deleteUserData(user)
+        .finally(() => (this.showDeleteUserPopup = false));
     }
 
     return null;

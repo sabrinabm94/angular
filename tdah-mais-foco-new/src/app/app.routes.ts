@@ -40,7 +40,7 @@ export const appRoutes: Routes = [
     canActivate: [AuthGuard], // Apenas usuários logados
   },
   {
-    path: 'user-management',
+    path: 'user-management/:id',
     loadComponent: () =>
       import(
         './features/admin/pages/user-manage-page/user-manage-page.component'

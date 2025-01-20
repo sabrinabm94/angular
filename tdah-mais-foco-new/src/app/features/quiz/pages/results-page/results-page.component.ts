@@ -34,7 +34,6 @@ export class ResultsPageComponent {
   constructor(
     private userService: UserService,
     private translateService: TranslateService,
-    private route: ActivatedRoute,
     private meta: Meta
   ) {}
 
