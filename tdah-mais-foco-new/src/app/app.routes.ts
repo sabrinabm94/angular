@@ -32,14 +32,6 @@ export const appRoutes: Routes = [
     canActivate: [AuthGuard], // Apenas usuários logados
   },
   {
-    path: 'logout',
-    loadComponent: () =>
-      import(
-        './features/user/components/user-logout/user-logout.component'
-      ).then((m) => m.UserLogoutComponent),
-    canActivate: [AuthGuard], // Apenas usuários logados
-  },
-  {
     path: 'user-management/:id',
     loadComponent: () =>
       import(

@@ -1,4 +1,4 @@
-import { FirebaseUser } from '../../../../data/models/FirebaseUser.interface';
+import { FirebaseUser } from '../../../../data/models/Firebase-user.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EmailUtils } from '../../../../core/utils/email.utils';
 import { TranslateService } from '../../../../core/services/translate.service';
@@ -14,12 +14,13 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
 import { FieldsetComponent } from '../../../../shared/components/fieldset/fieldset.component';
 import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Gender } from '../../../../data/models/enums/gender.enum';
 import { Occupation } from '../../../../data/models/enums/occupation.enum';
 import { EducationLevel } from '../../../../data/models/enums/educationLevel.enum';
 import { Role } from '../../../../data/models/enums/role.enum';
+import { DateUtils } from '../../../../core/utils/date.utils';
 
 @Component({
   selector: 'app-user-manage',
@@ -41,7 +42,10 @@ import { Role } from '../../../../data/models/enums/role.enum';
   ],
 })
 export class UserManageComponent implements OnInit {
-  user: FirebaseUser | null = {
+  @Input()
+  userAdminId: string | null = null;
+
+  userToManage: FirebaseUser | null = {
     displayName: '',
     email: '',
     password: '',
@@ -50,10 +54,13 @@ export class UserManageComponent implements OnInit {
     ocupation: Occupation.student,
     gender: Gender.male,
     educationLevel: EducationLevel.high_school,
+    role: Role.none,
     active: true,
+    creationDate: '',
+    updateDate: null,
+    creatorId: '',
+    updaterId: null,
   };
-
-  usersList: FirebaseUser[] | null = [];
 
   genderOptions: Gender[] = [];
   occupationOptions: Occupation[] = [];
@@ -63,6 +70,7 @@ export class UserManageComponent implements OnInit {
 
   constructor(
     private emailUtils: EmailUtils,
+    private dateUtils: DateUtils,
     private translateService: TranslateService,
     private userService: UserService,
     private authService: AuthService,
@@ -72,7 +80,7 @@ export class UserManageComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    await this.loadUser();
+    await this.getUserToManage();
   }
 
   private getFormOptions() {
@@ -82,21 +90,21 @@ export class UserManageComponent implements OnInit {
     this.roleOptions = Object.values(Role);
   }
 
-  private getIdFromUrl() {
+  private getUserToManageIdFromUrl() {
     return this.route.snapshot.paramMap.get('id') || null;
   }
 
-  private async loadUser(): Promise<FirebaseUser | null> {
-    const userId = this.getIdFromUrl();
+  private async getUserToManage(): Promise<FirebaseUser | null> {
+    const userToManageId = this.getUserToManageIdFromUrl();
 
-    if (userId) {
-      this.user = await this.userService.getUserDataById(userId);
+    if (userToManageId) {
+      return (this.userToManage = await this.getUserInfoById(userToManageId));
     }
 
-    return this.user;
+    return null;
   }
 
-  public async getUserDataById(id: string): Promise<FirebaseUser | null> {
+  public async getUserInfoById(id: string): Promise<FirebaseUser | null> {
     try {
       let userData: FirebaseUser | null = await this.userService
         .getUserDataById(id)
@@ -117,44 +125,57 @@ export class UserManageComponent implements OnInit {
     return null;
   }
 
-  public async updateUserData(): Promise<void> {
-    this.submitted = true;
+  public async updateUserInfo(
+    userToManage: FirebaseUser | null,
+    userAdminId: string | null
+  ): Promise<FirebaseUser | null> {
+    if (userToManage && userAdminId) {
+      this.submitted = true;
 
-    if (this.isFormValid() === true) {
-      if (this.user && this.user.email) {
-        let newUser: FirebaseUser = {
-          active: this.user.active,
-          birthdate: this.user.birthdate,
-          displayName: this.user.displayName,
-          educationLevel: this.user.educationLevel,
-          email: this.user.email,
-          gender: this.user.gender,
-          ocupation: this.user.ocupation,
-          role: this.user.role,
-          uid: this.user.uid,
+      if (
+        this.isFormValid(userToManage) === true &&
+        userAdminId &&
+        userToManage
+      ) {
+        let newUserToManage: FirebaseUser = {
+          active: userToManage.active,
+          birthdate: userToManage.birthdate,
+          displayName: userToManage.displayName,
+          educationLevel: userToManage.educationLevel,
+          email: userToManage.email,
+          gender: userToManage.gender,
+          ocupation: userToManage.ocupation,
+          role: userToManage.role,
+          uid: userToManage.uid,
+          updateDate: this.dateUtils.formateDateToInternationFormatString(
+            new Date()
+          ),
+          updaterId: userAdminId,
+          password: userToManage.password,
         };
 
-        if (newUser) {
+        if (newUserToManage) {
           // Atualiza no banco de dados
           await this.userService
-            .updateUserData(newUser)
+            .updateUserData(newUserToManage)
             .then(async (response) => {
-              console.log('response', response);
               if (response) {
                 // Verifica se o e-mail foi alterado salva atualizado
                 const currentUser: FirebaseUser | null =
                   this.authService.getCurrentFirebaseUser();
                 if (
-                  newUser &&
-                  newUser.email &&
-                  currentUser?.email !== newUser.email
+                  newUserToManage &&
+                  newUserToManage.email &&
+                  currentUser?.email !== newUserToManage.email
                 ) {
                   //Atualiza e-mail do usuário no auth do firebase
-                  await this.authService.updateEmail(newUser.email);
+                  await this.authService.updateEmail(newUserToManage.email);
                 }
 
                 alert(this.translateService.translate('update_success'));
+                return response;
               }
+              return null;
             })
             .catch((error) => {
               console.error('Erro ao atualizar dados do usuário:', error);
@@ -162,6 +183,7 @@ export class UserManageComponent implements OnInit {
         }
       }
     }
+    return null;
   }
 
   public validEmail(email: string | null): boolean {
@@ -171,11 +193,11 @@ export class UserManageComponent implements OnInit {
     return false;
   }
 
-  public isFormValid(): boolean {
-    if (this.user) {
+  public isFormValid(user: FirebaseUser): boolean {
+    if (user) {
       const isDisplayNameValid =
-        !this.user.displayName || this.user.displayName?.trim() !== '';
-      const isEmailValid = !this.user.email || this.validEmail(this.user.email);
+        !user.displayName || user.displayName?.trim() !== '';
+      const isEmailValid = !user.email || this.validEmail(user.email);
 
       return isDisplayNameValid && isEmailValid;
     }

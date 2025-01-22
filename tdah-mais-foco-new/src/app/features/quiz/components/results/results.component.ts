@@ -6,9 +6,10 @@ import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { FieldsetComponent } from '../../../../shared/components/fieldset/fieldset.component';
 import { TranslateService } from '../../../../core/services/translate.service';
 import { UserService } from '../../../../core/services/user.service';
-import { QuizResult } from '../../../../data/models/quizResult.interface';
-import { QuizResultByArea } from '../../../../data/models/quizResultByArea.interface';
+import { QuizResult } from '../../../../data/models/quiz-result.interface';
+import { QuizResultByArea } from '../../../../data/models/quiz-result-by-area.interface';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-results',
@@ -20,6 +21,7 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
     DatePipe,
     FieldsetComponent,
     ButtonComponent,
+    RouterModule,
   ],
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.css'],
@@ -44,7 +46,7 @@ export class ResultsComponent {
   async ngOnInit() {
     if (this.userId) {
       this.generateUserResultsShareUrl(this.userId);
-      await this.initializeResults(this.languageName, this.score);
+      await this.getUserQuizScore(this.languageName, this.score);
     }
 
     // Observa mudanças de idioma
@@ -52,19 +54,19 @@ export class ResultsComponent {
       .getLanguageChanged()
       .subscribe((currentLanguage: string) => {
         this.languageName = currentLanguage;
-        this.initializeResults(this.languageName, this.score);
+        this.getUserQuizScore(this.languageName, this.score);
       });
   }
 
   async ngOnChanges(changes: SimpleChanges) {
     if (changes['score']) {
-      await this.initializeResults(this.languageName, this.score);
+      await this.getUserQuizScore(this.languageName, this.score);
     }
   }
 
-  private async initializeResults(language: string | null, score: any) {
-    if (!score || score instanceof Promise) {
-      score = await this.userService.getUserScore();
+  private async getUserQuizScore(language: string | null, score: any) {
+    if ((!score || score instanceof Promise) && this.userId) {
+      score = await this.userService.getUserScore(this.userId);
     }
 
     try {

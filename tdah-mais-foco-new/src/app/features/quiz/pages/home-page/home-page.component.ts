@@ -27,6 +27,7 @@ export class HomePageComponent implements OnInit {
   public userId: string | null = null;
   public results: any = null;
   public isAdmin: boolean = false;
+  public isFirstScore: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -44,6 +45,10 @@ export class HomePageComponent implements OnInit {
       const user = this.userService.getUser();
       if (user && user.uid) {
         this.isAdmin = await this.userService.isUserAdminById(user.uid);
+        const userScore = await this.userService.getUserScore(user.uid);
+        if (!userScore) {
+          this.isFirstScore = true;
+        }
         return (this.userId = user.uid);
       }
     }

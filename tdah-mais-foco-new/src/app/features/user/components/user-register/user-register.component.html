@@ -95,11 +95,9 @@
         <app-button [className]="'secundary'" [disabled]="!isFormValid()" (click)="registerUser()">
           {{ "register" | translate }}
         </app-button>
-        <a className="link" href="/login">
-          <app-button [className]="'secundary'">{{
+        <a class="link" [routerLink]="['/login']" routerLinkActive="active"><app-button [className]="'secundary'">{{
             "login" | translate
-            }}</app-button>
-        </a>
+            }}</app-button></a>
       </div>
     </form>
   </app-container>

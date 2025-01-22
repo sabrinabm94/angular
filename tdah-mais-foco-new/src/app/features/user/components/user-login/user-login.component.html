@@ -33,12 +33,13 @@
     </form>
 
     <div class="buttons">
-      <a className="link" href="/quiz">
-        <app-button [className]="'secundary'">{{ "continue_without_login" | translate }}</app-button>
-      </a>
-      <a className="link" href="/register">
-        <app-button [className]="'secundary'">{{ "register" | translate }}</app-button>
-      </a>
+      <a class="link" [routerLink]="['/quiz']" routerLinkActive="active"><app-button [className]="'secundary'">{{
+          "continue_without_login" | translate
+          }}</app-button></a>
+
+      <a class="link" [routerLink]="['/register']" routerLinkActive="active"><app-button [className]="'secundary'">{{
+          "register" | translate
+          }}</app-button></a>
     </div>
 
     <app-button [type]="'link'" (click)="resetPassword()" [disabled]="!user.email">

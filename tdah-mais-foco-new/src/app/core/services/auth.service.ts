@@ -93,7 +93,7 @@ export class AuthService {
       );
       return userCredential.user;
     } catch (error: any) {
-      throw new Error(`Erro ao fazer login: ${error.message}`);
+      throw new Error(`Erro ao fazer login com e-mail: ${error.message}`);
     }
   }
 
@@ -106,7 +106,7 @@ export class AuthService {
       const userCredential = await signInWithPopup(auth, provider);
       return userCredential.user;
     } catch (error: any) {
-      throw new Error(`Erro ao fazer login: ${error.message}`);
+      throw new Error(`Erro ao fazer login com Google: ${error.message}`);
     }
   }
 

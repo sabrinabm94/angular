@@ -1,4 +1,4 @@
-import { FirebaseUser } from '../../../../data/models/FirebaseUser.interface';
+import { FirebaseUser } from '../../../../data/models/Firebase-user.interface';
 import { UserService } from '../../../../core/services/user.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -44,7 +44,12 @@ export class UserListComponent implements OnInit {
     ocupation: Occupation.student,
     gender: Gender.male,
     educationLevel: EducationLevel.high_school,
+    role: Role.none,
     active: true,
+    creationDate: '',
+    updateDate: null,
+    creatorId: '',
+    updaterId: null,
   };
 
   usersList: FirebaseUser[] | null = [];

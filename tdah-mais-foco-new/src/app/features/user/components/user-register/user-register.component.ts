@@ -1,6 +1,6 @@
 import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
-import { FirebaseUser } from '../../../../data/models/FirebaseUser.interface';
-import { Router } from '@angular/router';
+import { FirebaseUser } from '../../../../data/models/Firebase-user.interface';
+import { Router, RouterModule } from '@angular/router';
 import { EmailUtils } from '../../../../core/utils/email.utils';
 import { TranslateService } from '../../../../core/services/translate.service';
 import { UserService } from '../../../../core/services/user.service';
@@ -39,10 +39,11 @@ import { Role } from '../../../../data/models/enums/role.enum';
     FieldsetComponent,
     ErrorMessageComponent,
     TranslatePipe,
+    RouterModule,
   ],
 })
 export class UserRegisterComponent {
-  user: FirebaseUser | null = {
+  user: FirebaseUser = {
     displayName: '',
     email: '',
     password: '',
@@ -53,6 +54,10 @@ export class UserRegisterComponent {
     educationLevel: EducationLevel.high_school,
     role: Role.none,
     active: true,
+    creationDate: '',
+    updateDate: null,
+    creatorId: '',
+    updaterId: null,
   };
 
   genderOptions: Gender[] = [];
@@ -81,27 +86,60 @@ export class UserRegisterComponent {
   public async registerUser(): Promise<void> {
     this.submitted = true;
 
-    if (this.isFormValid()) {
-      if (this.user && this.user.email && this.user.password) {
+    if (this.isFormValid() && this.user) {
+      //cria objeto de usuário a partir de formulário
+      const newUser: FirebaseUser = {
+        active: this.user.active,
+        birthdate: this.user.birthdate,
+        displayName: this.user.displayName,
+        educationLevel: this.user.educationLevel,
+        email: this.user.email,
+        gender: this.user.gender,
+        ocupation: this.user.ocupation,
+        role: this.user.role,
+        uid: this.user.uid,
+        creationDate: this.dateUtils.formateDateToInternationFormatString(
+          new Date()
+        ),
+        creatorId: this.user.uid,
+        password: this.user.password,
+      };
+
+      if (newUser && this.auth && this.user) {
+        //Cria usuário no autenticador do firebase
         await createUserWithEmailAndPassword(
           this.auth,
           this.user.email,
-          this.user.password
+          this.user.password ? this.user.password : ''
         )
           .then(async (result: any) => {
-            if (result && result.user && this.user) {
-              let newUser = result.user;
-              // Faz o login automático após o registro
-              this.user = this.userService.setUser(newUser);
+            if (result && result.user) {
+              //Pega dados do retorno do usuário criado pelo firebase
+              const firebaseUser = result.user;
 
-              await this.userService.saveUserData(newUser).then((response) => {
-                alert(this.translateService.translate('register_success'));
-                this.router.navigate(['/quiz']);
-              });
+              //Adiciona o usuário criado com os ids gerados pelo firebase
+              newUser.uid = firebaseUser.uid;
+              newUser.creatorId = firebaseUser.uid;
+
+              //Salva dados do usuário no banco de dados
+              await this.userService
+                .saveUserData(newUser)
+                .then(async (result) => {
+                  if (result) {
+                    // Faz o login automático após o registro e redirecionamento
+                    this.userService.setUser(newUser);
+                    alert(this.translateService.translate('register_success'));
+                    this.router.navigate(['/quiz']);
+                  }
+                })
+                .catch((error: any) => {
+                  console.error('Erro ao salvar dados de usuário:', error);
+                  alert(this.translateService.translate('invalid_data'));
+                });
             }
           })
           .catch((error: any) => {
-            console.error('Erro ao registrar usuário:', error);
+            console.error('Erro ao criar usuário:', error);
             alert(this.translateService.translate('invalid_data'));
           });
       }
@@ -124,16 +162,5 @@ export class UserRegisterComponent {
       return isDisplayNameValid && isPasswordValid && isEmailValid;
     }
     return false;
-  }
-
-  private clearUserCredentials() {
-    this.user = {
-      displayName: '',
-      email: '',
-      password: '',
-      uid: '',
-      role: Role.none,
-      active: true,
-    };
   }
 }

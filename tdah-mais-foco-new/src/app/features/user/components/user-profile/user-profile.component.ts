@@ -1,5 +1,5 @@
 import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
-import { FirebaseUser } from '../../../../data/models/FirebaseUser.interface';
+import { FirebaseUser } from '../../../../data/models/Firebase-user.interface';
 import { Router } from '@angular/router';
 import { EmailUtils } from '../../../../core/utils/email.utils';
 import { TranslateService } from '../../../../core/services/translate.service';
@@ -16,7 +16,6 @@ import { FieldsetComponent } from '../../../../shared/components/fieldset/fields
 import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { Component, OnInit } from '@angular/core';
-import { FirebaseAuthUser } from '../../../../data/models/FirebaseAuthUser.interface';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Gender } from '../../../../data/models/enums/gender.enum';
 import { Occupation } from '../../../../data/models/enums/occupation.enum';
@@ -53,7 +52,12 @@ export class UserProfileComponent implements OnInit {
     ocupation: Occupation.student,
     gender: Gender.male,
     educationLevel: EducationLevel.high_school,
+    role: Role.none,
     active: true,
+    creationDate: '',
+    updateDate: null,
+    creatorId: '',
+    updaterId: null,
   };
 
   genderOptions: Gender[] = [];
@@ -122,46 +126,49 @@ export class UserProfileComponent implements OnInit {
   public async updateUserData(): Promise<void> {
     this.submitted = true;
 
-    if (this.isFormValid() === true) {
-      if (this.user && this.user.email) {
-        let newUser: FirebaseUser = {
-          active: this.user.active,
-          birthdate: this.user.birthdate,
-          displayName: this.user.displayName,
-          educationLevel: this.user.educationLevel,
-          email: this.user.email,
-          gender: this.user.gender,
-          ocupation: this.user.ocupation,
-          role: this.user.role,
-          uid: this.user.uid,
-        };
+    if (this.isFormValid() === true && this.user) {
+      let newUser: FirebaseUser = {
+        active: this.user.active,
+        birthdate: this.user.birthdate,
+        displayName: this.user.displayName,
+        educationLevel: this.user.educationLevel,
+        email: this.user.email,
+        gender: this.user.gender,
+        ocupation: this.user.ocupation,
+        role: this.user.role,
+        uid: this.user.uid,
+        updateDate: this.dateUtils.formateDateToInternationFormatString(
+          new Date()
+        ),
+        updaterId: this.user.uid,
+        password: this.user.password,
+      };
 
-        if (newUser) {
-          // Atualiza no banco de dados
-          await this.userService
-            .updateUserData(newUser)
-            .then(async (response) => {
-              console.log('response', response);
-              if (response) {
-                // Verifica se o e-mail foi alterado salva atualizado
-                const currentUser: FirebaseUser | null =
-                  this.authService.getCurrentFirebaseUser();
-                if (
-                  newUser &&
-                  newUser.email &&
-                  currentUser?.email !== newUser.email
-                ) {
-                  //Atualiza e-mail do usuário no auth do firebase
-                  await this.authService.updateEmail(newUser.email);
-                }
-
-                alert(this.translateService.translate('update_success'));
+      if (newUser) {
+        // Atualiza no banco de dados
+        await this.userService
+          .updateUserData(newUser)
+          .then(async (response) => {
+            console.log('response', response);
+            if (response) {
+              // Verifica se o e-mail foi alterado salva atualizado
+              const currentUser: FirebaseUser | null =
+                this.authService.getCurrentFirebaseUser();
+              if (
+                newUser &&
+                newUser.email &&
+                currentUser?.email !== newUser.email
+              ) {
+                //Atualiza e-mail do usuário no auth do firebase
+                await this.authService.updateEmail(newUser.email);
               }
-            })
-            .catch((error) => {
-              console.error('Erro ao atualizar dados do usuário:', error);
-            });
-        }
+
+              alert(this.translateService.translate('update_success'));
+            }
+          })
+          .catch((error) => {
+            console.error('Erro ao atualizar dados do usuário:', error);
+          });
       }
     }
   }

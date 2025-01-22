@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import {
   Auth,
@@ -15,12 +15,15 @@ import { ErrorMessageComponent } from '../../../../shared/components/error-messa
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { EmailUtils } from '../../../../core/utils/email.utils';
 import { UserService } from '../../../../core/services/user.service';
-import { FirebaseUser } from '../../../../data/models/FirebaseUser.interface';
+import { FirebaseUser } from '../../../../data/models/Firebase-user.interface';
 import { TranslateService } from '../../../../core/services/translate.service';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Role } from '../../../../data/models/enums/role.enum';
-import { FirebaseAuth } from '../../../../data/models/FirebaseAuth.interface';
+import { FirebaseAuth } from '../../../../data/models/Firebase-auth.interface';
+import { Occupation } from '../../../../data/models/enums/occupation.enum';
+import { Gender } from '../../../../data/models/enums/gender.enum';
+import { EducationLevel } from '../../../../data/models/enums/educationLevel.enum';
 
 @Component({
   selector: 'app-user-login',
@@ -35,6 +38,7 @@ import { FirebaseAuth } from '../../../../data/models/FirebaseAuth.interface';
     FieldsetComponent,
     ErrorMessageComponent,
     TranslatePipe,
+    RouterModule,
   ],
 })
 export class UserLoginComponent {
@@ -43,7 +47,16 @@ export class UserLoginComponent {
     email: '',
     password: '',
     uid: '',
+    birthdate: '2000-01-01',
+    ocupation: Occupation.student,
+    gender: Gender.male,
+    educationLevel: EducationLevel.high_school,
+    role: Role.none,
     active: true,
+    creationDate: '',
+    updateDate: null,
+    creatorId: '',
+    updaterId: null,
   };
 
   submitted = false;
@@ -81,8 +94,9 @@ export class UserLoginComponent {
       try {
         this.authService
           .loginWithEmail(this.user.email, this.user.password)
-          .then((user: FirebaseAuth | null) => {
-            if (user) {
+          .then((result: any) => {
+            if (result) {
+              const user = result;
               this.userService.setUser(
                 this.userService.convertFirebaseAuthToUser(user)
               );
@@ -105,8 +119,9 @@ export class UserLoginComponent {
         const provider = new GoogleAuthProvider();
         this.authService
           .loginWithGoogle(this.auth, provider)
-          .then((user: FirebaseAuth | null) => {
-            if (user) {
+          .then((result: any) => {
+            if (result) {
+              const user = result;
               this.userService.setUser(
                 this.userService.convertFirebaseAuthToUser(user)
               );
@@ -135,17 +150,6 @@ export class UserLoginComponent {
       );
     }
     return false;
-  }
-
-  private clearUserCredentials() {
-    this.user = {
-      displayName: '',
-      email: '',
-      password: '',
-      uid: '',
-      role: Role.none,
-      active: true,
-    };
   }
 
   resetForm(form: NgForm) {

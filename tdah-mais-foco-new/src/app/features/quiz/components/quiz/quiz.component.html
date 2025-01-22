@@ -1,6 +1,6 @@
 <section class="quiz">
   <app-container class="questions">
-    <form (ngSubmit)="submitQuizAwsers()" *ngIf="this.questions && this.questions.length > 0">
+    <form *ngIf="this.questions && this.questions.length > 0">
       <h2 class="text-center" *ngIf="this.currentStep < this.maxSteps">{{ "title_quiz" | translate }}</h2>
       <h3 class="text-center" *ngIf="this.currentStep < this.maxSteps">
         {{ "part" | translate }} {{ this.currentStep + 1 }} /
@@ -23,13 +23,13 @@
           <div class="aswer">
             <label>
               <input type="radio" [(ngModel)]="question.response" [value]="true" name="response{{ i }}"
-                (blur)="checkRequired(question)" />
+                (blur)="checkAnswer(question)" />
               <span id="yes-option-{{ i }}">{{ "yes" | translate }}</span>
             </label>
 
             <label>
               <input type="radio" [(ngModel)]="question.response" [value]="false" name="response{{ i }}"
-                (blur)="checkRequired(question)" />
+                (blur)="checkAnswer(question)" />
               <span id="no-option-{{ i }}">{{ "no" | translate }}</span>
             </label>
           </div>
@@ -57,7 +57,7 @@
       <div class="send action" *ngIf="this.currentStep >= this.maxSteps">
         <h3 class="text-center">{{ "title_quiz_send" | translate }}</h3>
         <div class="buttons">
-          <app-button [disabled]="!isFormValid()" (click)="submitQuizAwsers()" [className]="'secundary'">
+          <app-button [disabled]="!isFormValid()" (click)="submitAnswers()" [className]="'secundary'">
             {{ "calculate_results" | translate }}
           </app-button>
           <app-button *ngIf="this.currentStep >= 1 && this.currentStep <= this.maxSteps" (click)="backStep()"

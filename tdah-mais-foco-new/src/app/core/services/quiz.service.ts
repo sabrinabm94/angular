@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { QuizResult } from '../../data/models/quizResult.interface';
-import { QuizResultByArea } from '../../data/models/quizResultByArea.interface';
-import { QuizData } from '../../data/models/quizData.interface';
+import { QuizResult } from '../../data/models/quiz-result.interface';
+import { QuizResultByArea } from '../../data/models/quiz-result-by-area.interface';
+import { ResultQuizData } from '../../data/models/result-quiz-data.interface';
 import { DateUtils } from '../utils/date.utils';
 
 @Injectable({
@@ -88,15 +88,15 @@ export class QuizService {
     );
   }
 
-  public getQuizDate(score: QuizData): string | null {
-    if (score && score.date) {
-      return score.date;
+  public getQuizDate(score: ResultQuizData): string | null {
+    if (score && score.creationDate) {
+      return score.creationDate;
     }
     return null;
   }
 
   public calculateResultsByArea(
-    score: QuizData,
+    score: ResultQuizData,
     messagesByArea: any[]
   ): QuizResultByArea[] | [] {
     const resultsByAreas: QuizResultByArea[] = [];
@@ -135,7 +135,10 @@ export class QuizService {
     return resultsByAreas;
   }
 
-  public calculateResults(score: QuizData, messages: any): QuizResult | null {
+  public calculateResults(
+    score: ResultQuizData,
+    messages: any
+  ): QuizResult | null {
     let totalAreas = 0;
     let totalAreasScore = 0;
     let finalScore = 0;
@@ -187,8 +190,9 @@ export class QuizService {
   }
 
   public async calculateResultsScoreByArea(
-    answers: any[]
-  ): Promise<QuizData | null> {
+    answers: any[],
+    isFirstScore: boolean
+  ): Promise<ResultQuizData> {
     let score = { default: 0 };
 
     if (answers && answers.length > 0) {
@@ -213,12 +217,22 @@ export class QuizService {
           });
         }
         return acc;
-      }, {} as QuizData);
+      }, {} as ResultQuizData);
     }
 
-    return {
-      date: this.dateUtils.formateDateToInternationFormatString(new Date()),
+    const today = this.dateUtils.formateDateToInternationFormatString(
+      new Date()
+    );
+
+    const calculatedScore: ResultQuizData = {
+      updateDate: today,
       score: score,
     };
+
+    if (isFirstScore && isFirstScore === true) {
+      calculatedScore.creationDate = today;
+    }
+
+    return calculatedScore;
   }
 }

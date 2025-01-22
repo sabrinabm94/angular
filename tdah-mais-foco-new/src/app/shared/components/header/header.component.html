@@ -13,6 +13,6 @@
     <a class="link" *ngIf="userId && isAdmin === true" [routerLink]="['/users']" routerLinkActive="active"> {{
       "administrator" |
       translate }}</a>
-    <span class="link" *ngIf="userId && userId !== ''" (click)="logout()"> {{ "logout" | translate }}</span>
+    <a class="link" *ngIf="userId && userId !== ''" href="/login" (click)="logout()"> {{ "logout" | translate }}</a>
   </div>
 </header>

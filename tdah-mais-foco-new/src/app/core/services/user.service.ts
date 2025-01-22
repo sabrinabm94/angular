@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { Database, ref, child, get, set, update } from '@angular/fire/database';
-import { FirebaseUser } from '../../data/models/FirebaseUser.interface';
-import { QuizData } from '../../data/models/quizData.interface';
+import { FirebaseUser } from '../../data/models/Firebase-user.interface';
+import { ResultQuizData } from '../../data/models/result-quiz-data.interface';
 import { Role } from '../../data/models/enums/role.enum';
-import { FirebaseAuth } from '../../data/models/FirebaseAuth.interface';
+import { FirebaseAuth } from '../../data/models/Firebase-auth.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private user: FirebaseUser | null = null;
+  private user!: FirebaseUser;
   private userLoaded: boolean = false;
   private databaseQuizPath: string = '/quiz/tdah/score/';
   private databaseUserPath: string = '/users/';
@@ -21,19 +21,18 @@ export class UserService {
   }
 
   public setUser(user: FirebaseUser | null): FirebaseUser | null {
-    this.user = user;
-    return this.user;
+    if (user) {
+      return (this.user = user);
+    }
+    return null;
   }
 
-  public convertFirebaseAuthToUser(
-    user: FirebaseAuth | null
-  ): FirebaseUser | null {
+  public convertFirebaseAuthToUser(user: any): FirebaseUser | null {
     if (user) {
       let firebaseUser: FirebaseUser = {
-        email: user.email ? user.email : null,
-        password: user.password ? user.password : null,
-        displayName: user.displayName ? user.displayName : null,
-        uid: user.uid ? user.uid : null,
+        email: user.email,
+        displayName: user.displayName,
+        uid: user.uid,
         active: true,
       };
 
@@ -138,7 +137,9 @@ export class UserService {
     }
   }
 
-  public async saveUserScore(score: QuizData): Promise<QuizData | null> {
+  public async saveUserScore(
+    score: ResultQuizData
+  ): Promise<ResultQuizData | null> {
     const user = this.getUser();
     if (!user) return null;
 
@@ -181,18 +182,18 @@ export class UserService {
     }
   }
 
-  public async getUserScore(): Promise<QuizData | null> {
-    const user = this.getUser();
-    if (!user) return null;
-
-    try {
-      const databasePath = `${this.databaseUserPath}${user.uid}${this.databaseQuizPath}`;
-      const snapshot = await get(child(ref(this.database), databasePath));
-      return snapshot.exists() ? (snapshot.val() as QuizData) : null;
-    } catch (error) {
-      console.error('Erro ao buscar pontuação:', error);
-      throw error;
+  public async getUserScore(userId: string): Promise<ResultQuizData | null> {
+    if (userId) {
+      try {
+        const databasePath = `${this.databaseUserPath}${userId}${this.databaseQuizPath}`;
+        const snapshot = await get(child(ref(this.database), databasePath));
+        return snapshot.exists() ? (snapshot.val() as ResultQuizData) : null;
+      } catch (error) {
+        console.error('Erro ao buscar pontuação:', error);
+        throw error;
+      }
     }
+    return null;
   }
 
   public async getAllUsersData(

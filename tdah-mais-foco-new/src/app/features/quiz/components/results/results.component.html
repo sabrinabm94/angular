@@ -20,20 +20,21 @@
         {{ results.message }}
       </p>
     </app-fieldset>
-    <span class="results-data">
+    <span class="results-data" *ngIf="dateResults">
       <hr />
-      <small *ngIf="dateResults" class="text-center">{{ "title_date_results" | translate }} {{ dateResults | date :
-        "dd/MM/yyyy" }}
+      <small class="text-center">{{ "title_date_results" | translate }}
+        {{ dateResults | date : "dd/MM/yyyy" }}
       </small>
       <hr />
     </span>
-    <a class="link text-center" href="/register" *ngIf="!this.userId">a
-      {{ "save_results" | translate }}
-    </a>
+    <a class="link text-center" *ngIf="!this.userId" [routerLink]="['/register']" routerLinkActive="active">{{
+      "save_results" | translate }}</a>
+
     <div class="buttons">
       <app-button *ngIf="this.userId && this.userId !== ''" [className]="'secundary'" (click)="shareResults()">{{
         "results_share" | translate }}</app-button>
-      <a href="/quiz"><app-button [className]="'secundary'">{{
+
+      <a class="link" [routerLink]="['/quiz']" routerLinkActive="active"><app-button [className]="'secundary'">{{
           "quiz_try_again" | translate
           }}</app-button></a>
     </div>
@@ -45,7 +46,7 @@
         {{ "subtitle_results_not_found" | translate }}
       </h2>
     </app-fieldset>
-    <a href="/quiz"><app-button [className]="'primary'">{{
+    <a class="link" [routerLink]="['/quiz']" routerLinkActive="active"><app-button [className]="'primary'">{{
         "quiz_do" | translate
         }}</app-button></a>
   </app-container>
