@@ -67,8 +67,6 @@ export class UserProfileComponent implements OnInit {
   submitted: boolean = false;
 
   constructor(
-    private auth: Auth,
-    private router: Router,
     private emailUtils: EmailUtils,
     private translateService: TranslateService,
     private userService: UserService,
@@ -109,14 +107,8 @@ export class UserProfileComponent implements OnInit {
         .getUserDataById(id)
         .then((result) => result);
 
-      let currentUserData: FirebaseUser | null =
-        this.authService.getCurrentFirebaseUser();
-
-      if (userData && currentUserData) {
-        let user = userData;
-        user.email = currentUserData.email;
-        //user.password = currentUserData.password;
-        return user;
+      if (userData) {
+        return userData;
       }
       return null;
     } catch (error) {
@@ -151,8 +143,7 @@ export class UserProfileComponent implements OnInit {
         };
 
         if (newUserToManage) {
-          //Atualiza e-mail do usuário no firebase
-          await this.authService
+          /* await this.authService
             .updateFirebaseAuthUserEmail(
               newUserToManage.uid,
               newUserToManage.email
@@ -161,27 +152,28 @@ export class UserProfileComponent implements OnInit {
               if (result) {
                 console.log(result);
                 // Atualiza usuário no banco de dados
-                await this.userService
-                  .updateUserData(newUserToManage)
-                  .then((result) => {
-                    if (result) {
-                      console.log(result);
-                      alert(this.translateService.translate('update_success'));
-                      return result;
-                    }
-                    return null;
-                  })
-                  .catch((error) => {
-                    console.error('Erro ao atualizar dados do usuário:', error);
-                    alert(
-                      this.translateService.translate('update_email_error')
-                    );
-                  });
+
               }
               return null;
             })
             .catch((error) => {
               console.error('Erro ao atualizar usuário:', error);
+              alert(this.translateService.translate('update_email_error'));
+            }); */
+
+          //Atualiza e-mail do usuário no firebase
+          await this.userService
+            .updateUserData(newUserToManage)
+            .then((result) => {
+              if (result) {
+                console.log(result);
+                alert(this.translateService.translate('update_success'));
+                return result;
+              }
+              return null;
+            })
+            .catch((error) => {
+              console.error('Erro ao atualizar dados do usuário:', error);
               alert(this.translateService.translate('update_email_error'));
             });
         }

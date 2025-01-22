@@ -16,14 +16,14 @@
         </div>
 
         <!-- Campo E-mail -->
-        <div class="form-group">
+        <!-- <div class="form-group">
           <legend>{{ "email_label" | translate }}</legend>
           <input type="email" id="email" [(ngModel)]="user.email" name="email"
             [attr.aria-invalid]="user.email && !validEmail(user.email) ? 'true' : 'false'" required />
           <app-error-message *ngIf="!validEmail(user.email) && submitted" aria-live="assertive">
             {{ 'invalid_email' | translate }}
           </app-error-message>
-        </div>
+        </div> -->
 
         <!-- Campo gênero  -->
         <div class="form-group">
@@ -65,9 +65,11 @@
           </select>
         </div>
 
-        <app-button [className]="'secundary'" [disabled]="!isFormValid()" (click)="updateUserData()">
-          {{ "update" | translate }}
-        </app-button>
+        <div class="full-width">
+          <app-button [className]="'secundary'" (click)="updateUserInfo(user, user.uid)" [disabled]="!isFormValid()">
+            {{ "update" | translate }}
+          </app-button>
+        </div>
       </app-fieldset>
     </form>
   </app-container>
