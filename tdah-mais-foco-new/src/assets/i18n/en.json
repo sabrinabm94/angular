@@ -93,6 +93,7 @@
   "page_user_manage_list_title": "User list",
   "page_user_manage_title": "User management",
   "role_label": "Role",
+  "role": "Role",
   "id": "Id",
   "birthday": "Birthday",
   "email": "Email",
@@ -101,6 +102,7 @@
   "edit": "Edit",
   "delete": "Delete",
   "active": "Active",
+  "update_email_error": "User update error: try another email.",
   "quiz": {
     "tdah": {
       "questions": [

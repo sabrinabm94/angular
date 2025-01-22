@@ -60,9 +60,9 @@ export class UserService {
     } catch (error: any) {
       console.error('Erro ao salvar dados do usuário:', error);
       if (error.code === 'PERMISSION_DENIED') {
-        throw new Error('Permissão negada para esse usuário.');
+        throw new Error('Erro de permissão inválida: ' + error);
       }
-      throw error;
+      throw new Error('Erro ao atualizar dados de usuário: ' + error);
     }
   }
 
@@ -102,13 +102,16 @@ export class UserService {
             resolve();
           },
           (error) => {
-            console.error('Erro ao carregar usuário:', error);
-            reject(error);
+            const errorMessage = 'Erro ao carregar usuário';
+            console.error(errorMessage, error);
+            throw new Error(errorMessage + error);
           }
         );
       });
     } catch (error) {
-      console.error('Erro ao inicializar usuário:', error);
+      const errorMessage = 'Erro ao inicializar o usuário';
+      console.error(errorMessage, error);
+      throw new Error(errorMessage + error);
     }
   }
 
@@ -132,7 +135,8 @@ export class UserService {
       }
       return false;
     } catch (error) {
-      console.error('Erro ao verificar admin:', error);
+      const errorMessage = 'Erro ao verificar papel do usuário';
+      console.error(errorMessage, error);
       return false;
     }
   }
@@ -149,8 +153,9 @@ export class UserService {
       await set(scoreRef, score);
       return score;
     } catch (error) {
-      console.error('Erro ao salvar pontuação:', error);
-      throw error;
+      const errorMessage = 'Erro ao salvar pontuação';
+      console.error(errorMessage, error);
+      throw new Error(errorMessage + error);
     }
   }
 
@@ -161,8 +166,9 @@ export class UserService {
       await update(databaseRef, user);
       return user;
     } catch (error) {
-      console.error('Erro ao salvar usuário:', error);
-      throw error;
+      const errorMessage = 'Erro ao salvar dados de usuário ';
+      console.error(errorMessage, error);
+      throw new Error(errorMessage + error);
     }
   }
 
@@ -177,8 +183,9 @@ export class UserService {
       await update(databaseRef, user);
       return user;
     } catch (error) {
-      console.error('Erro ao salvar usuário:', error);
-      throw error;
+      const errorMessage = 'Erro ao desativar usuário';
+      console.error(errorMessage, error);
+      throw new Error(errorMessage + error);
     }
   }
 
@@ -189,17 +196,18 @@ export class UserService {
         const snapshot = await get(child(ref(this.database), databasePath));
         return snapshot.exists() ? (snapshot.val() as ResultQuizData) : null;
       } catch (error) {
-        console.error('Erro ao buscar pontuação:', error);
-        throw error;
+        const errorMessage = 'Erro ao obter pontuação de usuário';
+        console.error(errorMessage, error);
+        throw new Error(errorMessage + error);
       }
     }
     return null;
   }
 
   public async getAllUsersData(
-    currentUser: FirebaseUser
+    userAdmin: FirebaseUser
   ): Promise<FirebaseUser[] | null> {
-    if (currentUser && currentUser.role === Role.administrator) {
+    if (userAdmin && userAdmin.role === Role.administrator) {
       try {
         const snapshot = await get(ref(this.database, this.databaseUserPath));
         if (!snapshot.exists()) return null;
@@ -209,11 +217,12 @@ export class UserService {
           ...usersData[key],
         }));
       } catch (error) {
-        console.error('Erro ao buscar usuários:', error);
-        throw error;
+        const errorMessage = 'Erro ao obter usuários';
+        console.error(errorMessage, error);
+        throw new Error(errorMessage + error);
       }
     }
-    console.error('Permissão negada.');
+    console.error('Permissão negada');
     return null;
   }
 }

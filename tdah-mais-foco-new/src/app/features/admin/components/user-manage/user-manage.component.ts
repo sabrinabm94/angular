@@ -110,17 +110,13 @@ export class UserManageComponent implements OnInit {
         .getUserDataById(id)
         .then((result) => result);
 
-      let currentUserData: FirebaseUser | null =
-        this.authService.getCurrentFirebaseUser();
-
-      if (userData && currentUserData) {
-        let user = userData;
-        user.email = currentUserData.email;
-        //user.password = currentUserData.password;
-        return user;
+      if (userData) {
+        return userData;
       }
     } catch (error) {
-      console.error('Erro ao obter dados do usuário:', error);
+      const errorMessage = 'Erro ao carregar dados de usuário';
+      console.error(errorMessage, error);
+      throw new Error(errorMessage + error);
     }
     return null;
   }
@@ -131,7 +127,6 @@ export class UserManageComponent implements OnInit {
   ): Promise<FirebaseUser | null> {
     if (userToManage && userAdminId) {
       this.submitted = true;
-
       if (
         this.isFormValid(userToManage) === true &&
         userAdminId &&
@@ -155,30 +150,38 @@ export class UserManageComponent implements OnInit {
         };
 
         if (newUserToManage) {
-          // Atualiza no banco de dados
+          //Atualiza e-mail do usuário no firebase
+          /*
+          await this.authService
+            .updateFirebaseAuthUserEmail(
+              newUserToManage.uid,
+              newUserToManage.email
+            )
+            .then(async (result) => {
+              if (result) {
+                // Atualiza usuário no banco de dados
+
+              }
+              return null;
+            })
+            .catch((error) => {
+              console.error('Erro ao atualizar usuário:', error);
+              alert(this.translateService.translate('update_email_error'));
+            });
+            */
+
           await this.userService
             .updateUserData(newUserToManage)
-            .then(async (response) => {
-              if (response) {
-                // Verifica se o e-mail foi alterado salva atualizado
-                const currentUser: FirebaseUser | null =
-                  this.authService.getCurrentFirebaseUser();
-                if (
-                  newUserToManage &&
-                  newUserToManage.email &&
-                  currentUser?.email !== newUserToManage.email
-                ) {
-                  //Atualiza e-mail do usuário no auth do firebase
-                  await this.authService.updateEmail(newUserToManage.email);
-                }
-
+            .then(async (result) => {
+              if (result) {
                 alert(this.translateService.translate('update_success'));
-                return response;
+                return result;
               }
               return null;
             })
             .catch((error) => {
               console.error('Erro ao atualizar dados do usuário:', error);
+              alert(this.translateService.translate('update_email_error'));
             });
         }
       }

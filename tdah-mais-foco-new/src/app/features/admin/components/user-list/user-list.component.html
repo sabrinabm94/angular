@@ -1,7 +1,7 @@
-<section class="users" *ngIf="usersList">
+<section class="users" *ngIf="usersToManageList">
   <app-container>
     <h2 class="text-center">{{"page_user_manage_list_title" | translate }}</h2>
-    <div class="list-content user" *ngFor="let user of usersList">
+    <div class="list-content">
       <ul class="list-legend inline-list">
         <li class="text-center">
           {{ "id" | translate }}
@@ -9,29 +9,32 @@
         <li class="text-center">{{ "birthday" | translate }}</li>
         <li class="text-center">{{ "email" | translate }}</li>
         <li class="text-center">{{ "name" | translate }}</li>
+        <li class="text-center">{{ "role" | translate }}</li>
         <li class="text-center">{{ "actions" | translate }}</li>
       </ul>
-      <ul class="list-data inline-list">
-        <li class="text-center" *ngIf="user.uid">
-          {{user.uid}}
-        </li>
-        <li class="text-center">{{user.birthdate}}</li>
-        <li class="text-center">{{user.email}}</li>
-        <li class="text-center">{{user.displayName}}</li>
-        <li class="text-center">
-          <ul class="inline-list">
-            <li><a (click)="editUser(user)">{{ "edit" | translate }}</a> </li>
-            <li><a (click)="deleteUserPopUp(true)">{{ "delete" | translate }}</a></li>
-          </ul>
-        </li>
-      </ul>
+      <div class="user" *ngFor="let userToManage of usersToManageList">
+        <ul class="list-data inline-list">
+          <li class="text-center" *ngIf="userToManage.uid">
+            {{userToManage.uid}}
+          </li>
+          <li class="text-center">{{userToManage.birthdate}}</li>
+          <li class="text-center">{{userToManage.email}}</li>
+          <li class="text-center">{{userToManage.displayName}}</li>
+          <li class="text-center">{{userToManage.role}}</li>
+          <li class="text-center">
+            <ul class="inline-list">
+              <li><a (click)="editUser(userToManage)">{{ "edit" | translate }}</a> </li>
+              <li><a (click)="deleteUserPopUp(true)">{{ "delete" | translate }}</a></li>
+            </ul>
+          </li>
+        </ul>
+        <app-pop-up *ngIf="showDeleteUserPopup && showDeleteUserPopup === true && userToManage">
+          <h2 class="title">Desativar usuário</h2>
+          <h3 class="subtitle">Você quer desativar o usuário {{userToManage.uid}} - {{userToManage.displayName}}?</h3>
+          <a (click)="deleteUser(userToManage)">{{ "yes" | translate }}</a>
+          <a (click)="showDeleteUserPopup = false">{{ "no" | translate }}</a>
+        </app-pop-up>
+      </div>
     </div>
   </app-container>
 </section>
-
-<app-pop-up *ngIf="showDeleteUserPopup && showDeleteUserPopup === true && user">
-  <h2 class="title">Desativar usuário</h2>
-  <h3 class="subtitle">Você quer desativar o usuário {{user.uid}} - {{user.displayName}}?</h3>
-  <a (click)="deleteUser(user)">{{ "yes" | translate }}</a>
-  <a (click)="showDeleteUserPopup = false">{{ "no" | translate }}</a>
-</app-pop-up>

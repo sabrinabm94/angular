@@ -90,7 +90,9 @@ export class UserProfileComponent implements OnInit {
           this.user.uid = currentUser.uid;
         }
       } catch (error) {
-        console.error('Erro ao carregar os dados do usuário:', error);
+        const errorMessage = 'Erro ao carregar dados de usuário';
+        console.error(errorMessage, error);
+        throw new Error(errorMessage + error);
       }
     }
   }
@@ -118,9 +120,74 @@ export class UserProfileComponent implements OnInit {
       }
       return null;
     } catch (error) {
-      console.error('Erro ao obter dados do usuário:', error);
-      return null;
+      const errorMessage = 'Erro ao obter dados de usuário';
+      console.error(errorMessage, error);
+      throw new Error(errorMessage + error);
     }
+  }
+
+  public async updateUserInfo(
+    userToManage: FirebaseUser | null,
+    userAdminId: string | null
+  ): Promise<FirebaseUser | null> {
+    if (userToManage && userAdminId) {
+      this.submitted = true;
+      if (this.isFormValid() === true && userAdminId && userToManage) {
+        let newUserToManage: FirebaseUser = {
+          active: userToManage.active,
+          birthdate: userToManage.birthdate,
+          displayName: userToManage.displayName,
+          educationLevel: userToManage.educationLevel,
+          email: userToManage.email,
+          gender: userToManage.gender,
+          ocupation: userToManage.ocupation,
+          role: userToManage.role,
+          uid: userToManage.uid,
+          updateDate: this.dateUtils.formateDateToInternationFormatString(
+            new Date()
+          ),
+          updaterId: userAdminId,
+          password: userToManage.password,
+        };
+
+        if (newUserToManage) {
+          //Atualiza e-mail do usuário no firebase
+          await this.authService
+            .updateFirebaseAuthUserEmail(
+              newUserToManage.uid,
+              newUserToManage.email
+            )
+            .then(async (result) => {
+              if (result) {
+                console.log(result);
+                // Atualiza usuário no banco de dados
+                await this.userService
+                  .updateUserData(newUserToManage)
+                  .then((result) => {
+                    if (result) {
+                      console.log(result);
+                      alert(this.translateService.translate('update_success'));
+                      return result;
+                    }
+                    return null;
+                  })
+                  .catch((error) => {
+                    console.error('Erro ao atualizar dados do usuário:', error);
+                    alert(
+                      this.translateService.translate('update_email_error')
+                    );
+                  });
+              }
+              return null;
+            })
+            .catch((error) => {
+              console.error('Erro ao atualizar usuário:', error);
+              alert(this.translateService.translate('update_email_error'));
+            });
+        }
+      }
+    }
+    return null;
   }
 
   public async updateUserData(): Promise<void> {
@@ -148,9 +215,8 @@ export class UserProfileComponent implements OnInit {
         // Atualiza no banco de dados
         await this.userService
           .updateUserData(newUser)
-          .then(async (response) => {
-            console.log('response', response);
-            if (response) {
+          .then(async (result) => {
+            if (result) {
               // Verifica se o e-mail foi alterado salva atualizado
               const currentUser: FirebaseUser | null =
                 this.authService.getCurrentFirebaseUser();
@@ -160,7 +226,10 @@ export class UserProfileComponent implements OnInit {
                 currentUser?.email !== newUser.email
               ) {
                 //Atualiza e-mail do usuário no auth do firebase
-                await this.authService.updateEmail(newUser.email);
+                await this.authService.updateFirebaseAuthUserEmail(
+                  newUser.uid,
+                  newUser.email
+                );
               }
 
               alert(this.translateService.translate('update_success'));

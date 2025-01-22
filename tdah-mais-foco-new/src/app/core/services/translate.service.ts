@@ -26,11 +26,10 @@ export class TranslateService {
       this.translations = data;
       this.languageChanged.next(this.currentLanguage); // Notifica os inscritos
     } catch (error) {
-      console.error(
-        `Erro ao carregar traduções para o idioma ${language}:`,
-        error
-      );
-      throw new Error(`Falha ao carregar o idioma: ${language}`);
+      const errorMessage =
+        'Erro ao carregar traduções para o idioma ' + language;
+      console.error(errorMessage, error);
+      throw new Error(errorMessage + error);
     }
   }
 
@@ -50,7 +49,10 @@ export class TranslateService {
       await this.loadTranslations(this.currentLanguage);
       this.languageChanged.next(this.currentLanguage);
     } catch (error) {
-      console.error(`Erro ao alterar idioma para ${language}:`, error);
+      const errorMessage =
+        'Erro ao alterar idioma para a linguagem ' + language;
+      console.error(errorMessage, error);
+      throw new Error(errorMessage + error);
     }
   }
 

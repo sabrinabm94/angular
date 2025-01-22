@@ -81,8 +81,10 @@ export class UserLoginComponent {
         await sendPasswordResetEmail(this.auth, this.user.email);
         alert(this.translateService.translate('password_reset_email_sent'));
       } catch (error) {
-        console.error('Erro ao enviar e-mail de redefinição de senha:', error);
         alert(this.translateService.translate('password_reset_error'));
+        const errorMessage = 'Erro ao enviar e-mail de notificação';
+        console.error(errorMessage, error);
+        throw new Error(errorMessage + error);
       }
     }
   }

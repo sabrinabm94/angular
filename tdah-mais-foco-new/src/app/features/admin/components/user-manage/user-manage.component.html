@@ -4,7 +4,7 @@
     <p class="text-center" *ngIf="userToManage.uid">
       Id: {{userToManage.uid}}
     </p>
-    <form class="form text-center" (ngSubmit)="updateUserInfo(userToManage, userAdminId)" #profileForm="ngForm">
+    <form class="form text-center" #profileForm="ngForm">
       <app-fieldset [content_style]="'row'">
         <!-- Campo nome -->
         <div class="form-group">
@@ -19,14 +19,14 @@
         </div>
 
         <!-- Campo E-mail -->
-        <div class="form-group">
+        <!-- <div class="form-group">
           <legend>{{ "email_label" | translate }}</legend>
           <input type="email" id="email" [(ngModel)]="userToManage.email" name="email"
             [attr.aria-invalid]="userToManage.email && !validEmail(userToManage.email) ? 'true' : 'false'" required />
           <app-error-message *ngIf="!validEmail(userToManage.email) && submitted" aria-live="assertive">
             {{ 'invalid_email' | translate }}
           </app-error-message>
-        </div>
+        </div> -->
 
         <!-- Campo gênero  -->
         <div class="form-group">
@@ -92,7 +92,8 @@
         </div>
 
         <div class="full-width">
-          <app-button [className]="'secundary'" [disabled]="!isFormValid(userToManage)">
+          <app-button [className]="'secundary'" (click)="updateUserInfo(userToManage, userAdminId)"
+            [disabled]="!isFormValid(userToManage)">
             {{ "update" | translate }}
           </app-button>
         </div>

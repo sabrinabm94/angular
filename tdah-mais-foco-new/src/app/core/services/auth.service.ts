@@ -24,7 +24,11 @@ export class AuthService {
   async configureAuthPersistence(): Promise<void> {
     try {
       await this.auth.setPersistence(browserLocalPersistence);
-    } catch (error) {}
+    } catch (error) {
+      const errorMessage = 'Erro ao configurar persistência de dados';
+      console.error(errorMessage, error);
+      throw new Error(errorMessage + error);
+    }
   }
 
   // Registrar usuário com e-mail e senha
@@ -41,26 +45,35 @@ export class AuthService {
     }
   }
 
-  public async updateEmail(newEmail: string): Promise<string | null> {
-    const auth = getAuth();
-    const currentUser = auth.currentUser;
+  public async updateFirebaseAuthUserEmail(
+    userToUpdateId: string,
+    newEmail: string
+  ): Promise<string | null> {
+    if (userToUpdateId) {
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
 
-    if (currentUser) {
-      try {
-        await updateEmail(currentUser, newEmail).then((result) => {
-          return newEmail;
-        });
-      } catch (error) {
-        console.error('Erro ao atualizar credenciais:', error);
+      if (currentUser) {
+        try {
+          await updateEmail(currentUser, newEmail).then((result) => {
+            return newEmail;
+          });
+        } catch (error) {
+          const errorMessage = 'Erro ao atualizar e-mail';
+          console.error(errorMessage, error);
+          throw new Error(errorMessage + error);
+        }
+      } else {
+        console.error('Nenhum usuário logado.');
       }
-    } else {
-      console.error('Nenhum usuário está logado.');
     }
 
     return null;
   }
 
-  public async updatePassword(newPassword: string): Promise<string | null> {
+  public async updateFirebaseAuthUserPassword(
+    newPassword: string
+  ): Promise<string | null> {
     const auth = getAuth();
     const currentUser = auth.currentUser;
 
@@ -70,7 +83,9 @@ export class AuthService {
           return newPassword;
         });
       } catch (error) {
-        console.error('Erro ao atualizar credenciais:', error);
+        const errorMessage = 'Erro ao atualizar senha';
+        console.error(errorMessage, error);
+        throw new Error(errorMessage + error);
       }
     } else {
       console.error('Nenhum usuário está logado.');
@@ -116,7 +131,9 @@ export class AuthService {
       await signOut(this.auth);
       this.userService.setUser(null);
     } catch (error) {
-      console.error('Erro ao fazer logout:', error);
+      const errorMessage = 'Erro ao sair';
+      console.error(errorMessage, error);
+      throw new Error(errorMessage + error);
     }
   }
 

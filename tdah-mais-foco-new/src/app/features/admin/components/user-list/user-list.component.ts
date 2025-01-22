@@ -35,7 +35,7 @@ import { Router } from '@angular/router';
   ],
 })
 export class UserListComponent implements OnInit {
-  user: FirebaseUser | null = {
+  userAdmin: FirebaseUser | null = {
     displayName: '',
     email: '',
     password: '',
@@ -52,7 +52,7 @@ export class UserListComponent implements OnInit {
     updaterId: null,
   };
 
-  usersList: FirebaseUser[] | null = [];
+  usersToManageList: FirebaseUser[] | null = [];
   genderOptions: Gender[] = [];
   occupationOptions: Occupation[] = [];
   educationLevelOptions: EducationLevel[] = [];
@@ -68,28 +68,33 @@ export class UserListComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.getUser();
-    await this.getUsersList(this.user);
+    await this.getUsersList(this.userAdmin);
   }
 
   private async getUser(): Promise<FirebaseUser | null> {
     const firebaseUser: FirebaseUser | null = this.userService.getUser();
 
     if (firebaseUser && firebaseUser.uid) {
-      this.user = await this.userService.getUserDataById(firebaseUser.uid);
+      this.userAdmin = await this.userService.getUserDataById(firebaseUser.uid);
     }
 
-    return this.user;
+    return this.userAdmin;
   }
 
   private async getUsersList(
-    currentUser: FirebaseUser | null
+    userAdmin: FirebaseUser | null
   ): Promise<FirebaseUser[] | null> {
-    if (currentUser) {
+    if (userAdmin) {
       try {
-        const usersList = await this.userService.getAllUsersData(currentUser);
-        if (usersList) return (this.usersList = usersList);
+        const usersToManageList = await this.userService.getAllUsersData(
+          userAdmin
+        );
+        if (usersToManageList)
+          return (this.usersToManageList = usersToManageList);
       } catch (error) {
-        console.error('Erro ao carregar lista de usuários:', error);
+        const errorMessage = 'Erro ao obter usuários';
+        console.error(errorMessage, error);
+        throw new Error(errorMessage + error);
       }
     }
     return null;
@@ -101,17 +106,13 @@ export class UserListComponent implements OnInit {
         .getUserDataById(id)
         .then((result) => result);
 
-      let currentUserData: FirebaseUser | null =
-        this.authService.getCurrentFirebaseUser();
-
-      if (userData && currentUserData) {
-        let user = userData;
-        user.email = currentUserData.email;
-        //user.password = currentUserData.password;
-        return user;
+      if (userData) {
+        return userData;
       }
     } catch (error) {
-      console.error('Erro ao obter dados do usuário:', error);
+      const errorMessage = 'Erro ao carregar dados de usuário';
+      console.error(errorMessage, error);
+      throw new Error(errorMessage + error);
     }
     return null;
   }

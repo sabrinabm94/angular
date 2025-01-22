@@ -93,6 +93,7 @@
   "page_user_manage_list_title": "Lista de usuários",
   "page_user_manage_title": "Gerenciamento de usuário",
   "role_label": "Papel",
+  "role": "Papel",
   "id": "Id",
   "birthday": "Data de nascimento",
   "email": "E-mail",
@@ -101,6 +102,7 @@
   "edit": "Editar",
   "delete": "Deletar",
   "active": "Ativo",
+  "update_email_error": "Erro em atualizar usuário: tente outro email.",
   "quiz": {
     "tdah": {
       "questions": [

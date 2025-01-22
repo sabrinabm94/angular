@@ -72,7 +72,9 @@ export class ResultsComponent {
     try {
       await this.ensureResultsLoaded(language, score);
     } catch (error) {
-      console.error('Erro ao inicializar os resultados:', error);
+      const errorMessage = 'Erro ao carregar pontuação';
+      console.error(errorMessage, error);
+      throw new Error(errorMessage + error);
     }
   }
 
@@ -80,7 +82,9 @@ export class ResultsComponent {
     try {
       await this.loadResults(language, score);
     } catch (error) {
-      console.error('Erro ao carregar resultados:', error);
+      const errorMessage = 'Erro ao carregar resultados';
+      console.error(errorMessage, error);
+      throw new Error(errorMessage + error);
     }
   }
 
@@ -102,7 +106,9 @@ export class ResultsComponent {
       );
       this.dateResults = this.quizService.getQuizDate(score);
     } catch (error) {
-      console.error('Erro ao carregar resultados:', error);
+      const errorMessage = 'Erro ao carregar resultados';
+      console.error(errorMessage, error);
+      throw new Error(errorMessage + error);
     }
   }
 

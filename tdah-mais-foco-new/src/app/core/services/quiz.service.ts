@@ -22,8 +22,9 @@ export class QuizService {
       let content: any = await this.httpClient.get<any[]>(filePath).toPromise();
       return content || [];
     } catch (error) {
-      console.error('Erro ao ler arquivo:', error);
-      return [];
+      const errorMessage = 'Erro ao ler arquivo para a linguagem selecionada';
+      console.error(errorMessage, error);
+      throw new Error(errorMessage + error);
     }
   }
 
@@ -46,7 +47,7 @@ export class QuizService {
                 example: question.example,
                 frequency_and_context: question.frequency_and_context,
                 area: question.area,
-                response: null,
+                result: null,
               });
             }
           );
@@ -198,7 +199,7 @@ export class QuizService {
     if (answers && answers.length > 0) {
       score = answers.reduce((acc, answer) => {
         //seleciona somente as respostas que foram respondidas
-        if (answer.response != null && answer.response === true) {
+        if (answer.result != null && answer.result === true) {
           let selectedAreas: string[] = [];
 
           if (Array.isArray(answer.area)) {

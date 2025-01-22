@@ -93,6 +93,7 @@
   "page_user_manage_list_title": "Lista de usuarios",
   "page_user_manage_title": "Gestión de usuario",
   "role_label": "Papiel",
+  "role": "Papiel",
   "id": "Id",
   "birthday": "Fecha de nacimiento",
   "email": "Correo electrónico",
@@ -101,6 +102,7 @@
   "edit": "Editar",
   "delete": "Eliminar",
   "active": "Active",
+  "update_email_error": "Error al actualizar el usuario: intenta con otro correo electrónico.",
   "quiz": {
     "tdah": {
       "questions": [

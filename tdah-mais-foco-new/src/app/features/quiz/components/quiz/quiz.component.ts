@@ -96,8 +96,8 @@ export class QuizComponent {
             this.isFirstScore
           );
           if (this.userId) {
-            await this.saveScore(this.score).then((response) => {
-              if (response) {
+            await this.saveScore(this.score).then((result) => {
+              if (result) {
                 this.router.navigate([`${databasePath}${this.userId}`]);
               }
             });
@@ -106,8 +106,9 @@ export class QuizComponent {
           }
           return this.score;
         } catch (error) {
-          console.error('Erro ao calcular ou salvar pontuação:', error);
-          throw error;
+          const errorMessage = 'Erro ao calcular pontuação de usuário';
+          console.error(errorMessage, error);
+          throw new Error(errorMessage + error);
         }
       }
       return null;
@@ -162,12 +163,11 @@ export class QuizComponent {
       try {
         return await this.userService.saveUserScore(score);
       } catch (error) {
-        console.error('Erro ao salvar pontuação:', error);
-        throw error;
+        const errorMessage = 'Erro ao salvar pontuação de usuário';
+        console.error(errorMessage, error);
+        throw new Error(errorMessage + error);
       }
-    } else {
-      console.error('Pontuação inválida.');
-      throw new Error('Pontuação inválida');
     }
+    return null;
   }
 }

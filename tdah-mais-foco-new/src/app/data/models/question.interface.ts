@@ -3,5 +3,5 @@ export interface Question {
   example: string;
   frequency_and_context: string;
   area: string;
-  response: string;
+  result: string;
 }
