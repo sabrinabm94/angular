@@ -3,8 +3,8 @@
     <h2 class="text-center">{{ "title_user_registration" | translate }}</h2>
     <form class="form text-center" (ngSubmit)="registerUser()" #registrationForm="ngForm">
       <app-fieldset [content_style]="'row'">
+        <!-- Campo nome -->
         <div class="form-group">
-          <!-- Campo nome -->
           <legend>
             {{ "name_label" | translate }} <span class="required">*</span>
           </legend>
@@ -21,8 +21,8 @@
           </app-error-message>
         </div>
 
+        <!-- Campo E-mail -->
         <div class="form-group">
-          <!-- Campo E-mail -->
           <legend>
             {{ "email_label" | translate }} <span class="required">*</span>
           </legend>
@@ -34,8 +34,8 @@
           </app-error-message>
         </div>
 
+        <!-- Campo Senha -->
         <div class="form-group">
-          <!-- Campo Senha -->
           <legend>
             {{ "password_label" | translate }} <span class="required">*</span>
           </legend>

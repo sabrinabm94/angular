@@ -52,7 +52,7 @@ export class UserProfileComponent implements OnInit {
     ocupation: Occupation.student,
     gender: Gender.male,
     educationLevel: EducationLevel.high_school,
-    role: Role.none,
+    role: Role.user,
     active: true,
     creationDate: '',
     updateDate: null,

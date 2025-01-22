@@ -89,7 +89,7 @@
   "invalid_date": "The date format mus be DD/MM/YYYY",
   "administrator": "Administrator",
   "editor": "Editor",
-  "none": "None",
+  "user": "User",
   "page_user_manage_list_title": "User list",
   "page_user_manage_title": "User management",
   "role_label": "Role",

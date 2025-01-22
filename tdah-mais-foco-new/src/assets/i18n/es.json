@@ -89,7 +89,7 @@
   "invalid_date": "El formato de la fecha debe ser DD/MM/YYYY",
   "administrator": "Administrador",
   "editor": "Editor",
-  "none": "Ninguno",
+  "user": "Usuário",
   "page_user_manage_list_title": "Lista de usuarios",
   "page_user_manage_title": "Gestión de usuario",
   "role_label": "Papiel",
