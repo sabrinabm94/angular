@@ -10,14 +10,16 @@ export class GuestGuard implements CanActivate {
 
   async canActivate(): Promise<boolean> {
     if (!this.userService.isUserLoaded()) {
-      await this.userService.initializeUser();
+      await this.userService.verifyActiveFirebaseAuthUser(); // Aguarda a inicialização
     }
+
     const user = this.userService.getUser();
-    console.log('GuestGuard - canActive ', user);
+    console.log('GuestGuard - canActivate', user);
+
     if (!user) {
       return true;
     } else {
-      this.router.navigate([`/result/${user.uid}`]);
+      this.router.navigate([`/result/${user.uid}`]); // Redireciona se o usuário já estiver logado
       return false;
     }
   }

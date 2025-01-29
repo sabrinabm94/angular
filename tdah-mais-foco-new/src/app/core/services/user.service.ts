@@ -17,7 +17,7 @@ export class UserService {
   private userInitialized = false;
 
   constructor(private auth: Auth, private database: Database) {
-    this.initializeUser();
+    this.verifyActiveFirebaseAuthUser();
   }
 
   public setUser(user: FirebaseUser | null): FirebaseUser | null {
@@ -89,7 +89,7 @@ export class UserService {
     }
   }
 
-  public async initializeUser(): Promise<void> {
+  public async verifyActiveFirebaseAuthUser(): Promise<void> {
     if (this.userInitialized) return;
     this.userInitialized = true;
 
@@ -98,7 +98,11 @@ export class UserService {
         onAuthStateChanged(
           this.auth,
           (user) => {
-            //this.user = user;
+            if (user) {
+              this.setUser(this.convertFirebaseAuthToUser(user));
+            } else {
+              this.setUser(null);
+            }
             this.userLoaded = true;
             resolve();
           },

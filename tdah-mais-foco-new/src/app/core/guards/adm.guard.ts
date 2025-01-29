@@ -14,7 +14,7 @@ export class AdminGuard implements CanActivate {
     if (isAdmin && isAdmin === true) {
       return true;
     } else {
-      this.router.navigate([`/not-found`]); // Página de acesso negado
+      this.router.navigate([`/login`]); // Rediciona para caso não admin tente acessar uma rota protegida
       return false;
     }
   }

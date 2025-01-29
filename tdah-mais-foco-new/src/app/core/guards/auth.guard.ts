@@ -10,14 +10,16 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(): Promise<boolean> {
     if (!this.userService.isUserLoaded()) {
-      await this.userService.initializeUser();
+      await this.userService.verifyActiveFirebaseAuthUser(); // Aguarda a inicialização
     }
+
     const user = this.userService.getUser();
-    console.log('AuthGuard - canActive ', user);
+    console.log('AuthGuard - canActivate', user);
+
     if (user) {
       return true;
     } else {
-      this.router.navigate(['/login']);
+      this.router.navigate([`/login`]); // Redireciona se o usuário não estiver logado
       return false;
     }
   }
