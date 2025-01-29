@@ -150,7 +150,6 @@ export class UserProfileComponent implements OnInit {
             )
             .then(async (result) => {
               if (result) {
-                console.log(result);
                 // Atualiza usuário no banco de dados
 
               }

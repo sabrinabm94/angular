@@ -21,7 +21,6 @@ export class UserService {
   }
 
   public setUser(user: FirebaseUser | null): FirebaseUser | null {
-    console.log('atualizando usuário ativo ', user);
     if (user) {
       return (this.user = user);
     }
@@ -46,7 +45,6 @@ export class UserService {
     user: FirebaseUser
   ): Promise<FirebaseUser | null> {
     try {
-      console.log('upate user data ', user);
       if (user && user.uid) {
         const databasePath = `${this.databaseUserPath}${user.uid}`;
         const databaseRef = ref(this.database, databasePath);
@@ -181,7 +179,6 @@ export class UserService {
     user: FirebaseUser
   ): Promise<FirebaseUser | null> {
     try {
-      console.log('delete user data ', user);
       const databasePath = `${this.databaseUserPath}${user.uid}`;
       const databaseRef = ref(this.database, databasePath);
       user.active = false;

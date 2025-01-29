@@ -82,8 +82,9 @@ export class UserListComponent implements OnInit {
         const usersToManageList = await this.userService.getAllUsersData(
           userAdmin
         );
-        if (usersToManageList) console.log(usersToManageList);
-        return (this.usersToManageList = usersToManageList);
+        if (usersToManageList) {
+          return (this.usersToManageList = usersToManageList);
+        }
       } catch (error) {
         const errorMessage = 'Erro ao obter usuários';
         console.error(errorMessage, error);

@@ -161,8 +161,6 @@ export class AuthService {
   public getCurrentFirebaseUser(): any | null {
     let user = getAuth().currentUser; // Retorna o usuário autenticado no momento ou null se ninguém estiver logado
     if (user) {
-      console.log('getCurrentFirebaseUser ');
-      console.log(user);
       return user;
     }
     return null;
