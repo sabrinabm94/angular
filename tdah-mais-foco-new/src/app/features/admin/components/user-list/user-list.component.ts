@@ -9,12 +9,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { ContainerComponent } from '../../../../shared/components/container/container.component';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../../../core/services/auth.service';
 import { Gender } from '../../../../data/models/enums/gender.enum';
 import { Occupation } from '../../../../data/models/enums/occupation.enum';
 import { EducationLevel } from '../../../../data/models/enums/educationLevel.enum';
 import { Role } from '../../../../data/models/enums/role.enum';
-import { ButtonComponent } from '../../../../shared/components/pop-up/pop-up.component';
 import { Router } from '@angular/router';
 
 @Component({
@@ -31,7 +29,6 @@ import { Router } from '@angular/router';
     MatButtonModule,
     ContainerComponent,
     TranslatePipe,
-    ButtonComponent,
   ],
 })
 export class UserListComponent implements OnInit {
@@ -58,13 +55,9 @@ export class UserListComponent implements OnInit {
   educationLevelOptions: EducationLevel[] = [];
   submitted: boolean = false;
   roleOptions: Role[] = [];
-  showDeleteUserPopup: boolean = false;
+  showDeleteUserPopup: number | null = null;
 
-  constructor(
-    private userService: UserService,
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  constructor(private userService: UserService, private router: Router) {}
 
   async ngOnInit(): Promise<void> {
     await this.getUser();
@@ -117,24 +110,10 @@ export class UserListComponent implements OnInit {
     return null;
   }
 
-  public deleteUserPopUp(showPopup: boolean) {
-    this.showDeleteUserPopup = showPopup;
-  }
-
   public async editUser(user: FirebaseUser): Promise<boolean | null> {
     if (user && user.uid) {
       return this.router.navigate([`/user-management/${user.uid}`]);
     }
-    return null;
-  }
-
-  public async deleteUser(user: FirebaseUser): Promise<FirebaseUser | null> {
-    if (user) {
-      return await this.userService
-        .deleteUserData(user)
-        .finally(() => (this.showDeleteUserPopup = false));
-    }
-
     return null;
   }
 }

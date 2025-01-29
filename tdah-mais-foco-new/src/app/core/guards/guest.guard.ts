@@ -12,8 +12,8 @@ export class GuestGuard implements CanActivate {
     if (!this.userService.isUserLoaded()) {
       await this.userService.initializeUser();
     }
-
     const user = this.userService.getUser();
+    console.log('GuestGuard - canActive ', user);
     if (!user) {
       return true;
     } else {

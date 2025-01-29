@@ -21,6 +21,7 @@ export class UserService {
   }
 
   public setUser(user: FirebaseUser | null): FirebaseUser | null {
+    console.log('atualizando usuário ativo ', user);
     if (user) {
       return (this.user = user);
     }

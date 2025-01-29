@@ -216,6 +216,13 @@ a:not(:disabled):hover,
   opacity: 0.8;
 }
 
+button:disabled,
+.disabled {
+  opacity: 0.5;
+  color: #555555;
+  pointer-events: none;
+}
+
 .link {
   cursor: pointer;
   color: #8f36a7;

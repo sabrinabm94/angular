@@ -24,6 +24,8 @@
   "submit": "Enviar",
   "yes": "Sim",
   "no": "Não",
+  "true": "Sim",
+  "false": "Não",
   "send": "Enviar",
   "results_for": "Resultados para",
   "developed_by": "Desenvolvido por",
@@ -103,6 +105,7 @@
   "delete": "Deletar",
   "active": "Ativo",
   "update_email_error": "Erro em atualizar usuário: tente outro email.",
+  "deactivate_confirmation": "Confirme a desativação do usuário",
   "quiz": {
     "tdah": {
       "questions": [

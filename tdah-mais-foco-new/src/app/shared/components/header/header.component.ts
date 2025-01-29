@@ -33,7 +33,6 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.authService.logout();
-    this.userService.setUser(null);
     this.userId = '';
     this.router.navigate([`/login`]);
   }

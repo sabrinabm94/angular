@@ -10,6 +10,7 @@ export class AdminGuard implements CanActivate {
 
   async canActivate(): Promise<boolean> {
     const isAdmin = await this.isAdmin();
+    console.log('AdminGuard - canActive ', isAdmin);
     if (isAdmin && isAdmin === true) {
       return true;
     } else {

@@ -21,7 +21,7 @@ export class AuthService {
   constructor(private auth: Auth, private userService: UserService) {}
 
   // Função para configurar persistência
-  async configureAuthPersistence(): Promise<void> {
+  public async configureAuthPersistence(): Promise<void> {
     try {
       await this.auth.setPersistence(browserLocalPersistence);
     } catch (error) {
@@ -32,7 +32,7 @@ export class AuthService {
   }
 
   // Registrar usuário com e-mail e senha
-  async register(email: string, password: string): Promise<User | null> {
+  public async register(email: string, password: string): Promise<User | null> {
     try {
       const userCredential = await createUserWithEmailAndPassword(
         this.auth,
@@ -95,40 +95,60 @@ export class AuthService {
   }
 
   // Login com e-mail e senha
-  async loginWithEmail(email: string, password: string): Promise<User | null> {
+  public async loginWithEmail(
+    email: string,
+    password: string
+  ): Promise<User | null> {
     try {
-      const userCredential = await signInWithEmailAndPassword(
+      const response = await signInWithEmailAndPassword(
         this.auth,
         email,
         password
       );
-      console.log(userCredential);
-      this.userService.setUser(
-        this.userService.convertFirebaseAuthToUser(userCredential.user)
-      );
-      return userCredential.user;
+
+      if (response) {
+        const user = response.user;
+
+        //Atualiza usuário ativo
+        this.userService.setUser(
+          this.userService.convertFirebaseAuthToUser(user)
+        );
+        return user;
+      }
+      return null;
     } catch (error: any) {
       throw new Error(`Erro ao fazer login com e-mail: ${error.message}`);
     }
   }
 
-  // Login com google
-  async loginWithGoogle(
+  //Login com Google
+  public async loginWithGoogle(
     auth: Auth,
     provider: AuthProvider
   ): Promise<User | null> {
     try {
-      const userCredential = await signInWithPopup(auth, provider);
-      return userCredential.user;
+      const response = await signInWithPopup(auth, provider);
+
+      if (response) {
+        const user = response.user;
+
+        //Atualiza usuário ativo
+        this.userService.setUser(
+          this.userService.convertFirebaseAuthToUser(user)
+        );
+        return user;
+      }
+      return null;
     } catch (error: any) {
-      throw new Error(`Erro ao fazer login com Google: ${error.message}`);
+      throw new Error(`Erro ao fazer login com e-mail: ${error.message}`);
     }
   }
 
   // Logout do usuário
-  async logout(): Promise<void> {
+  public async logout(): Promise<void> {
     try {
       await signOut(this.auth);
+      //Atualiza usuário ativo
       this.userService.setUser(null);
     } catch (error) {
       const errorMessage = 'Erro ao sair';

@@ -1,39 +1,42 @@
-<section class="users" *ngIf="usersToManageList">
+<section class="list" *ngIf="usersToManageList">
   <app-container>
-    <h2 class="text-center">{{"page_user_manage_list_title" | translate }}</h2>
+    <h2 class="text-center">{{ "page_user_manage_list_title" | translate }}</h2>
     <div class="list-content">
       <ul class="list-legend inline-list">
-        <li class="text-center">
-          {{ "id" | translate }}
-        </li>
+        <li class="text-center">{{ "id" | translate }}</li>
         <li class="text-center">{{ "birthday" | translate }}</li>
         <li class="text-center">{{ "email" | translate }}</li>
         <li class="text-center">{{ "name" | translate }}</li>
         <li class="text-center">{{ "role" | translate }}</li>
+        <li class="text-center">{{ "active" | translate }}</li>
         <li class="text-center">{{ "actions" | translate }}</li>
       </ul>
-      <div class="user" *ngFor="let userToManage of usersToManageList">
-        <ul class="list-data inline-list">
-          <li class="text-center" *ngIf="userToManage.uid">
-            {{userToManage.uid}}
+      <div class="user" *ngFor="let userToManage of usersToManageList; let i = index">
+        <ul class="list-data inline-list" [class.disabled-list]="userToManage.active !== true">
+          <li class="text-center" [attr.data-label]="'id' | translate">
+            {{ userToManage.uid }}
           </li>
-          <li class="text-center">{{userToManage.birthdate}}</li>
-          <li class="text-center">{{userToManage.email}}</li>
-          <li class="text-center">{{userToManage.displayName}}</li>
-          <li class="text-center">{{userToManage.role}}</li>
-          <li class="text-center">
+          <li class="text-center" [attr.data-label]="'birthday' | translate">
+            {{ userToManage.birthdate }}
+          </li>
+          <li class="text-center" [attr.data-label]="'email' | translate">
+            {{ userToManage.email }}
+          </li>
+          <li class="text-center" [attr.data-label]="'name' | translate">
+            {{ userToManage.displayName }}
+          </li>
+          <li class="text-center" [attr.data-label]="'role' | translate">
+            {{ userToManage.role }}
+          </li>
+          <li class="text-center" [attr.data-label]="'active' | translate">
+            {{ userToManage.active }}
+          </li>
+          <li>
             <ul class="inline-list">
-              <li><a (click)="editUser(userToManage)">{{ "edit" | translate }}</a> </li>
-              <li><a (click)="showDeleteUserPopup === true">{{ "delete" | translate }}</a></li>
+              <li><a (click)="editUser(userToManage)">{{ "edit" | translate }}</a></li>
             </ul>
           </li>
         </ul>
-        <app-pop-up *ngIf="showDeleteUserPopup && showDeleteUserPopup === true && userToManage">
-          <h2 class="title">Desativar usuário</h2>
-          <h3 class="subtitle">Você quer desativar o usuário {{userToManage.uid}} - {{userToManage.displayName}}?</h3>
-          <a (click)="deleteUser(userToManage)">{{ "yes" | translate }}</a>
-          <a (click)="showDeleteUserPopup = false">{{ "no" | translate }}</a>
-        </app-pop-up>
       </div>
     </div>
   </app-container>

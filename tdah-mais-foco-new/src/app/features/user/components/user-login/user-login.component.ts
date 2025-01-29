@@ -99,9 +99,6 @@ export class UserLoginComponent {
           .then((result: any) => {
             if (result) {
               const user = result;
-              this.userService.setUser(
-                this.userService.convertFirebaseAuthToUser(user)
-              );
               alert(this.translateService.translate('login_success'));
               this.router.navigate([`/result/${user.uid}`]);
             }
@@ -124,9 +121,6 @@ export class UserLoginComponent {
           .then((result: any) => {
             if (result) {
               const user = result;
-              this.userService.setUser(
-                this.userService.convertFirebaseAuthToUser(user)
-              );
               alert(this.translateService.translate('login_success'));
               this.router.navigate([`/result/${user.uid}`]);
             }

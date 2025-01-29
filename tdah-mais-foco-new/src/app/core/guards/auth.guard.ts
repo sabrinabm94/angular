@@ -12,8 +12,8 @@ export class AuthGuard implements CanActivate {
     if (!this.userService.isUserLoaded()) {
       await this.userService.initializeUser();
     }
-
     const user = this.userService.getUser();
+    console.log('AuthGuard - canActive ', user);
     if (user) {
       return true;
     } else {
