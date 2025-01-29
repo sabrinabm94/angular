@@ -12,7 +12,7 @@
         <li class="text-center">{{ "actions" | translate }}</li>
       </ul>
       <div class="user" *ngFor="let userToManage of usersToManageList; let i = index">
-        <ul class="list-data inline-list" [class.disabled-list]="userToManage.active !== true">
+        <ul class="list-data inline-list" [class.disabled-list]="userToManage.active != true">
           <li class="text-center" [attr.data-label]="'id' | translate">
             {{ userToManage.uid }}
           </li>

@@ -15,7 +15,6 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideDatabase, getDatabase } from '@angular/fire/database';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { environment } from './environments/environment';
-import { UserService } from './app/core/services/user.service';
 import { AuthService } from './app/core/services/auth.service';
 
 // Função para configurar persistência de autenticação antes de carregar o estado do usuário
@@ -24,15 +23,6 @@ export function configureAuthPersistence(
 ): () => Promise<void> {
   return async () => {
     await authService.configureAuthPersistence();
-  };
-}
-
-// Função de inicialização do UserService (só será chamada após persistência)
-export function initializeUserState(
-  userService: UserService
-): () => Promise<void> {
-  return async () => {
-    await userService.initializeUser();
   };
 }
 
@@ -51,13 +41,6 @@ bootstrapApplication(AppComponent, {
       provide: APP_INITIALIZER,
       useFactory: configureAuthPersistence,
       deps: [AuthService],
-      multi: true,
-    },
-    // Inicializa o estado do usuário (UserService) após persistência
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeUserState,
-      deps: [UserService],
       multi: true,
     },
   ],

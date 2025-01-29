@@ -85,24 +85,24 @@ export class UserRegisterComponent {
 
   public async registerUser(): Promise<void> {
     this.submitted = true;
+    const formData = this.user;
 
     if (this.isFormValid() && this.user) {
-      //cria objeto de usuário a partir de formulário
       const newUser: FirebaseUser = {
-        active: this.user.active,
-        birthdate: this.user.birthdate,
-        displayName: this.user.displayName,
-        educationLevel: this.user.educationLevel,
-        email: this.user.email,
-        gender: this.user.gender,
-        ocupation: this.user.ocupation,
-        role: this.user.role,
-        uid: this.user.uid,
+        active: JSON.parse(String(formData.active)),
+        birthdate: String(formData.birthdate),
+        displayName: String(formData.displayName),
+        educationLevel: formData.educationLevel,
+        email: String(formData.email),
+        gender: formData.gender,
+        ocupation: formData.ocupation,
+        role: formData.role,
+        uid: String(formData.uid),
         creationDate: this.dateUtils.formateDateToInternationFormatString(
           new Date()
         ),
-        creatorId: this.user.uid,
-        password: this.user.password,
+        creatorId: String(formData.uid),
+        password: String(formData.password),
       };
 
       if (newUser && this.auth && this.user) {
@@ -117,7 +117,7 @@ export class UserRegisterComponent {
               //Pega dados do retorno do usuário criado pelo firebase
               const firebaseUser = result.user;
 
-              //Adiciona o usuário criado com os ids gerados pelo firebase
+              //Adiciona o usuário a ser criado com o id gerados pelo auth do firebase
               newUser.uid = firebaseUser.uid;
               newUser.creatorId = firebaseUser.uid;
 

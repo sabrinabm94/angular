@@ -217,6 +217,7 @@ export class UserService {
         const snapshot = await get(ref(this.database, this.databaseUserPath));
         if (!snapshot.exists()) return null;
         const usersData = snapshot.val();
+        //Pelo id do usuário, encontra seus dados no banco e retorna para cada usuário um registro na lista
         return Object.keys(usersData).map((key) => ({
           uid: key,
           ...usersData[key],

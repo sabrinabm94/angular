@@ -73,14 +73,13 @@ export class UserManageComponent implements OnInit {
     private dateUtils: DateUtils,
     private translateService: TranslateService,
     private userService: UserService,
-    private authService: AuthService,
     private route: ActivatedRoute
   ) {
     this.getFormOptions();
   }
 
   async ngOnInit(): Promise<void> {
-    await this.getUserToManage();
+    await this.getUserToManageById();
   }
 
   private getFormOptions() {
@@ -94,7 +93,7 @@ export class UserManageComponent implements OnInit {
     return this.route.snapshot.paramMap.get('id') || null;
   }
 
-  private async getUserToManage(): Promise<FirebaseUser | null> {
+  private async getUserToManageById(): Promise<FirebaseUser | null> {
     const userToManageId = this.getUserToManageIdFromUrl();
 
     if (userToManageId) {
@@ -132,30 +131,30 @@ export class UserManageComponent implements OnInit {
         userAdminId &&
         userToManage
       ) {
-        let newUserToManage: FirebaseUser = {
-          active: userToManage.active,
-          birthdate: userToManage.birthdate,
-          displayName: userToManage.displayName,
+        const userToManageNewData: FirebaseUser = {
+          active: JSON.parse(String(userToManage.active)),
+          birthdate: String(userToManage.birthdate),
+          displayName: String(userToManage.displayName),
           educationLevel: userToManage.educationLevel,
-          email: userToManage.email,
+          email: String(userToManage.email),
           gender: userToManage.gender,
           ocupation: userToManage.ocupation,
           role: userToManage.role,
-          uid: userToManage.uid,
+          uid: String(userToManage.uid),
           updateDate: this.dateUtils.formateDateToInternationFormatString(
             new Date()
           ),
-          updaterId: userAdminId,
-          password: userToManage.password,
+          updaterId: String(userAdminId),
+          password: String(userToManage.password),
         };
 
-        if (newUserToManage) {
+        if (userToManageNewData) {
           //Atualiza e-mail do usuário no firebase
           /*
           await this.authService
             .updateFirebaseAuthUserEmail(
-              newUserToManage.uid,
-              newUserToManage.email
+              userToManageNewData.uid,
+              userToManageNewData.email
             )
             .then(async (result) => {
               if (result) {
@@ -171,7 +170,7 @@ export class UserManageComponent implements OnInit {
             */
 
           await this.userService
-            .updateUserData(newUserToManage)
+            .updateUserData(userToManageNewData)
             .then(async (result) => {
               if (result) {
                 alert(this.translateService.translate('update_success'));
