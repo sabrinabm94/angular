@@ -106,6 +106,19 @@
   "active": "Ativo",
   "update_email_error": "Erro em atualizar usuário: tente outro email.",
   "deactivate_confirmation": "Confirme a desativação do usuário",
+  "gender": "Gênero",
+  "occupation": "Ocupação",
+  "password": "Senha",
+  "updateDate": "Data de Atualização",
+  "updaterId": "ID do Atualizador",
+  "userManagement": "Gerenciamento de Usuários",
+  "uid": "UID",
+  "birthdate": "Data de Nascimento",
+  "displayName": "Nome de Exibição",
+  "educationLevel": "Nível de Educação",
+  "creationDate": "Data de Criação",
+  "creatorId": "ID do Criador",
+  "ocupation": "Ocupação",
   "quiz": {
     "tdah": {
       "questions": [

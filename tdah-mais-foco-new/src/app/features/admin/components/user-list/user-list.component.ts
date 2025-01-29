@@ -14,6 +14,8 @@ import { Occupation } from '../../../../data/models/enums/occupation.enum';
 import { EducationLevel } from '../../../../data/models/enums/educationLevel.enum';
 import { Role } from '../../../../data/models/enums/role.enum';
 import { Router } from '@angular/router';
+import { ManageListComponent } from '../../../../shared/components/manage-list-component/manage-list.component';
+import { UserToManageListItem } from '../../../../data/models/user-to-manage-list-item.interface';
 
 @Component({
   selector: 'app-user-list',
@@ -29,6 +31,7 @@ import { Router } from '@angular/router';
     MatButtonModule,
     ContainerComponent,
     TranslatePipe,
+    ManageListComponent,
   ],
 })
 export class UserListComponent implements OnInit {
@@ -49,7 +52,7 @@ export class UserListComponent implements OnInit {
     updaterId: null,
   };
 
-  usersToManageList: FirebaseUser[] | null = [];
+  usersToManageList: UserToManageListItem[] | null = [];
   genderOptions: Gender[] = [];
   occupationOptions: Occupation[] = [];
   educationLevelOptions: EducationLevel[] = [];
@@ -76,14 +79,20 @@ export class UserListComponent implements OnInit {
 
   private async getUsersList(
     userAdmin: FirebaseUser | null
-  ): Promise<FirebaseUser[] | null> {
+  ): Promise<UserToManageListItem[] | null> {
     if (userAdmin) {
       try {
         const usersToManageList = await this.userService.getAllUsersData(
           userAdmin
         );
         if (usersToManageList) {
-          return (this.usersToManageList = usersToManageList);
+          // Filtrando valores nulos e garantindo que usersToManageList seja do tipo UserToManageListItem[]
+          this.usersToManageList = usersToManageList
+            .map((user) => this.convertFirebaseUserToUserToManageListItem(user))
+            .filter(
+              (userToManage) => userToManage !== null
+            ) as UserToManageListItem[];
+          return this.usersToManageList;
         }
       } catch (error) {
         const errorMessage = 'Erro ao obter usuários';
@@ -97,6 +106,24 @@ export class UserListComponent implements OnInit {
   public async editUser(user: FirebaseUser): Promise<boolean | null> {
     if (user && user.uid) {
       return this.router.navigate([`/user-management/${user.uid}`]);
+    }
+    return null;
+  }
+
+  private convertFirebaseUserToUserToManageListItem(
+    user: FirebaseUser
+  ): UserToManageListItem | null {
+    if (user) {
+      const userToManage: UserToManageListItem = {
+        uid: String(user.uid),
+        birthdate: String(user.birthdate),
+        email: String(user.email),
+        name: String(user.displayName),
+        role: String(user.role),
+        active: String(user.active),
+      };
+
+      return userToManage;
     }
     return null;
   }

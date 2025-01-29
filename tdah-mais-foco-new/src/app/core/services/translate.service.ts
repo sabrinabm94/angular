@@ -34,12 +34,31 @@ export class TranslateService {
   }
 
   // Obter uma tradução
-  translate(key: string): string {
-    if (!this.translations || !this.translations[key]) {
-      console.warn(`Chave de tradução ausente: ${key}`);
-      return `[${key}]`; // Placeholder para chaves ausentes
+  translate(key: string): string | null {
+    if (
+      key &&
+      typeof key === 'string' &&
+      this.translations &&
+      this.translations[key] &&
+      typeof this.translations[key] === 'string'
+    ) {
+      return this.translations[key];
     }
-    return this.translations[key];
+    console.warn(`Chave de tradução ausente: ${key}`);
+    return '';
+  }
+
+  translateOrReturnKey(key: string): string | null {
+    if (
+      key &&
+      typeof key === 'string' &&
+      this.translations &&
+      this.translations[key] &&
+      typeof this.translations[key] === 'string'
+    ) {
+      return this.translations[key];
+    }
+    return key;
   }
 
   // Alterar idioma

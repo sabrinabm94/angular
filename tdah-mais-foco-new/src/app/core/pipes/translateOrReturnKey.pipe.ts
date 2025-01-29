@@ -2,17 +2,17 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '../services/translate.service';
 
 @Pipe({
-  name: 'translate',
+  name: 'translateOrReturnKeyPipe',
   standalone: true,
   pure: false, // Recalcula se a linguagem mudar
 })
-export class TranslatePipe implements PipeTransform {
+export class TranslateOrReturnKeyPipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
 
   transform(key: any): string | null {
     if (key) {
-      return this.translateService.translate(String(key));
+      return this.translateService.translateOrReturnKey(String(key));
     }
-    return '';
+    return key;
   }
 }
