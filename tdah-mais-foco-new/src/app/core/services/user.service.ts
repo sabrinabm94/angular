@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { Database, ref, child, get, set, update } from '@angular/fire/database';
-import { FirebaseUser } from '../../data/models/Firebase-user.interface';
-import { ResultQuizData } from '../../data/models/result-quiz-data.interface';
-import { Role } from '../../data/models/enums/role.enum';
-import { FirebaseAuth } from '../../data/models/Firebase-auth.interface';
+import { FirebaseUser } from '../../data/models/user/Firebase-user.interface';
+import { Role } from '../../data/models/enums/user/user-role.enum';
+import { QuizResult } from '../../data/models/quiz/quiz-result.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -144,9 +143,7 @@ export class UserService {
     }
   }
 
-  public async saveUserScore(
-    score: ResultQuizData
-  ): Promise<ResultQuizData | null> {
+  public async saveUserScore(score: QuizResult): Promise<QuizResult | null> {
     const user = this.getUser();
     if (!user) return null;
 
@@ -191,12 +188,12 @@ export class UserService {
     }
   }
 
-  public async getUserScore(userId: string): Promise<ResultQuizData | null> {
+  public async getUserScore(userId: string): Promise<QuizResult | null> {
     if (userId) {
       try {
         const databasePath = `${this.databaseUserPath}${userId}${this.databaseQuizPath}`;
         const snapshot = await get(child(ref(this.database), databasePath));
-        return snapshot.exists() ? (snapshot.val() as ResultQuizData) : null;
+        return snapshot.exists() ? (snapshot.val() as QuizResult) : null;
       } catch (error) {
         const errorMessage = 'Erro ao obter pontuação de usuário';
         console.error(errorMessage, error);

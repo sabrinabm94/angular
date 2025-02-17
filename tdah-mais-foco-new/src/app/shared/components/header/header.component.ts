@@ -3,7 +3,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { SwitchLanguageNavComponent } from '../switch-language-nav/switch-language-nav.component';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { FirebaseUser } from '../../../data/models/Firebase-user.interface';
+import { FirebaseUser } from '../../../data/models/user/Firebase-user.interface';
 import { UserService } from '../../../core/services/user.service';
 import { TranslatePipe } from '../../../core/pipes/translate.pipe';
 

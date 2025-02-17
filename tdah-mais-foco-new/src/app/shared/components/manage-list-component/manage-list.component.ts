@@ -9,20 +9,28 @@ import {
 import { TranslatePipe } from '../../../core/pipes/translate.pipe';
 import { CommonModule } from '@angular/common';
 import { TranslateOrReturnKeyPipe } from '../../../core/pipes/translateOrReturnKey.pipe';
+import { ButtonComponent } from '../button/button.component';
 
 @Component({
   selector: 'app-manage-list',
   templateUrl: './manage-list.component.html',
   styleUrls: ['./manage-list.component.css'],
   standalone: true,
-  imports: [CommonModule, TranslatePipe, TranslateOrReturnKeyPipe],
+  imports: [
+    CommonModule,
+    TranslatePipe,
+    TranslateOrReturnKeyPipe,
+    ButtonComponent,
+  ],
 })
 export class ManageListComponent implements OnInit {
   @Input() title: string = '';
   @Input() itemsToManage: any[] = [];
   @Input() labels: string[] = [];
   @Input() isItemDisabled: boolean = false;
+  @Input() showCreate?: boolean = false;
   @Output() edit = new EventEmitter<any>();
+  @Output() create = new EventEmitter<any>();
 
   ngOnInit(): void {}
 
@@ -73,5 +81,9 @@ export class ManageListComponent implements OnInit {
 
   public editItem(item: any): void {
     this.edit.emit(item);
+  }
+
+  public createItem(): void {
+    this.create.emit();
   }
 }

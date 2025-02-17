@@ -94,6 +94,8 @@
   "user": "Usuário",
   "page_user_manage_list_title": "Lista de usuarios",
   "page_user_manage_title": "Gestión de usuario",
+  "page_questions_manage_list_title": "Lista de preguntas",
+  "page_questions_manage_title": "Gestión de preguntas",
   "role_label": "Papiel",
   "role": "Papiel",
   "id": "Id",
@@ -119,6 +121,13 @@
   "creationDate": "Fecha de Creación",
   "creatorId": "ID del Creador",
   "ocupation": "Ocupación",
+  "users": "Usuarios",
+  "questions": "Preguntas",
+  "question_label": "Pregunta",
+  "example_label": "Ejemplo",
+  "frequency_and_context_label": "Frecuencia y contexto",
+  "area_label": "Área relacionada",
+  "create": "Crear",
   "quiz": {
     "tdah": {
       "questions": [

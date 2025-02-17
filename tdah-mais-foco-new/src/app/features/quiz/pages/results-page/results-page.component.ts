@@ -9,6 +9,7 @@ import { HeaderComponent } from '../../../../shared/components/header/header.com
 import { ResultsComponent } from '../../components/results/results.component';
 import { UserService } from '../../../../core/services/user.service';
 import { TranslateService } from '../../../../core/services/translate.service';
+import { QuizResultByArea } from '../../../../data/models/quiz/quiz-result-by-area.interface';
 
 @Component({
   selector: 'app-results-page',
@@ -16,7 +17,6 @@ import { TranslateService } from '../../../../core/services/translate.service';
   imports: [
     CommonModule,
     TranslatePipe,
-    ButtonComponent,
     FooterComponent,
     HeaderComponent,
     ResultsComponent,
@@ -27,7 +27,7 @@ import { TranslateService } from '../../../../core/services/translate.service';
 export class ResultsPageComponent {
   public languageName: string | null = null;
   public userId: string | null = null;
-  public results: any;
+  public results: QuizResultByArea | null = null;
   public isAdmin: boolean = false;
   public showResults: boolean = false;
 

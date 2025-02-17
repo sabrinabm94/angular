@@ -7,6 +7,8 @@ import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { TranslateService } from '../../../../core/services/translate.service';
 import { QuizComponent } from '../../components/quiz/quiz.component';
+import { QuizResultByArea } from '../../../../data/models/quiz/quiz-result-by-area.interface';
+import { QuizResult } from '../../../../data/models/quiz/quiz-result.interface';
 
 @Component({
   selector: 'app-home-page',
@@ -25,7 +27,7 @@ import { QuizComponent } from '../../components/quiz/quiz.component';
 export class HomePageComponent implements OnInit {
   public languageName: string = '';
   public userId: string | null = null;
-  public results: any = null;
+  public results: QuizResult | null = null;
   public isAdmin: boolean = false;
   public isFirstScore: boolean = false;
 

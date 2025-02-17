@@ -1,4 +1,4 @@
-import { Role } from './enums/role.enum';
+import { Role } from '../enums/user/user-role.enum';
 import { User } from './user.interface';
 
 export interface FirebaseUser extends User {

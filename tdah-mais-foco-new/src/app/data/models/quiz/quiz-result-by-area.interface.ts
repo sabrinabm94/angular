@@ -1,5 +1,5 @@
 export interface QuizResultByArea {
-  name: string;
+  name?: string;
   score: number;
   level: string;
   message: string;

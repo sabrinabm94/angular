@@ -94,6 +94,8 @@
   "user": "User",
   "page_user_manage_list_title": "User list",
   "page_user_manage_title": "User management",
+  "page_questions_manage_list_title": "Question list",
+  "page_questions_manage_title": "Question management",
   "role_label": "Role",
   "role": "Role",
   "id": "Id",
@@ -119,6 +121,13 @@
   "birthdate": "Birthdate",
   "displayName": "Display Name",
   "educationLevel": "Education Level",
+  "users": "Users",
+  "questions": "Questions",
+  "question_label": "Question",
+  "example_label": "Example",
+  "frequency_and_context_label": "Frequency and context",
+  "area_label": "Related area",
+  "create": "Create",
   "quiz": {
     "tdah": {
       "questions": [

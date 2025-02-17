@@ -1,26 +1,25 @@
-import { FirebaseUser } from '../../../../data/models/Firebase-user.interface';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EmailUtils } from '../../../../core/utils/email.utils';
-import { TranslateService } from '../../../../core/services/translate.service';
-import { UserService } from '../../../../core/services/user.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { ContainerComponent } from '../../../../shared/components/container/container.component';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { FieldsetComponent } from '../../../../shared/components/fieldset/fieldset.component';
-import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
-import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { Component, Input, OnInit } from '@angular/core';
-import { AuthService } from '../../../../core/services/auth.service';
-import { Gender } from '../../../../data/models/enums/gender.enum';
-import { Occupation } from '../../../../data/models/enums/occupation.enum';
-import { EducationLevel } from '../../../../data/models/enums/educationLevel.enum';
-import { Role } from '../../../../data/models/enums/role.enum';
-import { DateUtils } from '../../../../core/utils/date.utils';
+import { ContainerComponent } from '../../../../../shared/components/container/container.component';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
+import { FieldsetComponent } from '../../../../../shared/components/fieldset/fieldset.component';
+import { ErrorMessageComponent } from '../../../../../shared/components/error-message/error-message.component';
+import { TranslatePipe } from '../../../../../core/pipes/translate.pipe';
+import { TranslateService } from '../../../../../core/services/translate.service';
+import { UserService } from '../../../../../core/services/user.service';
+import { DateUtils } from '../../../../../core/utils/date.utils';
+import { EmailUtils } from '../../../../../core/utils/email.utils';
+import { EducationLevel } from '../../../../../data/models/enums/user/user-educationLevel.enum';
+import { Gender } from '../../../../../data/models/enums/user/user-gender.enum';
+import { Occupation } from '../../../../../data/models/enums/user/user-occupation.enum';
+import { Role } from '../../../../../data/models/enums/user/user-role.enum';
+import { FirebaseUser } from '../../../../../data/models/user/Firebase-user.interface';
 
 @Component({
   selector: 'app-user-manage',

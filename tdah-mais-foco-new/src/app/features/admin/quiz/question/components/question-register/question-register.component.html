@@ -1,0 +1,81 @@
+<section class="user-registration" *ngIf="question">
+  <app-container>
+    <h2 class="text-center">{{ "title_question_registration" | translate }}</h2>
+    <form class="form text-center" (ngSubmit)="registerQuestion()" #registrationForm="ngForm">
+      <app-fieldset [content_style]="'row'">
+        <!-- Campo pergunta -->
+        <div class="form-group">
+          <legend>
+            {{ "question_label" | translate }} <span class="required">*</span>
+          </legend>
+          <input type="text" id="question" [(ngModel)]="question.question" name="question"
+            autocomplete="current-question" required [attr.aria-invalid]="
+              question.question && question.question.trim() === ''
+                ? 'true'
+                : 'false'
+            " />
+          <app-error-message *ngIf="
+              question.question && question.question.trim() === '' && submitted
+            " aria-live="assertive">
+            {{ "field_required" | translate }}
+          </app-error-message>
+        </div>
+
+        <!-- Campo exemplo -->
+        <div class="form-group">
+          <legend>
+            {{ "example_label" | translate }} <span class="required">*</span>
+          </legend>
+          <input type="text" id="example" [(ngModel)]="question.example" name="example" autocomplete="current-example"
+            required [attr.aria-invalid]="
+              question.example && question.example.trim() === ''
+                ? 'true'
+                : 'false'
+            " />
+          <app-error-message *ngIf="
+              question.example && question.example.trim() === '' && submitted
+            " aria-live="assertive">
+            {{ "field_required" | translate }}
+          </app-error-message>
+        </div>
+
+        <!-- Campo frequência -->
+        <div class="form-group">
+          <legend>
+            {{ "frequency_and_context_label" | translate }} <span class="required">*</span>
+          </legend>
+          <input type="text" id="frequency_and_context" [(ngModel)]="question.frequency_and_context"
+            name="frequency_and_context" autocomplete="current-frequency_and_context" required [attr.aria-invalid]="
+              question.frequency_and_context && question.frequency_and_context.trim() === ''
+                ? 'true'
+                : 'false'
+            " />
+          <app-error-message *ngIf="
+              question.frequency_and_context && question.frequency_and_context.trim() === '' && submitted
+            " aria-live="assertive">
+            {{ "field_required" | translate }}
+          </app-error-message>
+        </div>
+
+        <!-- Campo área  -->
+        <div class="form-group">
+          <legend>{{ "area_label" | translate }}</legend>
+          <select id="area" [(ngModel)]="question.area" name="area">
+            <option [value]="questionArea" *ngFor="let questionArea of questionAreaOptions">
+              {{ questionArea | translate }}
+            </option>
+          </select>
+        </div>
+      </app-fieldset>
+
+      <div class="buttons">
+        <app-button [className]="'secundary'" (click)="registerQuestion()">
+          {{ "register" | translate }}
+        </app-button>
+        <a class="link" [routerLink]="['/login']" routerLinkActive="active"><app-button [className]="'secundary'">{{
+            "login" | translate
+            }}</app-button></a>
+      </div>
+    </form>
+  </app-container>
+</section>

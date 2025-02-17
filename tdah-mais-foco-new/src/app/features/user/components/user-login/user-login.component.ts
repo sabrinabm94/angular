@@ -15,15 +15,15 @@ import { ErrorMessageComponent } from '../../../../shared/components/error-messa
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { EmailUtils } from '../../../../core/utils/email.utils';
 import { UserService } from '../../../../core/services/user.service';
-import { FirebaseUser } from '../../../../data/models/Firebase-user.interface';
+import { FirebaseUser } from '../../../../data/models/user/Firebase-user.interface';
 import { TranslateService } from '../../../../core/services/translate.service';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../core/services/auth.service';
-import { Role } from '../../../../data/models/enums/role.enum';
-import { FirebaseAuth } from '../../../../data/models/Firebase-auth.interface';
-import { Occupation } from '../../../../data/models/enums/occupation.enum';
-import { Gender } from '../../../../data/models/enums/gender.enum';
-import { EducationLevel } from '../../../../data/models/enums/educationLevel.enum';
+import { Role } from '../../../../data/models/enums/user/user-role.enum';
+import { FirebaseAuth } from '../../../../data/models/user/Firebase-auth.interface';
+import { Occupation } from '../../../../data/models/enums/user/user-occupation.enum';
+import { Gender } from '../../../../data/models/enums/user/user-gender.enum';
+import { EducationLevel } from '../../../../data/models/enums/user/user-educationLevel.enum';
 
 @Component({
   selector: 'app-user-login',

@@ -1,25 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { FooterComponent } from '../../../../shared/components/footer/footer.component';
-import { HeaderComponent } from '../../../../shared/components/header/header.component';
-import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
-import { UserService } from '../../../../core/services/user.service';
+import { FooterComponent } from '../../../../../../shared/components/footer/footer.component';
+import { HeaderComponent } from '../../../../../../shared/components/header/header.component';
+import { TranslatePipe } from '../../../../../../core/pipes/translate.pipe';
+import { UserService } from '../../../../../../core/services/user.service';
 import { RouterModule } from '@angular/router';
-import { UserManageComponent } from '../../components/user-manage/user-manage.component';
+import { QuestionManageComponent } from '../../components/question-manage/question-manage.component';
 
 @Component({
-  selector: 'app-user-manage-page',
+  selector: 'app-question-manage-page',
   standalone: true,
-  templateUrl: './user-manage-page.component.html',
-  styleUrls: ['./user-manage-page.component.css'],
+  templateUrl: './question-manage-page.component.html',
+  styleUrls: ['./question-manage-page.component.css'],
   imports: [
-    UserManageComponent,
+    QuestionManageComponent,
     TranslatePipe,
     FooterComponent,
     HeaderComponent,
     RouterModule,
   ],
 })
-export class UserManagePageComponent implements OnInit {
+export class QuestionManagePageComponent implements OnInit {
   public userId: string | null = null;
   public isAdmin: boolean = false;
 

@@ -3,8 +3,7 @@ import { Router } from '@angular/router';
 import { QuizService } from '../../../../core/services/quiz.service';
 import { UserService } from '../../../../core/services/user.service';
 import { TranslateService } from '../../../../core/services/translate.service';
-import { FirebaseUser } from '../../../../data/models/Firebase-user.interface';
-import { ResultQuizData } from '../../../../data/models/result-quiz-data.interface';
+import { FirebaseUser } from '../../../../data/models/user/Firebase-user.interface';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
@@ -12,6 +11,8 @@ import { FieldsetComponent } from '../../../../shared/components/fieldset/fields
 import { ContainerComponent } from '../../../../shared/components/container/container.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { QuizResult } from '../../../../data/models/quiz/quiz-result.interface';
+import { QuizResultByArea } from '../../../../data/models/quiz/quiz-result-by-area.interface';
 
 @Component({
   selector: 'app-quiz',
@@ -30,7 +31,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class QuizComponent {
   questions: any = [];
-  score: ResultQuizData | null = null;
+  score: QuizResult | null = null;
   submitted: boolean = false;
   currentStep: number = 0;
   maxSteps: number = 9;
@@ -40,7 +41,7 @@ export class QuizComponent {
   @Input() userId: string | null = '';
   @Input() isFirstScore: boolean = false;
   @Input() languageName: string = '';
-  @Output() results = new EventEmitter<ResultQuizData | null>();
+  @Output() results = new EventEmitter<QuizResult | null>();
 
   constructor(
     private router: Router,
@@ -84,9 +85,7 @@ export class QuizComponent {
     }
   }
 
-  private async calculateScore(
-    questions: any[]
-  ): Promise<ResultQuizData | null> {
+  private async calculateScore(questions: any[]): Promise<QuizResult | null> {
     if (questions) {
       const databasePath = '/result/';
       if (databasePath) {
@@ -157,8 +156,8 @@ export class QuizComponent {
   }
 
   private async saveScore(
-    score: ResultQuizData | null
-  ): Promise<ResultQuizData | null> {
+    score: QuizResult | null
+  ): Promise<QuizResult | null> {
     if (score) {
       try {
         return await this.userService.saveUserScore(score);

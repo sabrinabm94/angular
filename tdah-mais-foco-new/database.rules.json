@@ -19,6 +19,18 @@
           ".write": "auth != null && (auth.uid === $userId || root.child('users').child(auth.uid).child('role').val() === 'administrator')"
         }
       }
+    },
+    "quiz": {
+      "tdah": {
+        "questions": {
+          ".read": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'administrator'",
+          ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'administrator'",
+          "$questionId": {
+            ".read": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'administrator'",
+            ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'administrator'"
+          }
+        }
+      }
     }
   }
 }

@@ -6,10 +6,10 @@ import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { FieldsetComponent } from '../../../../shared/components/fieldset/fieldset.component';
 import { TranslateService } from '../../../../core/services/translate.service';
 import { UserService } from '../../../../core/services/user.service';
-import { QuizResult } from '../../../../data/models/quiz-result.interface';
-import { QuizResultByArea } from '../../../../data/models/quiz-result-by-area.interface';
+import { QuizResultByArea } from '../../../../data/models/quiz/quiz-result-by-area.interface';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { Router, RouterModule } from '@angular/router';
+import { QuizResult } from '../../../../data/models/quiz/quiz-result.interface';
 
 @Component({
   selector: 'app-results',
@@ -27,13 +27,13 @@ import { Router, RouterModule } from '@angular/router';
   styleUrls: ['./results.component.css'],
 })
 export class ResultsComponent {
-  public results: QuizResult | null = null;
+  public results: QuizResultByArea | null = null;
   public areasResults!: QuizResultByArea[];
   public resultShareUrl: string = '';
   private message: string = `Olá, eu acabei de fazer meu teste de TDAH, faça você também!`;
   public dateResults: string | null = null;
 
-  @Input() score: QuizResult | null = null;
+  @Input() score: QuizResultByArea | null = null;
   @Input() userId: string | null = '';
   @Input() languageName: string | null = '';
 

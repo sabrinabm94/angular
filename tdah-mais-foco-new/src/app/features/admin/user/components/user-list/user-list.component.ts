@@ -1,21 +1,21 @@
-import { FirebaseUser } from '../../../../data/models/Firebase-user.interface';
-import { UserService } from '../../../../core/services/user.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { ContainerComponent } from '../../../../shared/components/container/container.component';
-import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { Component, OnInit } from '@angular/core';
-import { Gender } from '../../../../data/models/enums/gender.enum';
-import { Occupation } from '../../../../data/models/enums/occupation.enum';
-import { EducationLevel } from '../../../../data/models/enums/educationLevel.enum';
-import { Role } from '../../../../data/models/enums/role.enum';
 import { Router } from '@angular/router';
-import { ManageListComponent } from '../../../../shared/components/manage-list-component/manage-list.component';
-import { UserToManageListItem } from '../../../../data/models/user-to-manage-list-item.interface';
+import { TranslatePipe } from '../../../../../core/pipes/translate.pipe';
+import { UserService } from '../../../../../core/services/user.service';
+import { EducationLevel } from '../../../../../data/models/enums/user/user-educationLevel.enum';
+import { Gender } from '../../../../../data/models/enums/user/user-gender.enum';
+import { Occupation } from '../../../../../data/models/enums/user/user-occupation.enum';
+import { Role } from '../../../../../data/models/enums/user/user-role.enum';
+import { FirebaseUser } from '../../../../../data/models/user/Firebase-user.interface';
+import { UserToManageListItem } from '../../../../../data/models/user/user-to-manage-list-item.interface';
+import { ContainerComponent } from '../../../../../shared/components/container/container.component';
+import { ManageListComponent } from '../../../../../shared/components/manage-list-component/manage-list.component';
 
 @Component({
   selector: 'app-user-list',
@@ -30,7 +30,6 @@ import { UserToManageListItem } from '../../../../data/models/user-to-manage-lis
     MatInputModule,
     MatButtonModule,
     ContainerComponent,
-    TranslatePipe,
     ManageListComponent,
   ],
 })

@@ -1,15 +1,15 @@
-import { EducationLevel } from './enums/educationLevel.enum';
-import { Gender } from './enums/gender.enum';
-import { Occupation } from './enums/occupation.enum';
+import { EducationLevel } from '../enums/user/user-educationLevel.enum';
+import { Gender } from '../enums/user/user-gender.enum';
+import { Occupation } from '../enums/user/user-occupation.enum';
+import { QuizResult } from '../quiz/quiz-result.interface';
 import { FirebaseAuth } from './Firebase-auth.interface';
-import { ResultQuizData } from './result-quiz-data.interface';
 
 export interface User extends FirebaseAuth {
   birthdate?: string | Date | null;
   ocupation?: Occupation;
   educationLevel?: EducationLevel;
   gender?: Gender;
-  quiz?: ResultQuizData | null;
+  quiz?: QuizResult | null;
   active: boolean;
   creationDate?: string | null;
   updateDate?: string | null;

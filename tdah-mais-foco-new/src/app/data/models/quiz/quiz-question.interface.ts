@@ -1,0 +1,11 @@
+import { QuestionArea } from '../enums/question/question-area.enum';
+
+export interface QuizQuestion {
+  id?: string;
+  question: string;
+  example: string;
+  frequency_and_context: string;
+  area: QuestionArea;
+  result: boolean;
+  active: boolean;
+}

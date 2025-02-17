@@ -1,5 +1,10 @@
 <section class="list" *ngIf="itemsToManage">
-  <h2 class="text-center">{{ title | translate }}</h2>
+  <header class="list-header">
+    <h2 class="text-center">{{ title | translate }}</h2>
+    <app-button [className]="'secundary'" (click)="createItem()" *ngIf="showCreate && showCreate === true">
+      {{ "create" | translate }}
+    </app-button>
+  </header>
   <div class="list-content">
     <div class="item" *ngFor="let item of itemsToManage">
       <ul class="list-data inline-list">
