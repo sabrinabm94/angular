@@ -11,7 +11,7 @@ import { GoogleAuthProvider } from 'firebase/auth';
 import { ContainerComponent } from '../../../../shared/components/container/container.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { FieldsetComponent } from '../../../../shared/components/fieldset/fieldset.component';
-import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
+import { AlertMessageComponent } from '../../../../shared/components/alert-message/alert-message.component';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { EmailUtils } from '../../../../core/utils/email.utils';
 import { UserService } from '../../../../core/services/user.service';
@@ -20,10 +20,10 @@ import { TranslateService } from '../../../../core/services/translate.service';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Role } from '../../../../data/models/enums/user/user-role.enum';
-import { FirebaseAuth } from '../../../../data/models/user/Firebase-auth.interface';
 import { Occupation } from '../../../../data/models/enums/user/user-occupation.enum';
 import { Gender } from '../../../../data/models/enums/user/user-gender.enum';
 import { EducationLevel } from '../../../../data/models/enums/user/user-educationLevel.enum';
+import { AlertService } from '../../../../core/services/alert.service';
 
 @Component({
   selector: 'app-user-login',
@@ -36,9 +36,10 @@ import { EducationLevel } from '../../../../data/models/enums/user/user-educatio
     ContainerComponent,
     ButtonComponent,
     FieldsetComponent,
-    ErrorMessageComponent,
+    AlertMessageComponent,
     TranslatePipe,
     RouterModule,
+    AlertMessageComponent,
   ],
 })
 export class UserLoginComponent {
@@ -65,26 +66,45 @@ export class UserLoginComponent {
     private auth: Auth,
     private router: Router,
     private emailUtils: EmailUtils,
-    private userService: UserService,
     private authService: AuthService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private alertService: AlertService
   ) {}
 
   async resetPassword() {
     if (this.user) {
       if (!this.user.email || !this.validEmail(this.user.email)) {
-        alert(this.translateService.translate('invalid_email'));
+        const errorMessage = this.translateService.translate(
+          'user_email_validation_error'
+        );
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
         return;
       }
 
       try {
-        await sendPasswordResetEmail(this.auth, this.user.email);
-        alert(this.translateService.translate('password_reset_email_sent'));
+        await sendPasswordResetEmail(this.auth, this.user.email).then(() => {
+          const errorMessage = this.translateService.translate(
+            'user_password_reset_email_success'
+          );
+          this.alertService.alertMessageTriggerFunction(
+            errorMessage,
+            'success',
+            true
+          );
+        });
       } catch (error) {
-        alert(this.translateService.translate('password_reset_error'));
-        const errorMessage = 'Erro ao enviar e-mail de notificação';
-        console.error(errorMessage, error);
-        throw new Error(errorMessage + error);
+        const errorMessage = this.translateService.translate(
+          'user_password_reset_email_error'
+        );
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
       }
     }
   }
@@ -99,13 +119,24 @@ export class UserLoginComponent {
           .then((result: any) => {
             if (result) {
               const user = result;
-              alert(this.translateService.translate('login_success'));
+              const errorMessage =
+                this.translateService.translate('user_login_success');
+              this.alertService.alertMessageTriggerFunction(
+                errorMessage,
+                'success',
+                true
+              );
               this.router.navigate([`/result/${user.uid}`]);
             }
           });
       } catch (error) {
-        console.error(error);
-        alert(this.translateService.translate('invalid_data'));
+        const errorMessage =
+          this.translateService.translate('user_login_error');
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'success',
+          true
+        );
       }
     }
   }
@@ -121,13 +152,24 @@ export class UserLoginComponent {
           .then((result: any) => {
             if (result) {
               const user = result;
-              alert(this.translateService.translate('login_success'));
+              const errorMessage =
+                this.translateService.translate('user_login_success');
+              this.alertService.alertMessageTriggerFunction(
+                errorMessage,
+                'success',
+                true
+              );
               this.router.navigate([`/result/${user.uid}`]);
             }
           });
       } catch (error) {
-        console.error(error);
-        alert(this.translateService.translate('invalid_data'));
+        const errorMessage =
+          this.translateService.translate('user_login_error');
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
       }
     }
   }

@@ -6,7 +6,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { TranslatePipe } from '../../../../../core/pipes/translate.pipe';
 import { UserService } from '../../../../../core/services/user.service';
 import { EducationLevel } from '../../../../../data/models/enums/user/user-educationLevel.enum';
 import { Gender } from '../../../../../data/models/enums/user/user-gender.enum';
@@ -16,6 +15,9 @@ import { FirebaseUser } from '../../../../../data/models/user/Firebase-user.inte
 import { UserToManageListItem } from '../../../../../data/models/user/user-to-manage-list-item.interface';
 import { ContainerComponent } from '../../../../../shared/components/container/container.component';
 import { ManageListComponent } from '../../../../../shared/components/manage-list-component/manage-list.component';
+import { AlertMessageComponent } from '../../../../../shared/components/alert-message/alert-message.component';
+import { TranslateService } from '../../../../../core/services/translate.service';
+import { AlertService } from '../../../../../core/services/alert.service';
 
 @Component({
   selector: 'app-user-list',
@@ -31,6 +33,7 @@ import { ManageListComponent } from '../../../../../shared/components/manage-lis
     MatButtonModule,
     ContainerComponent,
     ManageListComponent,
+    AlertMessageComponent,
   ],
 })
 export class UserListComponent implements OnInit {
@@ -59,7 +62,12 @@ export class UserListComponent implements OnInit {
   roleOptions: Role[] = [];
   showDeleteUserPopup: number | null = null;
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private translateService: TranslateService,
+    private alertService: AlertService
+  ) {}
 
   async ngOnInit(): Promise<void> {
     await this.getUser();
@@ -94,9 +102,13 @@ export class UserListComponent implements OnInit {
           return this.usersToManageList;
         }
       } catch (error) {
-        const errorMessage = 'Erro ao obter usuários';
-        console.error(errorMessage, error);
-        throw new Error(errorMessage + error);
+        const errorMessage =
+          this.translateService.translate('users_data_error');
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
       }
     }
     return null;

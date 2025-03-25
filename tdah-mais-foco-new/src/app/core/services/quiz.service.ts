@@ -4,12 +4,19 @@ import { environment } from '../../../environments/environment';
 import { QuizResultByArea } from '../../data/models/quiz/quiz-result-by-area.interface';
 import { DateUtils } from '../utils/date.utils';
 import { QuizResult } from '../../data/models/quiz/quiz-result.interface';
+import { TranslateService } from './translate.service';
+import { AlertService } from './alert.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class QuizService {
-  constructor(private httpClient: HttpClient, private dateUtils: DateUtils) {}
+  constructor(
+    private httpClient: HttpClient,
+    private dateUtils: DateUtils,
+    private translateService: TranslateService,
+    private alertService: AlertService
+  ) {}
 
   public async readFileContentByLanguage(
     language: string | null
@@ -21,10 +28,16 @@ export class QuizService {
       let content: any = await this.httpClient.get<any[]>(filePath).toPromise();
       return content || [];
     } catch (error) {
-      const errorMessage = 'Erro ao ler arquivo para a linguagem selecionada';
-      console.error(errorMessage, error);
-      throw new Error(errorMessage + error);
+      const errorMessage = this.translateService.translate(
+        'language_data_error'
+      );
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
+    return [];
   }
 
   public getQuizQuestions(language: string | null) {
@@ -54,7 +67,14 @@ export class QuizService {
         return answers;
       },
       (error) => {
-        console.error('Erro ao processar as perguntas do quiz:', error);
+        const errorMessage = this.translateService.translate(
+          'language_data_processing_error'
+        );
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
         return [];
       }
     );
@@ -68,7 +88,14 @@ export class QuizService {
         }
       },
       (error) => {
-        console.error('Erro ao processar os resultados do quiz:', error);
+        const errorMessage = this.translateService.translate(
+          'quiz_data_processing_error'
+        );
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
         return [];
       }
     );
@@ -82,7 +109,14 @@ export class QuizService {
         }
       },
       (error) => {
-        console.error('Erro ao processar os resultados do quiz:', error);
+        const errorMessage = this.translateService.translate(
+          'quiz_results_processing_error'
+        );
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
         return [];
       }
     );

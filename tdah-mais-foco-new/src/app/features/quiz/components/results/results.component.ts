@@ -9,7 +9,9 @@ import { UserService } from '../../../../core/services/user.service';
 import { QuizResultByArea } from '../../../../data/models/quiz/quiz-result-by-area.interface';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { Router, RouterModule } from '@angular/router';
+import { AlertMessageComponent } from '../../../../shared/components/alert-message/alert-message.component';
 import { QuizResult } from '../../../../data/models/quiz/quiz-result.interface';
+import { AlertService } from '../../../../core/services/alert.service';
 
 @Component({
   selector: 'app-results',
@@ -22,6 +24,7 @@ import { QuizResult } from '../../../../data/models/quiz/quiz-result.interface';
     FieldsetComponent,
     ButtonComponent,
     RouterModule,
+    AlertMessageComponent,
   ],
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.css'],
@@ -40,7 +43,8 @@ export class ResultsComponent {
   constructor(
     private quizService: QuizService,
     private translateService: TranslateService,
-    private userService: UserService
+    private userService: UserService,
+    private alertService: AlertService
   ) {}
 
   async ngOnInit() {
@@ -70,25 +74,20 @@ export class ResultsComponent {
     }
 
     try {
-      await this.ensureResultsLoaded(language, score);
+      await this.processQuizResultsByScore(language, score);
     } catch (error) {
-      const errorMessage = 'Erro ao carregar pontuação';
-      console.error(errorMessage, error);
-      throw new Error(errorMessage + error);
+      const errorMessage = this.translateService.translate(
+        'quiz_user_results_processing_error'
+      );
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        false
+      );
     }
   }
 
-  private async ensureResultsLoaded(language: string | null, score: any) {
-    try {
-      await this.loadResults(language, score);
-    } catch (error) {
-      const errorMessage = 'Erro ao carregar resultados';
-      console.error(errorMessage, error);
-      throw new Error(errorMessage + error);
-    }
-  }
-
-  private async loadResults(language: string | null, score: any) {
+  private async processQuizResultsByScore(language: string | null, score: any) {
     try {
       const areaResultsMessages =
         await this.quizService.getResultsMessageByArea(language);
@@ -106,9 +105,14 @@ export class ResultsComponent {
       );
       this.dateResults = this.quizService.getQuizDate(score);
     } catch (error) {
-      const errorMessage = 'Erro ao carregar resultados';
-      console.error(errorMessage, error);
-      throw new Error(errorMessage + error);
+      const errorMessage = this.translateService.translate(
+        'quiz_results_processing_error'
+      );
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        false
+      );
     }
   }
 
@@ -129,7 +133,12 @@ export class ResultsComponent {
           url: this.resultShareUrl,
         })
         .catch((error) => {
-          console.error('Erro ao compartilhar:', error);
+          const errorMessage = this.translateService.translate('share_error');
+          this.alertService.alertMessageTriggerFunction(
+            errorMessage,
+            'error',
+            false
+          );
         });
     }
   }

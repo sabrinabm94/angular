@@ -5,33 +5,74 @@ import { HttpClientModule } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { TranslateService } from './core/services/translate.service';
 import { UserService } from './core/services/user.service';
+import { AlertMessageComponent } from './shared/components/alert-message/alert-message.component';
+import { AlertService } from './core/services/alert.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule, HttpClientModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    HttpClientModule,
+    AlertMessageComponent,
+  ],
   providers: [TranslateService],
 })
 export class AppComponent implements OnInit {
-  loading = true;
-
+  public loading = true;
   private userService!: UserService;
+
+  public alertMessageTrigger: boolean = false;
+  public alertMessageType: string = 'error';
+  public alertMessage: string = 'Erro, tente novamente';
+
+  private subscriptions = new Subscription();
 
   constructor(
     private translateService: TranslateService,
-    private injector: Injector
+    private injector: Injector,
+    private alertService: AlertService
   ) {}
 
   async ngOnInit(): Promise<void> {
-    // Obtenha o serviço UserService manualmente usando o Injector
     this.userService = this.injector.get(UserService);
 
-    // Use o serviço normalmente
     this.translateService.setLanguage(environment.lang);
-
     await this.userService.getUser();
     this.loading = false;
+
+    this.listenToAlerts();
+  }
+
+  private listenToAlerts() {
+    this.subscriptions.add(
+      this.alertService.alertMessageTrigger$.subscribe((trigger) => {
+        this.alertMessageTrigger = trigger;
+      })
+    );
+
+    this.subscriptions.add(
+      this.alertService.alertMessageType$.subscribe((type) => {
+        this.alertMessageType = type;
+      })
+    );
+
+    this.subscriptions.add(
+      this.alertService.alertMessage$.subscribe((message) => {
+        this.alertMessage = message;
+      })
+    );
+  }
+
+  public alertMessageEmmited() {
+    this.alertService.alertMessageEmmited();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }

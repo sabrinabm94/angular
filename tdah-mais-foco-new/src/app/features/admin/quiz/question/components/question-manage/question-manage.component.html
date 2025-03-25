@@ -1,6 +1,6 @@
 <section class="user-manage" *ngIf="userToManage">
   <app-container>
-    <h2 class="text-center">{{ "page_user_manage_title" | translate }}</h2>
+    <h2 class="text-center">{{ "page_user_manage_title" | translatePipe }}</h2>
     <p class="text-center" *ngIf="userToManage.uid">
       Id: {{userToManage.uid}}
     </p>
@@ -8,93 +8,83 @@
       <app-fieldset [content_style]="'row'">
         <!-- Campo nome -->
         <div class="form-group">
-          <legend>{{ "name_label" | translate }}</legend>
+          <legend>{{ "name_label" | translatePipe }}</legend>
           <input type="text" id="displayName" [(ngModel)]="userToManage.displayName" name="displayName"
             autocomplete="current-displayName" required
             [attr.aria-invalid]="userToManage.displayName && userToManage.displayName.trim() === '' && submitted ? 'true' : 'false'" />
-          <app-error-message *ngIf="userToManage.displayName && userToManage.displayName.trim() === '' && submitted"
-            aria-live="assertive">
-            {{ 'field_required' | translate }}
-          </app-error-message>
         </div>
 
         <!-- Campo E-mail -->
         <!-- <div class="form-group">
-          <legend>{{ "email_label" | translate }}</legend>
+          <legend>{{ "email_label" | translatePipe }}</legend>
           <input type="email" id="email" [(ngModel)]="userToManage.email" name="email"
             [attr.aria-invalid]="userToManage.email && !validEmail(userToManage.email) ? 'true' : 'false'" required />
-          <app-error-message *ngIf="!validEmail(userToManage.email) && submitted" aria-live="assertive">
-            {{ 'invalid_email' | translate }}
-          </app-error-message>
         </div> -->
 
         <!-- Campo gênero  -->
         <div class="form-group">
-          <legend>{{ "gender_label" | translate }}</legend>
+          <legend>{{ "gender_label" | translatePipe }}</legend>
           <select id="gender" [(ngModel)]="userToManage.gender" name="gender" required>
             <option [value]="gender" *ngFor="let gender of genderOptions">
-              {{ gender | translate }}
+              {{ gender | translatePipe }}
             </option>
           </select>
         </div>
 
         <!-- Campo data de nascimento  -->
         <div class="form-group">
-          <legend>{{ "birthdate_label" | translate }}</legend>
+          <legend>{{ "birthdate_label" | translatePipe }}</legend>
           <input type="date" id="birthdate" [(ngModel)]="userToManage.birthdate" name="birthdate"
             [attr.aria-invalid]="!userToManage.birthdate && submitted ? 'true' : 'false'" required />
-          <app-error-message *ngIf="!userToManage.birthdate && submitted" aria-live="assertive">
-            {{ 'invalid_date' | translate }}
-          </app-error-message>
         </div>
 
         <!-- Campo ocupação  -->
         <div class="form-group">
-          <legend>{{ "ocupation_label" | translate }}</legend>
+          <legend>{{ "ocupation_label" | translatePipe }}</legend>
           <select id="ocupation" [(ngModel)]="userToManage.ocupation" name="ocupation" required>
             <option [value]="occupation" *ngFor="let occupation of occupationOptions">
-              {{ occupation | translate }}
+              {{ occupation | translatePipe }}
             </option>
           </select>
         </div>
 
         <!-- Campo escolaridade  -->
         <div class="form-group">
-          <legend>{{ "education_level_label" | translate }}</legend>
+          <legend>{{ "education_level_label" | translatePipe }}</legend>
           <select id="educationLevel" [(ngModel)]="userToManage.educationLevel" name="educationLevel" required>
             <option [value]="educationLevel" *ngFor="let educationLevel of educationLevelOptions">
-              {{ educationLevel | translate }}
+              {{ educationLevel | translatePipe }}
             </option>
           </select>
         </div>
 
         <!-- Campo papel  -->
         <div class="form-group full-basis">
-          <legend>{{ "role_label" | translate }}</legend>
+          <legend>{{ "role_label" | translatePipe }}</legend>
           <select id="role" [(ngModel)]="userToManage.role" name="role" required>
             <option [value]="role" *ngFor="let role of roleOptions">
-              {{ role | translate }}
+              {{ role | translatePipe }}
             </option>
           </select>
         </div>
 
         <!-- Campo ativo  -->
         <div class="form-group full-basis">
-          <legend>{{ "active" | translate }}</legend>
+          <legend>{{ "active" | translatePipe }}</legend>
           <select id="active" [(ngModel)]="userToManage.active" name="active" required>
             <option [value]="true">
-              {{ "yes" | translate }}
+              {{ "yes" | translatePipe }}
             </option>
             <option [value]="false">
-              {{ "no" | translate }}
+              {{ "no" | translatePipe }}
             </option>
           </select>
         </div>
 
         <div class="full-width">
-          <app-button [className]="'secundary'" (click)="updateUserInfo(userToManage, userAdminId)"
+          <app-button [className]="'secundary'" (click)="updateQuestionData(userToManage, userAdminId)"
             [disabled]="!isFormValid(userToManage)">
-            {{ "update" | translate }}
+            {{ "update" | translatePipe }}
           </app-button>
         </div>
       </app-fieldset>

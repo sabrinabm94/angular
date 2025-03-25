@@ -3,6 +3,8 @@ import { Database, ref, child, get, set, update } from '@angular/fire/database';
 import { FirebaseUser } from '../../data/models/user/Firebase-user.interface';
 import { Role } from '../../data/models/enums/user/user-role.enum';
 import { QuizQuestion } from '../../data/models/quiz/quiz-question.interface';
+import { TranslateService } from './translate.service';
+import { AlertService } from './alert.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +12,11 @@ import { QuizQuestion } from '../../data/models/quiz/quiz-question.interface';
 export class QuestionService {
   private databaseQuestionsPath: string = '/quiz/tdah/questions/';
 
-  constructor(private database: Database) {}
+  constructor(
+    private database: Database,
+    private translateService: TranslateService,
+    private alertService: AlertService
+  ) {}
 
   public async updateQuestionData(
     question: QuizQuestion
@@ -20,20 +26,58 @@ export class QuestionService {
         const databasePath = `${this.databaseQuestionsPath}${question.id}`;
         const databaseRef = ref(this.database, databasePath);
 
-        await update(databaseRef, question).catch((error) => {
-          console.error('Erro ao salvar dados de pergunta:', error);
-        });
+        await update(databaseRef, question)
+          .then(() => {
+            const errorMessage = this.translateService.translate(
+              'question_update_success'
+            );
+            this.alertService.alertMessageTriggerFunction(
+              errorMessage,
+              'success',
+              true
+            );
+          })
+          .catch((error) => {
+            const errorMessage = this.translateService.translate(
+              'question_creation_success'
+            );
+            this.alertService.alertMessageTriggerFunction(
+              errorMessage,
+              'success',
+              true
+            );
+          });
       } else {
-        console.error('Dados inválidos.');
+        const errorMessage = this.translateService.translate(
+          'question_data_error'
+        );
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
       }
       return question;
     } catch (error: any) {
-      console.error('Erro ao salvar dados do pergunta:', error);
       if (error.code === 'PERMISSION_DENIED') {
-        throw new Error('Erro de permissão inválida: ' + error);
+        const errorMessage =
+          this.translateService.translate('permission_denied');
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
       }
-      throw new Error('Erro ao atualizar dados de pergunta: ' + error);
+      const errorMessage = this.translateService.translate(
+        'question_data_error'
+      );
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
+    return null;
   }
 
   public async getQuestionDataById(id: string): Promise<QuizQuestion | null> {
@@ -53,9 +97,16 @@ export class QuestionService {
       }
       return snapshot.val();
     } catch (error: any) {
-      console.error('Erro ao buscar pergunta:', error);
-      throw new Error(error.message || 'Erro inesperado.');
+      const errorMessage = this.translateService.translate(
+        'question_data_error'
+      );
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
+    return null;
   }
 
   public async saveQuestionData(
@@ -64,13 +115,28 @@ export class QuestionService {
     try {
       const databasePath = `${this.databaseQuestionsPath}${question.id}`;
       const databaseRef = ref(this.database, databasePath);
-      await update(databaseRef, question);
+      await update(databaseRef, question).then(() => {
+        const errorMessage = this.translateService.translate(
+          'question_update_success'
+        );
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'success',
+          true
+        );
+      });
       return question;
     } catch (error) {
-      const errorMessage = 'Erro ao salvar dados de pergunta ';
-      console.error(errorMessage, error);
-      throw new Error(errorMessage + error);
+      const errorMessage = this.translateService.translate(
+        'question_creation_error'
+      );
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
+    return null;
   }
 
   public async deleteQuestionData(
@@ -79,13 +145,29 @@ export class QuestionService {
     try {
       const databasePath = `${this.databaseQuestionsPath}${question.id}`;
       const databaseRef = ref(this.database, databasePath);
-      await update(databaseRef, question);
+      await update(databaseRef, question).then(() => {
+        const errorMessage = this.translateService.translate(
+          'question_desactivate_success'
+        );
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'success',
+          true
+        );
+      });
       return question;
     } catch (error) {
-      const errorMessage = 'Erro ao desativar usuário';
-      console.error(errorMessage, error);
-      throw new Error(errorMessage + error);
+      const errorMessage = this.translateService.translate(
+        'question_desactivate_error'
+      );
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
+
+    return null;
   }
 
   public async getAllQuestionsData(
@@ -104,12 +186,19 @@ export class QuestionService {
           ...questionsData[key],
         }));
       } catch (error) {
-        const errorMessage = 'Erro ao obter perguntas';
-        console.error(errorMessage, error);
-        throw new Error(errorMessage + error);
+        const errorMessage = this.translateService.translate(
+          'question_data_error'
+        );
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
       }
     }
-    console.error('Permissão negada');
+
+    const errorMessage = this.translateService.translate('permission_denied');
+    this.alertService.alertMessageTriggerFunction(errorMessage, 'error', true);
     return null;
   }
 }

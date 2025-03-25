@@ -6,19 +6,20 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { TranslatePipe } from '../../../../../../core/pipes/translate.pipe';
 import { EducationLevel } from '../../../../../../data/models/enums/user/user-educationLevel.enum';
 import { Gender } from '../../../../../../data/models/enums/user/user-gender.enum';
 import { Occupation } from '../../../../../../data/models/enums/user/user-occupation.enum';
 import { Role } from '../../../../../../data/models/enums/user/user-role.enum';
 import { FirebaseUser } from '../../../../../../data/models/user/Firebase-user.interface';
-import { UserToManageListItem } from '../../../../../../data/models/user/user-to-manage-list-item.interface';
 import { ContainerComponent } from '../../../../../../shared/components/container/container.component';
 import { ManageListComponent } from '../../../../../../shared/components/manage-list-component/manage-list.component';
 import { QuizQuestionToManageListItem } from '../../../../../../data/models/quiz/quiz-question-to-manage-list-item.interface';
 import { QuestionService } from '../../../../../../core/services/question.service';
 import { QuizQuestion } from '../../../../../../data/models/quiz/quiz-question.interface';
 import { UserService } from '../../../../../../core/services/user.service';
+import { AlertMessageComponent } from '../../../../../../shared/components/alert-message/alert-message.component';
+import { TranslateService } from '../../../../../../core/services/translate.service';
+import { AlertService } from '../../../../../../core/services/alert.service';
 
 @Component({
   selector: 'app-question-list',
@@ -34,6 +35,7 @@ import { UserService } from '../../../../../../core/services/user.service';
     MatButtonModule,
     ContainerComponent,
     ManageListComponent,
+    AlertMessageComponent,
   ],
 })
 export class QuestionListComponent implements OnInit {
@@ -59,7 +61,9 @@ export class QuestionListComponent implements OnInit {
   constructor(
     private userService: UserService,
     private questionService: QuestionService,
-    private router: Router
+    private router: Router,
+    private translateService: TranslateService,
+    private alertService: AlertService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -87,17 +91,23 @@ export class QuestionListComponent implements OnInit {
         if (questionsToManageList) {
           // Filtrando valores nulos e garantindo que questionsToManageList seja do tipo QuizQuestionToManageListItem[]
           this.questionsToManageList = questionsToManageList.map((item) => ({
-            id: item.id ? item.id : '',
-            question: item.question,
-            area: item.area,
-            active: item.active,
+            id: item.id ?? '',
+            question: item.question ?? '',
+            area: item.area ?? '',
+            active: item.active ?? false,
           }));
+
           return this.questionsToManageList;
         }
       } catch (error) {
-        const errorMessage = 'Erro ao obter listagem de perguntas';
-        console.error(errorMessage, error);
-        throw new Error(errorMessage + error);
+        const errorMessage = this.translateService.translate(
+          'questions_data_error'
+        );
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
       }
     }
     return null;

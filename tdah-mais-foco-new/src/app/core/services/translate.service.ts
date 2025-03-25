@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { BehaviorSubject, lastValueFrom } from 'rxjs';
+import { AlertService } from './alert.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,9 +12,10 @@ export class TranslateService {
   private currentLanguage: string;
   private languageChanged: BehaviorSubject<string>;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private alertService: AlertService) {
     this.currentLanguage = environment.lang || 'pt-br';
     this.languageChanged = new BehaviorSubject(this.currentLanguage);
+    this.translations = this.loadTranslations(this.currentLanguage);
   }
 
   // Carregar um arquivo de idioma
@@ -26,15 +28,17 @@ export class TranslateService {
       this.translations = data;
       this.languageChanged.next(this.currentLanguage); // Notifica os inscritos
     } catch (error) {
-      const errorMessage =
-        'Erro ao carregar traduções para o idioma ' + language;
-      console.error(errorMessage, error);
-      throw new Error(errorMessage + error);
+      const errorMessage = this.translate('language_data_processing_error');
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
   }
 
   // Obter uma tradução
-  translate(key: string): string | null {
+  translate(key: string): string {
     if (
       key &&
       typeof key === 'string' &&
@@ -68,10 +72,12 @@ export class TranslateService {
       await this.loadTranslations(this.currentLanguage);
       this.languageChanged.next(this.currentLanguage);
     } catch (error) {
-      const errorMessage =
-        'Erro ao alterar idioma para a linguagem ' + language;
-      console.error(errorMessage, error);
-      throw new Error(errorMessage + error);
+      const errorMessage = this.translate('language_change_error');
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
   }
 

@@ -13,7 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ContainerComponent } from '../../../../shared/components/container/container.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { FieldsetComponent } from '../../../../shared/components/fieldset/fieldset.component';
-import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
+import { AlertMessageComponent } from '../../../../shared/components/alert-message/alert-message.component';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../../core/services/auth.service';
@@ -22,6 +22,7 @@ import { Occupation } from '../../../../data/models/enums/user/user-occupation.e
 import { EducationLevel } from '../../../../data/models/enums/user/user-educationLevel.enum';
 import { DateUtils } from '../../../../core/utils/date.utils';
 import { Role } from '../../../../data/models/enums/user/user-role.enum';
+import { AlertService } from '../../../../core/services/alert.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -38,7 +39,7 @@ import { Role } from '../../../../data/models/enums/user/user-role.enum';
     ContainerComponent,
     ButtonComponent,
     FieldsetComponent,
-    ErrorMessageComponent,
+    AlertMessageComponent,
     TranslatePipe,
   ],
 })
@@ -71,7 +72,8 @@ export class UserProfileComponent implements OnInit {
     private translateService: TranslateService,
     private userService: UserService,
     private authService: AuthService,
-    private dateUtils: DateUtils
+    private dateUtils: DateUtils,
+    private alertService: AlertService
   ) {
     this.getFormOptions();
   }
@@ -88,9 +90,14 @@ export class UserProfileComponent implements OnInit {
           this.user.uid = currentUser.uid;
         }
       } catch (error) {
-        const errorMessage = 'Erro ao carregar dados de usuário';
-        console.error(errorMessage, error);
-        throw new Error(errorMessage + error);
+        const errorMessage = this.translateService.translate(
+          'current_user_data_error'
+        );
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
       }
     }
   }
@@ -112,10 +119,14 @@ export class UserProfileComponent implements OnInit {
       }
       return null;
     } catch (error) {
-      const errorMessage = 'Erro ao obter dados de usuário';
-      console.error(errorMessage, error);
-      throw new Error(errorMessage + error);
+      const errorMessage = this.translateService.translate('user_data_error');
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
+    return null;
   }
 
   public async updateUserInfo(
@@ -156,8 +167,11 @@ export class UserProfileComponent implements OnInit {
               return null;
             })
             .catch((error) => {
-              console.error('Erro ao atualizar usuário:', error);
-              alert(this.translateService.translate('update_email_error'));
+              const errorMessage = this.translateService.translate(
+      'user_data_update_error'
+);
+this.alertService.alertMessageTriggerFunction(errorMessage, 'error', true);
+
             }); */
 
           //Atualiza e-mail do usuário no firebase
@@ -166,14 +180,27 @@ export class UserProfileComponent implements OnInit {
             .then((result) => {
               if (result) {
                 console.log(result);
-                alert(this.translateService.translate('update_success'));
+                const errorMessage = this.translateService.translate(
+                  'user_update_data_success'
+                );
+                this.alertService.alertMessageTriggerFunction(
+                  errorMessage,
+                  'success',
+                  true
+                );
                 return result;
               }
               return null;
             })
             .catch((error) => {
-              console.error('Erro ao atualizar dados do usuário:', error);
-              alert(this.translateService.translate('update_email_error'));
+              const errorMessage = this.translateService.translate(
+                'user_data_update_error'
+              );
+              this.alertService.alertMessageTriggerFunction(
+                errorMessage,
+                'error',
+                true
+              );
             });
         }
       }
@@ -223,11 +250,25 @@ export class UserProfileComponent implements OnInit {
                 );
               }
 
-              alert(this.translateService.translate('update_success'));
+              const errorMessage = this.translateService.translate(
+                'user_update_data_sucess'
+              );
+              this.alertService.alertMessageTriggerFunction(
+                errorMessage,
+                'success',
+                true
+              );
             }
           })
           .catch((error) => {
-            console.error('Erro ao atualizar dados do usuário:', error);
+            const errorMessage = this.translateService.translate(
+              'user_data_update_error'
+            );
+            this.alertService.alertMessageTriggerFunction(
+              errorMessage,
+              'error',
+              true
+            );
           });
       }
     }

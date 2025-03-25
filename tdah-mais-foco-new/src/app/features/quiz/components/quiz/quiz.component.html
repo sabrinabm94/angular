@@ -1,9 +1,9 @@
 <section class="quiz">
   <app-container class="questions">
     <form *ngIf="this.questions && this.questions.length > 0">
-      <h2 class="text-center" *ngIf="this.currentStep < this.maxSteps">{{ "title_quiz" | translate }}</h2>
+      <h2 class="text-center" *ngIf="this.currentStep < this.maxSteps">{{ "title_quiz" | translatePipe }}</h2>
       <h3 class="text-center" *ngIf="this.currentStep < this.maxSteps">
-        {{ "part" | translate }} {{ this.currentStep + 1 }} /
+        {{ "part" | translatePipe }} {{ this.currentStep + 1 }} /
         {{ this.maxSteps }}
       </h3>
       <!-- Exibir perguntas da etapa atual -->
@@ -24,21 +24,15 @@
             <label>
               <input type="radio" [(ngModel)]="question.response" [value]="true" name="response{{ i }}"
                 (blur)="checkAnswer(question)" />
-              <span id="yes-option-{{ i }}">{{ "yes" | translate }}</span>
+              <span id="yes-option-{{ i }}">{{ "yes" | translatePipe }}</span>
             </label>
 
             <label>
               <input type="radio" [(ngModel)]="question.response" [value]="false" name="response{{ i }}"
                 (blur)="checkAnswer(question)" />
-              <span id="no-option-{{ i }}">{{ "no" | translate }}</span>
+              <span id="no-option-{{ i }}">{{ "no" | translatePipe }}</span>
             </label>
           </div>
-
-          <app-error-message *ngIf="
-              question.response !== true &&
-              question.response !== false &&
-              submitted === true
-            "></app-error-message>
         </app-fieldset>
       </div>
 
@@ -46,23 +40,23 @@
       <div class="buttons send action" *ngIf="this.currentStep < this.maxSteps">
         <app-button *ngIf="this.currentStep < this.maxSteps" (click)="nextStep()" [className]="'secundary'"
           [disabled]="!isFormValid()">
-          {{ "next" | translate }}
+          {{ "next" | translatePipe }}
         </app-button>
         <app-button *ngIf="this.currentStep >= 1 && this.currentStep <= this.maxSteps" (click)="backStep()"
           [className]="'secundary'">
-          {{ "back" | translate }}
+          {{ "back" | translatePipe }}
         </app-button>
       </div>
 
       <div class="send action" *ngIf="this.currentStep >= this.maxSteps">
-        <h3 class="text-center">{{ "title_quiz_send" | translate }}</h3>
+        <h3 class="text-center">{{ "title_quiz_send" | translatePipe }}</h3>
         <div class="buttons">
           <app-button [disabled]="!isFormValid()" (click)="submitAnswers()" [className]="'secundary'">
-            {{ "calculate_results" | translate }}
+            {{ "calculate_results" | translatePipe }}
           </app-button>
           <app-button *ngIf="this.currentStep >= 1 && this.currentStep <= this.maxSteps" (click)="backStep()"
             [className]="'secundary'">
-            {{ "revise_quiz" | translate }}
+            {{ "revise_quiz" | translatePipe }}
           </app-button>
         </div>
       </div>

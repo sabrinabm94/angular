@@ -1,73 +1,63 @@
 <section class="user-profile" *ngIf="user">
   <app-container>
-    <h2 class="text-center">{{ "page_profile_title" | translate }}</h2>
+    <h2 class="text-center">{{ "page_profile_title" | translatePipe }}</h2>
     <form class="form text-center" (ngSubmit)="updateUserData()" #profileForm="ngForm">
       <app-fieldset [content_style]="'row'">
         <!-- Campo nome -->
         <div class="form-group">
-          <legend>{{ "name_label" | translate }}</legend>
+          <legend>{{ "name_label" | translatePipe }}</legend>
           <input type="text" id="displayName" [(ngModel)]="user.displayName" name="displayName"
             autocomplete="current-displayName" required
             [attr.aria-invalid]="user.displayName && user.displayName.trim() === '' && submitted ? 'true' : 'false'" />
-          <app-error-message *ngIf="user.displayName && user.displayName.trim() === '' && submitted"
-            aria-live="assertive">
-            {{ 'field_required' | translate }}
-          </app-error-message>
         </div>
 
         <!-- Campo E-mail -->
         <!-- <div class="form-group">
-          <legend>{{ "email_label" | translate }}</legend>
+          <legend>{{ "email_label" | translatePipe }}</legend>
           <input type="email" id="email" [(ngModel)]="user.email" name="email"
             [attr.aria-invalid]="user.email && !validEmail(user.email) ? 'true' : 'false'" required />
-          <app-error-message *ngIf="!validEmail(user.email) && submitted" aria-live="assertive">
-            {{ 'invalid_email' | translate }}
-          </app-error-message>
         </div> -->
 
         <!-- Campo gênero  -->
         <div class="form-group">
-          <legend>{{ "gender_label" | translate }}</legend>
+          <legend>{{ "gender_label" | translatePipe }}</legend>
           <select id="gender" [(ngModel)]="user.gender" name="gender" required>
             <option [value]="gender" *ngFor="let gender of genderOptions">
-              {{ gender | translate }}
+              {{ gender | translatePipe }}
             </option>
           </select>
         </div>
 
         <!-- Campo data de nascimento  -->
         <div class="form-group">
-          <legend>{{ "birthdate_label" | translate }}</legend>
+          <legend>{{ "birthdate_label" | translatePipe }}</legend>
           <input type="date" id="birthdate" [(ngModel)]="user.birthdate" name="birthdate"
             [attr.aria-invalid]="!user.birthdate && submitted ? 'true' : 'false'" required />
-          <app-error-message *ngIf="!user.birthdate && submitted" aria-live="assertive">
-            {{ 'invalid_date' | translate }}
-          </app-error-message>
         </div>
 
         <!-- Campo ocupação  -->
         <div class="form-group">
-          <legend>{{ "ocupation_label" | translate }}</legend>
+          <legend>{{ "ocupation_label" | translatePipe }}</legend>
           <select id="ocupation" [(ngModel)]="user.ocupation" name="ocupation" required>
             <option [value]="occupation" *ngFor="let occupation of occupationOptions">
-              {{ occupation | translate }}
+              {{ occupation | translatePipe }}
             </option>
           </select>
         </div>
 
         <!-- Campo escolaridade  -->
         <div class="form-group">
-          <legend>{{ "education_level_label" | translate }}</legend>
+          <legend>{{ "education_level_label" | translatePipe }}</legend>
           <select id="educationLevel" [(ngModel)]="user.educationLevel" name="educationLevel" required>
             <option [value]="educationLevel" *ngFor="let educationLevel of educationLevelOptions">
-              {{ educationLevel | translate }}
+              {{ educationLevel | translatePipe }}
             </option>
           </select>
         </div>
 
         <div class="full-width">
           <app-button [className]="'secundary'" (click)="updateUserInfo(user, user.uid)" [disabled]="!isFormValid()">
-            {{ "update" | translate }}
+            {{ "update" | translatePipe }}
           </app-button>
         </div>
       </app-fieldset>

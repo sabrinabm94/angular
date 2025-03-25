@@ -1,8 +1,8 @@
 <app-header [userId]="userId" [isAdmin]="isAdmin" />
 <main class="main">
   <div class="container">
-    <h1 class="main-title text-center">{{ "app_title" | translate }}</h1>
-    <app-quiz *ngIf="!results" (results)="results = $event" [userId]="userId" [isFirstScore]="isFirstScore"
+    <h1 class="main-title text-center">{{ "app_title" | translatePipe }}</h1>
+    <app-quiz *ngIf="!results" (results)="$event" [userId]="userId" [isFirstScore]="isFirstScore"
       [languageName]="languageName"></app-quiz>
     <app-results *ngIf="results" [score]="results" [userId]="userId" [languageName]="languageName">
     </app-results>

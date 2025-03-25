@@ -27,7 +27,7 @@ import { QuizResult } from '../../../../data/models/quiz/quiz-result.interface';
 export class HomePageComponent implements OnInit {
   public languageName: string = '';
   public userId: string | null = null;
-  public results: QuizResult | null = null;
+  public results: QuizResultByArea | null = null;
   public isAdmin: boolean = false;
   public isFirstScore: boolean = false;
 

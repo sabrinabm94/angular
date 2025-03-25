@@ -1,49 +1,43 @@
 <section class="user-login" *ngIf="user">
   <app-container>
-    <h2 class="text-center">{{ "title_user_login" | translate }}</h2>
+    <h2 class="text-center">{{ "title_user_login" | translatePipe }}</h2>
     <form class="form" (ngSubmit)="loginWithEmail()">
       <app-fieldset>
         <div class="form-group">
           <!-- Campo Email -->
-          <legend>{{ "email_label" | translate }} <span class="required">*</span></legend>
+          <legend>{{ "email_label" | translatePipe }} <span class="required">*</span></legend>
           <input type="email" id="email" [(ngModel)]="user.email" name="email" required [attr.aria-invalid]="
               user.email && !validEmail(user.email) ? 'true' : 'false'
             " />
-          <app-error-message *ngIf="!validEmail(user.email) && submitted" aria-live="assertive">
-            {{ "invalid_email" | translate }}
-          </app-error-message>
         </div>
 
         <div class="form-group">
           <!-- Campo Senha -->
-          <legend>{{ "password_label" | translate }} <span class="required">*</span></legend>
+          <legend>{{ "password_label" | translatePipe }} <span class="required">*</span></legend>
           <input type="password" id="password" [(ngModel)]="user.password" name="password"
             autocomplete="current-password" required [attr.aria-invalid]="
               user.password && user.password.trim() === '' ? 'true' : 'false'
             " />
-          <app-error-message *ngIf="user.password && user.password.trim() === '' && submitted" aria-live="assertive">
-            {{ "field_required" | translate }}
-          </app-error-message>
         </div>
 
         <app-button [className]="'primary'" [disabled]="!isFormValid()" (click)="loginWithEmail()">
-          {{ "login_with_email" | translate }}
+          {{ "login_with_email" | translatePipe }}
         </app-button>
       </app-fieldset>
     </form>
 
     <div class="buttons">
       <a class="link" [routerLink]="['/quiz']" routerLinkActive="active"><app-button [className]="'secundary'">{{
-          "continue_without_login" | translate
+          "continue_without_login" | translatePipe
           }}</app-button></a>
 
       <a class="link" [routerLink]="['/register']" routerLinkActive="active"><app-button [className]="'secundary'">{{
-          "register" | translate
+          "register" | translatePipe
           }}</app-button></a>
     </div>
 
     <app-button [type]="'link'" (click)="resetPassword()" [disabled]="!user.email">
-      {{ "forgot_password" | translate }}
+      {{ "forgot_password" | translatePipe }}
     </app-button>
   </app-container>
 </section>

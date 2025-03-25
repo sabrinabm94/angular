@@ -1,12 +1,12 @@
 <section class="result">
   <app-container class="results" *ngIf="areasResults && results">
-    <!-- <h2 class="text-center">{{ "title_results" | translate }}</h2> -->
+    <!-- <h2 class="text-center">{{ "title_results" | translatePipe }}</h2> -->
     <app-fieldset class="areasResults" *ngIf="
         areasResults &&
         areasResults.length > 0 &&
         areasResults[0].name !== 'default'
       ">
-      <h3 class="text-center">{{ "title_areas_results" | translate }}</h3>
+      <h3 class="text-center">{{ "title_areas_results" | translatePipe }}</h3>
       <div class="area" *ngFor="let areaResult of areasResults">
         <!-- <h4>{{ areaResult.name }}</h4> -->
         <p>
@@ -15,39 +15,39 @@
       </div>
     </app-fieldset>
     <app-fieldset class="result" *ngIf="results">
-      <h3 class="text-center">{{ "title_final_results" | translate }}</h3>
+      <h3 class="text-center">{{ "title_final_results" | translatePipe }}</h3>
       <p>
         {{ results.message }}
       </p>
     </app-fieldset>
     <span class="results-data" *ngIf="dateResults">
       <hr />
-      <small class="text-center">{{ "title_date_results" | translate }}
+      <small class="text-center">{{ "title_date_results" | translatePipe }}
         {{ dateResults | date : "dd/MM/yyyy" }}
       </small>
       <hr />
     </span>
     <a class="link text-center" *ngIf="!this.userId" [routerLink]="['/register']" routerLinkActive="active">{{
-      "save_results" | translate }}</a>
+      "save_results" | translatePipe }}</a>
 
     <div class="buttons">
       <app-button *ngIf="this.userId && this.userId !== ''" [className]="'secundary'" (click)="shareResults()">{{
-        "results_share" | translate }}</app-button>
+        "results_share" | translatePipe }}</app-button>
 
       <a class="link" [routerLink]="['/quiz']" routerLinkActive="active"><app-button [className]="'secundary'">{{
-          "quiz_try_again" | translate
+          "quiz_try_again" | translatePipe
           }}</app-button></a>
     </div>
   </app-container>
   <app-container *ngIf="!areasResults && !results">
     <app-fieldset>
-      <h1 class="text-center">{{ "title_results_not_found" | translate }}</h1>
+      <h1 class="text-center">{{ "title_results_not_found" | translatePipe }}</h1>
       <h2 class="text-center">
-        {{ "subtitle_results_not_found" | translate }}
+        {{ "subtitle_results_not_found" | translatePipe }}
       </h2>
     </app-fieldset>
     <a class="link" [routerLink]="['/quiz']" routerLinkActive="active"><app-button [className]="'primary'">{{
-        "quiz_do" | translate
+        "quiz_do" | translatePipe
         }}</app-button></a>
   </app-container>
 </section>

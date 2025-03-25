@@ -1,12 +1,12 @@
 <nav class="switch-language-nav nav-container">
-  <span>{{ "switch_language_title" | translate }}: </span>
+  <span>{{ "switch_language_title" | translatePipe }}: </span>
   <span (click)="switchLanguage('pt-br')" class="nav-item link" [class.active]="isActive('pt-br')">
-    {{ "portuguese" | translate }}
+    {{ "portuguese" | translatePipe }}
   </span>
   <span (click)="switchLanguage('en')" class="nav-item link" [class.active]="isActive('en')">
-    | {{ "english" | translate }}
+    | {{ "english" | translatePipe }}
   </span>
   <span (click)="switchLanguage('es')" class="nav-item link" [class.active]="isActive('es')">
-    | {{ "spanish" | translate }}
+    | {{ "spanish" | translatePipe }}
   </span>
 </nav>

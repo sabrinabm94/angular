@@ -6,7 +6,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { Component } from '@angular/core';
-import { ErrorMessageComponent } from '../../../../../../shared/components/error-message/error-message.component';
+import { AlertMessageComponent } from '../../../../../../shared/components/alert-message/alert-message.component';
 import { TranslatePipe } from '../../../../../../core/pipes/translate.pipe';
 import { TranslateService } from '../../../../../../core/services/translate.service';
 import { ButtonComponent } from '../../../../../../shared/components/button/button.component';
@@ -15,6 +15,8 @@ import { FieldsetComponent } from '../../../../../../shared/components/fieldset/
 import { QuestionArea } from '../../../../../../data/models/enums/question/question-area.enum';
 import { QuestionService } from '../../../../../../core/services/question.service';
 import { QuizQuestion } from '../../../../../../data/models/quiz/quiz-question.interface';
+import { TranslateOrReturnKeyPipe } from '../../../../../../core/pipes/translateOrReturnKey.pipe';
+import { AlertService } from '../../../../../../core/services/alert.service';
 
 @Component({
   selector: 'app-question-register',
@@ -31,9 +33,10 @@ import { QuizQuestion } from '../../../../../../data/models/quiz/quiz-question.i
     ContainerComponent,
     ButtonComponent,
     FieldsetComponent,
-    ErrorMessageComponent,
+    AlertMessageComponent,
     TranslatePipe,
     RouterModule,
+    TranslateOrReturnKeyPipe,
   ],
 })
 export class QuestionRegisterComponent {
@@ -43,7 +46,8 @@ export class QuestionRegisterComponent {
   public question: QuizQuestion = {
     question: '',
     example: '',
-    frequency_and_context: '',
+    frequency: '',
+    context: '',
     area: QuestionArea.none,
     result: false,
     active: false,
@@ -51,7 +55,8 @@ export class QuestionRegisterComponent {
 
   constructor(
     private translateService: TranslateService,
-    private questionService: QuestionService
+    private questionService: QuestionService,
+    private alertService: AlertService
   ) {
     this.getFormOptions();
   }
@@ -66,11 +71,12 @@ export class QuestionRegisterComponent {
 
     if (this.question) {
       const question: QuizQuestion = {
+        id: String(crypto.randomUUID()),
         question: String(formData.question),
         example: String(formData.example),
-        frequency_and_context: String(formData.frequency_and_context),
+        frequency: String(formData.frequency),
+        context: String(formData.context),
         area: formData.area,
-        result: Boolean(formData.result),
         active: true,
       };
 
@@ -80,12 +86,25 @@ export class QuestionRegisterComponent {
         .then(async (result: any) => {
           if (result) {
             // Faz o login automático após o registro e redirecionamento
-            alert(this.translateService.translate('register_success'));
+            const errorMessage = this.translateService.translate(
+              'question_creation_success'
+            );
+            this.alertService.alertMessageTriggerFunction(
+              errorMessage,
+              'success',
+              true
+            );
           }
         })
         .catch((error: any) => {
-          console.error('Erro ao salvar dados de pergunta:', error);
-          alert(this.translateService.translate('invalid_data'));
+          const errorMessage = this.translateService.translate(
+            'question_creation_error'
+          );
+          this.alertService.alertMessageTriggerFunction(
+            errorMessage,
+            'error',
+            true
+          );
         });
     }
   }

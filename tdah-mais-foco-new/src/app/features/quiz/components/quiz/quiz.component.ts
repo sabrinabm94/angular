@@ -6,13 +6,14 @@ import { TranslateService } from '../../../../core/services/translate.service';
 import { FirebaseUser } from '../../../../data/models/user/Firebase-user.interface';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
-import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
+import { AlertMessageComponent } from '../../../../shared/components/alert-message/alert-message.component';
 import { FieldsetComponent } from '../../../../shared/components/fieldset/fieldset.component';
 import { ContainerComponent } from '../../../../shared/components/container/container.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { QuizResult } from '../../../../data/models/quiz/quiz-result.interface';
 import { QuizResultByArea } from '../../../../data/models/quiz/quiz-result-by-area.interface';
+import { AlertService } from '../../../../core/services/alert.service';
 
 @Component({
   selector: 'app-quiz',
@@ -23,7 +24,7 @@ import { QuizResultByArea } from '../../../../data/models/quiz/quiz-result-by-ar
     CommonModule,
     ButtonComponent,
     TranslatePipe,
-    ErrorMessageComponent,
+    AlertMessageComponent,
     FormsModule,
     FieldsetComponent,
     ContainerComponent,
@@ -31,7 +32,7 @@ import { QuizResultByArea } from '../../../../data/models/quiz/quiz-result-by-ar
 })
 export class QuizComponent {
   questions: any = [];
-  score: QuizResult | null = null;
+  @Input() score: QuizResult | null = null;
   submitted: boolean = false;
   currentStep: number = 0;
   maxSteps: number = 9;
@@ -47,7 +48,8 @@ export class QuizComponent {
     private router: Router,
     private quizService: QuizService,
     private translateService: TranslateService,
-    private userService: UserService
+    private userService: UserService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -72,7 +74,14 @@ export class QuizComponent {
         this.questions = questions;
       })
       .catch((error) => {
-        console.error('Erro ao carregar perguntas:', error);
+        const errorMessage = this.translateService.translate(
+          'questions_data_error'
+        );
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
       });
   }
 
@@ -105,9 +114,14 @@ export class QuizComponent {
           }
           return this.score;
         } catch (error) {
-          const errorMessage = 'Erro ao calcular pontuação de usuário';
-          console.error(errorMessage, error);
-          throw new Error(errorMessage + error);
+          const errorMessage = this.translateService.translate(
+            'quiz_results_processing_error'
+          );
+          this.alertService.alertMessageTriggerFunction(
+            errorMessage,
+            'error',
+            true
+          );
         }
       }
       return null;
@@ -162,9 +176,14 @@ export class QuizComponent {
       try {
         return await this.userService.saveUserScore(score);
       } catch (error) {
-        const errorMessage = 'Erro ao salvar pontuação de usuário';
-        console.error(errorMessage, error);
-        throw new Error(errorMessage + error);
+        const errorMessage = this.translateService.translate(
+          'quiz_results_save_error'
+        );
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
       }
     }
     return null;

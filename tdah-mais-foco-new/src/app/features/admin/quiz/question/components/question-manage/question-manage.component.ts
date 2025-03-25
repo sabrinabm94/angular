@@ -18,8 +18,9 @@ import { Role } from '../../../../../../data/models/enums/user/user-role.enum';
 import { FirebaseUser } from '../../../../../../data/models/user/Firebase-user.interface';
 import { ButtonComponent } from '../../../../../../shared/components/button/button.component';
 import { ContainerComponent } from '../../../../../../shared/components/container/container.component';
-import { ErrorMessageComponent } from '../../../../../../shared/components/error-message/error-message.component';
+import { AlertMessageComponent } from '../../../../../../shared/components/alert-message/alert-message.component';
 import { FieldsetComponent } from '../../../../../../shared/components/fieldset/fieldset.component';
+import { AlertService } from '../../../../../../core/services/alert.service';
 
 @Component({
   selector: 'app-question-manage',
@@ -36,7 +37,7 @@ import { FieldsetComponent } from '../../../../../../shared/components/fieldset/
     ContainerComponent,
     ButtonComponent,
     FieldsetComponent,
-    ErrorMessageComponent,
+    AlertMessageComponent,
     TranslatePipe,
   ],
 })
@@ -72,7 +73,8 @@ export class QuestionManageComponent implements OnInit {
     private dateUtils: DateUtils,
     private translateService: TranslateService,
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private alertService: AlertService
   ) {
     this.getFormOptions();
   }
@@ -112,14 +114,19 @@ export class QuestionManageComponent implements OnInit {
         return userData;
       }
     } catch (error) {
-      const errorMessage = 'Erro ao carregar dados de usuário';
-      console.error(errorMessage, error);
-      throw new Error(errorMessage + error);
+      const errorMessage = this.translateService.translate(
+        'questions_data_error'
+      );
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
     return null;
   }
 
-  public async updateUserInfo(
+  public async updateQuestionData(
     userToManage: FirebaseUser | null,
     userAdminId: string | null
   ): Promise<FirebaseUser | null> {
@@ -163,8 +170,10 @@ export class QuestionManageComponent implements OnInit {
               return null;
             })
             .catch((error) => {
-              console.error('Erro ao atualizar usuário:', error);
-              alert(this.translateService.translate('update_email_error'));
+              const errorMessage = this.translateService.translate(
+      'question_data_update_error'
+);
+this.alertService.alertMessageTriggerFunction(errorMessage, 'error', true);;
             });
             */
 
@@ -172,14 +181,27 @@ export class QuestionManageComponent implements OnInit {
             .updateUserData(userToManageNewData)
             .then(async (result) => {
               if (result) {
-                alert(this.translateService.translate('update_success'));
+                const errorMessage = this.translateService.translate(
+                  'question_update_success'
+                );
+                this.alertService.alertMessageTriggerFunction(
+                  errorMessage,
+                  'success',
+                  true
+                );
                 return result;
               }
               return null;
             })
             .catch((error) => {
-              console.error('Erro ao atualizar dados do usuário:', error);
-              alert(this.translateService.translate('update_email_error'));
+              const errorMessage = this.translateService.translate(
+                'question_update_error'
+              );
+              this.alertService.alertMessageTriggerFunction(
+                errorMessage,
+                'error',
+                true
+              );
             });
         }
       }

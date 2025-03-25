@@ -13,21 +13,33 @@ import {
   AuthProvider,
 } from '@angular/fire/auth';
 import { UserService } from './user.service';
+import { TranslateService } from './translate.service';
+import { AlertService } from './alert.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private auth: Auth, private userService: UserService) {}
+  constructor(
+    private auth: Auth,
+    private userService: UserService,
+    private translateService: TranslateService,
+    private alertService: AlertService
+  ) {}
 
   // Função para configurar persistência
   public async configureAuthPersistence(): Promise<void> {
     try {
       await this.auth.setPersistence(browserLocalPersistence);
     } catch (error) {
-      const errorMessage = 'Erro ao configurar persistência de dados';
-      console.error(errorMessage, error);
-      throw new Error(errorMessage + error);
+      const errorMessage = this.translateService.translate(
+        'persistence_configuration_error'
+      );
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
   }
 
@@ -41,8 +53,16 @@ export class AuthService {
       );
       return userCredential.user;
     } catch (error: any) {
-      throw new Error(`Erro ao registrar: ${error.message}`);
+      const errorMessage = this.translateService.translate(
+        'user_creation_error'
+      );
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
+    return null;
   }
 
   public async updateFirebaseAuthUserEmail(
@@ -59,12 +79,24 @@ export class AuthService {
             return newEmail;
           });
         } catch (error) {
-          const errorMessage = 'Erro ao atualizar e-mail';
-          console.error(errorMessage, error);
-          throw new Error(errorMessage + error);
+          const errorMessage = this.translateService.translate(
+            'user_email_update_error'
+          );
+          this.alertService.alertMessageTriggerFunction(
+            errorMessage,
+            'error',
+            true
+          );
         }
       } else {
-        console.error('Nenhum usuário logado.');
+        const errorMessage = this.translateService.translate(
+          'current_user_data_error'
+        );
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
       }
     }
 
@@ -83,12 +115,24 @@ export class AuthService {
           return newPassword;
         });
       } catch (error) {
-        const errorMessage = 'Erro ao atualizar senha';
-        console.error(errorMessage, error);
-        throw new Error(errorMessage + error);
+        const errorMessage = this.translateService.translate(
+          'user_password_update_error'
+        );
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
       }
     } else {
-      console.error('Nenhum usuário está logado.');
+      const errorMessage = this.translateService.translate(
+        'current_user_data_error'
+      );
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
 
     return null;
@@ -117,8 +161,14 @@ export class AuthService {
       }
       return null;
     } catch (error: any) {
-      throw new Error(`Erro ao fazer login com e-mail: ${error.message}`);
+      const errorMessage = this.translateService.translate('user_login_error');
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
+    return null;
   }
 
   //Login com Google
@@ -140,8 +190,14 @@ export class AuthService {
       }
       return null;
     } catch (error: any) {
-      throw new Error(`Erro ao fazer login com e-mail: ${error.message}`);
+      const errorMessage = this.translateService.translate('user_login_error');
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
+    return null;
   }
 
   // Logout do usuário
@@ -151,9 +207,13 @@ export class AuthService {
       //Atualiza usuário ativo
       this.userService.setUser(null);
     } catch (error) {
-      const errorMessage = 'Erro ao sair';
-      console.error(errorMessage, error);
-      throw new Error(errorMessage + error);
+      const errorMessage =
+        this.translateService.translate('user_loggout_error');
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
   }
 

@@ -4,8 +4,9 @@ export interface QuizQuestion {
   id?: string;
   question: string;
   example: string;
-  frequency_and_context: string;
+  frequency: string;
+  context: string;
   area: QuestionArea;
-  result: boolean;
+  result?: boolean;
   active: boolean;
 }

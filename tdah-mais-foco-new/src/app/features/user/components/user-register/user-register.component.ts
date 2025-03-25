@@ -13,7 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ContainerComponent } from '../../../../shared/components/container/container.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { FieldsetComponent } from '../../../../shared/components/fieldset/fieldset.component';
-import { ErrorMessageComponent } from '../../../../shared/components/error-message/error-message.component';
+import { AlertMessageComponent } from '../../../../shared/components/alert-message/alert-message.component';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { Component } from '@angular/core';
 import { DateUtils } from '../../../../core/utils/date.utils';
@@ -21,6 +21,7 @@ import { Gender } from '../../../../data/models/enums/user/user-gender.enum';
 import { Occupation } from '../../../../data/models/enums/user/user-occupation.enum';
 import { EducationLevel } from '../../../../data/models/enums/user/user-educationLevel.enum';
 import { Role } from '../../../../data/models/enums/user/user-role.enum';
+import { AlertService } from '../../../../core/services/alert.service';
 
 @Component({
   selector: 'app-user-register',
@@ -37,7 +38,7 @@ import { Role } from '../../../../data/models/enums/user/user-role.enum';
     ContainerComponent,
     ButtonComponent,
     FieldsetComponent,
-    ErrorMessageComponent,
+    AlertMessageComponent,
     TranslatePipe,
     RouterModule,
   ],
@@ -72,7 +73,8 @@ export class UserRegisterComponent {
     private emailUtils: EmailUtils,
     private dateUtils: DateUtils,
     private translateService: TranslateService,
-    private userService: UserService
+    private userService: UserService,
+    private alertService: AlertService
   ) {
     this.getFormOptions();
   }
@@ -128,19 +130,38 @@ export class UserRegisterComponent {
                   if (result) {
                     // Faz o login automático após o registro e redirecionamento
                     this.userService.setUser(newUser);
-                    alert(this.translateService.translate('register_success'));
+                    const errorMessage = this.translateService.translate(
+                      'user_creation_success'
+                    );
+                    this.alertService.alertMessageTriggerFunction(
+                      errorMessage,
+                      'success',
+                      true
+                    );
                     this.router.navigate(['/quiz']);
                   }
                 })
                 .catch((error: any) => {
-                  console.error('Erro ao salvar dados de usuário:', error);
-                  alert(this.translateService.translate('invalid_data'));
+                  const errorMessage = this.translateService.translate(
+                    'user_creation_error'
+                  );
+                  this.alertService.alertMessageTriggerFunction(
+                    errorMessage,
+                    'error',
+                    true
+                  );
                 });
             }
           })
           .catch((error: any) => {
-            console.error('Erro ao criar usuário:', error);
-            alert(this.translateService.translate('invalid_data'));
+            const errorMessage = this.translateService.translate(
+              'current_user_data_error'
+            );
+            this.alertService.alertMessageTriggerFunction(
+              errorMessage,
+              'error',
+              true
+            );
           });
       }
     }

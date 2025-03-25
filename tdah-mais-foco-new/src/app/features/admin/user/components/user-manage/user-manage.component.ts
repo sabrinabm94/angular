@@ -9,7 +9,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ContainerComponent } from '../../../../../shared/components/container/container.component';
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { FieldsetComponent } from '../../../../../shared/components/fieldset/fieldset.component';
-import { ErrorMessageComponent } from '../../../../../shared/components/error-message/error-message.component';
+import { AlertMessageComponent } from '../../../../../shared/components/alert-message/alert-message.component';
 import { TranslatePipe } from '../../../../../core/pipes/translate.pipe';
 import { TranslateService } from '../../../../../core/services/translate.service';
 import { UserService } from '../../../../../core/services/user.service';
@@ -20,6 +20,7 @@ import { Gender } from '../../../../../data/models/enums/user/user-gender.enum';
 import { Occupation } from '../../../../../data/models/enums/user/user-occupation.enum';
 import { Role } from '../../../../../data/models/enums/user/user-role.enum';
 import { FirebaseUser } from '../../../../../data/models/user/Firebase-user.interface';
+import { AlertService } from '../../../../../core/services/alert.service';
 
 @Component({
   selector: 'app-user-manage',
@@ -36,7 +37,7 @@ import { FirebaseUser } from '../../../../../data/models/user/Firebase-user.inte
     ContainerComponent,
     ButtonComponent,
     FieldsetComponent,
-    ErrorMessageComponent,
+    AlertMessageComponent,
     TranslatePipe,
   ],
 })
@@ -72,7 +73,8 @@ export class UserManageComponent implements OnInit {
     private dateUtils: DateUtils,
     private translateService: TranslateService,
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private alertService: AlertService
   ) {
     this.getFormOptions();
   }
@@ -112,9 +114,12 @@ export class UserManageComponent implements OnInit {
         return userData;
       }
     } catch (error) {
-      const errorMessage = 'Erro ao carregar dados de usuário';
-      console.error(errorMessage, error);
-      throw new Error(errorMessage + error);
+      const errorMessage = this.translateService.translate('user_data_error');
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
     return null;
   }
@@ -163,8 +168,10 @@ export class UserManageComponent implements OnInit {
               return null;
             })
             .catch((error) => {
-              console.error('Erro ao atualizar usuário:', error);
-              alert(this.translateService.translate('update_email_error'));
+              const errorMessage = this.translateService.translate(
+        'user_data_error'
+      );
+      this.alertService.alertMessageTriggerFunction(errorMessage, 'error', true);
             });
             */
 
@@ -172,14 +179,25 @@ export class UserManageComponent implements OnInit {
             .updateUserData(userToManageNewData)
             .then(async (result) => {
               if (result) {
-                alert(this.translateService.translate('update_success'));
+                const errorMessage =
+                  this.translateService.translate('user_data_success');
+                this.alertService.alertMessageTriggerFunction(
+                  errorMessage,
+                  'success',
+                  true
+                );
                 return result;
               }
               return null;
             })
             .catch((error) => {
-              console.error('Erro ao atualizar dados do usuário:', error);
-              alert(this.translateService.translate('update_email_error'));
+              const errorMessage =
+                this.translateService.translate('user_data_error');
+              this.alertService.alertMessageTriggerFunction(
+                errorMessage,
+                'error',
+                true
+              );
             });
         }
       }

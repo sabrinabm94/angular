@@ -10,6 +10,7 @@ import { ResultsComponent } from '../../components/results/results.component';
 import { UserService } from '../../../../core/services/user.service';
 import { TranslateService } from '../../../../core/services/translate.service';
 import { QuizResultByArea } from '../../../../data/models/quiz/quiz-result-by-area.interface';
+import { QuizResult } from '../../../../data/models/quiz/quiz-result.interface';
 
 @Component({
   selector: 'app-results-page',

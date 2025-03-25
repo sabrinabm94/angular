@@ -4,6 +4,8 @@ import { Database, ref, child, get, set, update } from '@angular/fire/database';
 import { FirebaseUser } from '../../data/models/user/Firebase-user.interface';
 import { Role } from '../../data/models/enums/user/user-role.enum';
 import { QuizResult } from '../../data/models/quiz/quiz-result.interface';
+import { TranslateService } from './translate.service';
+import { AlertService } from './alert.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +17,12 @@ export class UserService {
   private databaseUserPath: string = '/users/';
   private userInitialized = false;
 
-  constructor(private auth: Auth, private database: Database) {
+  constructor(
+    private auth: Auth,
+    private database: Database,
+    private translateService: TranslateService,
+    private alertService: AlertService
+  ) {
     this.verifyActiveFirebaseAuthUser();
   }
 
@@ -48,20 +55,58 @@ export class UserService {
         const databasePath = `${this.databaseUserPath}${user.uid}`;
         const databaseRef = ref(this.database, databasePath);
 
-        await update(databaseRef, user).catch((error) => {
-          console.error('Erro ao salvar dados do usuário:', error);
-        });
+        await update(databaseRef, user)
+          .then(() => {
+            const errorMessage = this.translateService.translate(
+              'user_data_update_success'
+            );
+            this.alertService.alertMessageTriggerFunction(
+              errorMessage,
+              'success',
+              true
+            );
+          })
+          .catch((error) => {
+            const errorMessage = this.translateService.translate(
+              'user_data_save_error'
+            );
+            this.alertService.alertMessageTriggerFunction(
+              errorMessage,
+              'error',
+              true
+            );
+          });
       } else {
-        console.error('Dados inválidos.');
+        const errorMessage = this.translateService.translate(
+          'user_data_update_error'
+        );
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
       }
       return user;
     } catch (error: any) {
-      console.error('Erro ao salvar dados do usuário:', error);
       if (error.code === 'PERMISSION_DENIED') {
-        throw new Error('Erro de permissão inválida: ' + error);
+        const errorMessage =
+          this.translateService.translate('permission_denied');
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
       }
-      throw new Error('Erro ao atualizar dados de usuário: ' + error);
+      const errorMessage = this.translateService.translate(
+        'user_data_update_error'
+      );
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
+    return null;
   }
 
   public async getUserDataById(id: string): Promise<FirebaseUser | null> {
@@ -81,9 +126,14 @@ export class UserService {
       }
       return snapshot.val();
     } catch (error: any) {
-      console.error('Erro ao buscar usuário:', error);
-      throw new Error(error.message || 'Erro inesperado.');
+      const errorMessage = this.translateService.translate('user_data_error');
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
+    return null;
   }
 
   public async verifyActiveFirebaseAuthUser(): Promise<void> {
@@ -104,16 +154,26 @@ export class UserService {
             resolve();
           },
           (error) => {
-            const errorMessage = 'Erro ao carregar usuário';
-            console.error(errorMessage, error);
-            throw new Error(errorMessage + error);
+            const errorMessage = this.translateService.translate(
+              'current_user_data_error'
+            );
+            this.alertService.alertMessageTriggerFunction(
+              errorMessage,
+              'error',
+              true
+            );
           }
         );
       });
     } catch (error) {
-      const errorMessage = 'Erro ao inicializar o usuário';
-      console.error(errorMessage, error);
-      throw new Error(errorMessage + error);
+      const errorMessage = this.translateService.translate(
+        'current_user_data_error'
+      );
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
   }
 
@@ -137,8 +197,14 @@ export class UserService {
       }
       return false;
     } catch (error) {
-      const errorMessage = 'Erro ao verificar papel do usuário';
-      console.error(errorMessage, error);
+      const errorMessage = this.translateService.translate(
+        'user_data_role_error'
+      );
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
       return false;
     }
   }
@@ -153,23 +219,44 @@ export class UserService {
       await set(scoreRef, score);
       return score;
     } catch (error) {
-      const errorMessage = 'Erro ao salvar pontuação';
-      console.error(errorMessage, error);
-      throw new Error(errorMessage + error);
+      const errorMessage = this.translateService.translate(
+        'user_data_score_error'
+      );
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
+    return null;
   }
 
   public async saveUserData(user: FirebaseUser): Promise<FirebaseUser | null> {
     try {
       const databasePath = `${this.databaseUserPath}${user.uid}`;
       const databaseRef = ref(this.database, databasePath);
-      await update(databaseRef, user);
+      await update(databaseRef, user).then(() => {
+        const errorMessage = this.translateService.translate(
+          'udar_data_update_success'
+        );
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'success',
+          true
+        );
+      });
       return user;
     } catch (error) {
-      const errorMessage = 'Erro ao salvar dados de usuário ';
-      console.error(errorMessage, error);
-      throw new Error(errorMessage + error);
+      const errorMessage = this.translateService.translate(
+        'user_data_save_error'
+      );
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
+    return null;
   }
 
   public async deleteUserData(
@@ -179,13 +266,28 @@ export class UserService {
       const databasePath = `${this.databaseUserPath}${user.uid}`;
       const databaseRef = ref(this.database, databasePath);
       user.active = false;
-      await update(databaseRef, user);
+      await update(databaseRef, user).then(() => {
+        const errorMessage = this.translateService.translate(
+          'user_desactivate_success'
+        );
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'success',
+          true
+        );
+      });
       return user;
     } catch (error) {
-      const errorMessage = 'Erro ao desativar usuário';
-      console.error(errorMessage, error);
-      throw new Error(errorMessage + error);
+      const errorMessage = this.translateService.translate(
+        'user_desactivate_error'
+      );
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
+    return null;
   }
 
   public async getUserScore(userId: string): Promise<QuizResult | null> {
@@ -195,9 +297,13 @@ export class UserService {
         const snapshot = await get(child(ref(this.database), databasePath));
         return snapshot.exists() ? (snapshot.val() as QuizResult) : null;
       } catch (error) {
-        const errorMessage = 'Erro ao obter pontuação de usuário';
-        console.error(errorMessage, error);
-        throw new Error(errorMessage + error);
+        const errorMessage =
+          this.translateService.translate('persistente_error');
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
       }
     }
     return null;
@@ -217,12 +323,17 @@ export class UserService {
           ...usersData[key],
         }));
       } catch (error) {
-        const errorMessage = 'Erro ao obter usuários';
-        console.error(errorMessage, error);
-        throw new Error(errorMessage + error);
+        const errorMessage =
+          this.translateService.translate('users_data_error');
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
       }
     }
-    console.error('Permissão negada');
+    const errorMessage = this.translateService.translate('permission_denied');
+    this.alertService.alertMessageTriggerFunction(errorMessage, 'error', true);
     return null;
   }
 }
