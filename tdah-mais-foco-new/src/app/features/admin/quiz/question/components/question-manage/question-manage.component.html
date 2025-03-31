@@ -1,90 +1,76 @@
-<section class="user-manage" *ngIf="userToManage">
+<section class="user-registration" *ngIf="questionToManage">
   <app-container>
-    <h2 class="text-center">{{ "page_user_manage_title" | translatePipe }}</h2>
-    <p class="text-center" *ngIf="userToManage.uid">
-      Id: {{userToManage.uid}}
-    </p>
-    <form class="form text-center" #profileForm="ngForm">
+    <h2 class="text-center">{{ "title_question_registration" | translatePipe }}</h2>
+    <form class="form text-center" (ngSubmit)="updateQuestion(questionToManage, userAdminId)"
+      #registrationForm="ngForm">
       <app-fieldset [content_style]="'row'">
-        <!-- Campo nome -->
+        <!-- Campo pergunta -->
         <div class="form-group">
-          <legend>{{ "name_label" | translatePipe }}</legend>
-          <input type="text" id="displayName" [(ngModel)]="userToManage.displayName" name="displayName"
-            autocomplete="current-displayName" required
-            [attr.aria-invalid]="userToManage.displayName && userToManage.displayName.trim() === '' && submitted ? 'true' : 'false'" />
+          <legend>
+            {{ "question_label" | translatePipe }} <span class="required">*</span>
+          </legend>
+          <input type="text" id="question" [(ngModel)]="questionToManage.question" name="question"
+            autocomplete="current-question" required [attr.aria-invalid]="
+             questionToManage.question && questionToManage.question.trim() === ''
+                ? 'true'
+                : 'false'
+            " />
         </div>
 
-        <!-- Campo E-mail -->
-        <!-- <div class="form-group">
-          <legend>{{ "email_label" | translatePipe }}</legend>
-          <input type="email" id="email" [(ngModel)]="userToManage.email" name="email"
-            [attr.aria-invalid]="userToManage.email && !validEmail(userToManage.email) ? 'true' : 'false'" required />
-        </div> -->
-
-        <!-- Campo gênero  -->
+        <!-- Campo exemplo -->
         <div class="form-group">
-          <legend>{{ "gender_label" | translatePipe }}</legend>
-          <select id="gender" [(ngModel)]="userToManage.gender" name="gender" required>
-            <option [value]="gender" *ngFor="let gender of genderOptions">
-              {{ gender | translatePipe }}
-            </option>
-          </select>
+          <legend>
+            {{ "example_label" | translatePipe }} <span class="required">*</span>
+          </legend>
+          <input type="text" id="example" [(ngModel)]="questionToManage.example" name="example"
+            autocomplete="current-example" required [attr.aria-invalid]="
+             questionToManage.example && questionToManage.example.trim() === ''
+                ? 'true'
+                : 'false'
+            " />
         </div>
 
-        <!-- Campo data de nascimento  -->
+        <!-- Campo frequência -->
         <div class="form-group">
-          <legend>{{ "birthdate_label" | translatePipe }}</legend>
-          <input type="date" id="birthdate" [(ngModel)]="userToManage.birthdate" name="birthdate"
-            [attr.aria-invalid]="!userToManage.birthdate && submitted ? 'true' : 'false'" required />
+          <legend>
+            {{ "frequency_label" | translatePipe }} <span class="required">*</span>
+          </legend>
+          <input type="text" id="frequency" [(ngModel)]="questionToManage.frequency" name="frequency"
+            autocomplete="current-frequency" required [attr.aria-invalid]="
+             questionToManage.frequency && questionToManage.frequency.trim() === ''
+                ? 'true'
+                : 'false'
+            " />
         </div>
 
-        <!-- Campo ocupação  -->
+        <!-- Campo contexto -->
         <div class="form-group">
-          <legend>{{ "ocupation_label" | translatePipe }}</legend>
-          <select id="ocupation" [(ngModel)]="userToManage.ocupation" name="ocupation" required>
-            <option [value]="occupation" *ngFor="let occupation of occupationOptions">
-              {{ occupation | translatePipe }}
-            </option>
-          </select>
+          <legend>
+            {{ "context_label" | translatePipe }} <span class="required">*</span>
+          </legend>
+          <input type="text" id="context" [(ngModel)]="questionToManage.context" name="context"
+            autocomplete="current-context" required [attr.aria-invalid]="
+             questionToManage.context && questionToManage.context.trim() === ''
+                ? 'true'
+                : 'false'
+            " />
         </div>
 
-        <!-- Campo escolaridade  -->
+        <!-- Campo área  -->
         <div class="form-group">
-          <legend>{{ "education_level_label" | translatePipe }}</legend>
-          <select id="educationLevel" [(ngModel)]="userToManage.educationLevel" name="educationLevel" required>
-            <option [value]="educationLevel" *ngFor="let educationLevel of educationLevelOptions">
-              {{ educationLevel | translatePipe }}
-            </option>
-          </select>
+          <mat-form-field appearance="outline">
+            <mat-label>Escolha suas opções</mat-label>
+            <mat-select [(ngModel)]="questionToManage.area" multiple>
+              <mat-option *ngFor="let questionArea of questionAreaOptions" [value]="questionArea">
+                {{ questionArea | translateOrReturnKeyPipe }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
 
-        <!-- Campo papel  -->
-        <div class="form-group full-basis">
-          <legend>{{ "role_label" | translatePipe }}</legend>
-          <select id="role" [(ngModel)]="userToManage.role" name="role" required>
-            <option [value]="role" *ngFor="let role of roleOptions">
-              {{ role | translatePipe }}
-            </option>
-          </select>
-        </div>
-
-        <!-- Campo ativo  -->
-        <div class="form-group full-basis">
-          <legend>{{ "active" | translatePipe }}</legend>
-          <select id="active" [(ngModel)]="userToManage.active" name="active" required>
-            <option [value]="true">
-              {{ "yes" | translatePipe }}
-            </option>
-            <option [value]="false">
-              {{ "no" | translatePipe }}
-            </option>
-          </select>
-        </div>
-
-        <div class="full-width">
-          <app-button [className]="'secundary'" (click)="updateQuestionData(userToManage, userAdminId)"
-            [disabled]="!isFormValid(userToManage)">
-            {{ "update" | translatePipe }}
+        <div class="buttons">
+          <app-button [className]="'secundary'" (click)="updateQuestion(questionToManage, userAdminId)">
+            {{ "register" | translatePipe }}
           </app-button>
         </div>
       </app-fieldset>

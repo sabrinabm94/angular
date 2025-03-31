@@ -1,22 +1,26 @@
-<section class="list" *ngIf="itemsToManage">
-  <header class="list-header">
-    <h2 class="text-center">{{ title | translatePipe }}</h2>
-    <app-button [className]="'secundary'" (click)="createItem()" *ngIf="showCreate && showCreate === true">
-      {{ "create" | translatePipe }}
-    </app-button>
-  </header>
-  <div class="list-content">
-    <div class="item" *ngFor="let item of itemsToManage">
-      <ul class="list-data inline-list">
-        <li *ngFor="let entry of item | keyvalue" class="text-center" [attr.data-label]="entry.key | translatePipe">
-          <p>{{ entry.value | translateOrReturnKeyPipe }}</p>
-        </li>
-        <li>
-          <ul class="inline-list">
-            <li><a (click)="editItem(item)">{{ 'edit' | translatePipe }}</a></li>
-          </ul>
-        </li>
-      </ul>
+<section>
+  <div class="list">
+    <header class="list-header">
+      <h2 class="text-center">{{ title | translatePipe }}</h2>
+      <app-button [className]="'secundary'" (click)="createItem()" *ngIf="showCreate && showCreate === true">
+        {{ "create" | translatePipe }}
+      </app-button>
+    </header>
+    <div class="list-content" *ngIf="itemsToManage && itemsToManage.length > 0">
+      <div class="item" *ngFor="let item of itemsToManage">
+        <ul class="list-data inline-list">
+          <li *ngFor="let entry of item | keyvalue" class="text-center" [attr.data-label]="entry.key | translatePipe">
+            <p>{{ entry.value | translateOrReturnKeyPipe }}</p>
+          </li>
+          <li>
+            <ul class="inline-list">
+              <li><a (click)="editItem(item)">{{ 'edit' | translatePipe }}</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
     </div>
+    <h4 class="text-center" *ngIf="!itemsToManage || itemsToManage.length <= 0">{{ "not_found" | translatePipe
+      }}</h4>
   </div>
 </section>

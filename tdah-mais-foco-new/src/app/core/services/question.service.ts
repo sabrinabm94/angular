@@ -18,9 +18,7 @@ export class QuestionService {
     private alertService: AlertService
   ) {}
 
-  public async updateQuestionData(
-    question: QuizQuestion
-  ): Promise<QuizQuestion | null> {
+  public async update(question: QuizQuestion): Promise<QuizQuestion | null> {
     try {
       if (question && question.id) {
         const databasePath = `${this.databaseQuestionsPath}${question.id}`;
@@ -80,7 +78,7 @@ export class QuestionService {
     return null;
   }
 
-  public async getQuestionDataById(id: string): Promise<QuizQuestion | null> {
+  public async getById(id: string): Promise<QuizQuestion | null> {
     if (!id) {
       console.warn('ID de usuário não fornecido.');
       return null;
@@ -109,9 +107,7 @@ export class QuestionService {
     return null;
   }
 
-  public async saveQuestionData(
-    question: QuizQuestion
-  ): Promise<QuizQuestion | null> {
+  public async save(question: QuizQuestion): Promise<QuizQuestion | null> {
     try {
       const databasePath = `${this.databaseQuestionsPath}${question.id}`;
       const databaseRef = ref(this.database, databasePath);
@@ -139,9 +135,7 @@ export class QuestionService {
     return null;
   }
 
-  public async deleteQuestionData(
-    question: QuizQuestion
-  ): Promise<QuizQuestion | null> {
+  public async delete(question: QuizQuestion): Promise<QuizQuestion | null> {
     try {
       const databasePath = `${this.databaseQuestionsPath}${question.id}`;
       const databaseRef = ref(this.database, databasePath);
@@ -170,9 +164,7 @@ export class QuestionService {
     return null;
   }
 
-  public async getAllQuestionsData(
-    userAdmin: FirebaseUser
-  ): Promise<QuizQuestion[] | null> {
+  public async getAll(userAdmin: FirebaseUser): Promise<QuizQuestion[] | null> {
     if (userAdmin && userAdmin.role === Role.administrator) {
       try {
         const snapshot = await get(

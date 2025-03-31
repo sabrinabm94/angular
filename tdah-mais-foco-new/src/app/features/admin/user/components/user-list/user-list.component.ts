@@ -4,7 +4,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../../../../core/services/user.service';
 import { EducationLevel } from '../../../../../data/models/enums/user/user-educationLevel.enum';
@@ -37,6 +37,9 @@ import { AlertService } from '../../../../../core/services/alert.service';
   ],
 })
 export class UserListComponent implements OnInit {
+  @Input()
+  userAdminId: string | null = null;
+
   userAdmin: FirebaseUser | null = {
     displayName: '',
     email: '',

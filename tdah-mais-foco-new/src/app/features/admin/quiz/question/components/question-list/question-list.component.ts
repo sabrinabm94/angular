@@ -4,7 +4,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EducationLevel } from '../../../../../../data/models/enums/user/user-educationLevel.enum';
 import { Gender } from '../../../../../../data/models/enums/user/user-gender.enum';
@@ -20,6 +20,7 @@ import { UserService } from '../../../../../../core/services/user.service';
 import { AlertMessageComponent } from '../../../../../../shared/components/alert-message/alert-message.component';
 import { TranslateService } from '../../../../../../core/services/translate.service';
 import { AlertService } from '../../../../../../core/services/alert.service';
+import { TranslatePipe } from '../../../../../../core/pipes/translate.pipe';
 
 @Component({
   selector: 'app-question-list',
@@ -36,9 +37,13 @@ import { AlertService } from '../../../../../../core/services/alert.service';
     ContainerComponent,
     ManageListComponent,
     AlertMessageComponent,
+    TranslatePipe,
   ],
 })
 export class QuestionListComponent implements OnInit {
+  @Input()
+  userAdminId: string | null = null;
+
   userAdmin: FirebaseUser | null = {
     displayName: '',
     email: '',
@@ -86,15 +91,16 @@ export class QuestionListComponent implements OnInit {
   ): Promise<QuizQuestionToManageListItem[] | null> {
     if (userAdmin) {
       try {
-        const questionsToManageList =
-          await this.questionService.getAllQuestionsData(userAdmin);
+        const questionsToManageList = await this.questionService.getAll(
+          userAdmin
+        );
         if (questionsToManageList) {
           // Filtrando valores nulos e garantindo que questionsToManageList seja do tipo QuizQuestionToManageListItem[]
           this.questionsToManageList = questionsToManageList.map((item) => ({
-            id: item.id ?? '',
-            question: item.question ?? '',
-            area: item.area ?? '',
-            active: item.active ?? false,
+            id: item.id ? item.id : '',
+            question: item.question ? item.question : '',
+            area: item.area ? item.area : [],
+            active: item.active ? item.active : false,
           }));
 
           return this.questionsToManageList;
@@ -121,6 +127,6 @@ export class QuestionListComponent implements OnInit {
   }
 
   public async registerQuestion(): Promise<boolean | null> {
-    return this.router.navigate([`/register-question`]);
+    return this.router.navigate([`/question-register`]);
   }
 }

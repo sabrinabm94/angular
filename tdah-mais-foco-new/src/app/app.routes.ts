@@ -57,7 +57,7 @@ export const appRoutes: Routes = [
 
   //cadastro de perguntas
   {
-    path: 'register-question',
+    path: 'question-register',
     loadComponent: () =>
       import(
         './features/admin/quiz/question/pages/question-register-page/question-register-page.component'
@@ -95,7 +95,7 @@ export const appRoutes: Routes = [
     canActivate: [GuestGuard], // Apenas usuários deslogados
   },
   {
-    path: 'register',
+    path: 'user-register',
     loadComponent: () =>
       import(
         './features/user/pages/register-page/register-page.component'

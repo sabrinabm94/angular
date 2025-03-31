@@ -5,7 +5,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { AlertMessageComponent } from '../../../../../../shared/components/alert-message/alert-message.component';
 import { TranslatePipe } from '../../../../../../core/pipes/translate.pipe';
 import { TranslateService } from '../../../../../../core/services/translate.service';
@@ -17,6 +17,7 @@ import { QuestionService } from '../../../../../../core/services/question.servic
 import { QuizQuestion } from '../../../../../../data/models/quiz/quiz-question.interface';
 import { TranslateOrReturnKeyPipe } from '../../../../../../core/pipes/translateOrReturnKey.pipe';
 import { AlertService } from '../../../../../../core/services/alert.service';
+import { DateUtils } from '../../../../../../core/utils/date.utils';
 
 @Component({
   selector: 'app-question-register',
@@ -40,6 +41,9 @@ import { AlertService } from '../../../../../../core/services/alert.service';
   ],
 })
 export class QuestionRegisterComponent {
+  @Input()
+  userAdminId: string | null = null;
+
   public submitted: boolean = false;
   public questionAreaOptions: QuestionArea[] = [];
 
@@ -48,7 +52,7 @@ export class QuestionRegisterComponent {
     example: '',
     frequency: '',
     context: '',
-    area: QuestionArea.none,
+    area: [QuestionArea.none],
     result: false,
     active: false,
   };
@@ -56,7 +60,8 @@ export class QuestionRegisterComponent {
   constructor(
     private translateService: TranslateService,
     private questionService: QuestionService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private dateUtils: DateUtils
   ) {
     this.getFormOptions();
   }
@@ -65,7 +70,7 @@ export class QuestionRegisterComponent {
     this.questionAreaOptions = Object.values(QuestionArea);
   }
 
-  public async registerQuestion(): Promise<void> {
+  public async registerQuestion(userAdminId: string | null): Promise<void> {
     this.submitted = true;
     const formData = this.question;
 
@@ -78,11 +83,15 @@ export class QuestionRegisterComponent {
         context: String(formData.context),
         area: formData.area,
         active: true,
+        creationDate: this.dateUtils.formateDateToInternationFormatString(
+          new Date()
+        ),
+        creatorId: String(userAdminId),
       };
 
       //Salva dados do usuário no banco de dados
       await this.questionService
-        .saveQuestionData(question)
+        .save(question)
         .then(async (result: any) => {
           if (result) {
             // Faz o login automático após o registro e redirecionamento

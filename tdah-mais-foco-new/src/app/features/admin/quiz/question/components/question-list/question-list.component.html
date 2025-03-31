@@ -1,7 +1,8 @@
-<section class="list" *ngIf="questionsToManageList">
+<section class="list">
   <app-container>
-    <app-manage-list [title]="'page_questions_manage_list_title'" [itemsToManage]="questionsToManageList"
-      (create)="registerQuestion()" (edit)="editQuestion($event)" [showCreate]="true">
+    <app-manage-list *ngIf="questionsToManageList" [title]="'page_questions_manage_list_title'"
+      [itemsToManage]="questionsToManageList" (create)="registerQuestion()" (edit)="editQuestion($event)"
+      [showCreate]="true">
     </app-manage-list>
   </app-container>
 </section>

@@ -3,6 +3,7 @@ import { HeaderComponent } from '../../../../../../shared/components/header/head
 import { TranslatePipe } from '../../../../../../core/pipes/translate.pipe';
 import { FooterComponent } from '../../../../../../shared/components/footer/footer.component';
 import { QuestionRegisterComponent } from '../../components/question-register/question-register.component';
+import { UserService } from '../../../../../../core/services/user.service';
 
 @Component({
   selector: 'app-question-register-page',
@@ -16,4 +17,24 @@ import { QuestionRegisterComponent } from '../../components/question-register/qu
     FooterComponent,
   ],
 })
-export class QuestionRegisterPageComponent {}
+export class QuestionRegisterPageComponent {
+  public userId: string | null = null;
+  public isAdmin: boolean = false;
+
+  constructor(private userService: UserService) {}
+
+  async getUser(): Promise<string | null> {
+    if (!this.userId) {
+      const user = this.userService.getUser();
+      if (user && user.uid) {
+        this.isAdmin = await this.userService.isUserAdminById(user.uid);
+        return (this.userId = user.uid);
+      }
+    }
+    return null;
+  }
+
+  ngOnInit(): void {
+    this.getUser();
+  }
+}

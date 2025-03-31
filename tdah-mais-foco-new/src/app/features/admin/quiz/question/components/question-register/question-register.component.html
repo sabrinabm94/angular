@@ -1,7 +1,7 @@
 <section class="user-registration" *ngIf="question">
   <app-container>
     <h2 class="text-center">{{ "title_question_registration" | translatePipe }}</h2>
-    <form class="form text-center" (ngSubmit)="registerQuestion()" #registrationForm="ngForm">
+    <form class="form text-center" (ngSubmit)="registerQuestion(userAdminId)" #registrationForm="ngForm">
       <app-fieldset [content_style]="'row'">
         <!-- Campo pergunta -->
         <div class="form-group">
@@ -67,7 +67,7 @@
       </app-fieldset>
 
       <div class="buttons">
-        <app-button [className]="'secundary'" (click)="registerQuestion()">
+        <app-button [className]="'secundary'" (click)="registerQuestion(userAdminId)">
           {{ "register" | translatePipe }}
         </app-button>
       </div>

@@ -57,26 +57,7 @@ export class ManageListComponent implements OnInit {
       return [];
     }
 
-    return items.map((item) => {
-      if (typeof item !== 'object' || item === null || Array.isArray(item)) {
-        return item; // Se não for objeto, já retorna o valor original
-      }
-
-      const orderedKeys = [
-        'uid',
-        ...Object.keys(item).filter((k) => k !== 'uid'),
-      ]; // Garante UID primeiro
-      return Object.fromEntries(
-        orderedKeys
-          .map((key) => [key, item[key]])
-          .filter(
-            ([_, value]) =>
-              value !== null &&
-              typeof value !== 'object' &&
-              !Array.isArray(value)
-          )
-      );
-    });
+    return items;
   }
 
   public editItem(item: any): void {

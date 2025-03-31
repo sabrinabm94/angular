@@ -178,5 +178,8 @@
   "hyperactivity": "Hiperatividade",
   "impulsiveness": "Impulsividade",
   "hyperfocus": "Hiperfoco",
-  "none": "Nenhum"
+  "none": "Nenhum",
+  "not_found": "Não foram encontrados resultados",
+  "context_label": "Contexto",
+  "frequency_label": "Frequência"
 }

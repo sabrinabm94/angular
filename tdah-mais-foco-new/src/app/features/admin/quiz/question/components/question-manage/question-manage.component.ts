@@ -2,7 +2,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { Component, Input, OnInit } from '@angular/core';
@@ -11,16 +11,16 @@ import { TranslateService } from '../../../../../../core/services/translate.serv
 import { UserService } from '../../../../../../core/services/user.service';
 import { DateUtils } from '../../../../../../core/utils/date.utils';
 import { EmailUtils } from '../../../../../../core/utils/email.utils';
-import { EducationLevel } from '../../../../../../data/models/enums/user/user-educationLevel.enum';
-import { Gender } from '../../../../../../data/models/enums/user/user-gender.enum';
-import { Occupation } from '../../../../../../data/models/enums/user/user-occupation.enum';
-import { Role } from '../../../../../../data/models/enums/user/user-role.enum';
 import { FirebaseUser } from '../../../../../../data/models/user/Firebase-user.interface';
 import { ButtonComponent } from '../../../../../../shared/components/button/button.component';
 import { ContainerComponent } from '../../../../../../shared/components/container/container.component';
 import { AlertMessageComponent } from '../../../../../../shared/components/alert-message/alert-message.component';
 import { FieldsetComponent } from '../../../../../../shared/components/fieldset/fieldset.component';
 import { AlertService } from '../../../../../../core/services/alert.service';
+import { TranslateOrReturnKeyPipe } from '../../../../../../core/pipes/translateOrReturnKey.pipe';
+import { QuizQuestion } from '../../../../../../data/models/quiz/quiz-question.interface';
+import { QuestionArea } from '../../../../../../data/models/enums/question/question-area.enum';
+import { QuestionService } from '../../../../../../core/services/question.service';
 
 @Component({
   selector: 'app-question-manage',
@@ -39,34 +39,26 @@ import { AlertService } from '../../../../../../core/services/alert.service';
     FieldsetComponent,
     AlertMessageComponent,
     TranslatePipe,
+    TranslateOrReturnKeyPipe,
+    MatOptionModule,
   ],
 })
 export class QuestionManageComponent implements OnInit {
   @Input()
   userAdminId: string | null = null;
 
-  userToManage: FirebaseUser | null = {
-    displayName: '',
-    email: '',
-    password: '',
-    uid: '',
-    birthdate: '2000-01-01',
-    ocupation: Occupation.student,
-    gender: Gender.male,
-    educationLevel: EducationLevel.high_school,
-    role: Role.user,
-    active: true,
-    creationDate: '',
-    updateDate: null,
-    creatorId: '',
-    updaterId: null,
-  };
+  public submitted: boolean = false;
+  public questionAreaOptions: QuestionArea[] = [];
 
-  genderOptions: Gender[] = [];
-  occupationOptions: Occupation[] = [];
-  educationLevelOptions: EducationLevel[] = [];
-  submitted: boolean = false;
-  roleOptions: Role[] = [];
+  public questionToManage: QuizQuestion = {
+    question: '',
+    example: '',
+    frequency: '',
+    context: '',
+    area: [QuestionArea.none],
+    result: false,
+    active: false,
+  };
 
   constructor(
     private emailUtils: EmailUtils,
@@ -74,44 +66,44 @@ export class QuestionManageComponent implements OnInit {
     private translateService: TranslateService,
     private userService: UserService,
     private route: ActivatedRoute,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private questionService: QuestionService
   ) {
     this.getFormOptions();
   }
 
   async ngOnInit(): Promise<void> {
-    await this.getUserToManageById();
+    await this.getQuestionToManageById();
   }
 
   private getFormOptions() {
-    this.genderOptions = Object.values(Gender);
-    this.occupationOptions = Object.values(Occupation);
-    this.educationLevelOptions = Object.values(EducationLevel);
-    this.roleOptions = Object.values(Role);
+    this.questionAreaOptions = Object.values(QuestionArea);
   }
 
-  private getUserToManageIdFromUrl() {
+  private getIdFromUrl() {
     return this.route.snapshot.paramMap.get('id') || null;
   }
 
-  private async getUserToManageById(): Promise<FirebaseUser | null> {
-    const userToManageId = this.getUserToManageIdFromUrl();
+  private async getQuestionToManageById(): Promise<QuizQuestion | null> {
+    const questionToManageId = this.getIdFromUrl();
 
-    if (userToManageId) {
-      return (this.userToManage = await this.getUserInfoById(userToManageId));
+    if (questionToManageId) {
+      const questionToManage = await this.getQuestionById(questionToManageId);
+
+      return questionToManage ? questionToManage : null;
     }
 
     return null;
   }
 
-  public async getUserInfoById(id: string): Promise<FirebaseUser | null> {
+  public async getQuestionById(id: string): Promise<QuizQuestion | null> {
     try {
-      let userData: FirebaseUser | null = await this.userService
-        .getUserDataById(id)
+      const questionData: QuizQuestion | null = await this.questionService
+        .getById(id)
         .then((result) => result);
 
-      if (userData) {
-        return userData;
+      if (questionData) {
+        return questionData;
       }
     } catch (error) {
       const errorMessage = this.translateService.translate(
@@ -126,59 +118,30 @@ export class QuestionManageComponent implements OnInit {
     return null;
   }
 
-  public async updateQuestionData(
-    userToManage: FirebaseUser | null,
+  public async updateQuestion(
+    questionToManage: QuizQuestion | null,
     userAdminId: string | null
   ): Promise<FirebaseUser | null> {
-    if (userToManage && userAdminId) {
+    if (questionToManage && userAdminId) {
       this.submitted = true;
-      if (
-        this.isFormValid(userToManage) === true &&
-        userAdminId &&
-        userToManage
-      ) {
-        const userToManageNewData: FirebaseUser = {
-          active: JSON.parse(String(userToManage.active)),
-          birthdate: String(userToManage.birthdate),
-          displayName: String(userToManage.displayName),
-          educationLevel: userToManage.educationLevel,
-          email: String(userToManage.email),
-          gender: userToManage.gender,
-          ocupation: userToManage.ocupation,
-          role: userToManage.role,
-          uid: String(userToManage.uid),
+      if (userAdminId && questionToManage) {
+        const questionToManageNewData: QuizQuestion = {
+          id: questionToManage.id,
+          question: questionToManage.question,
+          example: questionToManage.example,
+          frequency: questionToManage.frequency,
+          context: questionToManage.context,
+          area: questionToManage.area,
+          active: questionToManage.active,
           updateDate: this.dateUtils.formateDateToInternationFormatString(
             new Date()
           ),
           updaterId: String(userAdminId),
-          password: String(userToManage.password),
         };
 
-        if (userToManageNewData) {
-          //Atualiza e-mail do usuário no firebase
-          /*
-          await this.authService
-            .updateFirebaseAuthUserEmail(
-              userToManageNewData.uid,
-              userToManageNewData.email
-            )
-            .then(async (result) => {
-              if (result) {
-                // Atualiza usuário no banco de dados
-
-              }
-              return null;
-            })
-            .catch((error) => {
-              const errorMessage = this.translateService.translate(
-      'question_data_update_error'
-);
-this.alertService.alertMessageTriggerFunction(errorMessage, 'error', true);;
-            });
-            */
-
-          await this.userService
-            .updateUserData(userToManageNewData)
+        if (questionToManageNewData) {
+          await this.questionService
+            .update(questionToManageNewData)
             .then(async (result) => {
               if (result) {
                 const errorMessage = this.translateService.translate(
@@ -207,23 +170,5 @@ this.alertService.alertMessageTriggerFunction(errorMessage, 'error', true);;
       }
     }
     return null;
-  }
-
-  public validEmail(email: string | null): boolean {
-    if (email) {
-      return this.emailUtils.validEmail(email);
-    }
-    return false;
-  }
-
-  public isFormValid(user: FirebaseUser): boolean {
-    if (user) {
-      const isDisplayNameValid =
-        !user.displayName || user.displayName?.trim() !== '';
-      const isEmailValid = !user.email || this.validEmail(user.email);
-
-      return isDisplayNameValid && isEmailValid;
-    }
-    return false;
   }
 }

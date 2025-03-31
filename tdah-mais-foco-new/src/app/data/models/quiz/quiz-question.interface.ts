@@ -6,7 +6,11 @@ export interface QuizQuestion {
   example: string;
   frequency: string;
   context: string;
-  area: QuestionArea;
+  area: QuestionArea[];
   result?: boolean;
   active: boolean;
+  creationDate?: string | null;
+  updateDate?: string | null;
+  creatorId?: string | null;
+  updaterId?: string | null;
 }

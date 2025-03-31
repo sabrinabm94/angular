@@ -3,7 +3,7 @@
   <div class="container">
     <h1 class="main-title text-center">{{ "app_title" | translatePipe }}</h1>
     <div class="register-page">
-      <app-question-register />
+      <app-question-register [userAdminId]="userId" />
     </div>
   </div>
 </main>
