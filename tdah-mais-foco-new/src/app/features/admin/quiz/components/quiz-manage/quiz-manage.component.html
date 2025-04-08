@@ -1,0 +1,37 @@
+<section class="quiz-manage" *ngIf="quizToManage">
+  <app-container>
+    <h2 class="text-center">{{ "title_quiz_manager" | translatePipe }}</h2>
+    <form class="form text-center" (ngSubmit)="update(quizToManage, userAdminId)" #registrationForm="ngForm">
+      <app-fieldset [content_style]="'row'">
+        <!-- Campo nome -->
+        <div class="form-group">
+          <legend>
+            {{ "name_label" | translatePipe }} <span class="required">*</span>
+          </legend>
+          <input type="text" id="name" [(ngModel)]="quizToManage.name" name="name" autocomplete="current-name" required
+            [attr.aria-invalid]="
+             quizToManage.name && quizToManage.name.trim() === ''
+                ? 'true'
+                : 'false'
+            " />
+        </div>
+
+        <div class="buttons">
+          <app-button [className]="'secundary'" (click)="editQuestions(quizToManage.id)">
+            {{ "edit_questions" | translatePipe }}
+          </app-button>
+
+          <app-button [className]="'secundary'" (click)="update(quizToManage, userAdminId)"
+            [disabled]="!this.isFormValid(quizToManage)">
+            {{ "update" | translatePipe }}
+          </app-button>
+
+          <app-button [className]="'secundary grey'" (click)="delete(quizToManage, userAdminId)">
+            {{ "delete" | translatePipe }}
+          </app-button>
+        </div>
+
+      </app-fieldset>
+    </form>
+  </app-container>
+</section>

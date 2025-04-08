@@ -6,17 +6,24 @@ import { DateUtils } from '../utils/date.utils';
 import { QuizResult } from '../../data/models/quiz/quiz-result.interface';
 import { TranslateService } from './translate.service';
 import { AlertService } from './alert.service';
+import { Quiz } from '../../data/models/quiz/quiz.interface';
+import { FirebaseUser } from '../../data/models/user/Firebase-user.interface';
+import { Role } from '../../data/models/enums/user/user-role.enum';
+import { Database, ref, child, get, set, update } from '@angular/fire/database';
 
 @Injectable({
   providedIn: 'root',
 })
 export class QuizService {
   constructor(
+    private database: Database,
     private httpClient: HttpClient,
     private dateUtils: DateUtils,
     private translateService: TranslateService,
     private alertService: AlertService
   ) {}
+
+  private databaseQuizPath: string = '/quiz/';
 
   public async readFileContentByLanguage(
     language: string | null
@@ -40,25 +47,25 @@ export class QuizService {
     return [];
   }
 
-  public getQuizQuestions(language: string | null) {
+  public getQuizs(language: string | null) {
     const answers: any[] | PromiseLike<any[]> = [];
 
     return this.readFileContentByLanguage(language).then(
       (data: any) => {
-        if (data && data.quiz && data.quiz.tdah && data.quiz.tdah.questions) {
-          const questions = data.quiz.tdah.questions;
-          questions.forEach(
-            (question: {
-              question: any;
+        if (data && data.quiz && data.quiz.tdah && data.quiz.tdah.quizs) {
+          const quizs = data.quiz.tdah.quizs;
+          quizs.forEach(
+            (quiz: {
+              quiz: any;
               example: any;
               frequency_and_context: any;
               area: any;
             }) => {
               answers.push({
-                question: question.question,
-                example: question.example,
-                frequency_and_context: question.frequency_and_context,
-                area: question.area,
+                quiz: quiz.quiz,
+                example: quiz.example,
+                frequency_and_context: quiz.frequency_and_context,
+                area: quiz.area,
                 result: null,
               });
             }
@@ -268,5 +275,177 @@ export class QuizService {
     }
 
     return calculatedScore;
+  }
+
+  //novo
+  public async getAll(userAdmin: FirebaseUser): Promise<Quiz[] | null> {
+    if (userAdmin && userAdmin.role === Role.administrator) {
+      try {
+        const databasePath = `${this.databaseQuizPath}`;
+        const dbRef = ref(this.database);
+        const snapshot = await get(child(dbRef, databasePath));
+        const data = snapshot.val();
+        return data;
+      } catch (error: any) {
+        const errorMessage = this.translateService.translate('quiz_data_error');
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
+      }
+    }
+    return null;
+  }
+
+  public async getById(
+    id: string,
+    userAdmin: FirebaseUser
+  ): Promise<Quiz | null> {
+    if (id && userAdmin && userAdmin.role === Role.administrator) {
+      try {
+        const databasePath = `${this.databaseQuizPath}${id}`;
+        const dbRef = ref(this.database);
+        const snapshot = await get(child(dbRef, databasePath));
+        const data = snapshot.val();
+        return data;
+      } catch (error: any) {
+        const errorMessage = this.translateService.translate('quiz_data_error');
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
+      }
+    }
+    return null;
+  }
+
+  public async save(quiz: Quiz, userAdmin: FirebaseUser): Promise<Quiz | null> {
+    if (quiz && userAdmin && userAdmin.role === Role.administrator) {
+      const quizId = quiz.id;
+      try {
+        const databasePath = `${this.databaseQuizPath}${quizId}`;
+        const databaseRef = ref(this.database, databasePath);
+        await update(databaseRef, quiz).then(() => {
+          const errorMessage = this.translateService.translate(
+            'quiz_update_success'
+          );
+          this.alertService.alertMessageTriggerFunction(
+            errorMessage,
+            'success',
+            true
+          );
+        });
+        return quiz;
+      } catch (error) {
+        const errorMessage = this.translateService.translate(
+          'quiz_creation_error'
+        );
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
+      }
+    }
+    return null;
+  }
+
+  public async update(
+    quiz: Quiz,
+    userAdmin: FirebaseUser
+  ): Promise<Quiz | null> {
+    try {
+      if (quiz && userAdmin) {
+        const quizId = quiz.id;
+
+        const databasePath = `${this.databaseQuizPath}${quizId}`;
+        const databaseRef = ref(this.database, databasePath);
+
+        await update(databaseRef, quiz)
+          .then(() => {
+            const errorMessage = this.translateService.translate(
+              'quiz_update_success'
+            );
+            this.alertService.alertMessageTriggerFunction(
+              errorMessage,
+              'success',
+              true
+            );
+          })
+          .catch((error) => {
+            const errorMessage = this.translateService.translate(
+              'quiz_creation_success'
+            );
+            this.alertService.alertMessageTriggerFunction(
+              errorMessage,
+              'success',
+              true
+            );
+          });
+      } else {
+        const errorMessage = this.translateService.translate('quiz_data_error');
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
+      }
+      return quiz;
+    } catch (error: any) {
+      if (error.code === 'PERMISSION_DENIED') {
+        const errorMessage =
+          this.translateService.translate('permission_denied');
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
+      }
+      const errorMessage = this.translateService.translate('quiz_data_error');
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
+    }
+    return null;
+  }
+
+  public async delete(
+    quiz: Quiz,
+    userAdmin: FirebaseUser
+  ): Promise<Quiz | null> {
+    if (quiz && userAdmin) {
+      const quizId = quiz.id;
+
+      try {
+        const databasePath = `${this.databaseQuizPath}${quizId}`;
+        const databaseRef = ref(this.database, databasePath);
+        await update(databaseRef, quiz).then(() => {
+          const errorMessage = this.translateService.translate(
+            'quiz_desactivate_success'
+          );
+          this.alertService.alertMessageTriggerFunction(
+            errorMessage,
+            'success',
+            true
+          );
+        });
+        return quiz;
+      } catch (error) {
+        const errorMessage = this.translateService.translate(
+          'quiz_desactivate_error'
+        );
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
+      }
+    }
+
+    return null;
   }
 }

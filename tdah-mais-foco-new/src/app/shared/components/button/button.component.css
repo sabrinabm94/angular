@@ -48,7 +48,35 @@ button:hover {
 }
 
 .secundary {
-  background-color: #FFFFFF;
   color: #8f36a7;
   border-color: #8f36a7;
+}
+
+.secundary,
+.red,
+.grey {
+  background-color: transparent;
+}
+
+.red {
+  color: red;
+  border-color: red;
+}
+
+.grey {
+  color: grey;
+  border-color: grey;
+}
+
+.red:hover {
+  background-color: red;
+}
+
+.grey:hover {
+  background-color: grey;
+}
+
+.grey:hover,
+.red:hover {
+  color: #ffffff;
 }

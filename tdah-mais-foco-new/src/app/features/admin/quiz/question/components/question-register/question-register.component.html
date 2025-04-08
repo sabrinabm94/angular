@@ -1,73 +1,87 @@
-<section class="user-registration" *ngIf="question">
+<section class="question-registration" *ngIf="question">
   <app-container>
-    <h2 class="text-center">{{ "title_question_registration" | translatePipe }}</h2>
-    <form class="form text-center" (ngSubmit)="registerQuestion(userAdminId)" #registrationForm="ngForm">
+    <h2 class="text-center">{{ "title_question_register" | translatePipe }}</h2>
+    <form class="form text-center" (ngSubmit)="register(userAdminId)" #registrationForm="ngForm">
       <app-fieldset [content_style]="'row'">
-        <!-- Campo pergunta -->
-        <div class="form-group">
-          <legend>
-            {{ "question_label" | translatePipe }} <span class="required">*</span>
-          </legend>
-          <input type="text" id="question" [(ngModel)]="question.question" name="question"
-            autocomplete="current-question" required [attr.aria-invalid]="
-              question.question && question.question.trim() === ''
-                ? 'true'
-                : 'false'
-            " />
+
+        <!-- Lista de perguntas por idioma -->
+        <div *ngFor="let question of question.questions; let i = index" class="question-entry form-big-group">
+          <!-- Campo linguagem -->
+          <div class="form-group">
+            <label for="language-{{ i }}">{{ "language_label" | translatePipe }}<span class="required">*</span></label>
+            <select [(ngModel)]="question.language" [ngModelOptions]="{ standalone: true }" name="language-{{ i }}"
+              class="form-control" required>
+              <option *ngFor="let language of languages" [ngValue]="language">
+                {{ language.name | translatePipe }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Campo pergunta -->
+          <div class="form-group">
+            <label for="question-{{ i }}">{{ "question_label" | translatePipe }}<span class="required">*</span></label>
+            <input type="text" [(ngModel)]="question.question" [ngModelOptions]="{ standalone: true }"
+              name="question-{{ i }}" class="form-control" required />
+          </div>
+
+          <!-- Campo exemplo -->
+          <div class="form-group">
+            <legend>{{ "example_label" | translatePipe }} <span class="required">*</span></legend>
+            <input type="text" id="example" [(ngModel)]="question.example" name="example" required
+              [attr.aria-invalid]="question.example.trim() === '' ? 'true' : 'false'" />
+          </div>
+
+          <!-- Campo frequência -->
+          <div class="form-group">
+            <legend>{{ "frequency_label" | translatePipe }} <span class="required">*</span></legend>
+            <input type="text" id="frequency" [(ngModel)]="question.frequency" name="frequency" required
+              [attr.aria-invalid]="question.frequency.trim() === '' ? 'true' : 'false'" />
+          </div>
+
+          <!-- Campo contexto -->
+          <div class="form-group">
+            <legend>{{ "context_label" | translatePipe }} <span class="required">*</span></legend>
+            <input type="text" id="context" [(ngModel)]="question.context" name="context" required
+              [attr.aria-invalid]="question.context.trim() === '' ? 'true' : 'false'" />
+          </div>
+
+          <div class="buttons">
+            <app-button [className]="'secundary'" (click)="addQuestion()" [disabled]="!isFormValid()">
+              {{ "add_question" | translatePipe }}
+            </app-button>
+            <app-button [className]="'secundary grey'" (click)="removeQuestion(i)">
+              {{ "remove_question" | translatePipe }}
+            </app-button>
+          </div>
         </div>
 
-        <!-- Campo exemplo -->
+        <!-- Campo área -->
         <div class="form-group">
-          <legend>
-            {{ "example_label" | translatePipe }} <span class="required">*</span>
-          </legend>
-          <input type="text" id="example" [(ngModel)]="question.example" name="example" autocomplete="current-example"
-            required [attr.aria-invalid]="
-              question.example && question.example.trim() === ''
-                ? 'true'
-                : 'false'
-            " />
-        </div>
-
-        <!-- Campo frequência -->
-        <div class="form-group">
-          <legend>
-            {{ "frequency_label" | translatePipe }} <span class="required">*</span>
-          </legend>
-          <input type="text" id="frequency" [(ngModel)]="question.frequency" name="frequency"
-            autocomplete="current-frequency" required [attr.aria-invalid]="
-              question.frequency && question.frequency.trim() === ''
-                ? 'true'
-                : 'false'
-            " />
-        </div>
-
-        <!-- Campo contexto -->
-        <div class="form-group">
-          <legend>
-            {{ "context_label" | translatePipe }} <span class="required">*</span>
-          </legend>
-          <input type="text" id="context" [(ngModel)]="question.context" name="context" autocomplete="current-context"
-            required [attr.aria-invalid]="
-              question.context && question.context.trim() === ''
-                ? 'true'
-                : 'false'
-            " />
-        </div>
-
-        <!-- Campo área  -->
-        <div class="form-group">
-          <legend>{{ "area_label" | translatePipe }}</legend>
-          <select id="area" [(ngModel)]="question.area" name="area">
-            <option [value]="questionArea" *ngFor="let questionArea of questionAreaOptions">
-              {{ questionArea | translateOrReturnKeyPipe }}
-            </option>
-          </select>
+          <legend>{{ "area_label" | translatePipe }} <span class="required">*</span></legend>
+          <div class="custom-dropdown" (click)="toggleDropdown()">
+            <div class="selected-options">
+              <span class="selected" *ngFor="let selected of question.area">
+                {{ selected | translateOrReturnKeyPipe }}
+              </span>
+              <span class="none" *ngIf="question.area.length <= 0">{{ "select" | translatePipe }}</span>
+            </div>
+            <ul class="dropdown-options" *ngIf="dropdownOpen">
+              <li *ngFor="let questionArea of questionAreaOptions">
+                <label>
+                  <input class="input" type="checkbox" [value]="questionArea"
+                    (change)="onSelectionChange($event, questionArea)"
+                    [checked]="question.area.includes(questionArea)" />
+                  <span class="label">{{ questionArea | translateOrReturnKeyPipe }}</span>
+                </label>
+              </li>
+            </ul>
+          </div>
         </div>
       </app-fieldset>
 
       <div class="buttons">
-        <app-button [className]="'secundary'" (click)="registerQuestion(userAdminId)">
+        <app-button [className]="'secundary'" (click)="register(userAdminId)"
+          [disabled]="!isFormValid() || !isFormAreaSelectedValid()">
           {{ "register" | translatePipe }}
         </app-button>
       </div>

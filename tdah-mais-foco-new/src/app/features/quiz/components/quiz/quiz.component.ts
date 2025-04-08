@@ -56,18 +56,18 @@ export class QuizComponent {
     this.submitted = false;
 
     if (this.languageName) {
-      this.getQuestions(this.languageName);
+      //this.getQuestions(this.languageName);
     }
 
     this.translateService
       .getLanguageChanged()
       .subscribe((currentLanguage: string) => {
         this.languageName = currentLanguage;
-        this.getQuestions(this.languageName);
+        //this.getQuestions(this.languageName);
       });
   }
 
-  private async getQuestions(language: string) {
+  /* private async getQuestions(language: string) {
     this.quizService
       .getQuizQuestions(language)
       .then((questions: any[]) => {
@@ -83,7 +83,7 @@ export class QuizComponent {
           true
         );
       });
-  }
+  } */
 
   public async submitAnswers() {
     if (this.isFormValid()) {

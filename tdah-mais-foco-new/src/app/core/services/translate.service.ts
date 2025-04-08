@@ -3,19 +3,36 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { BehaviorSubject, lastValueFrom } from 'rxjs';
 import { AlertService } from './alert.service';
+import { Language } from '../../data/models/language.interface';
+import { QuizQuestion } from '../../data/models/quiz/quiz-question.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TranslateService {
   private translations: any = {};
-  private currentLanguage: string;
+  private currentLanguageInitial: string;
   private languageChanged: BehaviorSubject<string>;
 
+  public languagesList: Language[] = [
+    {
+      name: 'portuguese',
+      initials: 'pt-br',
+    },
+    {
+      name: 'english',
+      initials: 'en',
+    },
+    {
+      name: 'spanish',
+      initials: 'es',
+    },
+  ];
+
   constructor(private http: HttpClient, private alertService: AlertService) {
-    this.currentLanguage = environment.lang || 'pt-br';
-    this.languageChanged = new BehaviorSubject(this.currentLanguage);
-    this.translations = this.loadTranslations(this.currentLanguage);
+    this.currentLanguageInitial = environment.lang || 'pt-br';
+    this.languageChanged = new BehaviorSubject(this.currentLanguageInitial);
+    this.translations = this.loadTranslations(this.currentLanguageInitial);
   }
 
   // Carregar um arquivo de idioma
@@ -24,9 +41,9 @@ export class TranslateService {
       const data: any = await lastValueFrom(
         this.http.get(`/assets/i18n/${language}.json`)
       );
-      this.currentLanguage = language;
+      this.currentLanguageInitial = language;
       this.translations = data;
-      this.languageChanged.next(this.currentLanguage); // Notifica os inscritos
+      this.languageChanged.next(this.currentLanguageInitial); // Notifica os inscritos
     } catch (error) {
       const errorMessage = this.translate('language_data_processing_error');
       this.alertService.alertMessageTriggerFunction(
@@ -68,9 +85,9 @@ export class TranslateService {
   // Alterar idioma
   async setLanguage(language: string): Promise<void> {
     try {
-      this.currentLanguage = language;
-      await this.loadTranslations(this.currentLanguage);
-      this.languageChanged.next(this.currentLanguage);
+      this.currentLanguageInitial = language;
+      await this.loadTranslations(this.currentLanguageInitial);
+      this.languageChanged.next(this.currentLanguageInitial);
     } catch (error) {
       const errorMessage = this.translate('language_change_error');
       this.alertService.alertMessageTriggerFunction(
@@ -82,11 +99,52 @@ export class TranslateService {
   }
 
   getLanguage(): string {
-    return this.currentLanguage;
+    return this.currentLanguageInitial;
   }
 
   // Observable para escutar as mudanças de idioma
   getLanguageChanged() {
     return this.languageChanged.asObservable();
+  }
+
+  public getLanguagesList(): Language[] {
+    return this.languagesList;
+  }
+
+  public translateQuestionByLanguage(
+    question: QuizQuestion,
+    languageInitial: string
+  ): string {
+    if (
+      !question ||
+      !question.questions ||
+      !Array.isArray(question.questions)
+    ) {
+      return '';
+    }
+
+    // Procura a pergunta pela inicial do idioma
+    const translation = question.questions.find(
+      (q) => q.language.initials === languageInitial
+    );
+
+    if (translation) {
+      return translation.question;
+    }
+
+    // Fallback: tenta retornar em português brasileiro
+    const fallback = question.questions.find(
+      (q) => q.language.initials === 'pt-br'
+    );
+    if (fallback) {
+      console.warn(
+        `Tradução não encontrada para '${languageInitial}', usando 'pt-br'.`
+      );
+      return fallback.question;
+    }
+
+    // Se não tiver nem fallback, retorna string vazia
+    console.warn(`Nenhuma tradução encontrada para a pergunta.`);
+    return '';
   }
 }

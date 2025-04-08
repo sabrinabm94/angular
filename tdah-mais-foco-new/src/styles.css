@@ -67,7 +67,9 @@ section,
 input[type="text"],
 input[type="email"],
 input[type="password"],
-.text-center {
+.text-center,
+legend,
+label {
   display: block;
 }
 
@@ -192,7 +194,8 @@ form {
   transition: transform 0.2s;
 }
 
-legend {
+legend,
+label {
   font-weight: bold;
   font-size: 1.2rem;
 }
@@ -277,4 +280,14 @@ input[type="radio"] {
   button {
     font-size: 1.2rem;
   }
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }

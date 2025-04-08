@@ -20,7 +20,7 @@ export class AlertService {
     type: string,
     trigger: boolean
   ) {
-    if (trigger) {
+    if (trigger && trigger === true) {
       this.alertMessageTriggerSubject.next(trigger);
       this.alertMessageTypeSubject.next(type || 'error');
 

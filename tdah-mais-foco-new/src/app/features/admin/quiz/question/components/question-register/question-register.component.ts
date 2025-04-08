@@ -1,12 +1,7 @@
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { Component, Input } from '@angular/core';
-import { AlertMessageComponent } from '../../../../../../shared/components/alert-message/alert-message.component';
 import { TranslatePipe } from '../../../../../../core/pipes/translate.pipe';
 import { TranslateService } from '../../../../../../core/services/translate.service';
 import { ButtonComponent } from '../../../../../../shared/components/button/button.component';
@@ -18,6 +13,15 @@ import { QuizQuestion } from '../../../../../../data/models/quiz/quiz-question.i
 import { TranslateOrReturnKeyPipe } from '../../../../../../core/pipes/translateOrReturnKey.pipe';
 import { AlertService } from '../../../../../../core/services/alert.service';
 import { DateUtils } from '../../../../../../core/utils/date.utils';
+import { Quiz } from '../../../../../../data/models/quiz/quiz.interface';
+import { QuizService } from '../../../../../../core/services/quiz.service';
+import { Language } from '../../../../../../data/models/language.interface';
+import { FirebaseUser } from '../../../../../../data/models/user/Firebase-user.interface';
+import { UserService } from '../../../../../../core/services/user.service';
+import { Occupation } from '../../../../../../data/models/enums/user/user-occupation.enum';
+import { Gender } from '../../../../../../data/models/enums/user/user-gender.enum';
+import { EducationLevel } from '../../../../../../data/models/enums/user/user-educationLevel.enum';
+import { Role } from '../../../../../../data/models/enums/user/user-role.enum';
 
 @Component({
   selector: 'app-question-register',
@@ -27,14 +31,9 @@ import { DateUtils } from '../../../../../../core/utils/date.utils';
   imports: [
     CommonModule,
     FormsModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatInputModule,
-    MatButtonModule,
     ContainerComponent,
     ButtonComponent,
     FieldsetComponent,
-    AlertMessageComponent,
     TranslatePipe,
     RouterModule,
     TranslateOrReturnKeyPipe,
@@ -44,43 +43,134 @@ export class QuestionRegisterComponent {
   @Input()
   userAdminId: string | null = null;
 
+  userAdmin: FirebaseUser | null = {
+    displayName: '',
+    email: '',
+    password: '',
+    uid: '',
+    birthdate: '2000-01-01',
+    ocupation: Occupation.student,
+    gender: Gender.male,
+    educationLevel: EducationLevel.high_school,
+    role: Role.user,
+    active: true,
+    creationDate: '',
+    updateDate: null,
+    creatorId: '',
+    updaterId: null,
+  };
+
   public submitted: boolean = false;
   public questionAreaOptions: QuestionArea[] = [];
 
   public question: QuizQuestion = {
-    question: '',
-    example: '',
-    frequency: '',
-    context: '',
+    questions: [
+      {
+        question: '',
+        language: {
+          name: '',
+          initials: '',
+        },
+        example: '',
+        frequency: '',
+        context: '',
+      },
+    ],
     area: [QuestionArea.none],
     result: false,
     active: false,
   };
 
+  public quizId: string = '';
+
+  public quizToManage: Quiz = {
+    id: '',
+    name: '',
+    questions: [],
+    active: false,
+  };
+
+  public languages: Language[] = [];
+
   constructor(
     private translateService: TranslateService,
-    private questionService: QuestionService,
     private alertService: AlertService,
-    private dateUtils: DateUtils
+    private dateUtils: DateUtils,
+    private router: Router,
+    private route: ActivatedRoute,
+    private quizService: QuizService,
+    private userService: UserService
   ) {
+    this.getUser();
     this.getFormOptions();
+  }
+
+  async ngOnInit(): Promise<void> {
+    await this.getQuizToManageById();
+  }
+
+  private async getUser(): Promise<FirebaseUser | null> {
+    const firebaseUser: FirebaseUser | null = this.userService.getUser();
+
+    if (firebaseUser && firebaseUser.uid) {
+      this.userAdmin = await this.userService.getUserDataById(firebaseUser.uid);
+    }
+
+    return this.userAdmin;
   }
 
   private getFormOptions() {
     this.questionAreaOptions = Object.values(QuestionArea);
+    this.languages = this.translateService.getLanguagesList();
   }
 
-  public async registerQuestion(userAdminId: string | null): Promise<void> {
+  private getIdFromUrl() {
+    return this.route.snapshot.paramMap.get('id');
+  }
+
+  public async getQuizById(
+    id: string,
+    userAdmin: FirebaseUser
+  ): Promise<Quiz | null> {
+    try {
+      const data: Quiz | null = await this.quizService
+        .getById(id, userAdmin)
+        .then((result) => result);
+
+      if (data) {
+        return data;
+      }
+    } catch (error) {
+      const errorMessage = this.translateService.translate('quiz_data_error');
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
+    }
+    return null;
+  }
+
+  private async getQuizToManageById(): Promise<Quiz | null> {
+    const id = this.getIdFromUrl();
+
+    if (id && this.userAdmin) {
+      const data = await this.getQuizById(id, this.userAdmin);
+
+      return data ? (this.quizToManage = data) : null;
+    }
+
+    return null;
+  }
+
+  public async register(userAdminId: string | null): Promise<void> {
     this.submitted = true;
     const formData = this.question;
 
-    if (this.question) {
+    if (formData) {
       const question: QuizQuestion = {
         id: String(crypto.randomUUID()),
-        question: String(formData.question),
-        example: String(formData.example),
-        frequency: String(formData.frequency),
-        context: String(formData.context),
+        questions: formData.questions,
         area: formData.area,
         active: true,
         creationDate: this.dateUtils.formateDateToInternationFormatString(
@@ -89,32 +179,136 @@ export class QuestionRegisterComponent {
         creatorId: String(userAdminId),
       };
 
-      //Salva dados do usuário no banco de dados
-      await this.questionService
-        .save(question)
-        .then(async (result: any) => {
-          if (result) {
-            // Faz o login automático após o registro e redirecionamento
-            const errorMessage = this.translateService.translate(
-              'question_creation_success'
-            );
-            this.alertService.alertMessageTriggerFunction(
-              errorMessage,
-              'success',
-              true
-            );
-          }
-        })
-        .catch((error: any) => {
-          const errorMessage = this.translateService.translate(
-            'question_creation_error'
-          );
-          this.alertService.alertMessageTriggerFunction(
-            errorMessage,
-            'error',
-            true
-          );
-        });
+      if (question && this.quizToManage) {
+        //se haver lista de perguntas, adiciona ao fim dela a nova pergunta, se não haver a listagem, cria com o novo item.
+        this.quizToManage.questions && this.quizToManage.questions.length > 0
+          ? this.quizToManage.questions.push(question)
+          : (this.quizToManage.questions = [question]);
+
+        this.updateQuiz(
+          this.quizToManage,
+          userAdminId,
+          this.quizToManage.questions
+        );
+      }
     }
+  }
+
+  private createQuizObject(
+    userAdminId: string,
+    quizToManage: Quiz,
+    questions: QuizQuestion[]
+  ) {
+    const quizToManageNewData: Quiz = {
+      id: quizToManage.id ? quizToManage.id : String(crypto.randomUUID()),
+      name: String(quizToManage.name),
+      questions: questions,
+      active: quizToManage.active,
+      updateDate: this.dateUtils.formateDateToInternationFormatString(
+        new Date()
+      ),
+      updaterId: String(userAdminId),
+    };
+
+    return quizToManageNewData;
+  }
+
+  public async updateQuiz(
+    quiz: Quiz | null,
+    userAdminId: string | null,
+    questions: QuizQuestion[]
+  ): Promise<void> {
+    this.submitted = true;
+    if (quiz && userAdminId) {
+      const newdData = this.createQuizObject(userAdminId, quiz, questions);
+      const quizId = quiz.id;
+
+      if (newdData && this.userAdmin) {
+        await this.quizService
+          .update(newdData, this.userAdmin)
+          .then(async (result) => {
+            if (result) {
+              const errorMessage = this.translateService.translate(
+                'quiz_update_success'
+              );
+              this.alertService.alertMessageTriggerFunction(
+                errorMessage,
+                'success',
+                true
+              );
+            }
+            this.router.navigate([`/question-list/${quizId}`]);
+          })
+          .catch((error) => {
+            if (error) {
+              const errorMessage =
+                this.translateService.translate('quiz_update_error');
+              this.alertService.alertMessageTriggerFunction(
+                errorMessage,
+                'error',
+                true
+              );
+            }
+          });
+      }
+    }
+  }
+
+  dropdownOpen = false;
+
+  toggleDropdown(): void {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  public onSelectionChange(event: Event, selectedArea: QuestionArea): void {
+    const isChecked = (event.target as HTMLInputElement).checked;
+
+    if (isChecked) {
+      this.question.area = [...this.question.area, selectedArea];
+    } else {
+      this.question.area = this.question.area.filter(
+        (area) => area !== selectedArea
+      );
+    }
+  }
+
+  addQuestion() {
+    this.question.questions.push({
+      question: '',
+      language: {
+        name: '',
+        initials: '',
+      },
+      example: '',
+      frequency: '',
+      context: '',
+    });
+  }
+
+  removeQuestion(index: number) {
+    this.question.questions.splice(index, 1);
+  }
+
+  public isFormAreaSelectedValid(): boolean {
+    // Verifica se ao menos uma área foi selecionada
+    const isAreaSelected =
+      this.question.area.length > 0 &&
+      !this.question.area.includes(QuestionArea.none);
+
+    return isAreaSelected;
+  }
+
+  public isFormValid(): boolean {
+    // Verifica se todas as perguntas possuem os campos obrigatórios preenchidos
+    const areAllQuestionsValid = this.question.questions.every(
+      (question) =>
+        question.language &&
+        question.language.name.trim() !== '' &&
+        question.question.trim() !== '' &&
+        question.frequency.trim() !== '' &&
+        question.context.trim() !== ''
+    );
+
+    return areAllQuestionsValid;
   }
 }

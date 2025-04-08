@@ -13,8 +13,8 @@
     <a class="link" *ngIf="userId && isAdmin === true" [routerLink]="['/users']" routerLinkActive="active"> {{
       "users" |
       translatePipe }}</a>
-    <a class="link" *ngIf="userId && isAdmin === true" [routerLink]="['/questions']" routerLinkActive="active"> {{
-      "questions" |
+    <a class="link" *ngIf="userId && isAdmin === true" [routerLink]="['/quiz-list']" routerLinkActive="active"> {{
+      "quiz" |
       translatePipe }}</a>
     <a class="link" *ngIf="userId && userId !== ''" href="/login" (click)="logout()"> {{ "logout" | translatePipe }}</a>
   </div>

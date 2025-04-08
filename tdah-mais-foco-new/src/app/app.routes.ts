@@ -55,9 +55,39 @@ export const appRoutes: Routes = [
     canActivate: [AdminGuard], // Apenas usuários administradores
   },
 
+  //cadastro de quiz
+  {
+    path: 'quiz-register',
+    loadComponent: () =>
+      import(
+        './features/admin/quiz/pages/quiz-register-page/quiz-register-page.component'
+      ).then((m) => m.QuizRegisterPageComponent),
+    canActivate: [AdminGuard], // Apenas usuários administradores
+  },
+
+  // edição de quiz
+  {
+    path: 'quiz-management/:id',
+    loadComponent: () =>
+      import(
+        './features/admin/quiz/pages/quiz-manage-page/quiz-manage-page.component'
+      ).then((m) => m.QuizManagePageComponent),
+    canActivate: [AdminGuard], // Apenas usuários administradores
+  },
+
+  // listagem de quiz
+  {
+    path: 'quiz-list',
+    loadComponent: () =>
+      import(
+        './features/admin/quiz/pages/quiz-list-page/quiz-list-page.component'
+      ).then((m) => m.QuizListPageComponent),
+    canActivate: [AdminGuard], // Apenas usuários administradores
+  },
+
   //cadastro de perguntas
   {
-    path: 'question-register',
+    path: 'question-register/:id',
     loadComponent: () =>
       import(
         './features/admin/quiz/question/pages/question-register-page/question-register-page.component'
@@ -67,7 +97,7 @@ export const appRoutes: Routes = [
 
   // edição de pergunta
   {
-    path: 'question-management/:id',
+    path: 'question-management/:quizId/:questionId',
     loadComponent: () =>
       import(
         './features/admin/quiz/question/pages/question-manage-page/question-manage-page.component'
@@ -77,7 +107,7 @@ export const appRoutes: Routes = [
 
   // listagem de perguntas
   {
-    path: 'questions',
+    path: 'question-list/:id',
     loadComponent: () =>
       import(
         './features/admin/quiz/question/pages/question-list-page/question-list-page.component'

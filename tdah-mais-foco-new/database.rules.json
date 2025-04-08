@@ -7,7 +7,11 @@
         ".read": "auth != null && (auth.uid === $userId || root.child('users').child(auth.uid).child('role').val() === 'administrator')",
         ".write": "(auth != null && (auth.uid === $userId || root.child('users').child(auth.uid).child('role').val() === 'administrator')) || (auth == null && !data.exists())",
         "quiz": {
-          "tdah": {
+          ".read": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'administrator'",
+          ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'administrator'",
+          "$quizId": {
+            ".read": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'administrator'",
+            ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'administrator'",
             "score": {
               ".read": "auth != null && (auth.uid === $userId || root.child('users').child(auth.uid).child('role').val() === 'administrator')",
               ".write": "auth != null && auth.uid === $userId"
@@ -21,7 +25,11 @@
       }
     },
     "quiz": {
-      "tdah": {
+      ".read": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'administrator'",
+      ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'administrator'",
+      "$quizId": {
+        ".read": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'administrator'",
+        ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'administrator'",
         "questions": {
           ".read": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'administrator'",
           ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'administrator'",
