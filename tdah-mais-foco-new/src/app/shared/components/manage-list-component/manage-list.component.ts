@@ -31,6 +31,7 @@ export class ManageListComponent implements OnInit {
   @Input() showCreate?: boolean = false;
   @Output() edit = new EventEmitter<any>();
   @Output() create = new EventEmitter<any>();
+  @Output() delete = new EventEmitter<any>();
 
   ngOnInit(): void {}
 
@@ -66,5 +67,9 @@ export class ManageListComponent implements OnInit {
 
   public createItem(): void {
     this.create.emit();
+  }
+
+  public deleteItem(): void {
+    this.delete.emit();
   }
 }

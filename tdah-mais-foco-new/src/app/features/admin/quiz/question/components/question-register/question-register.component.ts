@@ -220,12 +220,13 @@ export class QuestionRegisterComponent {
   ): Promise<void> {
     this.submitted = true;
     if (quiz && userAdminId) {
-      const newdData = this.createQuizObject(userAdminId, quiz, questions);
       const quizId = quiz.id;
+      let newData = this.createQuizObject(userAdminId, quiz, questions);
+      newData.id = quizId;
 
-      if (newdData && this.userAdmin) {
+      if (newData && this.userAdmin) {
         await this.quizService
-          .update(newdData, this.userAdmin)
+          .update(newData, this.userAdmin)
           .then(async (result) => {
             if (result) {
               const errorMessage = this.translateService.translate(
