@@ -5,6 +5,8 @@
       <app-fieldset [content_style]="'row'">
         <!-- Lista de perguntas por idioma -->
         <div *ngFor="let question of questionToManage.questions; let i = index" class="question-entry form-big-group">
+          <hr>
+          <h3 class="text-center">{{"question" | translateOrReturnKeyPipe }} {{i + 1}}</h3>
           <!-- Campo linguagem -->
           <div class="form-group">
             <label for="language-{{ i }}">{{ "language_label" | translatePipe }}<span class="required">*</span></label>
@@ -44,27 +46,24 @@
               [attr.aria-invalid]="question.context.trim() === '' ? 'true' : 'false'" />
           </div>
 
-          <div class="buttons">
-            <app-button [className]="'secundary'" (click)="addQuestion()" [disabled]="!isFormValid()">
-              {{ "add_question" | translatePipe }}
+          <div class="form-group buttons">
+            <app-button [className]="'secundary'" (click)="addQuestion()">
+              +
             </app-button>
             <app-button [className]="'secundary grey'" (click)="removeQuestion(i)">
-              {{ "remove_question" | translatePipe }}
+              x
             </app-button>
           </div>
         </div>
 
-        <!-- Campo área  -->
-        <div class="form-group">
-          <legend>
-            {{ "area_label" | translatePipe }} <span class="required">*</span>
-          </legend>
-
+        <!-- Campo área -->
+        <div class="form-group" *ngIf="questionToManage.area">
+          <legend>{{ "area_label" | translatePipe }} <span class="required">*</span></legend>
           <div class="custom-dropdown" (click)="toggleDropdown()">
             <div class="selected-options">
-              <span class="selected" *ngFor="let selected of questionToManage.area">{{ selected |
-                translateOrReturnKeyPipe
-                }}</span>
+              <span class="selected" *ngFor="let selected of questionToManage.area">
+                {{ selected | translateOrReturnKeyPipe }}
+              </span>
               <span class="none" *ngIf="questionToManage.area.length <= 0">{{ "select" | translatePipe }}</span>
             </div>
             <ul class="dropdown-options" *ngIf="dropdownOpen">
@@ -72,25 +71,22 @@
                 <label>
                   <input class="input" type="checkbox" [value]="questionArea"
                     (change)="onSelectionChange($event, questionArea)"
-                    [checked]="questionToManage.area.includes(questionArea)">
+                    [checked]="questionToManage.area.includes(questionArea)" />
                   <span class="label">{{ questionArea | translateOrReturnKeyPipe }}</span>
                 </label>
               </li>
             </ul>
           </div>
         </div>
-
-        <div class="buttons">
-          <app-button [className]="'secundary'" (click)="update(questionToManage, userAdminId)"
-            [disabled]="!isFormValid() || !isFormAreaSelectedValid()">
-            {{ "update" | translatePipe }}
-          </app-button>
-          <app-button [className]="'secundary grey'" (click)="delete(questionToManage, userAdminId)">
-            {{ "delete" | translatePipe }}
-          </app-button>
-        </div>
-
       </app-fieldset>
+
+      <div class="form-group buttons">
+        <app-button [className]="'secundary'" (click)="update(questionToManage, userAdminId)"
+          [disabled]="!isFormValid() || !isFormAreaSelectedValid()">
+          {{ "register" | translatePipe }}
+        </app-button>
+      </div>
+      <hr>
     </form>
   </app-container>
 </section>

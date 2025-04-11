@@ -105,10 +105,6 @@ export class QuestionRegisterComponent {
     this.getFormOptions();
   }
 
-  async ngOnInit(): Promise<void> {
-    await this.getQuizToManageById();
-  }
-
   private async getUser(): Promise<FirebaseUser | null> {
     const firebaseUser: FirebaseUser | null = this.userService.getUser();
 
@@ -148,18 +144,6 @@ export class QuestionRegisterComponent {
         true
       );
     }
-    return null;
-  }
-
-  private async getQuizToManageById(): Promise<Quiz | null> {
-    const id = this.getIdFromUrl();
-
-    if (id && this.userAdmin) {
-      const data = await this.getQuizById(id, this.userAdmin);
-
-      return data ? (this.quizToManage = data) : null;
-    }
-
     return null;
   }
 
@@ -218,39 +202,45 @@ export class QuestionRegisterComponent {
     userAdminId: string | null,
     questions: QuizQuestion[]
   ): Promise<void> {
-    this.submitted = true;
-    if (quiz && userAdminId) {
-      const quizId = quiz.id;
-      let newData = this.createQuizObject(userAdminId, quiz, questions);
-      newData.id = quizId;
+    const quizId = this.getIdFromUrl();
 
-      if (newData && this.userAdmin) {
-        await this.quizService
-          .update(newData, this.userAdmin)
-          .then(async (result) => {
-            if (result) {
-              const errorMessage = this.translateService.translate(
-                'quiz_update_success'
-              );
-              this.alertService.alertMessageTriggerFunction(
-                errorMessage,
-                'success',
-                true
-              );
-            }
-            this.router.navigate([`/question-list/${quizId}`]);
-          })
-          .catch((error) => {
-            if (error) {
-              const errorMessage =
-                this.translateService.translate('quiz_update_error');
-              this.alertService.alertMessageTriggerFunction(
-                errorMessage,
-                'error',
-                true
-              );
-            }
-          });
+    if (quizId && this.userAdmin) {
+      const quiz = await this.getQuizById(quizId, this.userAdmin);
+
+      if (quiz && userAdminId) {
+        this.submitted = true;
+        const quizId = quiz.id;
+        let newData = this.createQuizObject(userAdminId, quiz, questions);
+        newData.id = quizId;
+
+        if (newData) {
+          await this.quizService
+            .update(newData, this.userAdmin)
+            .then(async (result) => {
+              if (result) {
+                const errorMessage = this.translateService.translate(
+                  'quiz_update_success'
+                );
+                this.alertService.alertMessageTriggerFunction(
+                  errorMessage,
+                  'success',
+                  true
+                );
+              }
+              this.router.navigate([`/question-list/${quizId}`]);
+            })
+            .catch((error) => {
+              if (error) {
+                const errorMessage =
+                  this.translateService.translate('quiz_update_error');
+                this.alertService.alertMessageTriggerFunction(
+                  errorMessage,
+                  'error',
+                  true
+                );
+              }
+            });
+        }
       }
     }
   }
@@ -263,10 +253,18 @@ export class QuestionRegisterComponent {
 
   public onSelectionChange(event: Event, selectedArea: QuestionArea): void {
     const isChecked = (event.target as HTMLInputElement).checked;
+    const defaultValue = 'none';
 
     if (isChecked) {
+      // Remover o valor "none" caso esteja presente
+      this.question.area = this.question.area.filter(
+        (area) => area !== defaultValue
+      );
+
+      // Adicionar o valor selecionado
       this.question.area = [...this.question.area, selectedArea];
     } else {
+      // Remover o valor desmarcado
       this.question.area = this.question.area.filter(
         (area) => area !== selectedArea
       );

@@ -294,6 +294,13 @@ export class QuizService {
           true
         );
       }
+    } else {
+      const errorMessage = this.translateService.translate('permission_denied');
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
     return null;
   }
@@ -302,15 +309,26 @@ export class QuizService {
     id: string,
     userAdmin: FirebaseUser
   ): Promise<Quiz | null> {
-    if (id && userAdmin && userAdmin.role === Role.administrator) {
-      try {
-        const databasePath = `${this.databaseQuizPath}${id}`;
-        const dbRef = ref(this.database);
-        const snapshot = await get(child(dbRef, databasePath));
-        const data = snapshot.val();
-        return data;
-      } catch (error: any) {
-        const errorMessage = this.translateService.translate('quiz_data_error');
+    if (id) {
+      if (userAdmin && userAdmin.role === Role.administrator) {
+        try {
+          const databasePath = `${this.databaseQuizPath}${id}`;
+          const dbRef = ref(this.database);
+          const snapshot = await get(child(dbRef, databasePath));
+          const data = snapshot.val();
+          return data;
+        } catch (error: any) {
+          const errorMessage =
+            this.translateService.translate('quiz_data_error');
+          this.alertService.alertMessageTriggerFunction(
+            errorMessage,
+            'error',
+            true
+          );
+        }
+      } else {
+        const errorMessage =
+          this.translateService.translate('permission_denied');
         this.alertService.alertMessageTriggerFunction(
           errorMessage,
           'error',
@@ -322,26 +340,36 @@ export class QuizService {
   }
 
   public async save(quiz: Quiz, userAdmin: FirebaseUser): Promise<Quiz | null> {
-    if (quiz && userAdmin && userAdmin.role === Role.administrator) {
-      const quizId = quiz.id;
-      try {
-        const databasePath = `${this.databaseQuizPath}${quizId}`;
-        const databaseRef = ref(this.database, databasePath);
-        await update(databaseRef, quiz).then(() => {
+    if (quiz) {
+      if (userAdmin && userAdmin.role === Role.administrator) {
+        const quizId = quiz.id;
+        try {
+          const databasePath = `${this.databaseQuizPath}${quizId}`;
+          const databaseRef = ref(this.database, databasePath);
+          await update(databaseRef, quiz).then(() => {
+            const errorMessage = this.translateService.translate(
+              'quiz_update_success'
+            );
+            this.alertService.alertMessageTriggerFunction(
+              errorMessage,
+              'success',
+              true
+            );
+          });
+          return quiz;
+        } catch (error) {
           const errorMessage = this.translateService.translate(
-            'quiz_update_success'
+            'quiz_creation_error'
           );
           this.alertService.alertMessageTriggerFunction(
             errorMessage,
-            'success',
+            'error',
             true
           );
-        });
-        return quiz;
-      } catch (error) {
-        const errorMessage = this.translateService.translate(
-          'quiz_creation_error'
-        );
+        }
+      } else {
+        const errorMessage =
+          this.translateService.translate('permission_denied');
         this.alertService.alertMessageTriggerFunction(
           errorMessage,
           'error',

@@ -98,7 +98,6 @@ export class QuestionManageComponent implements OnInit {
     private userService: UserService,
     private router: Router
   ) {
-    this.getUser();
     this.getFormOptions();
   }
 
@@ -119,6 +118,7 @@ export class QuestionManageComponent implements OnInit {
 
   private getFormOptions() {
     this.questionAreaOptions = Object.values(QuestionArea);
+    this.languages = this.translateService.getLanguagesList();
   }
 
   private getQuizIdFromUrl() {
@@ -132,22 +132,24 @@ export class QuestionManageComponent implements OnInit {
   }
 
   private async getQuizToManageById(): Promise<Quiz | null> {
-    const id = this.getQuizIdFromUrl();
+    const quizId = this.getQuizIdFromUrl();
+    const user = await this.getUser().then((result) => result);
 
-    if (id && this.userAdmin) {
-      const data = await this.getQuizById(id, this.userAdmin);
-
-      return data ? (this.quizToManage = data) : null;
+    if (quizId && user) {
+      const quiz = await this.getQuizById(quizId, user);
+      return quiz;
     }
 
     return null;
   }
 
   private async getQuestionToManageById(): Promise<QuizQuestion | null> {
-    const id = this.getQuestionIdFromUrl();
+    const quizId = await this.getQuizIdFromUrl();
+    const id = await this.getQuestionIdFromUrl();
+    const user = await this.getUser().then((result) => result);
 
-    if (this.quizId && id) {
-      const data = await this.getQuestionById(this.quizId, id);
+    if (quizId && id && user) {
+      const data = await this.getQuestionById(quizId, id, user);
 
       return data ? (this.questionToManage = data) : null;
     }
@@ -180,12 +182,13 @@ export class QuestionManageComponent implements OnInit {
 
   public async getQuestionById(
     quizId: string,
-    questionId: string
+    questionId: string,
+    userAdmin: FirebaseUser
   ): Promise<QuizQuestion | null> {
-    if (quizId && questionId && this.userAdmin) {
+    if (quizId && questionId && userAdmin) {
       try {
         const data: QuizQuestion | null = await this.questionService
-          .getOneById(quizId, questionId, this.userAdmin)
+          .getOneById(quizId, questionId, userAdmin)
           .then((result) => result);
 
         if (data) {
@@ -355,13 +358,21 @@ export class QuestionManageComponent implements OnInit {
 
   public onSelectionChange(event: Event, selectedArea: QuestionArea): void {
     const isChecked = (event.target as HTMLInputElement).checked;
+    const defaultValue = 'none';
 
     if (isChecked) {
+      // Remover o valor "none" caso esteja presente
+      this.questionToManage.area = this.questionToManage.area.filter(
+        (area) => area !== defaultValue
+      );
+
+      // Adicionar o valor selecionado
       this.questionToManage.area = [
         ...this.questionToManage.area,
         selectedArea,
       ];
     } else {
+      // Remover o valor desmarcado
       this.questionToManage.area = this.questionToManage.area.filter(
         (area) => area !== selectedArea
       );

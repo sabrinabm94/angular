@@ -3,9 +3,10 @@
     <h2 class="text-center">{{ "title_question_register" | translatePipe }}</h2>
     <form class="form text-center" (ngSubmit)="register(userAdminId)" #registrationForm="ngForm">
       <app-fieldset [content_style]="'row'">
-
         <!-- Lista de perguntas por idioma -->
         <div *ngFor="let question of question.questions; let i = index" class="question-entry form-big-group">
+          <hr>
+          <h3 class="text-center">{{"question" | translateOrReturnKeyPipe }} {{i + 1}}</h3>
           <!-- Campo linguagem -->
           <div class="form-group">
             <label for="language-{{ i }}">{{ "language_label" | translatePipe }}<span class="required">*</span></label>
@@ -45,12 +46,12 @@
               [attr.aria-invalid]="question.context.trim() === '' ? 'true' : 'false'" />
           </div>
 
-          <div class="buttons">
-            <app-button [className]="'secundary'" (click)="addQuestion()" [disabled]="!isFormValid()">
-              {{ "add_question" | translatePipe }}
+          <div class="form-group buttons">
+            <app-button [className]="'secundary'" (click)="addQuestion()">
+              +
             </app-button>
             <app-button [className]="'secundary grey'" (click)="removeQuestion(i)">
-              {{ "remove_question" | translatePipe }}
+              x
             </app-button>
           </div>
         </div>
@@ -79,12 +80,13 @@
         </div>
       </app-fieldset>
 
-      <div class="buttons">
+      <div class="form-group buttons">
         <app-button [className]="'secundary'" (click)="register(userAdminId)"
           [disabled]="!isFormValid() || !isFormAreaSelectedValid()">
           {{ "register" | translatePipe }}
         </app-button>
       </div>
+      <hr>
     </form>
   </app-container>
 </section>

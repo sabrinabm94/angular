@@ -6,6 +6,10 @@
   flex-wrap: wrap;
 }
 
+.form-group {
+  flex: 0 0 33%;
+}
+
 .custom-dropdown {
   position: relative;
   width: 100%;
@@ -67,7 +71,6 @@
   width: 20px;
 }
 
-
-.buttons {
-  flex: 100%;
+form {
+  padding: 20px;
 }

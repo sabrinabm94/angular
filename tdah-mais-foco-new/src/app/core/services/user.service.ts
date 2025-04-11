@@ -331,9 +331,14 @@ export class UserService {
           true
         );
       }
+    } else {
+      const errorMessage = this.translateService.translate('permission_denied');
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
-    const errorMessage = this.translateService.translate('permission_denied');
-    this.alertService.alertMessageTriggerFunction(errorMessage, 'error', true);
     return null;
   }
 }
