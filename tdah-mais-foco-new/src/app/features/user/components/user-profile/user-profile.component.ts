@@ -179,7 +179,6 @@ this.alertService.alertMessageTriggerFunction(errorMessage, 'error', true);
             .updateUserData(newUserToManage)
             .then((result) => {
               if (result) {
-                console.log(result);
                 const errorMessage = this.translateService.translate(
                   'user_update_data_success'
                 );

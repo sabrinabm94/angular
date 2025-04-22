@@ -102,8 +102,10 @@ export class QuestionManageComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    await this.getQuizToManageById();
-    await this.getQuestionToManageById();
+    await Promise.all([
+      this.getQuizToManageById(),
+      this.getQuestionToManageById(),
+    ]);
   }
 
   private async getUser(): Promise<FirebaseUser | null> {
@@ -132,26 +134,26 @@ export class QuestionManageComponent implements OnInit {
   }
 
   private async getQuizToManageById(): Promise<Quiz | null> {
-    const quizId = this.getQuizIdFromUrl();
     const user = await this.getUser().then((result) => result);
+    const quizId = this.getQuizIdFromUrl();
 
     if (quizId && user) {
-      const quiz = await this.getQuizById(quizId, user);
-      return quiz;
+      return this.getQuizById(quizId, user);
     }
-
     return null;
   }
 
   private async getQuestionToManageById(): Promise<QuizQuestion | null> {
-    const quizId = await this.getQuizIdFromUrl();
-    const id = await this.getQuestionIdFromUrl();
     const user = await this.getUser().then((result) => result);
+    const quizId = this.getQuizIdFromUrl();
+    const questionId = this.getQuestionIdFromUrl();
 
-    if (quizId && id && user) {
-      const data = await this.getQuestionById(quizId, id, user);
-
-      return data ? (this.questionToManage = data) : null;
+    if (quizId && questionId && user) {
+      const data = await this.getQuestionById(quizId, questionId, user);
+      if (data) {
+        this.questionToManage = data;
+        return data;
+      }
     }
 
     return null;
@@ -162,13 +164,8 @@ export class QuestionManageComponent implements OnInit {
     userAdmin: FirebaseUser
   ): Promise<Quiz | null> {
     try {
-      const data: Quiz | null = await this.quizService
-        .getById(id, userAdmin)
-        .then((result) => result);
-
-      if (data) {
-        return data;
-      }
+      const data: Quiz | null = await this.quizService.getById(id, userAdmin);
+      return data ?? null;
     } catch (error) {
       const errorMessage = this.translateService.translate('quiz_data_error');
       this.alertService.alertMessageTriggerFunction(
@@ -176,8 +173,8 @@ export class QuestionManageComponent implements OnInit {
         'error',
         true
       );
+      return null;
     }
-    return null;
   }
 
   public async getQuestionById(
@@ -185,26 +182,26 @@ export class QuestionManageComponent implements OnInit {
     questionId: string,
     userAdmin: FirebaseUser
   ): Promise<QuizQuestion | null> {
-    if (quizId && questionId && userAdmin) {
-      try {
-        const data: QuizQuestion | null = await this.questionService
-          .getOneById(quizId, questionId, userAdmin)
-          .then((result) => result);
-
-        if (data) {
-          return data;
-        }
-      } catch (error) {
-        const errorMessage = this.translateService.translate(
-          'questions_data_error'
-        );
-        this.alertService.alertMessageTriggerFunction(
-          errorMessage,
-          'error',
-          true
-        );
+    try {
+      const data: QuizQuestion | null = await this.questionService.getOneById(
+        quizId,
+        questionId,
+        userAdmin
+      );
+      if (data) {
+        return data;
       }
+    } catch (error) {
+      const errorMessage = this.translateService.translate(
+        'questions_data_error'
+      );
+      this.alertService.alertMessageTriggerFunction(
+        errorMessage,
+        'error',
+        true
+      );
     }
+
     return null;
   }
 
@@ -214,7 +211,12 @@ export class QuestionManageComponent implements OnInit {
   ) {
     const questionToManageNewData: QuizQuestion = {
       id: questionToManage.id,
-      questions: questionToManage.questions,
+      questions: questionToManage.questions
+        ? questionToManage.questions.map((question) => ({
+            ...question,
+            language: this.getLanguageById(question.language),
+          }))
+        : [],
       area: questionToManage.area,
       active: questionToManage.active,
       updateDate: this.dateUtils.formateDateToInternationFormatString(
@@ -230,32 +232,45 @@ export class QuestionManageComponent implements OnInit {
     questionToManage: QuizQuestion | null,
     userAdminId: string | null
   ): Promise<FirebaseUser | null> {
-    this.submitted = true;
-    if (userAdminId && questionToManage) {
-      const questionNewData = this.createQuestionObject(
-        userAdminId,
-        questionToManage
+    const quizId: string | null = this.getQuizIdFromUrl();
+
+    if (quizId && this.userAdmin) {
+      const quiz: Quiz | null = await this.quizService.getById(
+        quizId,
+        this.userAdmin
       );
 
-      const index = this.quizToManage.questions.findIndex(
-        (question) => question.id === questionNewData.id
-      );
+      if (quiz && questionToManage && questionToManage.id) {
+        const questionsNumber: number = quiz.questions.length;
 
-      if (index !== -1) {
-        this.quizToManage.questions[index] = {
-          ...this.quizToManage.questions[index],
-          ...questionNewData,
-        };
-      }
+        if (userAdminId && questionToManage) {
+          const questionNewData = this.createQuestionObject(
+            userAdminId,
+            questionToManage
+          );
 
-      if (questionNewData) {
-        this.updateQuiz(
-          this.quizToManage,
-          userAdminId,
-          this.quizToManage.questions
-        );
+          if (questionsNumber > 0) {
+            const index = quiz.questions.findIndex(
+              (question) => question.id === questionNewData.id
+            );
+
+            if (index !== -1) {
+              quiz.questions[index] = {
+                ...quiz.questions[index],
+                ...questionNewData,
+              };
+            } else {
+              quiz.questions.push(questionNewData);
+            }
+          }
+
+          if (questionNewData) {
+            this.updateQuiz(quiz, userAdminId, quiz.questions);
+          }
+        }
       }
     }
+
     return null;
   }
 
@@ -315,37 +330,31 @@ export class QuestionManageComponent implements OnInit {
     questions: QuizQuestion[]
   ): Promise<void> {
     this.submitted = true;
-    if (quiz && userAdminId) {
-      const newdData = this.createQuizObject(userAdminId, quiz, questions);
+    if (quiz && quiz.id && userAdminId && questions && this.userAdmin) {
       const quizId = quiz.id;
-
-      if (newdData && this.userAdmin) {
-        await this.quizService
-          .update(newdData, this.userAdmin)
-          .then(async (result) => {
-            if (result) {
-              const errorMessage = this.translateService.translate(
-                'quiz_update_success'
-              );
-              this.alertService.alertMessageTriggerFunction(
-                errorMessage,
-                'success',
-                true
-              );
-            }
-            this.router.navigate([`/question-list/${quizId}`]);
-          })
-          .catch((error) => {
-            if (error) {
-              const errorMessage =
-                this.translateService.translate('quiz_update_error');
-              this.alertService.alertMessageTriggerFunction(
-                errorMessage,
-                'error',
-                true
-              );
-            }
-          });
+      let newData = this.createQuizObject(userAdminId, quiz, questions);
+      newData.id = quizId;
+      try {
+        const result = await this.quizService.update(newData, this.userAdmin);
+        if (result) {
+          const successMessage = this.translateService.translate(
+            'quiz_update_success'
+          );
+          this.alertService.alertMessageTriggerFunction(
+            successMessage,
+            'success',
+            true
+          );
+          this.router.navigate([`/question-list/${quizId}`]);
+        }
+      } catch (error) {
+        const errorMessage =
+          this.translateService.translate('quiz_update_error');
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
       }
     }
   }
@@ -380,16 +389,22 @@ export class QuestionManageComponent implements OnInit {
   }
 
   addQuestion() {
-    this.questionToManage.questions.push({
+    const questions = this.questionToManage.questions;
+    const question = {
       question: '',
       language: {
         name: '',
         initials: '',
+        id: 0,
       },
       example: '',
       frequency: '',
       context: '',
-    });
+    };
+
+    questions.push(question);
+
+    this.questionToManage.questions = questions;
   }
 
   removeQuestion(index: number) {
@@ -409,13 +424,21 @@ export class QuestionManageComponent implements OnInit {
     // Verifica se todas as perguntas possuem os campos obrigatórios preenchidos
     const areAllQuestionsValid = this.questionToManage.questions.every(
       (question) =>
-        question.language &&
-        question.language.name.trim() !== '' &&
+        question.language !== null &&
         question.question.trim() !== '' &&
         question.frequency.trim() !== '' &&
-        question.context.trim() !== ''
+        question.context.trim() !== '' &&
+        question.example.trim() !== ''
     );
 
     return areAllQuestionsValid;
+  }
+
+  private getLanguageById(language: Language): Language {
+    if (language) {
+      const languageFound = this.translateService.getLanguageById(language);
+      return languageFound;
+    }
+    return language;
   }
 }

@@ -106,7 +106,6 @@ export class QuizListComponent implements OnInit {
         }
 
         if (quizToManageList) {
-          console.log('quizToManageList ', quizToManageList);
           this.quizToManageList = quizToManageList.map((item) => ({
             id: item.id ? item.id : '',
             name: item.name ? item.name : '',

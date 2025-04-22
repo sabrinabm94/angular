@@ -178,8 +178,6 @@ export class QuestionListComponent implements OnInit {
               active: item.active ?? false,
             };
 
-            console.log('question ', question);
-
             return question;
           });
 
@@ -210,10 +208,6 @@ export class QuestionListComponent implements OnInit {
       if (quizId) {
         url = `/question-management/${quizId}/${questionId}`;
       }
-
-      console.log('quizId ', quizId);
-      console.log('questionId ', questionId);
-      console.log('url ', url);
       return this.router.navigate([url]);
     }
     return null;

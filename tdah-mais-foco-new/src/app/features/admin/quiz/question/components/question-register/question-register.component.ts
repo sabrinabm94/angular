@@ -70,6 +70,7 @@ export class QuestionRegisterComponent {
         language: {
           name: '',
           initials: '',
+          id: 0,
         },
         example: '',
         frequency: '',
@@ -277,6 +278,7 @@ export class QuestionRegisterComponent {
       language: {
         name: '',
         initials: '',
+        id: 0,
       },
       example: '',
       frequency: '',

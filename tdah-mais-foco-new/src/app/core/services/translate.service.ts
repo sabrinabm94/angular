@@ -16,14 +16,17 @@ export class TranslateService {
 
   public languagesList: Language[] = [
     {
+      id: 1,
       name: 'portuguese',
       initials: 'pt-br',
     },
     {
+      id: 2,
       name: 'english',
       initials: 'en',
     },
     {
+      id: 3,
       name: 'spanish',
       initials: 'es',
     },
@@ -146,5 +149,16 @@ export class TranslateService {
     // Se não tiver nem fallback, retorna string vazia
     console.warn(`Nenhuma tradução encontrada para a pergunta.`);
     return '';
+  }
+
+  public getLanguageById(languageToSearch: Language): Language {
+    if (languageToSearch && languageToSearch.id) {
+      const languageToSearchId: number = languageToSearch.id;
+      const languageFound = this.getLanguagesList().find(
+        (language: Language) => language.id === languageToSearchId
+      );
+      return languageFound ? languageFound : languageToSearch;
+    }
+    return languageToSearch;
   }
 }
