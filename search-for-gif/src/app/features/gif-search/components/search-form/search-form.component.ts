@@ -41,7 +41,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
    * @param fb {FormBuilder} - Serviço para criar o formulário reativo.
    * @param gifService {GifService} - Serviço que busca GIFs na API.
    */
-  constructor(private fb: FormBuilder, private gifService: GifService) { }
+  constructor(private fb: FormBuilder, private gifService: GifService) {}
 
   /**
    * Lifecycle hook do Angular chamado quando o componente é inicializado.
@@ -72,7 +72,11 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const { term, limit } = this.form.value;
+    let { term, limit } = this.form.value;
+
+    if (!limit || limit == 0) {
+      limit = 10;
+    }
 
     if (this.abortController) {
       this.abortController.abort();
@@ -80,7 +84,8 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
     this.abortController = new AbortController();
 
-    this.gifService.searchGifs(term, limit)
+    this.gifService
+      .searchGifs(term, limit)
       .then((response) => this.handleResponse(response, term))
       .catch((error) => console.error(error.message));
   }

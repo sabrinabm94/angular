@@ -1,27 +1,38 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { LanguageService } from 'src/app/core/services/language.service';
+import { Language } from 'src/app/data/interfaces/language.interface';
+import { TranslatePipe } from 'src/app/core/pipes/translate.pipe';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-switch-language-nav',
   standalone: true,
   templateUrl: './switch-language-nav.component.html',
   styleUrls: ['./switch-language-nav.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule, TranslocoModule],
 })
 export class SwitchLanguageNavComponent {
-  /**
-   * Cria uma instância de SwitchLanguageNavComponent.
-   * @param languageService - Serviço de linguagem para alterar o idioma da aplicação.
-   */
+  public currentLanguage: Language | null = null;
+  public languagensList: Language[] = [];
+
   constructor(private languageService: LanguageService) {
-    this.languageService.switchLanguage('en'); // Idioma padrão
+    this.languagensList = this.languageService.getLanguagesList();
+
+    // Inicializa a linguagem com a padrão do ambiente
+    this.currentLanguage = this.languageService.getActiveLanguage();
   }
 
-  /**
-   * Alterna o idioma da aplicação usando o serviço LanguageService.
-   * @param language - O idioma a ser definido (ex.: 'en', 'pt').
-   */
-  switchLanguage(language: string): void {
-    this.languageService.switchLanguage(language);
+  switchLanguage(language: Language): Language | null {
+    if (language) {
+      this.languageService.setActiveLanguage(language);
+      return (this.currentLanguage = language);
+    }
+    return null;
+  }
+
+  // Verifica se a linguagem atual é a ativa
+  isActive(language: Language): boolean {
+    return this.currentLanguage === language;
   }
 }

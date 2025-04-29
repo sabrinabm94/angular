@@ -18,24 +18,20 @@ import { TranslocoModule } from '@ngneat/transloco';
   selector: 'app-results-template', // Seletor usado para incluir o componente no template pai
   standalone: true,
   imports: [
-    PictureComponent, // Componente de imagem para exibir as prévias dos GIFs
-    CommonModule, // Módulo Angular comum necessário para várias funcionalidades
-    NgxPaginationModule, // Módulo de paginação de terceiros
-    TranslocoModule, // Módulo de internacionalização para tradução de textos
+    PictureComponent,
+    CommonModule,
+    NgxPaginationModule,
+    TranslocoModule,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA], // Permite o uso de elementos customizados de terceiros como o módulo de paginação
-  templateUrl: './search-results.component.html', // Localização do arquivo de template HTML
-  styleUrls: ['./search-results.component.css'], // Localização dos arquivos de estilo CSS
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  templateUrl: './search-results.component.html',
+  styleUrls: ['./search-results.component.css'],
 })
 export class SearchResultsComponent {
-  /** Classe CSS atribuída ao host do componente para estilização */
   @HostBinding('class') class: string = 'app-results-template';
-
-  /** Array de GIFs recebidos como entrada do componente pai */
   @Input() gifs: Gif[] = [];
-
-  /** Número da página atual na paginação dos resultados */
-  currentPageNumber: number = 1;
+  public currentPageNumber: number = 1;
+  public itemPerPage: number = 8;
 
   /**
    * Função chamada quando o número da página é alterado.
@@ -53,7 +49,21 @@ export class SearchResultsComponent {
    * @returns {void}
    */
   public setData(gifs: Gif[]): void {
-    this.gifs = gifs;
-    this.currentPageNumber = 1; // Resetar a página para 1 quando os dados são atualizados
+    if (gifs) {
+      this.gifs = gifs;
+      this.currentPageNumber = 1; // Reseta a página para 1 quando os dados são atualizados
+    }
+  }
+
+  /**
+   * Retorna se foram encontrados resultados válidos ou não
+   * @param {Gif[]} results - listagem de resultados de gifs encontrados
+   * @returns {boolean}
+   */
+  public showResults(results: Gif[]): boolean {
+    if (results && results.length > 0) {
+      return true;
+    }
+    return false;
   }
 }

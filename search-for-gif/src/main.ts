@@ -11,18 +11,16 @@ import { HttpClientModule } from '@angular/common/http';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    importProvidersFrom(
-      HttpClientModule
-    ),
+    importProvidersFrom(HttpClientModule),
     provideRouter(routes),
     provideTransloco({
       config: {
-        availableLangs: ['en', 'es', 'fr', 'ja'],
-        defaultLang: 'en',
+        availableLangs: ['en', 'es', 'pt', 'ptbr'],
+        defaultLang: 'ptbr',
         reRenderOnLangChange: true,
         prodMode: !isDevMode(),
       },
-      loader: TranslocoHttpLoader
-    })
-  ]
-}).catch(err => console.error(err));
+      loader: TranslocoHttpLoader,
+    }),
+  ],
+}).catch((err) => console.error(err));
