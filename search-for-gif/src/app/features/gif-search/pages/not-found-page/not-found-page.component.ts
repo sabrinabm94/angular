@@ -10,16 +10,10 @@ import { HeaderComponent } from 'src/app/shared/components/header/header.compone
  * além do módulo de internacionalização Transloco.
  */
 @Component({
-  selector: 'app-not-found-page', // Seletor utilizado para incluir o componente na aplicação
-  standalone: true, // Define o componente como autônomo, sem a necessidade de um módulo pai
-  imports: [
-    HeaderComponent, // Componente de cabeçalho reutilizável
-    FooterComponent, // Componente de rodapé reutilizável
-    TranslocoModule, // Módulo de internacionalização para suporte a múltiplos idiomas
-  ],
-  templateUrl: './not-found-page.component.html', // Caminho do template HTML da página de erro 404
-  styleUrls: ['./not-found-page.component.css'], // Caminho do arquivo de estilos CSS da página de erro 404
+  selector: 'app-not-found-page',
+  standalone: true,
+  imports: [TranslocoModule],
+  templateUrl: './not-found-page.component.html',
+  styleUrls: ['./not-found-page.component.css'],
 })
-export class NotFoundPageComponent {
-  // Este componente não contém nenhuma lógica no momento, sendo utilizado para exibir uma mensagem de página não encontrada.
-}
+export class NotFoundPageComponent {}

@@ -17,36 +17,20 @@ import { TranslocoModule } from '@ngneat/transloco';
  * Ele valida a entrada do usuário, envia a busca para o serviço `GifService` e emite os resultados para o componente pai.
  */
 @Component({
-  selector: 'app-search-template', // Seletor utilizado para este componente
+  selector: 'app-search-template',
   templateUrl: './search-form.component.html',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, TranslocoModule], // Módulos importados pelo componente
-  styleUrls: ['./search-form.component.css'], // Arquivos de estilo CSS
+  imports: [ReactiveFormsModule, CommonModule, TranslocoModule],
+  styleUrls: ['./search-form.component.css'],
 })
 export class SearchFormComponent implements OnInit, OnDestroy {
-  /** Controlador de requisições para permitir o cancelamento de buscas. */
   private abortController?: AbortController;
-
-  /** Formulário reativo utilizado para coletar os dados de busca. */
   public form: FormGroup;
-
-  /** Array para armazenar os resultados de GIFs da busca. */
   public gifs: Gif[] = [];
-
-  /** Evento emitido quando novos GIFs são obtidos da API, enviado para o componente pai. */
   @Output() dataEmitter = new EventEmitter<Gif[]>();
 
-  /**
-   * O construtor recebe `FormBuilder` para construir o formulário e `GifService` para fazer as requisições de busca de GIFs.
-   * @param fb {FormBuilder} - Serviço para criar o formulário reativo.
-   * @param gifService {GifService} - Serviço que busca GIFs na API.
-   */
   constructor(private fb: FormBuilder, private gifService: GifService) {}
 
-  /**
-   * Lifecycle hook do Angular chamado quando o componente é inicializado.
-   * Inicializa o formulário com validações nos campos.
-   */
   ngOnInit(): void {
     this.form = this.fb.group({
       term: [

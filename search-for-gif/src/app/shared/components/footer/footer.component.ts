@@ -4,13 +4,12 @@ import { Component, HostBinding } from '@angular/core';
   selector: 'app-footer',
   standalone: true,
   templateUrl: './footer.component.html',
-  styleUrl: './footer.component.css'
+  styleUrl: './footer.component.css',
 })
 export class FooterComponent {
-  @HostBinding('class') class: string = "app-footer";
+  @HostBinding('class') class: string = 'app-footer';
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }
