@@ -25,11 +25,9 @@ import { Subscription } from 'rxjs';
 export class AppComponent implements OnInit {
   public loading = true;
   private userService!: UserService;
-
   public alertMessageTrigger: boolean = false;
   public alertMessageType: string = 'error';
   public alertMessage: string = 'Erro, tente novamente';
-
   private subscriptions = new Subscription();
 
   constructor(
@@ -39,13 +37,20 @@ export class AppComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
+    this.translate();
     this.userService = this.injector.get(UserService);
-
-    this.translateService.setLanguage(environment.lang);
     await this.userService.getUser();
     this.loading = false;
-
     this.listenToAlerts();
+  }
+
+  private translate() {
+    const languageId = environment.defaultLanguageId;
+
+    const language = this.translateService.getLanguageById(languageId);
+    if (language) {
+      this.translateService.setActiveLanguage(language);
+    }
   }
 
   private listenToAlerts() {

@@ -9,9 +9,8 @@ import { UserService } from '../../../../core/services/user.service';
 import { QuizResultByArea } from '../../../../data/models/quiz/quiz-result-by-area.interface';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { Router, RouterModule } from '@angular/router';
-import { AlertMessageComponent } from '../../../../shared/components/alert-message/alert-message.component';
-import { QuizResult } from '../../../../data/models/quiz/quiz-result.interface';
 import { AlertService } from '../../../../core/services/alert.service';
+import { Language } from '../../../../data/models/language.interface';
 
 @Component({
   selector: 'app-results',
@@ -24,7 +23,6 @@ import { AlertService } from '../../../../core/services/alert.service';
     FieldsetComponent,
     ButtonComponent,
     RouterModule,
-    AlertMessageComponent,
   ],
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.css'],
@@ -35,10 +33,11 @@ export class ResultsComponent {
   public resultShareUrl: string = '';
   private message: string = `Olá, eu acabei de fazer meu teste de TDAH, faça você também!`;
   public dateResults: string | null = null;
+  public currentLanguage: Language | null = null;
 
   @Input() score: QuizResultByArea | null = null;
   @Input() userId: string | null = '';
-  @Input() languageName: string | null = '';
+  @Input() currentLanguageId: number | null = null;
 
   constructor(
     private quizService: QuizService,
@@ -47,28 +46,29 @@ export class ResultsComponent {
     private alertService: AlertService
   ) {}
 
+  /*
   async ngOnInit() {
     if (this.userId) {
       this.generateUserResultsShareUrl(this.userId);
-      await this.getUserQuizScore(this.languageName, this.score);
+      await this.getUserQuizScore(this.currentLanguage, this.score);
     }
 
     // Observa mudanças de idioma
     this.translateService
       .getLanguageChanged()
-      .subscribe((currentLanguage: string) => {
-        this.languageName = currentLanguage;
-        this.getUserQuizScore(this.languageName, this.score);
+      .subscribe((currentLanguage: ) => {
+        this.currentLanguage = currentLanguage;
+        this.getUserQuizScore(this.currentLanguage, this.score);
       });
   }
 
   async ngOnChanges(changes: SimpleChanges) {
     if (changes['score']) {
-      await this.getUserQuizScore(this.languageName, this.score);
+      await this.getUserQuizScore(this.currentLanguage, this.score);
     }
   }
 
-  private async getUserQuizScore(language: string | null, score: any) {
+  private async getUserQuizScore(language:  | null, score: any) {
     if ((!score || score instanceof Promise) && this.userId) {
       score = await this.userService.getUserScore(this.userId);
     }
@@ -87,7 +87,7 @@ export class ResultsComponent {
     }
   }
 
-  private async processQuizResultsByScore(language: string | null, score: any) {
+  private async processQuizResultsByScore(language:  | null, score: any) {
     try {
       const areaResultsMessages =
         await this.quizService.getResultsMessageByArea(language);
@@ -142,4 +142,5 @@ export class ResultsComponent {
         });
     }
   }
+  */
 }

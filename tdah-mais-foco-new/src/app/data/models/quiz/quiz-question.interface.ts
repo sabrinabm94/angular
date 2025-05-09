@@ -1,15 +1,9 @@
 import { QuestionArea } from '../enums/question/question-area.enum';
-import { Language } from '../language.interface';
+import { QuizQuestionQuestion } from './quiz-question-question.interface';
 
 export interface QuizQuestion {
   id?: string;
-  questions: {
-    question: string;
-    example: string;
-    frequency: string;
-    context: string;
-    language: Language;
-  }[];
+  questions: QuizQuestionQuestion[];
   area: QuestionArea[];
   result?: boolean;
   active: boolean;

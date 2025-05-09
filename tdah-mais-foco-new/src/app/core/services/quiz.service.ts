@@ -10,6 +10,7 @@ import { Quiz } from '../../data/models/quiz/quiz.interface';
 import { FirebaseUser } from '../../data/models/user/Firebase-user.interface';
 import { Role } from '../../data/models/enums/user/user-role.enum';
 import { Database, ref, child, get, set, update } from '@angular/fire/database';
+import { Language } from '../../data/models/language.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -26,28 +27,46 @@ export class QuizService {
   private databaseQuizPath: string = '/quiz/';
 
   public async readFileContentByLanguage(
-    language: string | null
+    language: Language | null
   ): Promise<any[]> {
-    language = language ? language : environment.lang;
-    let filePath = 'assets/i18n/' + language + '.json';
+    const currentLanguage: Language | null = this.getLanguageById(
+      environment.defaultLanguageId ? environment.defaultLanguageId : 0
+    );
 
-    try {
-      let content: any = await this.httpClient.get<any[]>(filePath).toPromise();
-      return content || [];
-    } catch (error) {
-      const errorMessage = this.translateService.translate(
-        'language_data_error'
-      );
-      this.alertService.alertMessageTriggerFunction(
-        errorMessage,
-        'error',
-        true
-      );
+    if (currentLanguage && currentLanguage.initials) {
+      let filePath = 'assets/i18n/' + currentLanguage.initials + '.json';
+
+      try {
+        let content: any = await this.httpClient
+          .get<any[]>(filePath)
+          .toPromise();
+        return content || [];
+      } catch (error) {
+        const errorMessage = this.translateService.translate(
+          'language_data_error'
+        );
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
+      }
     }
+
     return [];
   }
 
-  public getQuizs(language: string | null) {
+  private getLanguageById(id: number): Language | null {
+    if (id) {
+      const languageFound = this.translateService.getLanguageById(id);
+      if (languageFound) {
+        return languageFound;
+      }
+    }
+    return null;
+  }
+
+  public getQuizs(language: Language | null) {
     const answers: any[] | PromiseLike<any[]> = [];
 
     return this.readFileContentByLanguage(language).then(
@@ -87,7 +106,7 @@ export class QuizService {
     );
   }
 
-  public getQuizAreaMessages(language: string | null): Promise<any[]> {
+  public getQuizAreaMessages(language: Language | null): Promise<any[]> {
     return this.readFileContentByLanguage(language).then(
       (data: any) => {
         if (data && data.quiz && data.quiz.tdah && data.quiz.tdah.results) {
@@ -108,7 +127,7 @@ export class QuizService {
     );
   }
 
-  public getQuizResumeMessages(language: string | null) {
+  public getQuizResumeMessages(language: Language | null) {
     return this.readFileContentByLanguage(language).then(
       (data: any) => {
         if (data && data.quiz && data.quiz.tdah && data.quiz.tdah.messages) {
@@ -222,12 +241,14 @@ export class QuizService {
     return quizResult;
   }
 
-  public async getResultsMessageByArea(language: string | null) {
+  public async getResultsMessageByArea(language: Language | null) {
     return await this.getQuizAreaMessages(language);
   }
 
-  public async getResultsMessage(language: string | null) {
-    return await this.getQuizResumeMessages(language);
+  public async getResultsMessage(language: Language | null) {
+    if (language) {
+      return await this.getQuizResumeMessages(language);
+    }
   }
 
   public async calculateResultsScoreByArea(

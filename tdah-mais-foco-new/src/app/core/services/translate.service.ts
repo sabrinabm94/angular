@@ -11,54 +11,71 @@ import { QuizQuestion } from '../../data/models/quiz/quiz-question.interface';
 })
 export class TranslateService {
   private translations: any = {};
-  private currentLanguageInitial: string;
-  private languageChanged: BehaviorSubject<string>;
-
+  private currentLanguage: Language | null = null;
+  private languageChanged: BehaviorSubject<Language> | undefined;
   public languagesList: Language[] = [
     {
-      id: 1,
+      id: 0,
       name: 'portuguese',
       initials: 'pt-br',
     },
     {
-      id: 2,
+      id: 1,
       name: 'english',
       initials: 'en',
     },
     {
-      id: 3,
+      id: 2,
       name: 'spanish',
       initials: 'es',
     },
   ];
+  private languageChangeListeners: ((lang: Language) => void)[] = [];
 
   constructor(private http: HttpClient, private alertService: AlertService) {
-    this.currentLanguageInitial = environment.lang || 'pt-br';
-    this.languageChanged = new BehaviorSubject(this.currentLanguageInitial);
-    this.translations = this.loadTranslations(this.currentLanguageInitial);
+    this.getInitialTranslations().then((translations) => translations);
+  }
+
+  async ngOnInit() {
+    await this.getInitialTranslations();
+  }
+
+  public async getInitialTranslations(): Promise<void> {
+    this.currentLanguage = this.getLanguageById(
+      environment.defaultLanguageId ? environment.defaultLanguageId : 0
+    );
+
+    if (this.currentLanguage) {
+      this.setLanguageChanged(this.currentLanguage);
+      await this.loadTranslations(this.currentLanguage);
+    }
   }
 
   // Carregar um arquivo de idioma
-  async loadTranslations(language: string): Promise<void> {
-    try {
-      const data: any = await lastValueFrom(
-        this.http.get(`/assets/i18n/${language}.json`)
-      );
-      this.currentLanguageInitial = language;
-      this.translations = data;
-      this.languageChanged.next(this.currentLanguageInitial); // Notifica os inscritos
-    } catch (error) {
-      const errorMessage = this.translate('language_data_processing_error');
-      this.alertService.alertMessageTriggerFunction(
-        errorMessage,
-        'error',
-        true
-      );
+  async loadTranslations(language: Language): Promise<void> {
+    if (language && language.initials) {
+      try {
+        const data: any = await lastValueFrom(
+          this.http.get(`/assets/i18n/${language.initials}.json`)
+        );
+        this.translations = data;
+
+        if (this.languageChanged) {
+          this.languageChanged.next(language);
+        }
+      } catch (error) {
+        const errorMessage = this.translate('language_data_processing_error');
+        this.alertService.alertMessageTriggerFunction(
+          errorMessage,
+          'error',
+          true
+        );
+      }
     }
   }
 
   // Obter uma tradução
-  translate(key: string): string {
+  public translate(key: string): string {
     if (
       key &&
       typeof key === 'string' &&
@@ -72,7 +89,7 @@ export class TranslateService {
     return '';
   }
 
-  translateOrReturnKey(key: string): string | null {
+  public translateOrReturnKey(key: string): string | null {
     if (
       key &&
       typeof key === 'string' &&
@@ -85,38 +102,53 @@ export class TranslateService {
     return key;
   }
 
-  // Alterar idioma
-  async setLanguage(language: string): Promise<void> {
-    try {
-      this.currentLanguageInitial = language;
-      await this.loadTranslations(this.currentLanguageInitial);
-      this.languageChanged.next(this.currentLanguageInitial);
-    } catch (error) {
-      const errorMessage = this.translate('language_change_error');
-      this.alertService.alertMessageTriggerFunction(
-        errorMessage,
-        'error',
-        true
-      );
-    }
-  }
-
-  getLanguage(): string {
-    return this.currentLanguageInitial;
-  }
-
-  // Observable para escutar as mudanças de idioma
-  getLanguageChanged() {
-    return this.languageChanged.asObservable();
-  }
-
+  //listagem de idiomas disponivel
   public getLanguagesList(): Language[] {
     return this.languagesList;
   }
 
-  public translateQuestionByLanguage(
+  // idioma ativo
+  public setActiveLanguage(language: Language): Language | null {
+    if (language) {
+      this.languageChangeListeners.forEach((callback) => callback(language));
+      return (this.currentLanguage = language);
+    }
+    return null;
+  }
+
+  public getActiveLanguage(): Language | null {
+    if (this.currentLanguage) {
+      return this.currentLanguage;
+    }
+    return null;
+  }
+
+  //idioma
+  public getLanguageById(languageId: number): Language | null {
+    const languageFound = this.languagesList.find(
+      (language: Language) => language.id === languageId
+    );
+    return languageFound ?? null;
+  }
+
+  public getLanguageByLanguage(languageToSearch: Language): Language {
+    if (languageToSearch && languageToSearch.id) {
+      const languageFound = this.getLanguageById(languageToSearch.id);
+      if (languageFound) {
+        return languageFound;
+      }
+    }
+    return languageToSearch;
+  }
+
+  // Observable para escutar as mudanças de idioma
+  public onLanguageChange(listener: (lang: Language) => void) {
+    this.languageChangeListeners.push(listener);
+  }
+
+  public translateQuestionByLanguageId(
     question: QuizQuestion,
-    languageInitial: string
+    languageId: number
   ): string {
     if (
       !question ||
@@ -128,7 +160,7 @@ export class TranslateService {
 
     // Procura a pergunta pela inicial do idioma
     const translation = question.questions.find(
-      (q) => q.language.initials === languageInitial
+      (q) => q.language.id === languageId
     );
 
     if (translation) {
@@ -137,28 +169,18 @@ export class TranslateService {
 
     // Fallback: tenta retornar em português brasileiro
     const fallback = question.questions.find(
-      (q) => q.language.initials === 'pt-br'
+      (q) => q.language.id === environment.defaultLanguageId
     );
-    if (fallback) {
-      console.warn(
-        `Tradução não encontrada para '${languageInitial}', usando 'pt-br'.`
-      );
-      return fallback.question;
-    }
 
-    // Se não tiver nem fallback, retorna string vazia
-    console.warn(`Nenhuma tradução encontrada para a pergunta.`);
     return '';
   }
 
-  public getLanguageById(languageToSearch: Language): Language {
-    if (languageToSearch && languageToSearch.id) {
-      const languageToSearchId: number = languageToSearch.id;
-      const languageFound = this.getLanguagesList().find(
-        (language: Language) => language.id === languageToSearchId
-      );
-      return languageFound ? languageFound : languageToSearch;
+  public setLanguageChanged(
+    currentLanguage: Language
+  ): BehaviorSubject<Language> | null {
+    if (currentLanguage) {
+      return (this.languageChanged = new BehaviorSubject(currentLanguage));
     }
-    return languageToSearch;
+    return null;
   }
 }

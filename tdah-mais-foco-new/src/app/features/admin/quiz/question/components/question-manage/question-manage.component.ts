@@ -214,7 +214,9 @@ export class QuestionManageComponent implements OnInit {
       questions: questionToManage.questions
         ? questionToManage.questions.map((question) => ({
             ...question,
-            language: this.getLanguageById(question.language),
+            language: this.translateService.getLanguageByLanguage(
+              question.language
+            ),
           }))
         : [],
       area: questionToManage.area,
@@ -435,9 +437,11 @@ export class QuestionManageComponent implements OnInit {
   }
 
   private getLanguageById(language: Language): Language {
-    if (language) {
-      const languageFound = this.translateService.getLanguageById(language);
-      return languageFound;
+    if (language && language.id) {
+      const languageFound = this.translateService.getLanguageById(language.id);
+      if (languageFound) {
+        return languageFound;
+      }
     }
     return language;
   }

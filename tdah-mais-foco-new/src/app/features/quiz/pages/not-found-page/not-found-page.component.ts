@@ -4,6 +4,7 @@ import { FooterComponent } from '../../../../shared/components/footer/footer.com
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { UserService } from '../../../../core/services/user.service';
 import { TranslateService } from '../../../../core/services/translate.service';
+import { Language } from '../../../../data/models/language.interface';
 
 @Component({
   selector: 'app-not-found-page',
@@ -14,7 +15,7 @@ import { TranslateService } from '../../../../core/services/translate.service';
   providers: [],
 })
 export class NotFoundPageComponent {
-  public languageName: string | null = null;
+  public languageId: number = 0;
   public userId: string | null = null;
   public isAdmin: boolean = false;
 
@@ -40,8 +41,11 @@ export class NotFoundPageComponent {
     return null;
   }
 
-  private getLanguage(): string | null {
-    const language = this.translateService.getLanguage();
-    return (this.languageName = language ? language : null);
+  private getLanguage(): number | null {
+    const language: Language | null = this.translateService.getActiveLanguage();
+    if (language) {
+      return (this.languageId = language.id);
+    }
+    return null;
   }
 }

@@ -8,7 +8,7 @@ import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { TranslateService } from '../../../../core/services/translate.service';
 import { QuizComponent } from '../../components/quiz/quiz.component';
 import { QuizResultByArea } from '../../../../data/models/quiz/quiz-result-by-area.interface';
-import { QuizResult } from '../../../../data/models/quiz/quiz-result.interface';
+import { Language } from '../../../../data/models/language.interface';
 
 @Component({
   selector: 'app-home-page',
@@ -25,7 +25,7 @@ import { QuizResult } from '../../../../data/models/quiz/quiz-result.interface';
   ],
 })
 export class HomePageComponent implements OnInit {
-  public languageName: string = '';
+  public languageId: number = 0;
   public userId: string | null = null;
   public results: QuizResultByArea | null = null;
   public isAdmin: boolean = false;
@@ -57,8 +57,11 @@ export class HomePageComponent implements OnInit {
     return null;
   }
 
-  private getLanguage(): string | null {
-    const language = this.translateService.getLanguage();
-    return (this.languageName = language);
+  private getLanguage(): number | null {
+    const language: Language | null = this.translateService.getActiveLanguage();
+    if (language) {
+      return (this.languageId = language.id);
+    }
+    return null;
   }
 }

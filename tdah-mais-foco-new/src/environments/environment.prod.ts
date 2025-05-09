@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  lang: 'pt-br',
+  defaultLanguageId: 0,
   firebase: {
     apiKey: 'AIzaSyACUyTdBjnsAPyPbaJFAUlaQJzOdil8DkA',
     authDomain: 'tdahmaisfoco.firebaseapp.com',

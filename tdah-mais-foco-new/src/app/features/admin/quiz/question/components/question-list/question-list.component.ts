@@ -38,7 +38,6 @@ import { QuizService } from '../../../../../../core/services/quiz.service';
     MatButtonModule,
     ContainerComponent,
     ManageListComponent,
-    AlertMessageComponent,
     TranslatePipe,
   ],
 })
@@ -162,26 +161,27 @@ export class QuestionListComponent implements OnInit {
         );
         if (questionsToManageList) {
           // Filtrando valores nulos e garantindo que questionsToManageList seja do tipo QuizQuestionToManageListItem[]
+          const activeLanguage = this.translateService.getActiveLanguage();
+          if (activeLanguage) {
+            this.questionsToManageList = questionsToManageList.map((item) => {
+              const questionByActiveLanguage =
+                this.translateService.translateQuestionByLanguageId(
+                  item,
+                  activeLanguage.id
+                );
 
-          this.questionsToManageList = questionsToManageList.map((item) => {
-            const activeLanguage = this.translateService.getLanguage();
-            const questionByActiveLanguage =
-              this.translateService.translateQuestionByLanguage(
-                item,
-                activeLanguage
-              );
+              const question: QuizQuestionToManageListItem = {
+                id: item.id ?? '',
+                question: questionByActiveLanguage ?? item.questions[0],
+                area: item.area ?? [],
+                active: item.active ?? false,
+              };
 
-            const question = {
-              id: item.id ?? '',
-              question: questionByActiveLanguage ?? item.questions[0],
-              area: item.area ?? [],
-              active: item.active ?? false,
-            };
+              return question;
+            });
 
-            return question;
-          });
-
-          return this.questionsToManageList;
+            return this.questionsToManageList;
+          }
         }
       } catch (error) {
         const errorMessage = this.translateService.translate(

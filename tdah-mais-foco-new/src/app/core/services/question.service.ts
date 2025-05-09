@@ -6,6 +6,7 @@ import { QuizQuestion } from '../../data/models/quiz/quiz-question.interface';
 import { TranslateService } from './translate.service';
 import { AlertService } from './alert.service';
 import { QuizService } from './quiz.service';
+import { QuizQuestionQuestion } from '../../data/models/quiz/quiz-question-question.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -91,6 +92,23 @@ export class QuestionService {
       }
     }
     return null;
+  }
+
+  public async getQuestionByLanguageId(
+    question: QuizQuestion,
+    languageId: number
+  ): Promise<QuizQuestion> {
+    if (question && languageId) {
+      const questions = question.questions;
+      const questionToLanguage = questions.filter(
+        (questionWithLanguage) =>
+          questionWithLanguage.language.id === languageId
+      );
+      if (questionToLanguage) {
+        question.questions = questionToLanguage;
+      }
+    }
+    return question;
   }
 
   public async save(

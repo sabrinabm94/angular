@@ -1,8 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { ActivatedRoute } from '@angular/router';
 import { Meta } from '@angular/platform-browser';
 import { FooterComponent } from '../../../../shared/components/footer/footer.component';
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
@@ -10,7 +8,7 @@ import { ResultsComponent } from '../../components/results/results.component';
 import { UserService } from '../../../../core/services/user.service';
 import { TranslateService } from '../../../../core/services/translate.service';
 import { QuizResultByArea } from '../../../../data/models/quiz/quiz-result-by-area.interface';
-import { QuizResult } from '../../../../data/models/quiz/quiz-result.interface';
+import { Language } from '../../../../data/models/language.interface';
 
 @Component({
   selector: 'app-results-page',
@@ -26,7 +24,7 @@ import { QuizResult } from '../../../../data/models/quiz/quiz-result.interface';
   styleUrls: ['./results-page.component.css'],
 })
 export class ResultsPageComponent {
-  public languageName: string | null = null;
+  public languageId: number = 0;
   public userId: string | null = null;
   public results: QuizResultByArea | null = null;
   public isAdmin: boolean = false;
@@ -56,9 +54,12 @@ export class ResultsPageComponent {
     return null;
   }
 
-  private getLanguage(): string | null {
-    const language = this.translateService.getLanguage();
-    return (this.languageName = language ? language : null);
+  private getLanguage(): number | null {
+    const language: Language | null = this.translateService.getActiveLanguage();
+    if (language) {
+      return (this.languageId = language.id);
+    }
+    return null;
   }
 
   private updateMetaTags() {

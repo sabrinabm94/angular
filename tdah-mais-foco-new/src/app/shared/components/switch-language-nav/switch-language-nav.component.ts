@@ -13,25 +13,26 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule, TranslatePipe],
 })
 export class SwitchLanguageNavComponent {
-  currentLanguage: string = '';
+  currentLanguage: Language | null = null;
   public languagensList: Language[] = [];
 
   constructor(private translateService: TranslateService) {
     this.languagensList = this.translateService.getLanguagesList();
 
     // Inicializa a linguagem com a padrão do ambiente
-    this.currentLanguage = this.translateService.getLanguage();
-    this.translateService.setLanguage(this.currentLanguage);
+    this.currentLanguage = this.translateService.getActiveLanguage();
   }
 
-  switchLanguage(language: string): void {
-    this.translateService.setLanguage(language).then(() => {
-      this.currentLanguage = language; // Atualiza a linguagem ativa
-    });
+  switchLanguage(language: Language): Language | null {
+    if (language) {
+      this.translateService.setActiveLanguage(language);
+      return (this.currentLanguage = language);
+    }
+    return null;
   }
 
   // Verifica se a linguagem atual é a ativa
-  isActive(language: string): boolean {
+  isActive(language: Language): boolean {
     return this.currentLanguage === language;
   }
 }
