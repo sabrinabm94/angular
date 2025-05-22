@@ -21,5 +21,10 @@
   "Value must be at most 10 characters long": "El valor debe tener como máximo 10 caracteres",
   "Use a term to search for gifs": "Utiliza un término para buscar gifs",
   "Previous": "Anterior",
-  "Next": "Siguiente"
+  "Next": "Siguiente",
+  "form": {
+    "errors": {
+      "maxlength": "El valor debe tener como máximo {{count}} caracteres"
+    }
+  }
 }

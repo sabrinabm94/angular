@@ -1,75 +1,83 @@
 import { Injectable } from '@angular/core';
-import { Gif } from '../../data/models/gif.model';
 import { environment } from 'src/environments/environment';
+import {
+  GENERIC_ERROR,
+  NO_RESULTS_FOUND_ERROR,
+  SEARCH_TERM_EMPTY_ERROR,
+} from 'src/app/data/const';
+import { GifBackend } from 'src/app/data/models/gif-backend';
 
+/**
+ * Serviço responsável por buscar gifs
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class GifService {
-  private readonly API_KEY = environment.apiKey;
-  private readonly BASE_URL = environment.baseUrl;
-  private readonly MAX_LIMIT = environment.maxLimit || 10;
-  private readonly LANG = environment.lang || 'en';
-
+  // constantes com fallback de valores
+  private readonly API_KEY: string = environment.apiKey;
+  private readonly BASE_URL: string = environment.baseUrl;
+  private readonly MAX_LIMIT: number = environment.maxLimit || 10;
+  private readonly LANG: string = environment.lang || 'en';
   private abortController: AbortController | undefined;
 
-  constructor() {}
-
   /**
-   * Builds the URL for the API request.
-   * @param term The search term.
-   * @param limit The maximum number of results to return.
-   * @returns The constructed URL.
+   * Construi a url encapsulada para utilizar na requisição
+   * @param {string} term termo utilizado para busca
+   * @param {string} limit limite máximo de resultados retornados
+   * @returns {string} string da url gerada
    */
   private buildUrl(term: string, limit: number): string {
-    const encodedTerm = encodeURIComponent(term);
-    return `${this.BASE_URL}?q=${encodedTerm}&api_key=${this.API_KEY}&limit=${limit}&lang=${this.LANG}`;
+    const encodedTerm: string = encodeURIComponent(term);
+    const baseUrl: string = this.BASE_URL;
+    const apiKey: string = this.API_KEY;
+    const lang: string = this.LANG;
+
+    return `${baseUrl}?q=${encodedTerm}&api_key=${apiKey}&limit=${limit}&lang=${lang}`;
   }
 
   /**
-   * Searches for GIFs based on the provided term and limit.
-   * @param term The search term.
-   * @param limit The maximum number of results to return.
-   * @returns A Promise of the GIF results.
+   * Busca por gifs baseado em um termo
+   * @param {string} term termo utilizado para busca
+   * @param {string} limit limite máximo de resultados retornados
+   * @returns {Promise<Gif[]>} listagem de resultados encontrados
    */
-  async searchGifs(term: string, limit: number): Promise<Gif[]> {
+  async searchGifs(term: string, limit: number): Promise<GifBackend[]> {
     if (!term.trim()) {
-      throw new Error('Search term cannot be empty.');
+      throw new Error(SEARCH_TERM_EMPTY_ERROR);
     }
 
     limit = limit || this.MAX_LIMIT;
     const url = this.buildUrl(term, limit);
 
-    // Cancela a requisição anterior, se houver
-    if (this.abortController) {
-      this.abortController.abort();
-    }
-
-    // Cria um novo AbortController para a nova requisição
-    this.abortController = new AbortController();
-
-    try {
-      const response = await fetch(url, {
-        headers: { 'Content-Type': 'application/json' },
-        signal: this.abortController.signal,
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok.');
+    if (url) {
+      // Cancela a requisição anterior caso tenha (evita mal gerenciamento de concorrência - race conditions)
+      if (this.abortController) {
+        this.abortController.abort(); // api nativa js que permite cancelar requisições assíncronas feitas com fetch
       }
 
-      const data = await response.json();
-      if (data?.data && data.data.length > 0) {
-        return data.data;
-      } else {
-        throw new Error('No gifs found.');
-      }
-    } catch (error) {
-      if (error.name === 'AbortError') {
-        console.log('Request was aborted');
-      } else {
-        console.error('An error occurred:', error);
-        throw new Error('Something went wrong; please try again later.');
+      // Cria um novo AbortController para a nova requisição
+      const controller = new AbortController();
+      const signal = controller.signal;
+
+      try {
+        const response = await fetch(url, {
+          headers: { 'Content-Type': 'application/json' },
+          signal: signal, // passado o abortController como signal para que seja possível cancelar, se for o caso
+        });
+
+        const data = await response.json();
+        if (data?.data && data.data.length > 0) {
+          // validação do resultado da requisição
+          return data.data;
+        } else {
+          throw new Error(NO_RESULTS_FOUND_ERROR);
+        }
+      } catch (error) {
+        if (error) {
+          console.error('Error: ', error);
+          throw new Error(GENERIC_ERROR);
+        }
       }
     }
   }

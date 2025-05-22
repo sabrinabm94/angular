@@ -1,6 +1,6 @@
 import { HeaderComponent } from '../../../../shared/components/header/header.component';
 import { FooterComponent } from '../../../../shared/components/footer/footer.component';
-import { Gif } from 'src/app/data/models/gif.model';
+import { Gif } from 'src/app/data/interfaces/gif.model';
 import {
   AfterViewInit,
   Component,
@@ -15,11 +15,10 @@ import { TranslocoModule } from '@ngneat/transloco';
 
 /**
  * O componente `HomePageComponent` é a página principal da aplicação, onde são carregados dinamicamente
- * os componentes de busca e exibição de resultados. Ele utiliza `ViewChild` para inserir os componentes filhos
- * dinamicamente em containers designados.
+ * os componentes de busca e exibição de resultados.
  */
 @Component({
-  selector: 'app-home-page', // Seletor utilizado para incluir o componente na aplicação
+  selector: 'app-home-page',
   standalone: true,
   imports: [TranslocoModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -38,8 +37,8 @@ export class HomePageComponent implements AfterViewInit {
   constructor(private injector: Injector) {}
 
   ngAfterViewInit(): void {
-    this.loadSearchFormComponent(); // Carrega dinamicamente o componente de formulário de busca
-    this.loadSearchResultsComponent(); // Carrega dinamicamente o componente de resultados de busca
+    this.loadSearchFormComponent();
+    this.loadSearchResultsComponent();
   }
 
   /**
@@ -85,7 +84,7 @@ export class HomePageComponent implements AfterViewInit {
    */
   public setDataInChild(data: Gif[]): void {
     if (this.SearchResultsComponent && data) {
-      this.SearchResultsComponent.instance.setData(data); // Envia os dados ao componente de resultados
+      this.SearchResultsComponent.instance.setData(data);
     } else {
       console.error('SearchResultsComponent is not defined');
     }

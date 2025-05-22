@@ -21,5 +21,10 @@
   "Value must be at most 10 characters long": "Value must be at most 10 characters long",
   "Use a term to search for gifs": "Use a term to search for gifs",
   "Previous": "Previous",
-  "Next": "Next"
+  "Next": "Next",
+  "form": {
+    "errors": {
+      "maxlength": "Value must be at most {{count}} characters long"
+    }
+  }
 }

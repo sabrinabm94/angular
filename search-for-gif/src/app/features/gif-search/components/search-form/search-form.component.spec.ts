@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { GifService } from '../../../../core/services/gif.service';
 import { SearchFormComponent } from './search-form.component';
-import { Gif } from '../../../../data/models/gif.model';
+import { Gif } from '../../../../data/interfaces/gif.model';
 
 describe('SearchFormComponent', () => {
   let component: SearchFormComponent;
@@ -17,7 +17,7 @@ describe('SearchFormComponent', () => {
       declarations: [SearchFormComponent],
       providers: [
         FormBuilder,
-        { provide: GifService, useValue: gifServiceSpy }
+        { provide: GifService, useValue: gifServiceSpy },
       ],
     }).compileComponents();
 
@@ -26,12 +26,12 @@ describe('SearchFormComponent', () => {
     gifService = TestBed.inject(GifService) as jasmine.SpyObj<GifService>;
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  describe('Componente', () => {
+    it('deve criar o componente', () => {
+      expect(component).toBeTruthy();
+    });
 
-  describe('ngOnInit', () => {
-    it('should initialize the form', () => {
+    it('deve criar o formulário ao iniciar o componente', () => {
       component.ngOnInit();
       expect(component.form).toBeTruthy();
       expect(component.form.get('term')).toBeTruthy();
@@ -39,12 +39,12 @@ describe('SearchFormComponent', () => {
     });
   });
 
-  describe('submit', () => {
+  describe('Formulário', () => {
     beforeEach(() => {
       component.ngOnInit();
     });
 
-    it('should not submit if the form is invalid', () => {
+    it('não deve enviar o formulário caso o termo e o limite sejam inválidos', () => {
       component.form.setValue({ term: '', limit: null });
       spyOn(console, 'error');
 
@@ -54,17 +54,7 @@ describe('SearchFormComponent', () => {
       expect(gifService.searchGifs).not.toHaveBeenCalled();
     });
 
-    it('should abort the previous request if one is ongoing', () => {
-      const abortSpy = spyOn(AbortController.prototype, 'abort').and.callThrough();
-
-      component.form.setValue({ term: 'test', limit: 5 });
-      component.submit(); // First call
-      component.submit(); // Second call, should abort the first
-
-      expect(abortSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it('should call the GifService with correct parameters when form is valid', () => {
+    it('deve realizar a busca de gifs caso os parâmetros do formulário sejam válidos', () => {
       const mockGifs: Gif[] = [];
       gifService.searchGifs.and.returnValue(Promise.resolve(mockGifs));
 
@@ -73,31 +63,23 @@ describe('SearchFormComponent', () => {
 
       expect(gifService.searchGifs).toHaveBeenCalledWith('test', 5);
     });
-
-    it('should handle errors from the GifService', async () => {
-      gifService.searchGifs.and.returnValue(Promise.reject(new Error('Something went wrong')));
-      spyOn(console, 'error');
-
-      component.form.setValue({ term: 'test', limit: 5 });
-      await component.submit();
-
-      expect(console.error).toHaveBeenCalledWith('Something went wrong');
-    });
   });
 
-  describe('handleResponse', () => {
-    it('should process the response and emit the GIFs', () => {
+  describe('Retorno da busca', () => {
+    it('deve tratar os resultados encontrados e os encaminhar para o componente pai', () => {
       spyOn(component.dataEmitter, 'emit');
-      const mockGifs = [{
-        id: '1',
-        title: 'Gif Title 1',
-        alt_text: 'Gif Alt Text 1',
-        type: 'gif',
-        images: {
-          preview_gif: { url: 'https://example.com/gif1.gif' },
-          preview_webp: { url: 'https://example.com/gif1.webp' },
+      const mockGifs = [
+        {
+          id: '1',
+          title: 'Gif Title 1',
+          alt_text: 'Gif Alt Text 1',
+          type: 'gif',
+          images: {
+            preview_gif: { url: 'https://example.com/gif1.gif' },
+            preview_webp: { url: 'https://example.com/gif1.webp' },
+          },
         },
-      }];
+      ];
 
       const processedGifs = component.handleResponse(mockGifs, 'test');
 
@@ -107,7 +89,7 @@ describe('SearchFormComponent', () => {
       expect(processedGifs).toBe(component.gifs);
     });
 
-    it('should return an empty array if no data is returned', () => {
+    it('deve apresentar uma listagem vazia em caso de não serem encontrados resultados', () => {
       spyOn(component.dataEmitter, 'emit');
 
       const processedGifs = component.handleResponse([], 'test');
@@ -118,13 +100,41 @@ describe('SearchFormComponent', () => {
     });
   });
 
-  describe('ngOnDestroy', () => {
-    it('should abort any ongoing request', () => {
-      const abortSpy = spyOn(AbortController.prototype, 'abort').and.callThrough();
+  describe('Busca', () => {
+    it('deve retornar uma mensagem em caso de erros na busca', async () => {
+      gifService.searchGifs.and.returnValue(
+        Promise.reject(new Error('Something went wrong'))
+      );
+      spyOn(console, 'error');
+
+      component.form.setValue({ term: 'test', limit: 5 });
+      await component.submit();
+
+      expect(console.error).toHaveBeenCalledWith('Something went wrong');
+    });
+
+    it('deve cancelar a requisição de busca anterior caso uma nova seja iniciada', () => {
+      const abortSpy = spyOn(
+        AbortController.prototype,
+        'abort'
+      ).and.callThrough();
+
+      component.form.setValue({ term: 'test', limit: 5 });
+      component.submit(); // primeira chamada
+      component.submit(); // segunda chamada
+
+      expect(abortSpy).toHaveBeenCalledTimes(1); // cada nova chamada deve cancelar a anterior, evitando a concorrencia de requisições mal gerenciada
+    });
+
+    it('deve cancelar todas as requisições existentes', () => {
+      const abortSpy = spyOn(
+        AbortController.prototype,
+        'abort'
+      ).and.callThrough();
 
       component.ngOnDestroy();
 
-      expect(abortSpy).toHaveBeenCalledTimes(1);
+      expect(abortSpy).toHaveBeenCalledTimes(1); // testa o cancelamento de requisições
     });
   });
 });

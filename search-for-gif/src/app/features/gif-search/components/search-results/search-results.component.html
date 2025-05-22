@@ -7,7 +7,7 @@
   <div class="row results-list">
     <div class="col-12 col-sm-6 col-md-3 col-lg-3" *ngFor="
         let gif of gifs
-          | paginate : { itemsPerPage: itemPerPage, currentPage: currentPageNumber }
+          | paginate : { itemsPerPage: ITENS_PER_PAGE, currentPage: currentPageNumber }
       ">
       <app-picture [url]="gif.previewWebp" [urlPreview]="gif.previewGif" class="gif-image" [id]="gif.id"
         [title]="gif.title" [alt]="gif.alt"></app-picture>

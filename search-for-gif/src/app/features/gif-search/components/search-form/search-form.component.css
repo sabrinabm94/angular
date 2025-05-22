@@ -28,6 +28,7 @@ small {
 
 button {
   padding: 10px 15px;
+  margin-left: 5px;
   background-color: #007bff;
   color: white;
   border: none;

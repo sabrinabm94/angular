@@ -2,11 +2,15 @@ import { Injectable } from '@angular/core';
 import { TranslocoService } from '@ngneat/transloco';
 import { Language } from 'src/app/data/interfaces/language.interface';
 
+/**
+ * Serviço responsável por gerenciar as configurações de idioma
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class LanguageService {
   private currentLanguage: Language | null = null;
+
   public languagesList: Language[] = [
     {
       id: 1,
@@ -25,31 +29,34 @@ export class LanguageService {
     },
   ];
 
-  /**
-   * Cria uma instância de LanguageService.
-   * @param translocoService - Serviço Transloco para gerenciar a tradução e mudança de idioma.
-   */
   constructor(private translocoService: TranslocoService) {}
 
-  //listagem de idiomas disponivel
+  /**
+   * Retorna a lista de idiomas disponíveis na aplicação
+   * @returns {Language[]} Lista de idiomas disponíveis
+   */
   public getLanguagesList(): Language[] {
     return this.languagesList;
   }
 
-  // idioma ativo
+  /**
+   * Define um novo idioma ativo
+   * @param {Language} language Objeto de idioma a ser ativado
+   * @returns {Language | null} O idioma ativado ou null
+   */
   public setActiveLanguage(language: Language): Language | null {
     if (language && language.initials) {
-      console.log('setActiveLanguage ', language);
       this.translocoService.setActiveLang(language.initials);
       return (this.currentLanguage = language);
     }
     return null;
   }
 
+  /**
+   * Retorna o idioma atualmente ativo
+   * @returns {Language | null} O idioma ativo ou null
+   */
   public getActiveLanguage(): Language | null {
-    if (this.currentLanguage) {
-      return this.currentLanguage;
-    }
-    return null;
+    return this.currentLanguage;
   }
 }

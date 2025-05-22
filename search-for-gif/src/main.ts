@@ -15,7 +15,7 @@ bootstrapApplication(AppComponent, {
     provideRouter(routes),
     provideTransloco({
       config: {
-        availableLangs: ['en', 'es', 'pt', 'ptbr'],
+        availableLangs: ['en', 'es', 'ptbr'],
         defaultLang: 'ptbr',
         reRenderOnLangChange: true,
         prodMode: !isDevMode(),
