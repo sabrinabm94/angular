@@ -1,28 +1,34 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
-  <div>
-    <label for="term">{{ "Term" | transloco }}:</label>
-    <input id="term" formControlName="term" type="text" />
-    <div *ngIf="
-        form.get('term')?.invalid &&
-        (form.get('term')?.dirty || form.get('term')?.touched)
-      ">
-      <small *ngIf="form.get('term')?.errors?.['required']">Term is required.</small>
-      <small *ngIf="form.get('term')?.errors?.['minlength']">Term must be at least 1 character long.</small>
-      <small *ngIf="form.get('term')?.errors?.['maxlength']">Term must be at most 10 characters long.</small>
-    </div>
+  <div class="content">
+    <input
+      id="term"
+      formControlName="term"
+      type="text"
+      [placeholder]="'Type the term to search' | transloco"
+    />
+
+    <button
+      type="submit"
+      [disabled]="
+        form.get('term')?.invalid || form.get('term')?.value.trim() === ''
+      "
+    >
+      {{ "Search" | transloco }}
+    </button>
   </div>
 
-  <div>
-    <label for="limit">{{ "Limit" | transloco }}:</label>
-    <input id="limit" formControlName="limit" type="number" />
-    <div *ngIf="
-        form.get('limit')?.invalid &&
-        (form.get('limit')?.dirty || form.get('limit')?.touched)
-      ">
-      <small *ngIf="form.get('limit')?.errors?.['min']">Limit must be at least 1.</small>
-      <small *ngIf="form.get('limit')?.errors?.['max']">Limit must be at most 10.</small>
-    </div>
+  <div
+    class="error-message"
+    *ngIf="
+      form.get('term')?.invalid &&
+      (form.get('term')?.dirty || form.get('term')?.touched)
+    "
+  >
+    <small *ngIf="form.get('term')?.errors?.['required']"
+      >{{ "Value is required" | transloco }}.</small
+    >
+    <small *ngIf="form.get('term')?.errors?.['maxlength']"
+      > {{ 'form.errors.maxlength' | transloco: { count: DEFAULT_FORM_FIELD_MAX_LIMIT } }}.</small
+    >
   </div>
-
-  <button type="submit">{{ "Submit" | transloco }}</button>
 </form>

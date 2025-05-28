@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
-import { GifService } from './services/gif.service';
-import { LanguageService } from './services/language.service';
 
 @NgModule({
   declarations: [],
-  imports: []
+  imports: [],
 })
-export class CoreModule { }
+export class CoreModule {}

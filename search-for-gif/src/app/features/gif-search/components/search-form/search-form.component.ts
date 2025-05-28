@@ -6,59 +6,60 @@ import {
   Output,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Gif } from 'src/app/data/models/gif.model';
+import { Gif } from 'src/app/data/interfaces/gif.model';
 import { GifService } from 'src/app/core/services/gif.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslocoModule } from '@ngneat/transloco';
+import {
+  INVALID_FORM_FIELDS_DATA_ERROR,
+  SEARCH_REQUEST_ERROR,
+} from 'src/app/data/const';
+import { GifBackend } from 'src/app/data/models/gif-backend';
 
 /**
  * O `SearchFormComponent` é responsável por exibir um formulário de busca de GIFs.
- * Ele valida a entrada do usuário, envia a busca para o serviço `GifService` e emite os resultados para o componente pai.
+ * Valida a entrada do usuário, envia a busca para o serviço `GifService` e emite os resultados para o componente pai.
  */
 @Component({
-  selector: 'app-search-template', // Seletor utilizado para este componente
+  selector: 'app-search-template',
   templateUrl: './search-form.component.html',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, TranslocoModule], // Módulos importados pelo componente
-  styleUrls: ['./search-form.component.css'], // Arquivos de estilo CSS
+  imports: [ReactiveFormsModule, CommonModule, TranslocoModule],
+  styleUrls: ['./search-form.component.css'],
 })
 export class SearchFormComponent implements OnInit, OnDestroy {
-  /** Controlador de requisições para permitir o cancelamento de buscas. */
-  private abortController?: AbortController;
-
-  /** Formulário reativo utilizado para coletar os dados de busca. */
+  public abortController?: AbortController;
   public form: FormGroup;
-
-  /** Array para armazenar os resultados de GIFs da busca. */
   public gifs: Gif[] = [];
-
-  /** Evento emitido quando novos GIFs são obtidos da API, enviado para o componente pai. */
+  private readonly DEFAULT_GIF_SEARCH_LIMIT: number = 10;
+  private readonly DEFAULT_FORM_FIELD_MIN_LIMIT: number = 1;
+  public readonly DEFAULT_FORM_FIELD_MAX_LIMIT: number = 50;
   @Output() dataEmitter = new EventEmitter<Gif[]>();
 
-  /**
-   * O construtor recebe `FormBuilder` para construir o formulário e `GifService` para fazer as requisições de busca de GIFs.
-   * @param fb {FormBuilder} - Serviço para criar o formulário reativo.
-   * @param gifService {GifService} - Serviço que busca GIFs na API.
-   */
-  constructor(private fb: FormBuilder, private gifService: GifService) { }
+  constructor(private fb: FormBuilder, private gifService: GifService) {}
+
+  ngOnInit(): void {
+    this.createForm();
+  }
 
   /**
-   * Lifecycle hook do Angular chamado quando o componente é inicializado.
-   * Inicializa o formulário com validações nos campos.
+   * Realiza a criação do formulário de busca.
+   * Cria os campos do formulário com suas respectivas validações.
+   * @returns {FormGroup} formulário
    */
-  ngOnInit(): void {
-    this.form = this.fb.group({
+  private createForm(): FormGroup {
+    return (this.form = this.fb.group({
       term: [
         '',
         [
           Validators.required,
-          Validators.minLength(1),
-          Validators.maxLength(10),
+          Validators.minLength(this.DEFAULT_FORM_FIELD_MIN_LIMIT),
+          Validators.maxLength(this.DEFAULT_FORM_FIELD_MAX_LIMIT),
         ],
       ],
       limit: [null, [Validators.min(1), Validators.max(10)]],
-    });
+    }));
   }
 
   /**
@@ -66,23 +67,36 @@ export class SearchFormComponent implements OnInit, OnDestroy {
    * Valida o formulário, cancela qualquer requisição de busca anterior e realiza uma nova busca no `GifService`.
    * @returns {void}
    */
-  submit(): void {
+  async submit(): Promise<void> {
     if (this.form.invalid) {
-      console.error('Formulário inválido');
+      console.error(INVALID_FORM_FIELDS_DATA_ERROR);
       return;
     }
 
-    const { term, limit } = this.form.value;
+    let { term, limit } = this.form.value;
 
+    if (!limit || limit == 0) {
+      limit = this.DEFAULT_GIF_SEARCH_LIMIT;
+    }
+
+    // cria o controler para ser possível cancelar a requisição, se necessário
     if (this.abortController) {
       this.abortController.abort();
     }
 
     this.abortController = new AbortController();
 
-    this.gifService.searchGifs(term, limit)
-      .then((response) => this.handleResponse(response, term))
-      .catch((error) => console.error(error.message));
+    try {
+      const response: GifBackend[] = await this.gifService.searchGifs(
+        term,
+        limit
+      );
+      if (response) {
+        this.handleResponse(response, term);
+      }
+    } catch (error) {
+      console.error(SEARCH_REQUEST_ERROR + ' :', error.message);
+    }
   }
 
   /**
@@ -91,8 +105,8 @@ export class SearchFormComponent implements OnInit, OnDestroy {
    * @param {string} searchTerm - O termo de busca utilizado.
    * @returns {Gif[]} - Lista de GIFs processada e emitida para o componente pai.
    */
-  handleResponse(gifsList: any, searchTerm: string): Gif[] {
-    let dataList = gifsList;
+  handleResponse(gifsList: GifBackend[], searchTerm: string): Gif[] {
+    let dataList: GifBackend[] = gifsList;
     this.gifs = [];
 
     if (dataList) {
@@ -116,8 +130,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Lifecycle hook do Angular chamado quando o componente é destruído.
-   * Aborta qualquer requisição de busca ativa para evitar vazamento de memória.
+   * Cancela qualquer requisição de busca ativa para evitar vazamento de memória ao destruir o componente
    * @returns {void}
    */
   ngOnDestroy(): void {

@@ -1,0 +1,8 @@
+<section class="list">
+  <app-container>
+    <app-manage-list *ngIf="quizToManageList" [title]="'title_quiz_list'" [itemsToManage]="quizToManageList"
+      (create)="register()" (edit)="edit($event)" [showCreate]="true">
+    </app-manage-list>
+  </app-container>
+</section>
+<!-- TODO: paginação de resultados -->

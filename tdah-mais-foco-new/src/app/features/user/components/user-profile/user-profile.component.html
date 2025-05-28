@@ -1,0 +1,66 @@
+<section class="user-profile" *ngIf="user">
+  <app-container>
+    <h2 class="text-center">{{ "page_profile_title" | translatePipe }}</h2>
+    <form class="form text-center" (ngSubmit)="updateUserData()" #profileForm="ngForm">
+      <app-fieldset [content_style]="'row'">
+        <!-- Campo nome -->
+        <div class="form-group">
+          <legend>{{ "name_label" | translatePipe }}</legend>
+          <input type="text" id="displayName" [(ngModel)]="user.displayName" name="displayName"
+            autocomplete="current-displayName" required
+            [attr.aria-invalid]="user.displayName && user.displayName.trim() === '' && submitted ? 'true' : 'false'" />
+        </div>
+
+        <!-- Campo E-mail -->
+        <!-- <div class="form-group">
+          <legend>{{ "email_label" | translatePipe }}</legend>
+          <input type="email" id="email" [(ngModel)]="user.email" name="email"
+            [attr.aria-invalid]="user.email && !validEmail(user.email) ? 'true' : 'false'" required />
+        </div> -->
+
+        <!-- Campo gênero  -->
+        <div class="form-group">
+          <legend>{{ "gender_label" | translatePipe }}</legend>
+          <select id="gender" [(ngModel)]="user.gender" name="gender" required>
+            <option [value]="gender" *ngFor="let gender of genderOptions">
+              {{ gender | translatePipe }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Campo data de nascimento  -->
+        <div class="form-group">
+          <legend>{{ "birthdate_label" | translatePipe }}</legend>
+          <input type="date" id="birthdate" [(ngModel)]="user.birthdate" name="birthdate"
+            [attr.aria-invalid]="!user.birthdate && submitted ? 'true' : 'false'" required />
+        </div>
+
+        <!-- Campo ocupação  -->
+        <div class="form-group">
+          <legend>{{ "ocupation_label" | translatePipe }}</legend>
+          <select id="ocupation" [(ngModel)]="user.ocupation" name="ocupation" required>
+            <option [value]="occupation" *ngFor="let occupation of occupationOptions">
+              {{ occupation | translatePipe }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Campo escolaridade  -->
+        <div class="form-group">
+          <legend>{{ "education_level_label" | translatePipe }}</legend>
+          <select id="educationLevel" [(ngModel)]="user.educationLevel" name="educationLevel" required>
+            <option [value]="educationLevel" *ngFor="let educationLevel of educationLevelOptions">
+              {{ educationLevel | translatePipe }}
+            </option>
+          </select>
+        </div>
+
+        <div class="full-width">
+          <app-button [className]="'secundary'" (click)="updateUserInfo(user, user.uid)" [disabled]="!isFormValid()">
+            {{ "update" | translatePipe }}
+          </app-button>
+        </div>
+      </app-fieldset>
+    </form>
+  </app-container>
+</section>

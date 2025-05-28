@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SearchResultsComponent } from './search-results.component';
-import { PictureComponent } from "../../../../shared/components/picture/picture.component";
-import { Gif } from '../../../../data/models/gif.model';
+import { PictureComponent } from '../../../../shared/components/picture/picture.component';
+import { Gif } from '../../../../data/interfaces/gif.model';
 import { CommonModule } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -14,7 +14,7 @@ describe('SearchResultsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [CommonModule, NgxPaginationModule],
       declarations: [SearchResultsComponent, PictureComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
@@ -38,8 +38,24 @@ describe('SearchResultsComponent', () => {
 
   it('should update gifs and reset page number when setData is called', () => {
     const mockGifs: Gif[] = [
-      new Gif('searchTerm', 'id1', 'title1', 'alt1', 'type1', 'url1', 'urlPreview1'),
-      new Gif('searchTerm', 'id2', 'title2', 'alt2', 'type2', 'url2', 'urlPreview2')
+      new Gif(
+        'searchTerm',
+        'id1',
+        'title1',
+        'alt1',
+        'type1',
+        'url1',
+        'urlPreview1'
+      ),
+      new Gif(
+        'searchTerm',
+        'id2',
+        'title2',
+        'alt2',
+        'type2',
+        'url2',
+        'urlPreview2'
+      ),
     ];
 
     component.setData(mockGifs);

@@ -1,11 +1,11 @@
 form {
   max-width: 400px;
   margin: auto;
-  margin-top: 50px;
+  margin-top: 10px;
 }
 
-div {
-  margin-bottom: 15px;
+.content {
+  display: flex;
 }
 
 label {
@@ -28,12 +28,24 @@ small {
 
 button {
   padding: 10px 15px;
+  margin-left: 5px;
   background-color: #007bff;
   color: white;
   border: none;
   cursor: pointer;
 }
 
+input,
+button {
+  height: 45px;
+}
+
 button:hover {
   background-color: #0056b3;
+}
+
+button:disabled {
+  filter: grayscale(1);
+  opacity: 0.5;
+  cursor: not-allowed;
 }

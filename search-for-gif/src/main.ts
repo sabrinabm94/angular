@@ -1,5 +1,5 @@
 /// <reference types="@angular/localize" />
-
+import '@angular/localize/init';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { provideRouter } from '@angular/router';
@@ -11,18 +11,16 @@ import { HttpClientModule } from '@angular/common/http';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    importProvidersFrom(
-      HttpClientModule
-    ),
+    importProvidersFrom(HttpClientModule),
     provideRouter(routes),
     provideTransloco({
       config: {
-        availableLangs: ['en', 'es', 'fr', 'ja'],
-        defaultLang: 'en',
+        availableLangs: ['en', 'es', 'ptbr'],
+        defaultLang: 'ptbr',
         reRenderOnLangChange: true,
         prodMode: !isDevMode(),
       },
-      loader: TranslocoHttpLoader
-    })
-  ]
-}).catch(err => console.error(err));
+      loader: TranslocoHttpLoader,
+    }),
+  ],
+}).catch((err) => console.error(err));

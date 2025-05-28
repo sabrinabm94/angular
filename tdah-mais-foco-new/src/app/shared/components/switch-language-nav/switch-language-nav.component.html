@@ -1,0 +1,7 @@
+<nav class="switch-language-nav nav-container">
+  <span>{{ "switch_language_title" | translatePipe }}: </span>
+  <span *ngFor="let language of languagensList" (click)="switchLanguage(language)" class="nav-item link"
+    [class.active]="isActive(language)">
+    {{ language.name | translatePipe }}
+  </span>
+</nav>

@@ -6,7 +6,12 @@ import { TranslocoModule } from '@ngneat/transloco';
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, TranslocoModule, NgxPaginationModule, PictureComponent],
-  exports: []
+  imports: [
+    CommonModule,
+    TranslocoModule,
+    NgxPaginationModule,
+    PictureComponent,
+  ],
+  exports: [],
 })
-export class SearchResultsModule { }
+export class SearchResultsModule {}

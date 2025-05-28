@@ -1,0 +1,19 @@
+.switch-language-nav {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  background-color: white;
+  padding: 20px;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.nav-item {
+  cursor: pointer;
+}
+
+.nav-item.active {
+  color: gray;
+  cursor: not-allowed;
+}

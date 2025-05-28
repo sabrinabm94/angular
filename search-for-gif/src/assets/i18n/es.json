@@ -1,13 +1,30 @@
 {
   "Search for your gif": "Busca tu gif",
-  "Error 404": "Erro 404",
-  "Not founded": "Não encontrado",
-  "Term": "Termo",
+  "Error 404": "Error 404",
+  "Not founded": "No encontrado",
+  "Term": "Término",
   "Limit": "Límite",
+  "Search": "Buscar",
   "Submit": "Enviar",
   "Results for": "Resultados para",
   "Developed by": "Desarrollado por",
   "All Rights Reserved": "Todos los derechos reservados",
-  "Term to search": "Termo to busca",
-  "Search limit": "Limite de busca"
+  "Term to search": "Término para buscar",
+  "Search limit": "Límite de búsqueda",
+  "Select your language": "Selecciona tu idioma",
+  "Portuguese": "Portugués",
+  "Spanish": "Español",
+  "English": "Inglés",
+  "Type the term to search": "Escribe el término a buscar",
+  "Value is required": "El valor es obligatorio",
+  "Value must be at least 1 character long": "El valor debe tener al menos 1 carácter",
+  "Value must be at most 10 characters long": "El valor debe tener como máximo 10 caracteres",
+  "Use a term to search for gifs": "Utiliza un término para buscar gifs",
+  "Previous": "Anterior",
+  "Next": "Siguiente",
+  "form": {
+    "errors": {
+      "maxlength": "El valor debe tener como máximo {{count}} caracteres"
+    }
+  }
 }

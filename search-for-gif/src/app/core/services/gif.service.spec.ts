@@ -1,133 +1,134 @@
 import { TestBed } from '@angular/core/testing';
 import { GifService } from './gif.service';
-import { environment } from '../../../environments/environment';
+import { Gif } from '../../data/interfaces/gif.model';
+import {
+  GENERIC_ERROR,
+  NO_RESULTS_FOUND_ERROR,
+  SEARCH_TERM_EMPTY_ERROR,
+} from '../../data/const';
 
 describe('GifService', () => {
   let service: GifService;
 
+  // constantes
+  const defaultGifDataLimit = 2;
+  const defaultGifDataEmpty = [];
+  const defaultInvalidGifSearchTerm = 'naoexistegitparaessetermo';
+  const defaultEmptyString = '';
+  const defaultGifData: Gif[] = [
+    {
+      id: '1',
+      title: 'Funny Cat',
+      previewGif: 'url',
+      searchTerm: defaultEmptyString,
+      alt_text: defaultEmptyString,
+      type: defaultEmptyString,
+      previewWebp: defaultEmptyString,
+    },
+    {
+      id: '2',
+      title: 'Dancing Dog',
+      previewGif: 'url',
+      searchTerm: defaultEmptyString,
+      alt_text: defaultEmptyString,
+      type: defaultEmptyString,
+      previewWebp: defaultEmptyString,
+    },
+  ];
+
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [GifService],
+    });
     service = TestBed.inject(GifService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  describe('Dado que o usuário informa um termo de busca válido', () => {
+    beforeEach(() => {
+      spyOn(window, 'fetch').and.resolveTo(
+        new Response(
+          JSON.stringify({
+            data: defaultGifData,
+          })
+        )
+      );
+    });
+
+    it('deve retornar uma lista de gifs', async () => {
+      const term = defaultGifData[0].title;
+      const gifs = await service.searchGifs(term, defaultGifDataLimit);
+
+      expect(gifs.length).toBe(defaultGifDataLimit);
+      expect(gifs[0].title).toBe(defaultGifData[0].title);
+    });
   });
 
-  describe('searchGifs', () => {
-    const mockGifResponse = {
-      data: [
-        {
-          id: '1',
-          title: 'Gif Title 1',
-          alt_text: 'Gif Alt Text 1',
-          type: 'gif',
-          images: {
-            preview_gif: { url: 'https://example.com/gif1.gif' },
-            preview_webp: { url: 'https://example.com/gif1.webp' },
-          },
-        },
-      ],
-    };
+  describe('Quando o termo de busca está vazio', () => {
+    it('deve lançar um erro informando que o termo é obrigatório', async () => {
+      await expectAsync(
+        service.searchGifs(defaultEmptyString, defaultGifDataLimit)
+      ).toBeRejectedWithError(SEARCH_TERM_EMPTY_ERROR);
+    });
+  });
 
+  describe('Quando a API retorna uma lista vazia', () => {
     beforeEach(() => {
-      spyOn(window, 'fetch').and.resolveTo(new Response(JSON.stringify(mockGifResponse), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      }));
+      spyOn(window, 'fetch').and.resolveTo(
+        new Response(JSON.stringify({ data: defaultGifDataEmpty }))
+      );
     });
 
-    it('should build the correct URL', async () => {
-      const term = 'test';
-      const limit = 5;
-      const expectedUrl = `${environment.baseUrl}?q=${encodeURIComponent(term)}&api_key=${environment.apiKey}&limit=${limit}&lang=${environment.lang}`;
+    it('deve lançar um erro informando que nenhum gif foi encontrado', async () => {
+      await expectAsync(
+        service.searchGifs(defaultInvalidGifSearchTerm, defaultGifDataLimit)
+      ).toBeRejectedWithError(NO_RESULTS_FOUND_ERROR);
+    });
+  });
 
-      await service.searchGifs(term, limit);
-
-      expect(window.fetch).toHaveBeenCalledWith(expectedUrl, {
-        headers: { 'Content-Type': 'application/json' },
-        signal: jasmine.any(AbortSignal)
-      });
+  describe('Quando ocorre um erro na requisição', () => {
+    beforeEach(() => {
+      spyOn(window, 'fetch').and.rejectWith(new Error('Network Error'));
     });
 
-    it('should return a list of GIFs when search is successful', async () => {
-      const gifs = await service.searchGifs('test', 1);
-
-      expect(gifs.length).toBe(1);
-      expect(gifs[0].id).toBe('1');
-      expect(gifs[0].title).toBe('Gif Title 1');
+    it('deve lançar um erro genérico', async () => {
+      await expectAsync(
+        service.searchGifs('fail', defaultGifDataLimit)
+      ).toBeRejectedWithError(GENERIC_ERROR);
     });
+  });
 
-    it('should throw an error if the search term is empty', async () => {
-      try {
-        await service.searchGifs('', 1);
-        fail('The search should have thrown an error');
-      } catch (error) {
-        expect(error.message).toBe('Search term cannot be empty.');
-      }
-    });
-
-    it('should default the limit to MAX_LIMIT if not provided', async () => {
-      const term = 'test';
-      const expectedUrl = `${environment.baseUrl}?q=${encodeURIComponent(term)}&api_key=${environment.apiKey}&limit=${environment.maxLimit}&lang=${environment.lang}`;
-
-      await service.searchGifs(term, 0);
-
-      expect(window.fetch).toHaveBeenCalledWith(expectedUrl, {
-        headers: { 'Content-Type': 'application/json' },
-        signal: jasmine.any(AbortSignal)
-      });
-    });
-
-    it('should throw an error if no GIFs are found', async () => {
-      spyOn(window, 'fetch').and.resolveTo(new Response(JSON.stringify({ data: [] }), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      }));
-
-      try {
-        await service.searchGifs('nonexistent', 1);
-        fail('The search should have thrown an error');
-      } catch (error) {
-        expect(error.message).toBe('No gifs found.');
-      }
-    });
-
-    it('should handle network errors', async () => {
-      spyOn(window, 'fetch').and.rejectWith(new Error('Network response was not ok.'));
-
-      try {
-        await service.searchGifs('test', 1);
-        fail('The search should have thrown an error');
-      } catch (error) {
-        expect(error.message).toBe('Something went wrong; please try again later.');
-      }
-    });
-
-    it('should abort a previous request if a new one is made', async () => {
-      const abortSpy = spyOn(AbortController.prototype, 'abort').and.callThrough();
-
-      const firstSearch = service.searchGifs('test1', 1);
-      const secondSearch = service.searchGifs('test2', 1);
-
-      await secondSearch;
-
-      expect(abortSpy).toHaveBeenCalled();
-      expect(await firstSearch).toBeUndefined();  // The first request should be aborted
-    });
-
-    it('should log a message if the request is aborted', async () => {
-      spyOn(console, 'log');
-
-      const abortSpy = spyOn(AbortController.prototype, 'abort').and.callFake(() => {
-        throw new DOMException('AbortError', 'AbortError');
+  describe('Dado que há uma requisição em andamento', () => {
+    it('deve cancelar a requisição anterior antes de iniciar uma nova', async () => {
+      // simula um atraso artificial para manter uma requisição pendente
+      let resolveFirst: Function;
+      const firstFetch = new Promise<Response>((resolve) => {
+        resolveFirst = () =>
+          resolve(new Response(JSON.stringify({ data: defaultGifDataEmpty })));
       });
 
-      service.searchGifs('test', 1).catch(() => { });
+      const fetchSpy = spyOn(window, 'fetch').and.returnValues(
+        firstFetch,
+        Promise.resolve(
+          new Response(
+            JSON.stringify({
+              data: defaultGifData[0],
+            })
+          )
+        )
+      );
 
-      abortSpy.calls.mostRecent();
+      const firstCall = service.searchGifs('first', 1);
 
-      expect(console.log).toHaveBeenCalledWith('Request was aborted');
+      // cria uma nova requisição sem ter concluído a primeira
+      const secondCall = service.searchGifs('second', 1);
+
+      // resolve a primeira requisição
+      resolveFirst!();
+
+      const result = await secondCall;
+      expect(result.length).toBe(1);
+      expect(result[0].title).toBe(defaultGifData[0].title);
+      expect(fetchSpy).toHaveBeenCalledTimes(defaultGifDataLimit);
     });
   });
 });

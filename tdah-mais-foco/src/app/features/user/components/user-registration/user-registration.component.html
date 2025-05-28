@@ -1,0 +1,45 @@
+<section class="user-registration">
+  <app-container>
+    <h2>{{ "title_user_registration" | transloco }}</h2>
+    <form class="form" (ngSubmit)="registerUser()" #registrationForm="ngForm">
+      <app-fieldset>
+        <div class="form-group">
+          <!-- Campo Nome -->
+          <legend>{{ "name_label" | transloco }}</legend>
+          <label for="name">{{ "name_placeholder" | transloco }}</label>
+          <input type="text" id="name" [(ngModel)]="user.displayName" name="name" required #name="ngModel"
+            aria-required="true" [attr.aria-invalid]="name.invalid && name.touched ? 'true' : 'false'" />
+          <app-error-message *ngIf="name.invalid && name.touched" aria-live="assertive">
+            {{ 'name_required' | transloco }}
+          </app-error-message>
+        </div>
+
+        <div class="form-group">
+          <!-- Campo Username -->
+          <legend>{{ "username_label" | transloco }}</legend>
+          <label for="username">{{ "username_placeholder" | transloco }}</label>
+          <input type="text" id="username" [(ngModel)]="user.username" name="username" required #username="ngModel"
+            aria-required="true" [attr.aria-invalid]="username.invalid && username.touched ? 'true' : 'false'" />
+          <app-error-message *ngIf="username.invalid && username.touched" aria-live="assertive">
+            {{ 'field_required' | transloco }}
+          </app-error-message>
+        </div>
+
+        <div class="form-group">
+          <!-- Campo Email -->
+          <legend>{{ "email_label" | transloco }}</legend>
+          <label for="email">{{ "email_placeholder" | transloco }}</label>
+          <input type="email" id="email" [(ngModel)]="user.email" name="email" required #email="ngModel"
+            aria-required="true" [attr.aria-invalid]="email.invalid && email.touched ? 'true' : 'false'" />
+          <app-error-message *ngIf="email.invalid && email.touched" aria-live="assertive">
+            {{ 'invalid_email' | transloco }}
+          </app-error-message>
+        </div>
+      </app-fieldset>
+
+      <app-button [disabled]="!registrationForm.valid">
+        {{ "register" | transloco }}
+      </app-button>
+    </form>
+  </app-container>
+</section>
