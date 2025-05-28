@@ -6,9 +6,10 @@ import { ResultsComponent } from '../../components/results/results.component';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { TranslateService } from '../../../../core/services/translate.service';
-import { QuizComponent } from '../../components/quiz/quiz.component';
+import { QuizComponent, QuestionsListComponent } from '../../components/questions-list/questions-list.component';
 import { QuizResultByArea } from '../../../../data/models/quiz/quiz-result-by-area.interface';
 import { Language } from '../../../../data/models/language.interface';
+import { QuizComponent_1 as QuizComponent, QuizListComponent } from '../../components/quiz-list/quiz-list.component';
 
 @Component({
   selector: 'app-home-page',
@@ -20,9 +21,10 @@ import { Language } from '../../../../data/models/language.interface';
     HeaderComponent,
     FooterComponent,
     ResultsComponent,
-    QuizComponent,
     TranslatePipe,
-  ],
+    QuizListComponent,
+    QuestionsListComponent
+],
 })
 export class HomePageComponent implements OnInit {
   public languageId: number = 0;

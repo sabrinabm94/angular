@@ -203,5 +203,6 @@
   "quiz_desactivate_error": "Error al desactivar quiz",
   "add_question": "Agregar pregunta",
   "remove_question": "Eliminar pregunta",
-  "language_label": "Linguagem"
+  "language_label": "Linguagem",
+  "current_quiz_questions_error": "No preguntas encontradas"
 }

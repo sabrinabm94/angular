@@ -29,7 +29,7 @@ import { GifBackend } from 'src/app/data/models/gif-backend';
   styleUrls: ['./search-form.component.css'],
 })
 export class SearchFormComponent implements OnInit, OnDestroy {
-  private abortController?: AbortController;
+  public abortController?: AbortController;
   public form: FormGroup;
   public gifs: Gif[] = [];
   private readonly DEFAULT_GIF_SEARCH_LIMIT: number = 10;

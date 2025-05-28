@@ -203,5 +203,6 @@
   "quiz_desactivate_error": "Error deactivating quiz",
   "add_question": "Add question",
   "remove_question": "Remove question",
-  "language_label": "Language"
+  "language_label": "Language",
+  "current_quiz_questions_error": "No questions data found"
 }

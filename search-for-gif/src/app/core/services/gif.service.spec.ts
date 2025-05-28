@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { GifService } from './gif.service';
-import { Gif } from '../../data/models/gif.model';
+import { Gif } from '../../data/interfaces/gif.model';
 import {
   GENERIC_ERROR,
   NO_RESULTS_FOUND_ERROR,
