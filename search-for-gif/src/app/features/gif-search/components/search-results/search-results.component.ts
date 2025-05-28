@@ -1,8 +1,9 @@
 import {
   Component,
+  computed,
   CUSTOM_ELEMENTS_SCHEMA,
   HostBinding,
-  Input,
+  signal,
 } from '@angular/core';
 import { PictureComponent } from '../../../../shared/components/picture/picture.component';
 import { Gif } from '../../../../data/interfaces/gif.model';
@@ -29,9 +30,27 @@ import { TranslocoModule } from '@ngneat/transloco';
 })
 export class SearchResultsComponent {
   @HostBinding('class') class: string = 'app-results-template';
-  @Input() gifs: Gif[] = [];
-  public currentPageNumber: number = 1;
+
+  //constantes
   public readonly ITENS_PER_PAGE: number = 8;
+
+  //variáveis reativas: ao mudar precisa atualizar automaticamente no template
+  public currentSearchTerm = signal<string | null>(null);
+  public gifs = signal<Gif[]>([]);
+  public currentPageNumber = signal(1);
+
+  /**
+   * Indica se deverá ser apresentada a listagem de gifs de acordo com a validade de seus itens
+   * @param {Gif[]} results listagem de resultados de gifs encontrados
+   * @returns {boolean} indicador de apresentação da listagem atualizado
+   */
+  readonly showResults = computed(() => {
+    const gifs: Gif[] = this.gifs();
+    if (gifs && gifs.length > 0) {
+      return true;
+    }
+    return false;
+  });
 
   /**
    * Função chamada quando o número da página é alterado.
@@ -39,31 +58,21 @@ export class SearchResultsComponent {
    * @param {number} newPageNumber número da nova página.
    * @returns {number} página atual com valor atualizado.
    */
-  handlePageChange(newPageNumber: number): number {
-    return (this.currentPageNumber = newPageNumber);
+  handlePageChange(newPageNumber: number): void {
+    this.currentPageNumber.set(newPageNumber);
   }
 
   /**
    * Atualiza a listagem de gifs exibida e atualiza a página atual para 1.
+   * Essa função faz desnecessário usar o @input para atualizar os valores, permitindo o uso do signals
    * @param {Gif[]} gifs listagem de resultados de gifs.
    * @returns {Gif[]} retorna a listagem de gifs atualizada
    */
-  public setData(gifs: Gif[]): Gif[] {
+  public setData(gifs: Gif[]): void {
     if (gifs) {
-      this.currentPageNumber = 1; // Reseta a página para 1 quando os dados são atualizados
-      return (this.gifs = gifs);
+      this.currentPageNumber.set(1); // Reseta a página para 1 quando os dados são atualizados
+      this.currentSearchTerm.set(gifs[0].searchTerm);
+      this.gifs.set(gifs);
     }
-  }
-
-  /**
-   * Indica se deverá ser apresentada a listagem de gifs de acordo com a validade de seus itens
-   * @param {Gif[]} results listagem de resultados de gifs encontrados
-   * @returns {boolean} indicador de apresentação da listagem atualizado
-   */
-  public showResults(results: Gif[]): boolean {
-    if (results && results.length > 0) {
-      return true;
-    }
-    return false;
   }
 }
