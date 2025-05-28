@@ -1,5 +1,6 @@
 .gif-link,
-.pagination {
+.pagination,
+.modal {
   display: block;
 }
 
@@ -21,16 +22,15 @@
   height: 250px;
 }
 
-.results-list {
-  height: 280px;
-}
-
 .not-found {
   display: flex;
   align-items: center;
 }
 
 @media screen and (min-width: 768px) {
+  .results-list {
+    height: 280px;
+  }
 
   .not-found {
     height: 380px;

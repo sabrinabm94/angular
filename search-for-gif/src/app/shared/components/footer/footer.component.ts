@@ -8,8 +8,4 @@ import { Component, HostBinding } from '@angular/core';
 })
 export class FooterComponent {
   @HostBinding('class') class: string = 'app-footer';
-
-  constructor() {}
-
-  ngOnInit(): void {}
 }

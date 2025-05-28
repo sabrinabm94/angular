@@ -1,0 +1,21 @@
+<div class="modal-overlay">
+  <div class="modal-backdrop" (click)="closeModal()"></div>
+  <div class="modal-content">
+    <button class="close-btn" (click)="closeModal()">X</button>
+
+    <ng-container *ngIf="isValidUrl(url) === true; else noLink">
+      <a [href]="url" class="link" target="_blank">
+        <ng-container *ngTemplateOutlet="modalContent"></ng-container>
+      </a>
+    </ng-container>
+
+    <ng-template #noLink>
+      <ng-container *ngTemplateOutlet="modalContent"></ng-container>
+    </ng-template>
+
+    <ng-template #modalContent>
+      <img class="image" [src]="imageUrl" [alt]="title" />
+      <h3 class="title">{{ title }}</h3>
+    </ng-template>
+  </div>
+</div>

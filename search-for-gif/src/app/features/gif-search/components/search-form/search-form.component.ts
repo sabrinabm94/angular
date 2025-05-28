@@ -111,6 +111,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
 
     if (dataList) {
       dataList.forEach((data: any) => {
+        console.log(data);
         let gif = new Gif(
           searchTerm,
           data.id,
@@ -118,7 +119,8 @@ export class SearchFormComponent implements OnInit, OnDestroy {
           data.alt_text,
           data.type,
           data.images.preview_gif.url,
-          data.images.preview_webp.url
+          data.images.preview_webp.url,
+          data.images.original.webp,
         );
 
         this.gifs.push(gif);

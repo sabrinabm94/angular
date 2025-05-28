@@ -10,6 +10,7 @@ import { Gif } from '../../../../data/interfaces/gif.model';
 import { CommonModule } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { TranslocoModule } from '@ngneat/transloco';
+import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 
 /**
  * O componente `SearchResultsComponent` é responsável por exibir os resultados da busca de GIFs.
@@ -23,6 +24,7 @@ import { TranslocoModule } from '@ngneat/transloco';
     CommonModule,
     NgxPaginationModule,
     TranslocoModule,
+    ModalComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './search-results.component.html',
@@ -32,12 +34,13 @@ export class SearchResultsComponent {
   @HostBinding('class') class: string = 'app-results-template';
 
   //constantes
-  public readonly ITENS_PER_PAGE: number = 8;
+  public readonly ITENS_PER_PAGE: number = 6;
 
   //variáveis reativas: ao mudar precisa atualizar automaticamente no template
   public currentSearchTerm = signal<string | null>(null);
   public gifs = signal<Gif[]>([]);
   public currentPageNumber = signal(1);
+  public activeModalId = signal<string | null>(null);
 
   /**
    * Indica se deverá ser apresentada a listagem de gifs de acordo com a validade de seus itens
@@ -74,5 +77,25 @@ export class SearchResultsComponent {
       this.currentSearchTerm.set(gifs[0].searchTerm);
       this.gifs.set(gifs);
     }
+  }
+
+  /**
+   * Define um modal ativo e o exibe pelo seu id
+   * @param {string} id do modal
+   * @returns {void}
+   */
+  public openModal(id: string): void {
+    console.log(id);
+    if (id) {
+      this.activeModalId.set(id);
+    }
+  }
+
+  /**
+   * Reseta o modal ativo e oculta todos os modais
+   * @returns {void}
+   */
+  public closeModal(): void {
+    this.activeModalId.set(null);
   }
 }

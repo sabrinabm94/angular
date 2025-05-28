@@ -1,7 +1,7 @@
 <hr />
 <section class="results" *ngIf="showResults() === true">
   <h2 class="big-title text-center">
-    {{ "Results for" | transloco }}"<span
+    {{ "Results for" | transloco }}" <span
       class="small-title"
       *ngIf="currentSearchTerm()"
       >{{ currentSearchTerm() }}</span
@@ -9,7 +9,7 @@
   </h2>
   <div class="row results-list">
     <div
-      class="col-12 col-sm-6 col-md-3 col-lg-3"
+      class="col-6 col-sm-6 col-md-4 col-lg-4"
       *ngFor="
         let gif of gifs()
           | paginate
@@ -17,13 +17,23 @@
       "
     >
       <app-picture
-        [url]="gif.previewWebp"
         [urlPreview]="gif.previewGif"
-        class="gif-image"
+        class="image"
         [id]="gif.id"
         [title]="gif.title"
         [alt]="gif.alt"
-      ></app-picture>
+        (click)="openModal(gif.id)"
+      />
+
+      <app-modal
+        *ngIf="activeModalId() === gif.id"
+        [url]="gif.previewWebp"
+        [imageUrl]="gif.imageUrl"
+        [id]="gif.id"
+        [title]="gif.title"
+        class="modal"
+        (close)="closeModal()"
+      />
     </div>
   </div>
   <pagination-controls

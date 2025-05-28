@@ -1,4 +1,5 @@
-import { Component, HostBinding, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
 
 /**
  * PictureComponent é um componente standalone que exibe uma imagem com opções
@@ -7,11 +8,11 @@ import { Component, HostBinding, Input } from '@angular/core';
 @Component({
   selector: 'app-picture',
   standalone: true,
+  imports: [CommonModule],
   templateUrl: './picture.component.html',
   styleUrl: './picture.component.css',
 })
 export class PictureComponent {
-  @HostBinding('class') hostClass: string = 'app-picture';
   @Input() id: string = '';
   @Input() class: string = '';
   @Input() title: string = '';
@@ -19,5 +20,10 @@ export class PictureComponent {
   @Input() urlPreview: string = '';
   @Input() alt: string = '';
 
-  ngOnInit(): void {}
+  isValidUrl(url: string): boolean {
+    if (url && url.trim() !== '') {
+      return true;
+    }
+    return false;
+  }
 }

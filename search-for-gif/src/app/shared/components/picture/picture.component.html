@@ -1,7 +1,21 @@
-<a [href]="url" class="link" target="_blank">
+<ng-container *ngIf="isValidUrl(url) === true; else noLinkContent">
+  <a [href]="url" class="link" target="_blank">
+    <ng-container *ngTemplateOutlet="figureContent"></ng-container>
+  </a>
+</ng-container>
+
+<ng-template #noLinkContent>
+  <ng-container *ngTemplateOutlet="figureContent"></ng-container>
+</ng-template>
+
+<ng-template #figureContent>
   <figure>
-    <!-- <img class="{{'picture ' + class + ' background-image'}}" [src]="urlPreview" [alt]="alt" /> -->
-    <picture class="{{'picture ' + class + ' background-image'}}" [style]="urlPreview" [style.background-image]="'url(' + urlPreview + ')'"></picture>
-    <figcaption class="caption">{{title}}</figcaption>
+    <img
+      class="picture {{ class }}"
+      [src]="urlPreview"
+      [alt]="alt || title"
+      loading="lazy"
+    />
+    <figcaption class="caption">{{ title }}</figcaption>
   </figure>
-</a>
+</ng-template>

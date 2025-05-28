@@ -1,13 +1,21 @@
-.background-image {
-  height: 90px;
-  width: 150px;
+.background-image,
+img {
+  height: 100px;
+}
+
+.background-image,
+picture,
+img {
   display: block;
   margin: auto;
+}
+
+.background-image {
   background-size: cover;
 }
 
 .caption {
-  font-size: 0.875rem;
+  font-size: 0.700rem;
   margin-top: 10px;
   margin-bottom: 10px;
   text-align: center;
