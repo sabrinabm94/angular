@@ -4,6 +4,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  signal,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Gif } from 'src/app/data/interfaces/gif.model';
@@ -31,10 +32,16 @@ import { GifBackend } from 'src/app/data/models/gif-backend';
 export class SearchFormComponent implements OnInit, OnDestroy {
   public abortController?: AbortController;
   public form: FormGroup;
-  public gifs: Gif[] = [];
+
+  //signals
+  public gifs = signal<Gif[]>([]);
+
+  //constantes
   private readonly DEFAULT_GIF_SEARCH_LIMIT: number = 10;
   private readonly DEFAULT_FORM_FIELD_MIN_LIMIT: number = 1;
   public readonly DEFAULT_FORM_FIELD_MAX_LIMIT: number = 50;
+
+  //disparo de eventos
   @Output() dataEmitter = new EventEmitter<Gif[]>();
 
   constructor(private fb: FormBuilder, private gifService: GifService) {}
@@ -107,7 +114,8 @@ export class SearchFormComponent implements OnInit, OnDestroy {
    */
   handleResponse(gifsList: GifBackend[], searchTerm: string): Gif[] {
     let dataList: GifBackend[] = gifsList;
-    this.gifs = [];
+    const gifsListFormatted: Gif[] = [];
+    this.gifs.set([]);
 
     if (dataList) {
       dataList.forEach((data: any) => {
@@ -120,15 +128,16 @@ export class SearchFormComponent implements OnInit, OnDestroy {
           data.type,
           data.images.preview_gif.url,
           data.images.preview_webp.url,
-          data.images.original.webp,
+          data.images.original.webp
         );
 
-        this.gifs.push(gif);
+        this.gifs.update(gifs => [...gifs, gif]);
       });
-      this.dataEmitter.emit(this.gifs); // Envia os GIFs processados para o componente pai
-      return this.gifs;
+
+      this.dataEmitter.emit(this.gifs()); // Envia os GIFs formatados para o componente pai
     }
-    return [];
+
+    return this.gifs();
   }
 
   /**
