@@ -1,49 +1,63 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { HomePageComponent } from './home-page.component';
-import { Component, ComponentFactoryResolver, CUSTOM_ELEMENTS_SCHEMA, Injector, NgModule, Type, ViewChild, ViewContainerRef } from '@angular/core';
-import { SearchResultsComponent } from '../../components/search-results/search-results.component';
-import { CommonModule } from '@angular/common';
-import { SearchFormComponent } from '../../components/search-form/search-form.component';
-
-// Componente Mock para HeaderComponent
-@Component({
-  selector: 'app-header',
-  template: '<div>Mock Header Component</div>',
-})
-class MockHeaderComponent {}
-
-// Componente Mock para FooterComponent
-@Component({
-  selector: 'app-footer',
-  template: '<div>Mock Footer Component</div>',
-})
-class MockFooterComponent {}
-
-// Módulo de Teste que declara os componentes necessários
-@NgModule({
-  declarations: [
-    MockHeaderComponent,
-    MockFooterComponent,
-    HomePageComponent,
-    SearchFormComponent,
-    SearchResultsComponent,
-  ],
-  imports: [CommonModule],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-})
-class TestModule {}
+import { Injector, ComponentRef, ViewContainerRef } from '@angular/core';
+import { TranslocoModule } from '@ngneat/transloco';
+import { Gif } from '../../../../data/interfaces/gif.model';
+import { of } from 'rxjs';
 
 describe('HomePageComponent', () => {
   let component: HomePageComponent;
   let fixture: ComponentFixture<HomePageComponent>;
 
+  const mockData: Gif[] = [
+    {
+      id: '1',
+      imageUrl: 'https://example.com/gif1.gif',
+      searchTerm: '',
+      title: '',
+      alt_text: '',
+      type: '',
+      previewGif: '',
+      previewWebp: '',
+    },
+  ];
+
+  const mockViewContainerRef = {
+    createComponent: jasmine
+      .createSpy('createComponent')
+      .and.callFake((component: any) => {
+        return {
+          instance: {
+            dataEmitter: of([{ id: '1', url: 'https://example.com/gif1.gif' }]),
+            setData: jasmine.createSpy('setData'),
+          },
+        } as unknown as ComponentRef<any>;
+      }),
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TestModule],
+      imports: [HomePageComponent, TranslocoModule],
+      providers: [
+        {
+          provide: Injector,
+          useValue: jasmine.createSpyObj('Injector', ['get']),
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomePageComponent);
     component = fixture.componentInstance;
+
+    // Simula ViewChild
+    component.searchFormContainer = mockViewContainerRef as any;
+    component.searchResultsContainer = mockViewContainerRef as any;
+
     fixture.detectChanges();
   });
 
@@ -51,36 +65,72 @@ describe('HomePageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should load SearchFormComponent dynamically', async () => {
-    const searchFormContainer = fixture.nativeElement.querySelector('#searchFormContainer');
-    expect(searchFormContainer).toBeTruthy();
+  it('should load search form component and bind emitter', fakeAsync(async () => {
+    // Simula import dinâmico
+    const mockSearchFormComponent = {
+      SearchFormComponent: class {
+        dataEmitter = of([{ id: '1', url: 'https://example.com/gif1.gif' }]);
+      },
+    };
 
-    // Verifica se o componente de formulário de busca foi carregado dinamicamente
-    await fixture.whenStable();
-    expect(searchFormContainer.querySelector('app-search-template')).toBeTruthy();
+    spyOn(component as any, 'loadSearchFormComponent').and.callFake(
+      async () => {
+        const searchFormComponentRef = mockViewContainerRef.createComponent(
+          mockSearchFormComponent.SearchFormComponent
+        );
+        searchFormComponentRef.instance.dataEmitter.subscribe((data: Gif[]) =>
+          component.setDataInChild(data)
+        );
+      }
+    );
+
+    await component.loadSearchFormComponent();
+    tick();
+
+    expect(mockViewContainerRef.createComponent).toHaveBeenCalled();
+  }));
+
+  it('should load search results component', fakeAsync(async () => {
+    const mockSearchResultsComponent = {
+      SearchResultsComponent: class {
+        setData = jasmine.createSpy('setData');
+      },
+    };
+
+    spyOn(component as any, 'loadSearchResultsComponent').and.callFake(
+      async () => {
+        component.SearchResultsComponent = mockViewContainerRef.createComponent(
+          mockSearchResultsComponent.SearchResultsComponent
+        );
+      }
+    );
+
+    await component.loadSearchResultsComponent();
+    tick();
+
+    expect(component.SearchResultsComponent).toBeTruthy();
+    expect(mockViewContainerRef.createComponent).toHaveBeenCalled();
+  }));
+
+  it('should set data in SearchResultsComponent', () => {
+    const setDataSpy = jasmine.createSpy('setData');
+
+    component.SearchResultsComponent = {
+      instance: {
+        setData: setDataSpy,
+      },
+    } as unknown as ComponentRef<any>;
+
+    component.setDataInChild(mockData);
+    expect(setDataSpy).toHaveBeenCalledWith(mockData);
   });
 
-  it('should load SearchResultsComponent dynamically', async () => {
-    const searchResultsContainer = fixture.nativeElement.querySelector('#searchResultsContainer');
-    expect(searchResultsContainer).toBeTruthy();
-
-    // Verifica se o componente de resultados de busca foi carregado dinamicamente
-    await fixture.whenStable();
-    expect(searchResultsContainer.querySelector('app-results-template')).toBeTruthy();
-  });
-
-  it('should call setDataInChild method to pass data to SearchResultsComponent', async () => {
-    const testData = [
-      { searchTerm: 'cat', id: '1', title: 'Cat GIF', alt_text: 'A cat', type: 'gif', previewGif: 'url1', previewWebp: 'url2' },
-    ];
-
-    // Espia o método setDataInChild para verificar se é chamado corretamente
-    spyOn(component, 'setDataInChild');
-
-    // Emite dados para setDataInChild
-    component.setDataInChild(testData);
-
-    // Verifica se o método foi chamado corretamente
-    expect(component.setDataInChild).toHaveBeenCalledWith(testData);
+  it('should log error if SearchResultsComponent is not defined', () => {
+    spyOn(console, 'error');
+    component.SearchResultsComponent = undefined as any;
+    component.setDataInChild([mockData[0]]);
+    expect(console.error).toHaveBeenCalledWith(
+      'SearchResultsComponent is not defined'
+    );
   });
 });

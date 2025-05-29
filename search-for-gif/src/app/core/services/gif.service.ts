@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment';
 import {
   GENERIC_ERROR,
   NO_RESULTS_FOUND_ERROR,
+  REQUEST_ABORTED,
   SEARCH_TERM_EMPTY_ERROR,
 } from 'src/app/data/const';
 import { GifBackend } from 'src/app/data/models/gif-backend';
@@ -73,11 +74,14 @@ export class GifService {
         } else {
           throw new Error(NO_RESULTS_FOUND_ERROR);
         }
-      } catch (error) {
-        if (error) {
-          console.error('Error: ', error);
-          throw new Error(GENERIC_ERROR);
+      } catch (error: any) {
+        if (error?.name === 'AbortError') {
+          console.warn(REQUEST_ABORTED);
+          return [];
         }
+
+        console.error('Erro ao buscar gifs:', error);
+        throw new Error(GENERIC_ERROR);
       }
     }
   }

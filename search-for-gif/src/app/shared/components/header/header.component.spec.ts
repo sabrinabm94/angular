@@ -18,10 +18,10 @@ describe('HeaderComponent', () => {
   let hostFixture: ComponentFixture<TestHostComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [HeaderComponent, TestHostComponent]
-    }).compileComponents();
-  });
+      await TestBed.configureTestingModule({
+        imports: [HeaderComponent],
+      }).compileComponents();
+    });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderComponent);

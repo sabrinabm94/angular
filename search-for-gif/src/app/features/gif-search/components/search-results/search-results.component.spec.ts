@@ -12,8 +12,8 @@ describe('SearchResultsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule, NgxPaginationModule],
-      declarations: [SearchResultsComponent, PictureComponent],
+      imports: [CommonModule, NgxPaginationModule, SearchResultsComponent, PictureComponent],
+      declarations: [],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
@@ -45,7 +45,8 @@ describe('SearchResultsComponent', () => {
         'alt1',
         'type1',
         'url1',
-        'urlPreview1'
+        'urlPreview1',
+        'imageUrl1'
       ),
       new Gif(
         'searchTerm',
@@ -54,7 +55,8 @@ describe('SearchResultsComponent', () => {
         'alt2',
         'type2',
         'url2',
-        'urlPreview2'
+        'urlPreview2',
+        'imageUrl2'
       ),
     ];
 

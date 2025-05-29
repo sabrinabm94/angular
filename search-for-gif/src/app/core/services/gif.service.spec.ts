@@ -10,9 +10,8 @@ import {
 describe('GifService', () => {
   let service: GifService;
 
-  // constantes
   const defaultGifDataLimit = 2;
-  const defaultGifDataEmpty = [];
+  const defaultGifDataEmpty: Gif[] = [];
   const defaultInvalidGifSearchTerm = 'naoexistegitparaessetermo';
   const defaultEmptyString = '';
   const defaultGifData: Gif[] = [
@@ -20,19 +19,21 @@ describe('GifService', () => {
       id: '1',
       title: 'Funny Cat',
       previewGif: 'url',
-      searchTerm: defaultEmptyString,
-      alt_text: defaultEmptyString,
-      type: defaultEmptyString,
-      previewWebp: defaultEmptyString,
+      searchTerm: '',
+      alt_text: '',
+      type: '',
+      previewWebp: '',
+      imageUrl: '',
     },
     {
       id: '2',
       title: 'Dancing Dog',
       previewGif: 'url',
-      searchTerm: defaultEmptyString,
-      alt_text: defaultEmptyString,
-      type: defaultEmptyString,
-      previewWebp: defaultEmptyString,
+      searchTerm: '',
+      alt_text: '',
+      type: '',
+      previewWebp: '',
+      imageUrl: '',
     },
   ];
 
@@ -46,11 +47,7 @@ describe('GifService', () => {
   describe('Dado que o usuário informa um termo de busca válido', () => {
     beforeEach(() => {
       spyOn(window, 'fetch').and.resolveTo(
-        new Response(
-          JSON.stringify({
-            data: defaultGifData,
-          })
-        )
+        new Response(JSON.stringify({ data: defaultGifData }))
       );
     });
 
@@ -99,8 +96,8 @@ describe('GifService', () => {
 
   describe('Dado que há uma requisição em andamento', () => {
     it('deve cancelar a requisição anterior antes de iniciar uma nova', async () => {
-      // simula um atraso artificial para manter uma requisição pendente
-      let resolveFirst: Function;
+      let resolveFirst!: () => void;
+
       const firstFetch = new Promise<Response>((resolve) => {
         resolveFirst = () =>
           resolve(new Response(JSON.stringify({ data: defaultGifDataEmpty })));
@@ -109,26 +106,20 @@ describe('GifService', () => {
       const fetchSpy = spyOn(window, 'fetch').and.returnValues(
         firstFetch,
         Promise.resolve(
-          new Response(
-            JSON.stringify({
-              data: defaultGifData[0],
-            })
-          )
+          new Response(JSON.stringify({ data: [defaultGifData[0]] }))
         )
       );
 
       const firstCall = service.searchGifs('first', 1);
-
-      // cria uma nova requisição sem ter concluído a primeira
       const secondCall = service.searchGifs('second', 1);
 
-      // resolve a primeira requisição
-      resolveFirst!();
+      resolveFirst();
 
       const result = await secondCall;
+
       expect(result.length).toBe(1);
       expect(result[0].title).toBe(defaultGifData[0].title);
-      expect(fetchSpy).toHaveBeenCalledTimes(defaultGifDataLimit);
+      expect(fetchSpy).toHaveBeenCalledTimes(2);
     });
   });
 });

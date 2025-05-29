@@ -7,7 +7,7 @@ import {
 import { SearchFormComponent } from './search-form.component';
 import { GifService } from '../../../../core/services/gif.service';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoTestingModule } from '@ngneat/transloco';
 import { Gif } from '../../../../data/interfaces/gif.model';
 import { GifBackend } from '../../../../data/models/gif-backend';
 
@@ -17,7 +17,7 @@ describe('SearchFormComponent', () => {
   let gifServiceSpy: jasmine.SpyObj<GifService>;
   const defaultEmptyString = '';
   const defaultInvalidValue = null;
-  const defaultGifDataLimit = 2;
+  const defaultGifDataLimit = 10;
 
   const mockGifBackendResponse: GifBackend[] = [
     {
@@ -80,8 +80,13 @@ describe('SearchFormComponent', () => {
     const spy = jasmine.createSpyObj('GifService', ['searchGifs']);
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslocoModule],
-      declarations: [SearchFormComponent],
+      imports: [
+        ReactiveFormsModule,
+        SearchFormComponent,
+        TranslocoTestingModule.forRoot({
+          langs: { en: {} },
+        }),
+      ],
       providers: [{ provide: GifService, useValue: spy }],
     }).compileComponents();
 
@@ -107,7 +112,7 @@ describe('SearchFormComponent', () => {
     it('deve ser válido com valores corretos', () => {
       component.form.setValue({
         term: mockGifBackendResponse[0].title,
-        limit: defaultGifDataLimit,
+        limit: 2,
       });
       expect(component.form.valid).toBeTrue();
     });
@@ -145,7 +150,7 @@ describe('SearchFormComponent', () => {
       spyOn(console, 'error');
       component.form.setValue({
         term: mockGifBackendResponse[1].title,
-        limit: defaultGifDataLimit,
+        limit: 2,
       });
       gifServiceSpy.searchGifs.and.returnValue(Promise.reject(error));
 
@@ -166,7 +171,7 @@ describe('SearchFormComponent', () => {
         mockGifBackendResponse[0].title
       );
 
-      expect(gifs.length).toBe(1);
+      expect(gifs.length).toBe(2);
       expect(gifs[0]).toEqual(jasmine.any(Gif));
       expect(component.dataEmitter.emit).toHaveBeenCalledWith(gifs);
     });

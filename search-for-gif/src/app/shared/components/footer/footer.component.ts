@@ -6,6 +6,4 @@ import { Component, HostBinding } from '@angular/core';
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.css',
 })
-export class FooterComponent {
-  @HostBinding('class') class: string = 'app-footer';
-}
+export class FooterComponent {}

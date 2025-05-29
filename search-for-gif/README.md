@@ -35,6 +35,7 @@ ng serve --open
 
 ```bash
 ng test --code-coverage
+ng test
 ng e2e
 ```
 

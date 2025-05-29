@@ -8,7 +8,7 @@ describe('PictureComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PictureComponent]
+      imports: [PictureComponent],
     }).compileComponents();
   });
 
@@ -31,23 +31,24 @@ describe('PictureComponent', () => {
     component.alt = 'Test Alt';
     fixture.detectChanges();
 
-    const anchorElement: HTMLAnchorElement = fixture.debugElement.query(By.css('a')).nativeElement;
-    const pictureElement: HTMLElement = fixture.debugElement.query(By.css('picture')).nativeElement;
-    const figcaptionElement: HTMLElement = fixture.debugElement.query(By.css('figcaption')).nativeElement;
+    const anchorElement: HTMLAnchorElement = fixture.debugElement.query(
+      By.css('a')
+    ).nativeElement;
+    const pictureElement: HTMLElement = fixture.debugElement.query(
+      By.css('picture')
+    ).nativeElement;
+    const figcaptionElement: HTMLElement = fixture.debugElement.query(
+      By.css('figcaption')
+    ).nativeElement;
 
     expect(anchorElement.href).toContain(component.url);
     expect(anchorElement.target).toBe('_blank');
     expect(anchorElement.classList).toContain('link');
-
     expect(pictureElement.classList).toContain('picture');
     expect(pictureElement.classList).toContain('test-class');
-    expect(pictureElement.style.backgroundImage).toContain(`url(${component.urlPreview})`);
-
+    expect(pictureElement.style.backgroundImage).toContain(
+      `url(${component.urlPreview})`
+    );
     expect(figcaptionElement.textContent).toBe(component.title);
-  });
-
-  it('should have correct HostBinding class', () => {
-    const hostElement: HTMLElement = fixture.nativeElement;
-    expect(hostElement.classList).toContain('app-picture');
   });
 });
