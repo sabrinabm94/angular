@@ -1,43 +1,155 @@
-# SearchForGif
+# Angular - Search for GIFs
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.7.
+Aplicação web construída com **Angular 18** para consumo de uma API REST de busca de GIFs.
 
-## Development server
+### 🔑 Principais funcionalidades
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+* 🔍 Formulário de busca de GIFs com **Reactive Forms**
+* 📄 Lista de resultados com paginação
+* ⚡ Gerenciamento de estado com **Signals** (GIFs, número da página e termo de busca)
+* ✅ Testes unitários com **Jasmine**
+* 📱 Layout responsivo com **Bootstrap**
+* 🌍 Internacionalização (i18n) com **Transloco**
+* 📚 Paginação com **ngx-pagination**
+* 🌐 Requisições com **Promises**
 
-## Code scaffolding
+📘 [Documentação Angular no Wiki](https://github.com/sabrinabm94/angular/wiki)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+---
 
-## Build
+# 🌐 Aplicação Online
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+📍 [**search-gif-sabrinabm94.web.app**](https://search-gif-sabrinabm94.web.app)
 
-## Running unit tests
+---
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+# ⚙️ Executando o Projeto
 
-## Running end-to-end tests
+### Ambiente de desenvolvimento
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```bash
+ng serve --open
+```
 
-## Further help
+### Executar testes
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```bash
+ng test --code-coverage
+ng e2e
+```
 
-# Estrutura do projeto
+---
+
+# 🚀 Build e Deploy
+
+### Login no Firebase
+
+```bash
+firebase login
+```
+
+### Build para produção
+
+```bash
+ng build --configuration=production
+firebase hosting:channel:deploy 1
+```
+
+### Deploy completo no Firebase
+
+```bash
+ng build
+firebase deploy
+```
+
+### Renderização no servidor (SSR)
+
+```bash
+ng build --configuration production
+ng run search-for-gif:server
+```
+
+---
+
+# 📦 Gerenciamento de Dependências
+
+## Atualizar dependências
+
+```bash
+npm outdated
+
+npm install -g npm-check-updates
+npx npm-check-updates -u
+
+ng update @angular/core @angular/cli
+
+rm -rf node_modules package-lock.json
+npm install
+
+npm audit fix
+npm fund
+```
+
+## Instalar pacotes
+
+```bash
+npm install <dep>@latest
+```
+
+## Desinstalar pacotes
+
+```bash
+npm uninstall -g <dep>
+npm uninstall --save-dev <dep>
+npm cache clean --force
+```
+
+---
+
+# 🛠️ Solução de Problemas
+
+### Erros com dependências legadas
+
+```bash
+npm install --legacy-peer-deps
+npm config set legacy-peer-deps true
+
+rm -rf node_modules package-lock.json
+npx npm-check-updates -u
+npm install
+```
+
+### Política de execução no Windows
+
+```bash
+Get-ExecutionPolicy
+Set-ExecutionPolicy RemoteSigned
+Get-ExecutionPolicy
+```
+
+---
+
+# 🗂️ Estrutura do Projeto
+
+```bash
 src/
   app/
     services/
       gif.service.ts
       gif.service.spec.ts
-  environments/
-    environment.prod.ts
-    environment.ts
   data/
     models/
       gif.model.ts
+  environments/
+    environment.ts
+    environment.prod.ts
+```
 
-## Host
-https://search-gif-sabrinabm94.web.app
+---
+
+# 👩‍💻 Contato
+
+**Sabrina B.**
+📧 [sabrinabm94@gmail.com](mailto:sabrinabm94@gmail.com)
+🔗 [GitHub](https://github.com/sabrinabm94/about/blob/main/ABOUT-ME.md)
+🔗 [Linkedin](https://www.linkedin.com/in/sabrinabm94/?locale=en_US)
