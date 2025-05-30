@@ -4,8 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { HomePageComponent } from './features/gif-search/pages/home-page/home-page.component';
-import { TranslocoModule, TRANSLOCO_CONFIG, TRANSLOCO_LOADER } from '@ngneat/transloco';
-import { of } from 'rxjs';
+import { GetTranslocoTestingModule } from './helpers/transloco-testing.module';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -19,25 +18,8 @@ describe('AppComponent', () => {
         HeaderComponent,
         FooterComponent,
         HomePageComponent,
-        TranslocoModule,
-      ],
-      providers: [
-        {
-          provide: TRANSLOCO_CONFIG,
-          useValue: {
-            availableLangs: ['en'],
-            defaultLang: 'en',
-            reRenderOnLangChange: true,
-            prodMode: false,
-          },
-        },
-        {
-          provide: TRANSLOCO_LOADER,
-          useValue: {
-            getTranslation: () => of({}),
-          },
-        },
-      ],
+        GetTranslocoTestingModule(),
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);

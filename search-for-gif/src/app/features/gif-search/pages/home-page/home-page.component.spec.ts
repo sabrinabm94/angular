@@ -6,9 +6,9 @@ import {
 } from '@angular/core/testing';
 import { HomePageComponent } from './home-page.component';
 import { Injector, ComponentRef, ViewContainerRef } from '@angular/core';
-import { TranslocoModule } from '@ngneat/transloco';
 import { Gif } from '../../../../data/interfaces/gif.model';
 import { of } from 'rxjs';
+import { GetTranslocoTestingModule } from '../../../../helpers/transloco-testing.module';
 
 describe('HomePageComponent', () => {
   let component: HomePageComponent;
@@ -42,13 +42,7 @@ describe('HomePageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HomePageComponent, TranslocoModule],
-      providers: [
-        {
-          provide: Injector,
-          useValue: jasmine.createSpyObj('Injector', ['get']),
-        },
-      ],
+      imports: [HomePageComponent, GetTranslocoTestingModule()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomePageComponent);

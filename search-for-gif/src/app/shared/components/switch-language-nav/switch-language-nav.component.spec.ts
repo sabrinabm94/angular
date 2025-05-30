@@ -4,6 +4,7 @@ import { LanguageService } from '../../../core/services/language.service';
 import { Language } from '../../../data/interfaces/language.interface';
 import { TranslocoModule } from '@ngneat/transloco';
 import { CommonModule } from '@angular/common';
+import { GetTranslocoTestingModule } from '../../../helpers/transloco-testing.module';
 
 const mockLanguages: Language[] = [
   {
@@ -34,8 +35,11 @@ describe('SwitchLanguageNavComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SwitchLanguageNavComponent, CommonModule, TranslocoModule],
-      providers: [{ provide: LanguageService, useValue: mockLanguageService }],
+      imports: [
+        SwitchLanguageNavComponent,
+        CommonModule,
+        GetTranslocoTestingModule(),
+      ],
     }).compileComponents();
   });
 
