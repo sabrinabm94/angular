@@ -7,7 +7,7 @@ Aplicação web construída com **Angular 18** para consumo de uma API REST de b
 * 🔍 Formulário de busca de GIFs com **Reactive Forms**
 * 📄 Lista de resultados com paginação
 * ⚡ Gerenciamento de estado com **Signals** (GIFs, número da página e termo de busca)
-* ✅ Testes unitários com **Jasmine**
+* ✅ Testes unitários com **Jasmine** com **cobertura de código acima de 90%**
 * 📱 Layout responsivo com **Bootstrap**
 * 🌍 Internacionalização (i18n) com **Transloco**
 * 📚 Paginação com **ngx-pagination**
