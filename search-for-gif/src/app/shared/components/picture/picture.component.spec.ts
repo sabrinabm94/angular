@@ -6,6 +6,13 @@ describe('PictureComponent', () => {
   let component: PictureComponent;
   let fixture: ComponentFixture<PictureComponent>;
 
+  //constantes
+  const defaultCssClassNameLink: string = 'link';
+  const defaultCssClassNameCaption: string = 'figcaption';
+  const defaultCssClassNameImg: string = 'img';
+  const defaultCssClassNamePicture: string = 'picture';
+  const defaultCssClassNameTest: string = 'test-class';
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [PictureComponent],
@@ -33,22 +40,21 @@ describe('PictureComponent', () => {
 
     const anchorElement: HTMLAnchorElement = fixture.debugElement.query(
       By.css('a')
-    ).nativeElement;
-    const pictureElement: HTMLElement = fixture.debugElement.query(
-      By.css('picture')
-    ).nativeElement;
+    )?.nativeElement;
+    const imgElement: HTMLImageElement = fixture.debugElement.query(
+      By.css(defaultCssClassNameImg)
+    )?.nativeElement;
     const figcaptionElement: HTMLElement = fixture.debugElement.query(
-      By.css('figcaption')
-    ).nativeElement;
+      By.css(defaultCssClassNameCaption)
+    )?.nativeElement;
 
     expect(anchorElement.href).toContain(component.url);
     expect(anchorElement.target).toBe('_blank');
-    expect(anchorElement.classList).toContain('link');
-    expect(pictureElement.classList).toContain('picture');
-    expect(pictureElement.classList).toContain('test-class');
-    expect(pictureElement.style.backgroundImage).toContain(
-      `url(${component.urlPreview})`
-    );
+    expect(anchorElement.classList).toContain(defaultCssClassNameLink);
+    expect(imgElement.classList).toContain(defaultCssClassNamePicture);
+    expect(imgElement.classList).toContain(defaultCssClassNameTest);
+    expect(imgElement.src).toContain(component.urlPreview);
+    expect(imgElement.alt).toBe(component.alt || component.title);
     expect(figcaptionElement.textContent).toBe(component.title);
   });
 });

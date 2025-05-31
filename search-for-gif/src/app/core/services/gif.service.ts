@@ -80,6 +80,13 @@ export class GifService {
           return [];
         }
 
+        if (
+          error.message === NO_RESULTS_FOUND_ERROR ||
+          error.message === SEARCH_TERM_EMPTY_ERROR
+        ) {
+          throw error;
+        }
+
         console.error('Erro ao buscar gifs:', error);
         throw new Error(GENERIC_ERROR);
       }

@@ -15,7 +15,6 @@ export class ButtonComponent {
   @Input() id: string = '';
   @Input() class: string = '';
   @Input() text: string = '';
-  @Input() form: any = null;
   @Input() disabled: boolean = false;
 
   ngOnInit(): void {}

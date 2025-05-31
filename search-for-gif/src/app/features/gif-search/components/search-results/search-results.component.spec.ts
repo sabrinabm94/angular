@@ -5,6 +5,7 @@ import { Gif } from '../../../../data/interfaces/gif.model';
 import { CommonModule } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { GetTranslocoTestingModule } from '../../../../helpers/transloco-testing.module';
 
 describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;
@@ -12,7 +13,13 @@ describe('SearchResultsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule, NgxPaginationModule, SearchResultsComponent, PictureComponent],
+      imports: [
+        CommonModule,
+        NgxPaginationModule,
+        SearchResultsComponent,
+        PictureComponent,
+        GetTranslocoTestingModule(),
+      ],
       declarations: [],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -33,43 +40,25 @@ describe('SearchResultsComponent', () => {
   });
 
   it('should have an empty gifs array by default', () => {
-    expect(component.gifs.length).toBe(0);
+    expect(component.gifs()).toEqual([]);
   });
 
   it('should update gifs and reset page number when setData is called', () => {
     const mockGifs: Gif[] = [
-      new Gif(
-        'searchTerm',
-        'id1',
-        'title1',
-        'alt1',
-        'type1',
-        'url1',
-        'urlPreview1',
-        'imageUrl1'
-      ),
-      new Gif(
-        'searchTerm',
-        'id2',
-        'title2',
-        'alt2',
-        'type2',
-        'url2',
-        'urlPreview2',
-        'imageUrl2'
-      ),
+      new Gif('searchTerm', 'id1', 'title1', 'alt1', 'type1', 'url1', 'urlPreview1', 'imageUrl1'),
+      new Gif('searchTerm', 'id2', 'title2', 'alt2', 'type2', 'url2', 'urlPreview2', 'imageUrl2'),
     ];
 
     component.setData(mockGifs);
 
-    expect(component.gifs).toEqual(mockGifs);
-    expect(component.currentPageNumber).toBe(1);
+    expect(component.gifs()).toEqual(mockGifs);
+    expect(component.currentPageNumber()).toBe(1);
   });
 
   it('should change currentPageNumber when handlePageChange is called', () => {
     const pageNumber = 2;
     component.handlePageChange(pageNumber);
 
-    expect(component.currentPageNumber).toBe(pageNumber);
+    expect(component.currentPageNumber()).toBe(pageNumber);
   });
 });

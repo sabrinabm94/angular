@@ -14,12 +14,14 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         AppComponent,
-        RouterTestingModule,
         HeaderComponent,
         FooterComponent,
         HomePageComponent,
+        RouterTestingModule.withRoutes([
+          { path: '', component: HomePageComponent },
+        ]),
         GetTranslocoTestingModule(),
-      ]
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);
@@ -35,7 +37,10 @@ describe('AppComponent', () => {
     expect(component.title).toBe('search-for-gif');
   });
 
-  it('should render header, router outlet, and footer', () => {
+  it('should render header, router outlet, and footer', async () => {
+    await fixture.whenStable();
+    fixture.detectChanges();
+
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('app-header')).toBeTruthy();
     expect(compiled.querySelector('router-outlet')).toBeTruthy();
