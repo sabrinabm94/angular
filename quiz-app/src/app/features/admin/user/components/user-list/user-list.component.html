@@ -1,0 +1,8 @@
+<section class="list" *ngIf="usersToManageList">
+  <app-container>
+    <app-manage-list [title]="'page_user_manage_list_title'" [itemsToManage]="usersToManageList"
+      (edit)="editUser($event)">
+    </app-manage-list>
+  </app-container>
+</section>
+<!-- TODO: paginação de resultados -->

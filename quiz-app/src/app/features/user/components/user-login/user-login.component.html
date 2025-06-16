@@ -1,0 +1,44 @@
+<section class="user-login" *ngIf="user">
+  <app-container>
+    <h2 class="text-center">{{ "title_user_login" | translatePipe }}</h2>
+    <form class="form" (ngSubmit)="loginWithEmail()">
+      <app-fieldset>
+        <div class="form-group">
+          <!-- Campo Email -->
+          <legend>{{ "email_label" | translatePipe }} <span class="required">*</span></legend>
+          <input type="email" id="email" [(ngModel)]="user.email" name="email" required [attr.aria-invalid]="
+              user.email && !validEmail(user.email) ? 'true' : 'false'
+            " />
+        </div>
+
+        <div class="form-group">
+          <!-- Campo Senha -->
+          <legend>{{ "password_label" | translatePipe }} <span class="required">*</span></legend>
+          <input type="password" id="password" [(ngModel)]="user.password" name="password"
+            autocomplete="current-password" required [attr.aria-invalid]="
+              user.password && user.password.trim() === '' ? 'true' : 'false'
+            " />
+        </div>
+
+        <app-button [className]="'primary'" [disabled]="!isFormValid()" (click)="loginWithEmail()">
+          {{ "login_with_email" | translatePipe }}
+        </app-button>
+      </app-fieldset>
+    </form>
+
+    <div class="buttons">
+      <a class="link" [routerLink]="['/quiz']" routerLinkActive="active"><app-button [className]="'secundary'">{{
+          "continue_without_login" | translatePipe
+          }}</app-button></a>
+
+      <a class="link" [routerLink]="['/user-register']" routerLinkActive="active"><app-button
+          [className]="'secundary'">{{
+          "register" | translatePipe
+          }}</app-button></a>
+    </div>
+
+    <app-button [type]="'link'" (click)="resetPassword()" [disabled]="!user.email">
+      {{ "forgot_password" | translatePipe }}
+    </app-button>
+  </app-container>
+</section>

@@ -1,0 +1,65 @@
+<section class="quiz">
+  <app-container class="questions">
+    <!--
+    <form *ngIf="questions && questions.length > 0">
+      <h2 class="text-center" *ngIf="currentStep < maxSteps">{{ "title_quiz" | translatePipe }}</h2>
+      <h3 class="text-center" *ngIf="currentStep < maxSteps">
+        {{ "part" | translatePipe }} {{ currentStep + 1 }} /
+        {{ maxSteps }}
+      </h3>
+      <div class="question" *ngFor="let question of getQuestionsForStep(); let i = index">
+        <hr />
+        <app-fieldset [class.strikethrough]="
+            question.result !== null &&
+            question.result !== undefined
+          ">
+          <h4>{{ question.question }}</h4>
+          <p>
+            <em>{{ question.example }}</em>
+          </p>
+          <p>{{ question.frequency }}</p>
+          <p>{{ question.context }}</p>
+
+
+          <div class="aswer">
+            <label>
+              <input type="radio" [(ngModel)]="question.result" [value]="true" name="result{{ i }}"
+                (blur)="checkAnswer(question)" />
+              <span id="yes-option-{{ i }}">{{ "yes" | translatePipe }}</span>
+            </label>
+
+            <label>
+              <input type="radio" [(ngModel)]="question.result" [value]="false" name="result{{ i }}"
+                (blur)="checkAnswer(question)" />
+              <span id="no-option-{{ i }}">{{ "no" | translatePipe }}</span>
+            </label>
+          </div>
+        </app-fieldset>
+      </div>
+
+      <div class="buttons send action" *ngIf="currentStep < maxSteps">
+        <app-button *ngIf="currentStep < maxSteps" (click)="nextStep()" [className]="'secundary'"
+          [disabled]="!isFormValid()">
+          {{ "next" | translatePipe }}
+        </app-button>
+        <app-button *ngIf="currentStep >= 1 && currentStep <= maxSteps" (click)="backStep()" [className]="'secundary'">
+          {{ "back" | translatePipe }}
+        </app-button>
+      </div>
+
+      <div class="send action" *ngIf="currentStep >= maxSteps">
+        <h3 class="text-center">{{ "title_quiz_send" | translatePipe }}</h3>
+        <div class="buttons">
+          <app-button [disabled]="!isFormValid()" (click)="submitAnswers()" [className]="'secundary'">
+            {{ "calculate_results" | translatePipe }}
+          </app-button>
+          <app-button *ngIf="currentStep >= 1 && currentStep <= maxSteps" (click)="backStep()"
+            [className]="'secundary'">
+            {{ "revise_quiz" | translatePipe }}
+          </app-button>
+        </div>
+      </div>
+    </form>
+    -->
+  </app-container>
+</section>

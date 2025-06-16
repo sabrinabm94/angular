@@ -1,0 +1,12 @@
+<section class="quiz">
+  <app-container>
+    <div class="form-group">
+      <legend>{{ "quiz_label" | translatePipe }}</legend>
+      <select id="quiz" [(ngModel)]="quizId" name="quiz" required>
+        <option [value]="quiz.id" *ngFor="let quiz of quizList">
+          {{ quiz.name | translatePipe }}
+        </option>
+      </select>
+    </div>
+  </app-container>
+</section>

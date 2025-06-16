@@ -1,0 +1,21 @@
+<header class="header text-center">
+  <app-switch-language-nav class="languages" />
+  <div class="menu auth">
+    <a class="link" [routerLink]="['/quiz']" routerLinkActive="active"> {{ "page_quiz_title" | translatePipe }}</a>
+    <a class="link" *ngIf="userId && userId !== ''" [routerLink]="['/result', userId]" routerLinkActive="active">
+      {{ "page_results_title" | translatePipe }}
+    </a>
+    <a class="link" *ngIf="userId && userId !== ''" [routerLink]="['/profile', userId]" routerLinkActive="active">
+      {{ "page_profile_title" | translatePipe }}
+    </a>
+    <a class="link" *ngIf="!userId || userId === ''" [routerLink]="['/login']" routerLinkActive="active"> {{ "login" |
+      translatePipe }}</a>
+    <a class="link" *ngIf="userId && isAdmin === true" [routerLink]="['/users']" routerLinkActive="active"> {{
+      "users" |
+      translatePipe }}</a>
+    <a class="link" *ngIf="userId && isAdmin === true" [routerLink]="['/quiz-list']" routerLinkActive="active"> {{
+      "quiz" |
+      translatePipe }}</a>
+    <a class="link" *ngIf="userId && userId !== ''" href="/login" (click)="logout()"> {{ "logout" | translatePipe }}</a>
+  </div>
+</header>

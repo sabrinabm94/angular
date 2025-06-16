@@ -1,0 +1,10 @@
+<div class="results-page" *ngIf="userId && userId !== ''">
+  <app-header [userId]="userId" [isAdmin]="isAdmin" />
+  <main class="main">
+    <div class="container">
+      <h1 class="main-title text-center">{{ "app_title" | translatePipe }}</h1>
+      <app-results [score]="results" [userId]="userId" [currentLanguageId]="languageId"></app-results>
+    </div>
+  </main>
+  <app-footer />
+</div>

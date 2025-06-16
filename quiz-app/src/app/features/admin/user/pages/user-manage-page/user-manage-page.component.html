@@ -1,0 +1,11 @@
+<app-header [userId]="userId" [isAdmin]="isAdmin" />
+<main class="main">
+  <div class="container">
+    <h1 class="main-title text-center">{{ "app_title" | translatePipe }}</h1>
+    <div class="manage-user-page">
+      <app-user-manage [userAdminId]="userId"></app-user-manage>
+      <router-outlet />
+    </div>
+  </div>
+</main>
+<app-footer />

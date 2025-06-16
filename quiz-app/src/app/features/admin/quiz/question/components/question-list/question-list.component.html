@@ -1,0 +1,16 @@
+<section class="list">
+  <app-container>
+    <header class="quiz-info" *ngIf="quizId">
+      <h2 class="text-center">{{ "title_quiz_manager" | translatePipe }}</h2>
+      <p class="text-center">
+        Id: {{quizId}}
+      </p>
+    </header>
+    <hr>
+    <app-manage-list *ngIf="questionsToManageList" [title]="'page_questions_manage_list_title'"
+      [itemsToManage]="questionsToManageList" (create)="register(quizId)" (edit)="edit(quizId, $event)"
+      [showCreate]="true">
+    </app-manage-list>
+  </app-container>
+</section>
+<!-- TODO: paginação de resultados -->
