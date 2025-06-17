@@ -1,20 +1,23 @@
 import { Injectable } from '@angular/core';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
-import { auth } from 'src/init-firebase';
+import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from '@angular/fire/auth';
+import { inject } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
+  //injeção simplificada de dependência auth do firebase
+  private auth: Auth = inject(Auth);
+
   login(email: string, password: string) {
-    return signInWithEmailAndPassword(auth, email, password);
+    return signInWithEmailAndPassword(this.auth, email, password);
   }
 
   register(email: string, password: string) {
-    return createUserWithEmailAndPassword(auth, email, password);
+    return createUserWithEmailAndPassword(this.auth, email, password);
   }
 
   logout() {
-    return signOut(auth);
+    return signOut(this.auth);
   }
 }
